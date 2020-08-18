@@ -2,7 +2,7 @@
   "name": "Pangseh",
   "version": "1.0.0",
   "description": "Actually private so please don't",
-  "main": "random.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
