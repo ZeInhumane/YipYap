@@ -1,3 +1,4 @@
+class Hero {
     constructor(HP, attack, speed){
         this.HP = HP;
         this.attack = attack;
