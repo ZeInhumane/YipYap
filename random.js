@@ -12,10 +12,12 @@ class Hero {
         if(attMulti < 0.4){
             attMulti = 0.4;
         }
-        else if(attMulti > 2){
-            attMulti = 2;
+        else if(attMulti > 1.5){
+            attMulti = 1.5;
         }
-        this.hp -= Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        this.hp -= damageTaken;
+        return damageTaken;
     }
 }
 
@@ -34,25 +36,27 @@ class Enemy {
         if(attMulti < 0.4){
             attMulti = 0.4;
         }
-        else if(attMulti > 2){
-            attMulti = 2;
+        else if(attMulti > 1.5){
+            attMulti = 1.5;
         }
-        this.hp -= Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        this.hp -= damageTaken;
+        return damageTaken;
     }
 }
 
 function battle(player, enemy) {
     function playerTurn() {
-        console.log(player.name + '\'s turn!\n' + player.name + ' does ' + player.attack + ' damage!\n');
-        enemy.takeDamage(player.attack);
+        console.log(player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n');
     }
 
     function enemyTurn() {
-        console.log(enemy.name + '\'s turn!\n' + enemy.name + ' does ' + enemy.attack + ' damage!\n');
-        player.takeDamage(enemy.attack);
+        console.log(enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n');
     }
 
     while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
+        var playerHPStart = player.hp;
+        var enemyHPStart = enemy.hp;
         console.log(player.name + '\'s HP: ' + player.hp);
         console.log(enemy.name + '\'s HP: ' + enemy.hp + '\n');
         if (player.speed > enemy.speed) {
