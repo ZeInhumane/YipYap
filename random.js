@@ -8,7 +8,14 @@ class Hero {
     }
 
     takeDamage(damage) {
-        this.hp -= damage;
+        let attMulti = damage/this.defense;
+        if(attMulti < 0.4){
+            attMulti = 0.4;
+        }
+        else if(attMulti > 2){
+            attMulti = 2;
+        }
+        this.hp -= Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
     }
 }
 
@@ -23,7 +30,14 @@ class Enemy {
     }
 
     takeDamage(damage) {
-        this.hp -= damage - (damage + Math.E ** (1 / 2));
+        let attMulti = damage/this.defense;
+        if(attMulti < 0.4){
+            attMulti = 0.4;
+        }
+        else if(attMulti > 2){
+            attMulti = 2;
+        }
+        this.hp -= Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
     }
 }
 
