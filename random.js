@@ -1,19 +1,19 @@
 class Hero {
-    constructor(name, hp, attack, defense, speed){
+    constructor(name, hp, attack, defense, speed) {
         this.name = name;
         this.hp = hp;
-        this.attack = attack;
-        this.defense = defense;
-        this.speed = speed;
+		this.attack = attack;
+		this.defense = defense;
+		this.speed = speed;
     }
 
-    takeDamage(damage){
+    takeDamage(damage) {
         this.hp -= damage;
     }
 }
 
 class Enemy {
-    constructor(name, hp, attack, defense, speed, type){
+    constructor(name, hp, attack, defense, speed, type) {
         this.name = name;
         this.hp = hp;
         this.attack = attack;
@@ -22,7 +22,7 @@ class Enemy {
         this.type = type;
     }
 
-    takeDamage(damage){
+    takeDamage(damage) {
         this.hp -= damage;
     }
 }
