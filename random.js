@@ -38,20 +38,20 @@ function battle(player, enemy) {
         player.takeDamage(enemy.attack);
     }
 
-    while (!(player.hp < 0) && !(enemy.hp < 0)) {
+    while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
+        console.log(player.name + "'s HP: " + player.hp);
+        console.log(enemy.name + "'s HP: " + enemy.hp + "\n");
         if (player.speed > enemy.speed) {
             playerTurn();
             if (enemy.hp > 0) {
                 enemyTurn();
             }
-            console.log("\n");
         }
         else{
             enemyTurn();
             if(player.hp > 0){
                 playerTurn();
             }
-            console.log("\n");
         }
     }
 
@@ -65,6 +65,6 @@ function battle(player, enemy) {
 
 var skeleton1 = new Enemy("Skele Boy", 10, 2, 1, 3, "undead");
 
-var matthew = new Hero("Matthew", 100, 10, 10, 15);
+var matthew = new Hero("Matthew", 100, 7, 10, 15);
 
 battle(matthew, skeleton1);
