@@ -19,9 +19,9 @@ client.on('message', message => {
             .setColor('#0099ff')
             .setTitle('Battle Start! :crossed_swords:')
             .setURL('https://discord.gg/CTMTtQV')
-            .setAuthor('Some name', 'https://www.google.com/search?q=killua&sxsrf=ALeKk02wElpWf2P2AhWntqLPCiz8Qfuaxg:1597844014739&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjctJ7nsKfrAhXs7HMBHTwADe0Q_AUoAXoECBcQAw&biw=1536&bih=754#imgrc=XEcv4IMCuOpJTM', 'https://discord.js.org')
+            .setAuthor('Some name', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
             .setDescription('Some description here')
-            .setThumbnail('https://www.google.com/search?q=killua&sxsrf=ALeKk02wElpWf2P2AhWntqLPCiz8Qfuaxg:1597844014739&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjctJ7nsKfrAhXs7HMBHTwADe0Q_AUoAXoECBcQAw&biw=1536&bih=754#imgrc=XEcv4IMCuOpJTM')
+            .setThumbnail('https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652')
             .addFields(
                 { name: 'Regular field title', value: 'Some value here' },
                 { name: '\u200B', value: '\u200B' },
