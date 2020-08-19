@@ -97,6 +97,11 @@ function makeNewEnemy() {
     return enemy;
 }
 
+function makeNewPlayer(playerName){
+    playerDataBase.push(new Hero(playerName, 50, 5, 5, 5));
+}
+
+var playerDataBase = [];
 var matthew = new Hero('Matthew', 100, 7, 10, 15);
 var enemy = makeNewEnemy();
 battle(matthew, enemy);
