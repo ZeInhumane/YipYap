@@ -82,6 +82,7 @@ function battle(player, enemy) {
 }
 
 var skeleton1 = new Enemy('Skele Boy', 10, 2, 1, 3, 'undead');
+var skeleton2 = new Enemy('Skele Man', 100, 7, 6, 9, 'undead');
 
 var matthew = new Hero('Matthew', 100, 7, 10, 15);
 
