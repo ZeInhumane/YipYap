@@ -2,20 +2,23 @@ class Hero {
     constructor(name, hp, attack, defense, speed) {
         this.name = name;
         this.hp = hp;
-		this.attack = attack;
-		this.defense = defense;
-		this.speed = speed;
+        this.attack = attack;
+        this.defense = defense;
+        this.speed = speed;
     }
 
     takeDamage(damage) {
-        let attMulti = damage/this.defense;
-        if(attMulti < 0.4){
+        let attMulti = damage / this.defense;
+        if (attMulti < 0.4) {
             attMulti = 0.4;
         }
-        else if(attMulti > 1.5){
+        else if (attMulti > 1.5) {
             attMulti = 1.5;
         }
-        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        if (damageTaken < 1){
+            damageTaken = 1;
+        }
         this.hp -= damageTaken;
         return damageTaken;
     }
@@ -32,14 +35,17 @@ class Enemy {
     }
 
     takeDamage(damage) {
-        let attMulti = damage/this.defense;
-        if(attMulti < 0.4){
+        let attMulti = damage / this.defense;
+        if (attMulti < 0.4) {
             attMulti = 0.4;
         }
-        else if(attMulti > 1.5){
+        else if (attMulti > 1.5) {
             attMulti = 1.5;
         }
-        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        if (damageTaken < 1){
+            damageTaken = 1;
+        }
         this.hp -= damageTaken;
         return damageTaken;
     }
@@ -65,26 +71,32 @@ function battle(player, enemy) {
                 enemyTurn();
             }
         }
-        else{
+        else {
             enemyTurn();
-            if(player.hp > 0){
+            if (player.hp > 0) {
                 playerTurn();
             }
         }
     }
 
-    if(player.hp > 0){
+    if (player.hp > 0) {
         console.log(player.name + ' defeated ' + enemy.name + '!');
     }
-    else{
+    else {
         console.log(player.name + ' has been defeated by ' + enemy.name + '!');
     }
 }
 
-var skeleton2 = new Enemy('Skele Man', 100, 7, 6, 9, 'undead');
+function makeNewEnemy() {
+    var enemyHP = Math.floor(Math.random()*51 + 10);
+    var enemyAttack = Math.floor(Math.random()*11);
+    var enemyDefense = Math.floor(Math.random()*11);
+    var enemySpeed = Math.floor(Math.random()*50 + 10);
+    var enemyType = "undead";
+    var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
+    return enemy;
+}
 
 var matthew = new Hero('Matthew', 100, 7, 10, 15);
-
-battle(matthew, skeleton1);
-
-gaygaygaygay = "gaygaygaygaygay";
+var enemy = makeNewEnemy();
+battle(matthew, enemy);
