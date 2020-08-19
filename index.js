@@ -18,10 +18,10 @@ client.on('message', message => {
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Battle Start! :crossed_swords:')
-            .setURL('https://discord.js.org/')
-            .setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+            .setURL('https://discord.gg/CTMTtQV')
+            .setAuthor('Some name', 'https://www.google.com/search?q=killua&sxsrf=ALeKk02wElpWf2P2AhWntqLPCiz8Qfuaxg:1597844014739&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjctJ7nsKfrAhXs7HMBHTwADe0Q_AUoAXoECBcQAw&biw=1536&bih=754#imgrc=XEcv4IMCuOpJTM', 'https://discord.js.org')
             .setDescription('Some description here')
-            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+            .setThumbnail('https://www.google.com/search?q=killua&sxsrf=ALeKk02wElpWf2P2AhWntqLPCiz8Qfuaxg:1597844014739&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjctJ7nsKfrAhXs7HMBHTwADe0Q_AUoAXoECBcQAw&biw=1536&bih=754#imgrc=XEcv4IMCuOpJTM')
             .addFields(
                 { name: 'Regular field title', value: 'Some value here' },
                 { name: '\u200B', value: '\u200B' },
