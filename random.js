@@ -86,3 +86,5 @@ var skeleton2 = new Enemy('Skele Man', 100, 7, 6, 9, 'undead');
 var matthew = new Hero('Matthew', 100, 7, 10, 15);
 
 battle(matthew, skeleton1);
+
+gaygaygaygay = "gaygaygaygaygay";
