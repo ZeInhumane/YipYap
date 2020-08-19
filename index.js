@@ -42,7 +42,7 @@ client.on('message', message => {
                 const collector = battleEmbed.message.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
                     console.log('Reacted Yes') : console.log('Reacted No'));
-            })
+            });
 
 
     }
