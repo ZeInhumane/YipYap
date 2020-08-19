@@ -15,7 +15,10 @@ class Hero {
         else if (attMulti > 1.5) {
             attMulti = 1.5;
         }
-        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        if (damageTaken < 1){
+            damageTaken = 1;
+        }
         this.hp -= damageTaken;
         return damageTaken;
     }
@@ -39,7 +42,10 @@ class Enemy {
         else if (attMulti > 1.5) {
             attMulti = 1.5;
         }
-        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti)
+        var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+        if (damageTaken < 1){
+            damageTaken = 1;
+        }
         this.hp -= damageTaken;
         return damageTaken;
     }
@@ -88,8 +94,9 @@ function makeNewEnemy() {
     var enemySpeed = Math.floor(Math.random()*50 + 10);
     var enemyType = "undead";
     var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
+    return enemy;
 }
 
 var matthew = new Hero('Matthew', 100, 7, 10, 15);
-makeNewEnemy();
+var enemy = makeNewEnemy();
 battle(matthew, enemy);

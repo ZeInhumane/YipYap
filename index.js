@@ -20,5 +20,6 @@ client.on('message', message => {
                 botMessage.react(':crossed_swords:');
             })
             .catch(() => console.error('React Error!'));
+        message.react(":crossed_swords:");
     }
 });
