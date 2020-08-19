@@ -4,7 +4,6 @@ const { prefix, token, bot_age } = require('./config.json');
 
 client.once('ready', () => {
     console.log(prefix);
-    console.log(token);
     console.log(bot_age);
 });
 
@@ -15,10 +14,9 @@ client.on('message', message => {
         message.channel.send('Successful registration');
     }
     if (message.content === `${prefix}battle`) {
-        message.channel.send("Battle Start! :crossed_swords:")
-            .then(function (botMessage){
-                botMessage.react(':crossed_swords:');
-            })
-            .catch(() => console.error('React Error!'));
+        message.channel.send("Battle Start! :crossed_swords:");
+        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'jarjarbinks');
+        message.react(reactionEmoji);
+
     }
 });
