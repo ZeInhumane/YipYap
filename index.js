@@ -14,9 +14,13 @@ client.on('message', message => {
         message.channel.send('Successful registration');
     }
     if (message.content === `${prefix}battle`) {
-        message.channel.send("Battle Start! :crossed_swords:");
-        const reactionEmoji = message.guild.emojis.cache.find(emoji => emoji.name === 'jarjarbinks');
-        message.react(reactionEmoji);
+        console.log("emoji is")
+        console.log(message.guild.emojis.cache.find(emoji => emoji.name === '⚔️'))
+        message.channel.send("Battle Start! :crossed_swords:")
+            .then(botMessage => {
+                botMessage.react("⚔️");
+                botMessage.react("🛡️");});
+                //botMessage.react(message.guild.emojis.cache.find(emoji => emoji.name === 'crossed_swords'))});
 
     }
 });
