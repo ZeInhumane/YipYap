@@ -14,4 +14,11 @@ client.on('message', message => {
     if (message.content === `${prefix}start`) {
         message.channel.send('Successful registration');
     }
+    if (message.content === `${prefix}battle`) {
+        message.channel.send("Battle Start! :crossed_swords:")
+            .then(function (botMessage){
+                botMessage.react(':crossed_swords:');
+            })
+            .catch(() => console.error('React Error!'));
+    }
 });
