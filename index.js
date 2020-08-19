@@ -1,13 +1,13 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token, bot_age } = require('./config.json');
+const { prefix, bot_age } = require('./config.json');
 
 client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
 });
 
-client.login(token);
+client.login(process.env.token);
 
 client.on('message', message => {
     if (message.content === `${prefix}start`) {
