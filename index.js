@@ -15,13 +15,17 @@ client.on('message', message => {
         message.channel.send('Successful registration');
     }
     if (message.content === `${prefix}battle`) {
-        console.log("emoji is")
-        console.log(message.guild.emojis.cache.find(emoji => emoji.name === '⚔️'))
         message.channel.send("Battle Start! :crossed_swords:")
             .then(botMessage => {
                 botMessage.react("⚔️");
-                botMessage.react("🛡️");});
-                //botMessage.react(message.guild.emojis.cache.find(emoji => emoji.name === 'crossed_swords'))});
+                botMessage.react("🛡️");
+            })
+            .then(() => {
+                const filter = (reaction, user) => (reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️');
+                const collector = embedMsg.message.createReactionCollector(filter, { time: 10000 });
+                collector.on('collect', r => r.emoji.name === '⚔️' ?
+                    console.log('Reacted Yes') : console.log('Reacted No'));
+            })
 
     }
 });
