@@ -136,7 +136,7 @@ module.exports = {
                 const filter = (reaction, user) => ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user != "745275291785494571");
                 const collector = botMessage.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
-                    console.log('Reacted Yes') : console.log('Reacted No'));
+                    console.log('Reacted Attack') : console.log('Reacted Guard'));
             })
     }
 
