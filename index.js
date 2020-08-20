@@ -34,4 +34,4 @@ client.on('message', message => {
             client.commands.get('battle').execute(message, args);
             break;
     }
-})
+});
