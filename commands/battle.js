@@ -135,7 +135,9 @@ module.exports = {
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
                 const filter = (reaction, user) => {
+                    console.log("Check " + reaction.emoji.name);
                     if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
+                        console.log(reaction.emoji.name + " passed");
                         return reaction;
                     }
                 };
