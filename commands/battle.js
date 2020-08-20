@@ -109,7 +109,8 @@ module.exports = {
         var playerDataBase = [];
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
-        battle(matthew, enemy);
+        //battle(matthew, enemy);
+        console.log(message.author.id)
 
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
