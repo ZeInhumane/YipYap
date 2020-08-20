@@ -2,30 +2,32 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const { prefix, token, bot_age } = require('./config.json');
 const fs = require('fs');
- 
+
 client.commands = new Discord.Collection();
- 
+
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-for(const file of commandFiles){
+for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
- 
+
     client.commands.set(command.name, command);
 }
+const { prefix, bot_age } = require('./config.json');
 
 client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
+    console.log("This updates");
 });
 
-client.login(token);
+client.login(process.env.token);
 
 client.on('message', message => {
-    if(!message.content.startsWith(prefix) || message.author.bot) return;
- 
+    if (!message.content.startsWith(prefix) || message.author.bot) return;
+
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
- 
-    switch(command){
+
+    switch (command) {
         case 'start':
             client.commands.get('start').execute(message, args);
             break;
@@ -33,4 +35,4 @@ client.on('message', message => {
             client.commands.get('battle').execute(message, args);
             break;
     }
-});
+})
