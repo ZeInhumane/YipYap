@@ -134,9 +134,9 @@ module.exports = {
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
             })
-            .then(() => {
+            .then(botMessage => {
                 const filter = (reaction, user) => (reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️');
-                const collector = battleEmbed.createReactionCollector(filter, { time: 10000 });
+                const collector = botMessage.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
                     console.log('Reacted Yes') : console.log('Reacted No'));
             })
