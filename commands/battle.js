@@ -136,7 +136,7 @@ module.exports = {
             })
             .then(() => {
                 const filter = (reaction, user) => (reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️');
-                const collector = battleEmbed.message.createReactionCollector(filter, { time: 10000 });
+                const collector = battleEmbed.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
                     console.log('Reacted Yes') : console.log('Reacted No'));
             })
