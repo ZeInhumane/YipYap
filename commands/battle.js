@@ -136,6 +136,8 @@ module.exports = {
             })
             .then(botMessage => {
                 const filter = (reaction, user) => (reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️');
+                console.log(botMessage);
+                console.log(filter);
                 const collector = botMessage.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
                     console.log('Reacted Yes') : console.log('Reacted No'));
