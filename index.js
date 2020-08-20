@@ -11,7 +11,6 @@ for (const file of commandFiles) {
 
     client.commands.set(command.name, command);
 }
-const { prefix, bot_age } = require('./config.json');
 
 client.once('ready', () => {
     console.log(prefix);
