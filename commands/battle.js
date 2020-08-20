@@ -2,6 +2,7 @@ module.exports = {
     name: "battle",
     description: "Battles an enemy",
     execute(message, args) {
+        const Discord = require('discord.js');
         class Hero {
             constructor(name, hp, attack, defense, speed) {
                 this.name = name;
