@@ -137,6 +137,7 @@ module.exports = {
                 const collector = botMessage.createReactionCollector(filter, { time: 10000 });
                 collector.on('collect', r => r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard'));
+                collector.on('expire', () => (console.log("Expired")));
             })
     }
 
