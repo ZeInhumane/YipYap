@@ -171,7 +171,7 @@ module.exports = {
                         return reaction;
                     }
                 };
-                var collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
+                const collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 //Replace matthew with the message author
                 battle(matthew, enemy, collector);
             })
