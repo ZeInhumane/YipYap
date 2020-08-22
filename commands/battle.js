@@ -67,6 +67,9 @@ module.exports = {
                 if (action == "⚔️") {
                     var turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
                 }
+                else {
+                    turn = "Nothing happened";
+                }
 
             }
 
@@ -102,7 +105,7 @@ module.exports = {
                 else {
                     enemyTurn();
                     if (player.hp > 0) {
-                        playerTurn();
+                        playerTurn(action);
                     }
                 }
                 botEmbedMessage.edit(updatedBattleEmbed);
