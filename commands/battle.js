@@ -65,16 +65,16 @@ module.exports = {
         function battle(player, enemy) {
             function playerTurn() {
                 if (action == "⚔️") {
-                    var turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
+                    turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
                 }
                 else {
-                    var turn = "Nothing happened";
+                    turn = "Nothing happened";
                 }
 
             }
 
             function enemyTurn() {
-                var turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
+                turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
             const updatedBattleEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
@@ -95,6 +95,7 @@ module.exports = {
                 .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
+                var turn;
                 gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(action);
