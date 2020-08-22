@@ -56,7 +56,7 @@ module.exports = {
             }
         }
         async function gotAReaction() {
-            collector.on('collect', r => {
+            await collector.on('collect', r => {
                 collector.time = 60000;
                 return r.emoji.name;
             });
@@ -101,7 +101,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn, playerAction;
-                playerAction = await gotAReaction();
+                gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
@@ -142,7 +142,7 @@ module.exports = {
         var playerDataBase = [];
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
-        console.log(message.author.id)
+        console.log(message.author.id);
 
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
