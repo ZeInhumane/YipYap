@@ -74,7 +74,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
                 battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
-                botEmbedMessage.edit(battleEmbed);
+                botEmbedMessage.edit(botEmbedMessage);
                 gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn();
