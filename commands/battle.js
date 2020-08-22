@@ -59,8 +59,7 @@ module.exports = {
             await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
-                botEmbedMessage.createReactionCollector
-                collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
+                collector.time = 60000;
             });
         }
         function battle(player, enemy, collector) {
