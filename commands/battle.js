@@ -55,7 +55,13 @@ module.exports = {
                 return damageTaken;
             }
         }
-
+        async function gotAReaction(){
+            collector.on('collect', r => {
+                r.emoji.name === '⚔️' ?
+                    console.log('Reacted Attack') : console.log('Reacted Guard');
+                collector = botMessage.createReactionCollector(filter, { time: 60000 });
+            });
+        }
         function battle(player, enemy) {
             function playerTurn() {
                 battleEmbed.addField("Turn", player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n');
@@ -69,11 +75,7 @@ module.exports = {
                 battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
                 battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
                 botEmbedMessage.edit(battleEmbed);
-                await collector.on('collect', async r => {
-                    r.emoji.name === '⚔️' ?
-                        console.log('Reacted Attack') : console.log('Reacted Guard');
-                    collector = botMessage.createReactionCollector(filter, { time: 60000 });
-                });
+                await gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn();
                     if (enemy.hp > 0) {
