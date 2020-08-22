@@ -57,9 +57,8 @@ module.exports = {
         }
         async function gotAReaction() {
             collector.on('collect', r => {
-                r.emoji.name === '⚔️' ?
-                    playerAction = '⚔️' : playerAction = '🛡️';
                 collector.time = 60000;
+                return r.emoji.name;
             });
         }
 
@@ -102,7 +101,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn, playerAction;
-                gotAReaction();
+                playerAction = await gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
