@@ -16,7 +16,8 @@ client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
     console.log("This updates");
-    client.user.setActivity(client.guilds + "Servers");
+    const servercount = client.guilds;
+    client.user.setActivity(servercount + "servers");
 });
 
 client.login(process.env.token);
