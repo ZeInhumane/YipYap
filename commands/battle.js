@@ -56,12 +56,13 @@ module.exports = {
             }
         }
         async function gotAReaction() {
-            await collector.on('collect', r => {
+            collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
-                    console.log('Reacted Attack') : console.log('Reacted Guard');
+                    playerAction = '⚔️' : playerAction = '🛡️';
                 collector.time = 60000;
             });
         }
+
         function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
