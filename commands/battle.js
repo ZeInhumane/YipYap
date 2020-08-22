@@ -55,7 +55,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-        async function gotAReaction(){
+        async function gotAReaction() {
             await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
@@ -137,12 +137,12 @@ module.exports = {
             .setTimestamp()
             .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
-        //Replace matthew with the message author
-        battle(matthew, enemy);
+
         var botEmbedMessage;
         message.channel.send(battleEmbed)
             .then(botMessage => {
                 botEmbedMessage = botMessage;
+                console.log(botEmbedMessage)
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
                 const filter = (reaction, user) => {
@@ -153,7 +153,8 @@ module.exports = {
                     }
                 };
                 var collector = botMessage.createReactionCollector(filter, { time: 60000 });
-
+                //Replace matthew with the message author
+                battle(matthew, enemy);
             })
     }
 
