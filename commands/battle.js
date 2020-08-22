@@ -57,7 +57,6 @@ module.exports = {
         }
         async function gotAReaction() {
             await collector.on('collect', r => {
-                collector.time = 60000;
                 return r.emoji.name;
             });
         }
