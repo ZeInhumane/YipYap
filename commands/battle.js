@@ -55,15 +55,15 @@ module.exports = {
                 return damageTaken;
             }
         }
-        async function gotAReaction() {
+        async function gotAReaction(collector) {
             await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
                 collector = botMessage.createReactionCollector(filter, { time: 60000 });
             });
         }
-        function battle(player, enemy) {
-            function playerTurn() {
+        function battle(player, enemy, collector) {
+            function playerTurn(action) {
                 if (action == "⚔️") {
                     turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
                 }
@@ -95,8 +95,8 @@ module.exports = {
                 .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
-                var turn;
-                gotAReaction();
+                var turn, playerAction;
+                gotAReaction(collector);
                 if (player.speed > enemy.speed) {
                     playerTurn(action);
                     if (enemy.hp > 0) {
@@ -173,7 +173,7 @@ module.exports = {
                 };
                 var collector = botMessage.createReactionCollector(filter, { time: 60000 });
                 //Replace matthew with the message author
-                battle(matthew, enemy);
+                battle(matthew, enemy, collector);
             })
     }
 
