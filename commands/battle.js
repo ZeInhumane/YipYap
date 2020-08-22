@@ -59,7 +59,8 @@ module.exports = {
             await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
-                collector = botMessage.createReactionCollector(filter, { time: 60000 });
+                botEmbedMessage.createReactionCollector
+                collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
             });
         }
         function battle(player, enemy, collector) {
@@ -171,7 +172,7 @@ module.exports = {
                         return reaction;
                     }
                 };
-                var collector = botMessage.createReactionCollector(filter, { time: 60000 });
+                var collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 //Replace matthew with the message author
                 battle(matthew, enemy, collector);
             })
