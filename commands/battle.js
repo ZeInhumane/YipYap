@@ -158,6 +158,7 @@ module.exports = {
 
 
         var botEmbedMessage;
+        var collector;
         message.channel.send(battleEmbed)
             .then(botMessage => {
                 botEmbedMessage = botMessage;
