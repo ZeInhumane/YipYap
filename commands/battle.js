@@ -64,20 +64,38 @@ module.exports = {
         }
         function battle(player, enemy) {
             function playerTurn() {
-                battleEmbed.addField("Turn", player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n');
+                if (action == "⚔️") {
+                    var turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
+                }
+
             }
 
             function enemyTurn() {
-                console.log(enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n');
+                var turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
-
+            const updatedBattleEmbed = new Discord.MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('Battle Start! :crossed_swords:')
+                .setURL('https://discord.gg/CTMTtQV')
+                .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+                .setDescription('Absolute best')
+                .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                .addFields(
+                    { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
+                    { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                    { name: '\u200B', value: '\u200B' },
+                    { name: 'Turn', value: turn },
+                )
+                .addField('Bloody battlefield', '10% Less speed debuff', true)
+                .setImage('https://tinyurl.com/y4yl2xaa')
+                .setTimestamp()
+                .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
-                battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
-                battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
-                botEmbedMessage.edit(battleEmbed);
+                botEmbedMessage.edit(updatedBattleEmbed);
+                console.log(player.hp, enemy.hp)
                 gotAReaction();
                 if (player.speed > enemy.speed) {
-                    playerTurn();
+                    playerTurn(action);
                     if (enemy.hp > 0) {
                         enemyTurn();
                     }
@@ -125,12 +143,9 @@ module.exports = {
             .setDescription('Absolute best')
             .setThumbnail('https://i.imgur.com/wSTFkRM.png')
             .addFields(
-                { name: 'Player HP', value: '1' },
-                { name: 'Enemy HP', value: '1' },
-                { name: '\u200B', value: '\u200B' },
-                { name: 'Turn', value: 'Nothing' },
-                { name: 'Jerick', value: '10 hp', inline: true },
-                { name: 'Yi xuan', value: '2 hp', inline: true },
+                { name: 'Player HP', value: matthew.name + '\'s HP: ' + matthew.hp },
+                { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                { name: '\u200B', value: '\u200B' }
             )
             .addField('Bloody battlefield', '10% Less speed debuff', true)
             .setImage('https://tinyurl.com/y4yl2xaa')
