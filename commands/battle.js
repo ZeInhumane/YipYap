@@ -93,7 +93,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 botEmbedMessage.edit(updatedBattleEmbed);
 
-                gotAReaction();
+                //gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(action);
                     if (enemy.hp > 0) {
