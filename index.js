@@ -16,7 +16,7 @@ client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
     console.log("This updates");
-    client.user.setActivity("Being fat");
+    client.user.setActivity(client.guilds + "Servers");
 });
 
 client.login(process.env.token);
