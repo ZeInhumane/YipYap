@@ -69,7 +69,7 @@ module.exports = {
                 battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
                 battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
                 botEmbedMessage.edit(battleEmbed);
-                await collector.on('collect', r => {
+                await collector.on('collect', async r => {
                     r.emoji.name === '⚔️' ?
                         console.log('Reacted Attack') : console.log('Reacted Guard');
                     collector = botMessage.createReactionCollector(filter, { time: 60000 });
