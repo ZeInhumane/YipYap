@@ -16,8 +16,12 @@ client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
     console.log("This updates");
-    client.user.setActivity(client.guilds.cache.size + " servers");
+    setInterval(botStatus(), 60000);
 });
+
+function botStatus(){
+    client.user.setActivity(client.guilds.cache.size + " servers");
+}
 
 client.login(process.env.token);
 
