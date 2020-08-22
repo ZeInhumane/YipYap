@@ -55,7 +55,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-        async function gotAReaction(collector) {
+        async function gotAReaction() {
             await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
@@ -101,7 +101,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn, playerAction;
-                gotAReaction(collector);
+                await gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
