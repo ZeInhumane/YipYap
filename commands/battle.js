@@ -76,7 +76,8 @@ module.exports = {
             function enemyTurn() {
                 turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
-            const updatedBattleEmbed = new Discord.MessageEmbed()
+            function createUpdatedMessage(){
+                var updatedBattleEmbed = new Discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle('Battle Start! :crossed_swords:')
                 .setURL('https://discord.gg/CTMTtQV')
@@ -93,6 +94,10 @@ module.exports = {
                 .setImage('https://tinyurl.com/y4yl2xaa')
                 .setTimestamp()
                 .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+                
+                return updatedBattleEmbed;
+            }
+            
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn, playerAction;
@@ -109,7 +114,7 @@ module.exports = {
                         playerTurn(playerAction);
                     }
                 }
-                botEmbedMessage.edit(updatedBattleEmbed);
+                botEmbedMessage.edit(createUpdatedMessage());
             }
 
             if (player.hp > 0) {
