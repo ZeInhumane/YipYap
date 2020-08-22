@@ -92,8 +92,8 @@ module.exports = {
                 .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 botEmbedMessage.edit(updatedBattleEmbed);
-
-                //gotAReaction();
+                console.log(player.hp, enemy.hp)
+                gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(action);
                     if (enemy.hp > 0) {
