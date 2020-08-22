@@ -125,10 +125,10 @@ module.exports = {
             .setDescription('Absolute best')
             .setThumbnail('https://i.imgur.com/wSTFkRM.png')
             .addFields(
-                { name: 'Player HP', value: '' },
-                { name: 'Enemy HP', value: '' },
+                { name: 'Player HP', value: '1' },
+                { name: 'Enemy HP', value: '1' },
                 { name: '\u200B', value: '\u200B' },
-                { name: 'Turn', value: '' },
+                { name: 'Turn', value: 'Nothing' },
                 { name: 'Jerick', value: '10 hp', inline: true },
                 { name: 'Yi xuan', value: '2 hp', inline: true },
             )
