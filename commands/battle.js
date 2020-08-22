@@ -98,7 +98,7 @@ module.exports = {
                 var turn, playerAction;
                 gotAReaction(collector);
                 if (player.speed > enemy.speed) {
-                    playerTurn(action);
+                    playerTurn(playerAction);
                     if (enemy.hp > 0) {
                         enemyTurn();
                     }
@@ -106,7 +106,7 @@ module.exports = {
                 else {
                     enemyTurn();
                     if (player.hp > 0) {
-                        playerTurn(action);
+                        playerTurn(playerAction);
                     }
                 }
                 botEmbedMessage.edit(updatedBattleEmbed);
