@@ -56,7 +56,7 @@ module.exports = {
             }
         }
         async function gotAReaction(){
-            collector.on('collect', r => {
+            await collector.on('collect', r => {
                 r.emoji.name === '⚔️' ?
                     console.log('Reacted Attack') : console.log('Reacted Guard');
                 collector = botMessage.createReactionCollector(filter, { time: 60000 });
@@ -75,7 +75,7 @@ module.exports = {
                 battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
                 battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
                 botEmbedMessage.edit(battleEmbed);
-                await gotAReaction();
+                gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn();
                     if (enemy.hp > 0) {
