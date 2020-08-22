@@ -76,28 +76,28 @@ module.exports = {
             function enemyTurn() {
                 turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
-            function createUpdatedMessage(){
+            function createUpdatedMessage() {
                 var updatedBattleEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle('Battle Start! :crossed_swords:')
-                .setURL('https://discord.gg/CTMTtQV')
-                .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
-                .setDescription('Absolute best')
-                .setThumbnail('https://i.imgur.com/wSTFkRM.png')
-                .addFields(
-                    { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
-                    { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
-                    { name: '\u200B', value: '\u200B' },
-                    { name: 'Turn', value: turn },
-                )
-                .addField('Bloody battlefield', '10% Less speed debuff', true)
-                .setImage('https://tinyurl.com/y4yl2xaa')
-                .setTimestamp()
-                .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
-                
+                    .setColor('#0099ff')
+                    .setTitle('Battle Start! :crossed_swords:')
+                    .setURL('https://discord.gg/CTMTtQV')
+                    .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+                    .setDescription('Absolute best')
+                    .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                    .addFields(
+                        { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
+                        { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                        { name: '\u200B', value: '\u200B' },
+                        { name: 'Turn', value: turn },
+                    )
+                    .addField('Bloody battlefield', '10% Less speed debuff', true)
+                    .setImage('https://tinyurl.com/y4yl2xaa')
+                    .setTimestamp()
+                    .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+
                 return updatedBattleEmbed;
             }
-            
+
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn, playerAction;
