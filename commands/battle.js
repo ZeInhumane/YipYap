@@ -58,7 +58,7 @@ module.exports = {
 
         function battle(player, enemy) {
             function playerTurn() {
-                console.log(player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n');
+                battleEmbed.addField("Turn", player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n');
             }
 
             function enemyTurn() {
@@ -66,10 +66,14 @@ module.exports = {
             }
 
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
-                var playerHPStart = player.hp;
-                var enemyHPStart = enemy.hp;
-                console.log(player.name + '\'s HP: ' + player.hp);
-                console.log(enemy.name + '\'s HP: ' + enemy.hp + '\n');
+                battleEmbed.addField("Player HP", player.name + '\'s HP: ' + player.hp);
+                battleEmbed.addField("Enemy HP", enemy.name + '\'s HP: ' + enemy.hp);
+                botEmbedMessage.edit(battleEmbed);
+                await collector.on('collect', r => {
+                    r.emoji.name === '⚔️' ?
+                        console.log('Reacted Attack') : console.log('Reacted Guard');
+                    collector = botMessage.createReactionCollector(filter, { time: 60000 });
+                });
                 if (player.speed > enemy.speed) {
                     playerTurn();
                     if (enemy.hp > 0) {
@@ -109,7 +113,6 @@ module.exports = {
         var playerDataBase = [];
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
-        //battle(matthew, enemy);
         console.log(message.author.id)
 
         const battleEmbed = new Discord.MessageEmbed()
@@ -120,8 +123,10 @@ module.exports = {
             .setDescription('Absolute best')
             .setThumbnail('https://i.imgur.com/wSTFkRM.png')
             .addFields(
-                { name: 'Fardin', value: '500 hp' },
+                { name: 'Player HP', value: '' },
+                { name: 'Enemy HP', value: '' },
                 { name: '\u200B', value: '\u200B' },
+                { name: 'Turn', value: '' },
                 { name: 'Jerick', value: '10 hp', inline: true },
                 { name: 'Yi xuan', value: '2 hp', inline: true },
             )
@@ -130,8 +135,12 @@ module.exports = {
             .setTimestamp()
             .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
+        //Replace matthew with the message author
+        battle(matthew, enemy);
+        var botEmbedMessage;
         message.channel.send(battleEmbed)
             .then(botMessage => {
+                botEmbedMessage = botMessage;
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
                 const filter = (reaction, user) => {
@@ -141,11 +150,8 @@ module.exports = {
                         return reaction;
                     }
                 };
-                const collector = botMessage.createReactionCollector(filter, { time: 60000 });
-                collector.on('collect', r => {
-                    r.emoji.name === '⚔️' ?
-                        console.log('Reacted Attack') : console.log('Reacted Guard');
-                });
+                var collector = botMessage.createReactionCollector(filter, { time: 60000 });
+
             })
     }
 
