@@ -62,7 +62,7 @@ module.exports = {
                 collector.time = 60000;
             });
         }
-        function battle(player, enemy, collector) {
+        function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
                     turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
@@ -173,7 +173,7 @@ module.exports = {
                 };
                 const collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 //Replace matthew with the message author
-                battle(matthew, enemy, collector);
+                battle(matthew, enemy);
             })
     }
 
