@@ -68,7 +68,7 @@ module.exports = {
                     var turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
                 }
                 else {
-                    turn = "Nothing happened";
+                    var turn = "Nothing happened";
                 }
 
             }
