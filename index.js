@@ -39,7 +39,7 @@ client.on('message', message => {
             client.commands.get('battle').execute(message, args);
             break;
         case 'help':
-            client.commands.get('battle').execute(message, args);
+            client.commands.get('help').execute(message, args);
             break;
     }
 });
