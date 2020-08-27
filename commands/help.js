@@ -4,23 +4,23 @@ module.exports = {
     execute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('type help + {command name for specific help on that command}');
-    }
-    name: "starthelp",
-    description: "starthelp",
-    execute(message, args) {
+    },
+    aname: "starthelp",
+    adescription: "starthelp",
+    aexecute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('starthelp');
-    }
-    name: "battlehelp",
-    description: "Help command",
-    execute(message, args) {
+    },
+    bname: "battlehelp",
+    bdescription: "Help command",
+    bexecute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('battlehelp');
-    }
-    name: "gayhelp",
-    description: "Help command",
-    execute(message, args) {
+    },
+    cname: "gayhelp",
+    cdescription: "Help command",
+    cexecute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('gayhelp');
-    }
+    },
 };
