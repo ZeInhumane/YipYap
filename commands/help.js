@@ -16,11 +16,11 @@ module.exports = {
     execute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('battlehelp');
-    },
+    }
     name: "gayhelp",
     description: "Help command",
     execute(message, args) {
         const Discord = require('discord.js');
         message.channel.send('gayhelp');
-    }
+    },
 };
