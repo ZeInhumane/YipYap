@@ -41,5 +41,14 @@ client.on('message', message => {
         case 'help':
             client.commands.get('help').execute(message, args);
             break;
+        case 'battlehelp':
+            client.commands.get('battlehelp').execute(message, args);
+            break;
+        case 'starthelp':
+            client.commands.get('starthelp').execute(message, args);
+            break;
+        case 'gayhelp':
+            client.commands.get('gayhelp').execute(message, args);
+            break;
     }
 });
