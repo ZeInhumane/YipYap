@@ -5,6 +5,7 @@ module.exports = {
         const Discord = require('discord.js');
         message.channel.send('type help + {command name for specific help on that command}');
     },
+    // probably change this to switch statement cuz it obviously does not work
     aname: "starthelp",
     adescription: "starthelp",
     aexecute(message, args) {
