@@ -19,7 +19,7 @@ client.once('ready', () => {
 });
 
 setInterval(botStatus, 60000);
-function botStatus(){
+function botStatus() {
     client.user.setActivity(client.guilds.cache.size + " servers");
 }
 
@@ -36,6 +36,9 @@ client.on('message', message => {
             client.commands.get('start').execute(message, args);
             break;
         case 'battle':
+            client.commands.get('battle').execute(message, args);
+            break;
+        case 'help':
             client.commands.get('battle').execute(message, args);
             break;
     }
