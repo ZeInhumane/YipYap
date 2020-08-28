@@ -5,7 +5,7 @@ module.exports = {
         const Discord = require('discord.js');
         var highlightedMessage = "";
         args.forEach(arg => {
-            highlightedMessage += arg;
+            highlightedMessage += arg + " ";
         });
         var highlightEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
