@@ -56,11 +56,20 @@ module.exports = {
             }
         }
         function gotAReaction() {
-            collector.on('collect', r => {
-                collector.time = 60000;
-                console.log(r.emoji.name);
-                return r.emoji.name;
-            }).catch(console.error);
+            awaitReactions(filter, { max: 1, time: 60000 }) {
+                return new Promise((resolve, reject) => {
+                  const collector = this.createReactionCollector(filter, { max: 1, time: 60000 });
+                collector.on('collect', r => {
+                            collector.time = 60000;
+                            console.log(r.emoji.name);
+                            return r.emoji.name;
+                        });
+                  collector.once('end', (reactions, reason) => {
+                    if (options.errors && options.errors.includes(reason)) reject(reactions);
+                    else resolve(reactions);
+                  });
+                });
+              }
         }
 
         function battle(player, enemy) {
@@ -176,7 +185,7 @@ module.exports = {
                         return reaction;
                     }
                 };
-                collector = botMessage.awaitReactions(filter, { max: 1, time: 60000 }).catch(console.error);
+                // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 // Replace matthew with the message author
                 battle(matthew, enemy);
             })
