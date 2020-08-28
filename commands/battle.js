@@ -56,7 +56,7 @@ module.exports = {
             }
         }
         function gotAReaction() {
-            awaitReactions(filter, { max: 1, time: 60000 }) {
+            botMessage.awaitReactions(filter, { max: 1, time: 60000 }) 
                 return new Promise((resolve, reject) => {
                   const collector = this.createReactionCollector(filter, { max: 1, time: 60000 });
                 collector.on('collect', r => {
@@ -70,7 +70,7 @@ module.exports = {
                   });
                 });
               }
-        }
+
 
         function battle(player, enemy) {
             function playerTurn(action) {
