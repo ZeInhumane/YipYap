@@ -58,6 +58,7 @@ module.exports = {
         function gotAReaction() {
             collector.on('collect', r => {
                 collector.time = 60000;
+                console.log(r.emoji.name);
                 return r.emoji.name;
             }).catch(console.error);
         }
