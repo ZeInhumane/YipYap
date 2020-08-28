@@ -55,7 +55,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-        async function gotAReaction() {
+        function gotAReaction() {
             collector.on('collect', r => {
                 collector.time = 60000;
                 return r.emoji.name;
