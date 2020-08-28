@@ -59,7 +59,7 @@ module.exports = {
             collector.on('collect', r => {
                 collector.time = 60000;
                 return r.emoji.name;
-            });
+            }).catch(console.error);
         }
 
         function battle(player, enemy) {
