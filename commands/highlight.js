@@ -3,7 +3,7 @@ module.exports = {
     description: "Highlights a message",
     execute(message, args) {
         const Discord = require('discord.js');
-        var hightlightEmbed = new Discord.MessageEmbed()
+        var highlightEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(args);
                     
