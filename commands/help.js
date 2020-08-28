@@ -6,7 +6,7 @@ module.exports = {
         message.channel.send('type help + {command name for specific help on that command}');
         switch (args[0]) {
             case "battle":
-                const helpEmbed = new Discord.MessageEmbed()
+                var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle('Batlle help')
                     .addFields(
@@ -18,7 +18,7 @@ module.exports = {
                 message.channel.send(helpEmbed);
                 break;
             default:
-                const helpEmbed = new Discord.MessageEmbed()
+                var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle('All commands')
                     .addFields(
