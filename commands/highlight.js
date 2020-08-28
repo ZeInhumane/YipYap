@@ -1,6 +1,6 @@
 module.exports = {
-    name: "start",
-    description: "Sets up a new player",
+    name: "highlight",
+    description: "Highlights a message",
     execute(message, args) {
         const Discord = require('discord.js');
         var hightlightEmbed = new Discord.MessageEmbed()
