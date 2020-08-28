@@ -55,9 +55,6 @@ module.exports = {
                 return damageTaken;
             }
         }
-        createReactionCollector(filter, options = {}) {
-            return new ReactionCollector(this, filter, options);
-        }
 
         function gotAReaction() {
             botEmbedMessage.awaitReactions(filter, { max: 1, time: 60000 })
