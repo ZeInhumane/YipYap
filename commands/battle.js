@@ -175,7 +175,7 @@ module.exports = {
                         return reaction;
                     }
                 };
-                collector = botMessage.awaitReactions(filter, { max: 1, time: 60000 });
+                collector = botMessage.awaitReactions(filter, { max: 1, time: 60000 }).catch(console.error);
                 // Replace matthew with the message author
                 battle(matthew, enemy);
             })
