@@ -1,7 +1,7 @@
 module.exports = {
     name: "highlight",
     description: "Highlights a message",
-    execute(message, args, client) {
+    execute(message, args) {
         const Discord = require('discord.js');
         var highlightedMessage = "";
         args.forEach(arg => {
