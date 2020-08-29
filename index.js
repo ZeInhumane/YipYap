@@ -43,7 +43,7 @@ client.on('message', message => {
             client.commands.get('help').execute(message, args);
             break;
         case 'highlight':
-            client.commands.get('highlight').execute(message, args);
+            client.commands.get('highlight').execute(message, args, client);
             break;
         case 'battlehelp':
             client.commands.get('battlehelp').execute(message, args);
