@@ -10,7 +10,8 @@ module.exports = {
         var highlightEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(highlightedMessage);
-                    
+
         message.channel.send(highlightEmbed);
+        message.delete();
     }
 }
