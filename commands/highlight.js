@@ -9,7 +9,8 @@ module.exports = {
         });
         var highlightEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle(highlightedMessage);
+                    .setTitle(highlightedMessage)
+                    .setAuthor(message.author);
 
         message.channel.send(highlightEmbed);
         message.delete();
