@@ -99,6 +99,9 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 console.log(timea);
+                if (timea < 0) {
+                    message.channel.send('Battle expired. Your fatass took too long');
+                }
                 var turn, playerAction, playerTurnAction, enemyTurnAction;
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
@@ -127,9 +130,6 @@ module.exports = {
                     }
                 }
                 botEmbedMessage.edit(createUpdatedMessage());
-                if (timea < 0) {
-                    message.channel.send('Battle expired. Your fatass took too long');
-                }
             }
 
             if (player.hp > 0) {
