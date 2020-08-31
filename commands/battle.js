@@ -56,21 +56,6 @@ module.exports = {
             }
         }
 
-        function gotAReaction() {
-            await new Promise((resolve, reject) => {
-                const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
-                collector.on('collect', r => {
-                    collector.time = 60000;
-                    console.log(r.emoji.name);
-                    return r.emoji.name;
-                });
-                collector.once('end', (reactions, reason) => {
-                    return "nothing";
-                });
-            });
-        }
-
-
         function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
@@ -108,7 +93,17 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn;
-                var playerAction = gotAReaction();
+                var playerAction = await new Promise((resolve, reject) => {
+                    const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
+                    collector.on('collect', r => {
+                        collector.time = 60000;
+                        console.log(r.emoji.name);
+                        return r.emoji.name;
+                    });
+                    collector.once('end', (reactions, reason) => {
+                        return "nothing";
+                    });
+                });;
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
