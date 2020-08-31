@@ -2,6 +2,7 @@ module.exports = {
     name: "battle",
     description: "Battles an enemy",
     execute(message, args) {
+        var timea;
         const Discord = require('discord.js');
         class Hero {
             constructor(name, hp, attack, defense, speed) {
@@ -94,6 +95,7 @@ module.exports = {
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
                 return updatedBattleEmbed;
             }
+            
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 console.log(timea);
@@ -138,7 +140,6 @@ module.exports = {
             }
             console.log(timea);
         }
-        var timea;
         function checkTimeout() {
             setInterval(function() { timea -= 1000; }, 1000);
         }
