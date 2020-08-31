@@ -142,6 +142,7 @@ module.exports = {
         }
         function checkTimeout() {
             setInterval(function() { timea -= 1000; }, 1000);
+            console.log(timea);
         }
         function makeNewEnemy() {
             var enemyHP = Math.floor(Math.random() * 51 + 10);
