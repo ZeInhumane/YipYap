@@ -186,5 +186,6 @@ module.exports = {
                     battle(matthew, enemy);
                 })
         }
+        main();
     }
 }
