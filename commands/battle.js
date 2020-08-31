@@ -134,13 +134,14 @@ module.exports = {
 
             if (player.hp > 0) {
                 message.channel.send(player.name + ' defeated ' + enemy.name + '!');
+                clearInterval(collectorExpireTime);
             }
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
             }
         }
         function checkTimeout() {
-            setInterval(function () {
+            collectorExpireTime = setInterval(function () {
                 timea -= 1000;
                 console.log(timea);
             }, 1000);
