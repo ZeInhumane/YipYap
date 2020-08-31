@@ -109,6 +109,7 @@ module.exports = {
                         resolve();
                         console.log(collector.time);
                         timea = collector.time;
+                        checkTimeout();
                     });
                 });
                 console.log("BATTLE STARTS");
@@ -126,7 +127,6 @@ module.exports = {
                     }
                 }
                 botEmbedMessage.edit(createUpdatedMessage());
-                checkTimeout();
                 if (timea < 0) {
                     message.channel.send('Battle expired. Your fatass took too long');
                 }
