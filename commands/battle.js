@@ -152,6 +152,13 @@ module.exports = {
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
         console.log(message.author.id);
+        const filter = (reaction, user) => {
+            console.log("Check " + reaction.emoji.name);
+            if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
+                console.log(reaction.emoji.name + " passed");
+                return reaction;
+            }
+        }; 
 
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
@@ -179,13 +186,7 @@ module.exports = {
                 console.log(botEmbedMessage)
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
-                const filter = (reaction, user) => {
-                    console.log("Check " + reaction.emoji.name);
-                    if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
-                        console.log(reaction.emoji.name + " passed");
-                        return reaction;
-                    }
-                };
+                
                 // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 // Replace matthew with the message author
                 battle(matthew, enemy);
