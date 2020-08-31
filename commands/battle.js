@@ -108,6 +108,7 @@ module.exports = {
                         });
                     });
                     console.log("BATTLE STARTS");
+                    console.log(playerAction);
                     if (player.speed > enemy.speed) {
                         playerTurn(playerAction);
                         if (enemy.hp > 0) {
