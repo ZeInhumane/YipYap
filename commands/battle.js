@@ -1,7 +1,7 @@
 module.exports = {
     name: "battle",
     description: "Battles an enemy",
-    execute(message, args) {
+    async execute(message, args) {
         const Discord = require('discord.js');
         class Hero {
             constructor(name, hp, attack, defense, speed) {
@@ -57,7 +57,7 @@ module.exports = {
         }
 
         function gotAReaction() {
-            new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 collector.on('collect', r => {
                     collector.time = 60000;
