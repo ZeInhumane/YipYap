@@ -58,7 +58,7 @@ module.exports = {
 
         function gotAReaction() {
             botEmbedMessage.awaitReactions(filter, { max: 1, time: 60000 })
-            return new Promise((resolve, reject) => {
+            new Promise((resolve, reject) => {
                 const collector = this.createReactionCollector(filter, { max: 1, time: 60000 });
                 collector.on('collect', r => {
                     collector.time = 60000;
@@ -68,6 +68,7 @@ module.exports = {
                 collector.once('end', (reactions, reason) => {
                     if (options.errors && options.errors.includes(reason)) reject(reactions);
                     else resolve(reactions);
+                    return "nothing";
                 });
             });
         }
@@ -109,8 +110,8 @@ module.exports = {
             }
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
-                var turn, playerAction;
-                gotAReaction();
+                var turn;
+                var playerAction = gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
