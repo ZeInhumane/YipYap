@@ -66,8 +66,6 @@ module.exports = {
                     return r.emoji.name;
                 });
                 collector.once('end', (reactions, reason) => {
-                    if (options.errors && options.errors.includes(reason)) reject(reactions);
-                    else resolve(reactions);
                     return "nothing";
                 });
             });
