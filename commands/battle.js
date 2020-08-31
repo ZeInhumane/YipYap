@@ -131,7 +131,9 @@ module.exports = {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
             }
         }
-
+        if(collector.time < 0){
+            message.channel.send('Battle expired. Your fatass took too long');
+        }
         function makeNewEnemy() {
             var enemyHP = Math.floor(Math.random() * 51 + 10);
             var enemyAttack = Math.floor(Math.random() * 11);
