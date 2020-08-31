@@ -103,10 +103,6 @@ module.exports = {
                             resolve();
                             
                         });
-                        collector.on('end', (reactions, reason) => {
-                            playerAction = "nothing";
-                            resolve();
-                        });
                     });
                     console.log("BATTLE STARTS");
                     console.log(playerAction);
