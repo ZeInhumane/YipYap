@@ -72,7 +72,7 @@ module.exports = {
         }
 
 
-        function battle(player, enemy) {
+        async function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
                     turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
@@ -109,7 +109,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp)
                 var turn;
-                var playerAction = gotAReaction();
+                var playerAction = await gotAReaction();
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
@@ -147,52 +147,49 @@ module.exports = {
             playerDataBase.push(new Hero(playerName, 50, 5, 5, 5));
         }
 
-        async function mainProgram() {
-            var playerDataBase = [];
-            var matthew = new Hero('Matthew', 100, 7, 10, 15);
-            var enemy = makeNewEnemy();
-            console.log(message.author.id);
-            const filter = (reaction, user) => {
-                console.log("Check " + reaction.emoji.name);
-                if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
-                    console.log(reaction.emoji.name + " passed");
-                    return reaction;
-                }
-            };
+        var playerDataBase = [];
+        var matthew = new Hero('Matthew', 100, 7, 10, 15);
+        var enemy = makeNewEnemy();
+        console.log(message.author.id);
+        const filter = (reaction, user) => {
+            console.log("Check " + reaction.emoji.name);
+            if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
+                console.log(reaction.emoji.name + " passed");
+                return reaction;
+            }
+        }; 
 
-            const battleEmbed = new Discord.MessageEmbed()
-                .setColor('#0099ff')
-                .setTitle('Battle Start! :crossed_swords:')
-                .setURL('https://discord.gg/CTMTtQV')
-                .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
-                .setDescription('Absolute best')
-                .setThumbnail('https://i.imgur.com/wSTFkRM.png')
-                .addFields(
-                    { name: 'Player HP', value: matthew.name + '\'s HP: ' + matthew.hp },
-                    { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
-                    { name: '\u200B', value: '\u200B' }
-                )
-                .addField('Bloody battlefield', '10% Less speed debuff', true)
-                .setImage('https://tinyurl.com/y4yl2xaa')
-                .setTimestamp()
-                .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+        const battleEmbed = new Discord.MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('Battle Start! :crossed_swords:')
+            .setURL('https://discord.gg/CTMTtQV')
+            .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+            .setDescription('Absolute best')
+            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+            .addFields(
+                { name: 'Player HP', value: matthew.name + '\'s HP: ' + matthew.hp },
+                { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                { name: '\u200B', value: '\u200B' }
+            )
+            .addField('Bloody battlefield', '10% Less speed debuff', true)
+            .setImage('https://tinyurl.com/y4yl2xaa')
+            .setTimestamp()
+            .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
 
-            var botEmbedMessage;
-            var collector;
-            message.channel.send(battleEmbed)
-                .then(botMessage => {
-                    botEmbedMessage = botMessage;
-                    console.log(botEmbedMessage)
-                    botMessage.react("⚔️");
-                    botMessage.react("🛡️");
-
-                    // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
-                    // Replace matthew with the message author
-                    battle(matthew, enemy);
-                })
-        }
-        mainProgram();
+        var botEmbedMessage;
+        var collector;
+        message.channel.send(battleEmbed)
+            .then(botMessage => {
+                botEmbedMessage = botMessage;
+                console.log(botEmbedMessage)
+                botMessage.react("⚔️");
+                botMessage.react("🛡️");
+                
+                // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
+                // Replace matthew with the message author
+                battle(matthew, enemy);
+            })
     }
 
 }
