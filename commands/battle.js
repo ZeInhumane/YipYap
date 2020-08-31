@@ -98,9 +98,9 @@ module.exports = {
 
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
-                console.log(timea);
                 if (timea <= 0) {
                     message.channel.send('Battle expired. Your fatass took too long');
+                    clearInterval(collectorExpireTime);
                     return;
                 }
                 var turn, playerAction, playerTurnAction, enemyTurnAction;
@@ -112,7 +112,10 @@ module.exports = {
                         playerAction = r.emoji.name;
                         resolve();
                         timea = collector.time;
-                        checkTimeout();
+                        collectorExpireTime = setInterval(function () {
+                            timea -= 1000;
+                            console.log(timea);
+                        }, 1000);
                     });
                 });
                 console.log("BATTLE STARTS");
@@ -138,15 +141,12 @@ module.exports = {
             }
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
+                clearInterval(collectorExpireTime);
             }
         }
-        function checkTimeout() {
-            collectorExpireTime = setInterval(function () {
-                timea -= 1000;
-                console.log(timea);
-            }, 1000);
 
-        }
+
+
         function makeNewEnemy() {
             var enemyHP = Math.floor(Math.random() * 51 + 10);
             var enemyAttack = Math.floor(Math.random() * 11);
