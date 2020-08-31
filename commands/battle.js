@@ -99,8 +99,9 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 console.log(timea);
-                if (timea < 0) {
+                if (timea <= 0) {
                     message.channel.send('Battle expired. Your fatass took too long');
+                    return;
                 }
                 var turn, playerAction, playerTurnAction, enemyTurnAction;
                 await new Promise((resolve, reject) => {
