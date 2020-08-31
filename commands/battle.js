@@ -57,7 +57,7 @@ module.exports = {
                 }
             }
 
-            function battle(player, enemy) {
+            async function battle(player, enemy) {
                 function playerTurn(action) {
                     if (action == "⚔️") {
                         turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
