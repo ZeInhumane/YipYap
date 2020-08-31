@@ -113,6 +113,7 @@ module.exports = {
                         }, 1000);
                     });
                     collector.on('end', () => {
+                        console.log("Collecter Ended: " + timea);
                         if (timea <= 0) {
                             message.channel.send('Battle expired. Your fatass took too long');
                             clearInterval(collectorExpireTime);
