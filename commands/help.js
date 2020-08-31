@@ -48,7 +48,7 @@ module.exports = {
                     .addFields(
                         { name: 'command1', value: "Battle is to fight against enemies to gain gold and exp" },
                         { name: 'command2', value: "nothing" },
-                        { name: 'command3', value: "nothing" }
+                        { name: 'command3', value: "nothing" },
                     )
                     .addField('To get help for each command, do =help (command name)');
                 message.channel.send(gayEmbed);
