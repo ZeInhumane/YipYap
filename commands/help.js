@@ -58,10 +58,10 @@ module.exports = {
                     .setColor('#0099ff')
                     .setTitle('All commands')
                     .addFields(
-                        { name: 'battle', value: "battle" },
-                        { name: 'battle', value: "battle" },
-                        { name:'​', value: "battle" },
-                        { name: 'To get help for each command do =help {command name}', value: "thanks" },
+                        { name: 'starthelp', value: "​" },
+                        { name: 'battlehelp', value: "​" },
+                        { name:'gayhelp', value: "​" },
+                        { name: 'To get help for each command do =help {command name}', value: "​" },
                     );
                 message.channel.send(helpEmbed);
         }
