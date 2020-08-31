@@ -7,7 +7,7 @@ module.exports = {
         switch (args[0]) {
             case "battle":
                 var helpEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#FF69B4')
                     .setTitle('Battle help')
                     .addFields(
                         { name: 'Battle allows you to engage enemies and gain gold and experience as a result of your engagement', value: "​" },
@@ -15,7 +15,7 @@ module.exports = {
                 break;
             case "start":
                 var startEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#FF69B4')
                     .setTitle('start')
                     .addFields(
                         { name: 'Start registers you to the bot database to allow you to play the bot', value: "​" },
@@ -24,7 +24,7 @@ module.exports = {
                 break;
             case "jerick":
                 var battleEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#FF69B4')
                     .setTitle(`Jerica's gayness`)
                     .addFields(
                         { name: 'Jerica rates your gayness on a scale of 1 to 100, Jerica is still 100% gay tho(and fat)', value: "​" },
@@ -33,7 +33,7 @@ module.exports = {
                 break;
             case "gay":
                 var gayEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#FF69B4')
                     .setTitle('GAY')
                     .addFields(
                         { name: 'GAY', value: "​" },
@@ -42,7 +42,7 @@ module.exports = {
                 break;
             default:
                 helpEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor('#FF69B4')
                     .setTitle('All commands, To get help for each command do =help {command name}')
                     .addFields(
                         { name: 'Start', value: "​" },
