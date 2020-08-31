@@ -101,13 +101,11 @@ module.exports = {
                             console.log(r.emoji.name);
                             playerAction = r.emoji.name
                             resolve();
-                            return;
                             
                         });
-                        collector.once('end', (reactions, reason) => {
+                        collector.on('end', (reactions, reason) => {
                             playerAction = "nothing";
                             resolve();
-                            return;
                         });
                     });
                     console.log("BATTLE STARTS");
