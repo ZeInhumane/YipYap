@@ -57,7 +57,6 @@ module.exports = {
         }
 
         function gotAReaction() {
-            botEmbedMessage.awaitReactions(filter, { max: 1, time: 60000 })
             new Promise((resolve, reject) => {
                 const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 collector.on('collect', r => {
@@ -157,7 +156,7 @@ module.exports = {
                 console.log(reaction.emoji.name + " passed");
                 return reaction;
             }
-        }; 
+        };
 
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
@@ -185,7 +184,7 @@ module.exports = {
                 console.log(botEmbedMessage)
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
-                
+
                 // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 // Replace matthew with the message author
                 battle(matthew, enemy);
