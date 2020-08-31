@@ -96,6 +96,7 @@ module.exports = {
             }
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
+                console.log(timea);
                 var turn, playerAction, playerTurnAction, enemyTurnAction;
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
