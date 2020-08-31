@@ -177,7 +177,6 @@ module.exports = {
             message.channel.send(battleEmbed)
                 .then(botMessage => {
                     botEmbedMessage = botMessage;
-                    console.log(botEmbedMessage)
                     botMessage.react("⚔️");
                     botMessage.react("🛡️");
 
