@@ -95,14 +95,14 @@ module.exports = {
                 return updatedBattleEmbed;
             }
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
-                console.log(player.hp, enemy.hp)
+                console.log(player.hp, enemy.hp);
                 var turn, playerAction, playerTurnAction, enemyTurnAction;
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                     collector.on('collect', r => {
                         collector.time = 60000;
                         console.log(r.emoji.name);
-                        playerAction = r.emoji.name
+                        playerAction = r.emoji.name;
                         resolve();
 
                     });
