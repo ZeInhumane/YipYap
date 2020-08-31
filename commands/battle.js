@@ -93,16 +93,18 @@ module.exports = {
                 }
                 while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                     console.log(player.hp, enemy.hp)
-                    var turn;
-                    var playerAction = await new Promise((resolve, reject) => {
+                    var turn, playerAction;
+                    await new Promise((resolve, reject) => {
                         const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                         collector.on('collect', r => {
                             collector.time = 60000;
                             console.log(r.emoji.name);
-                            return r.emoji.name;
+                            playerAction = r.emoji.name
+                            return;
                         });
                         collector.once('end', (reactions, reason) => {
-                            return "nothing";
+                            playerAction = "nothing";
+                             return;
                         });
                     });;
                     if (player.speed > enemy.speed) {
