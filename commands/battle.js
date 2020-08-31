@@ -135,6 +135,7 @@ module.exports = {
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
             }
+            console.log(timea);
         }
         var timea;
         function checkTimeout() {
