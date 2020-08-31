@@ -95,7 +95,7 @@ module.exports = {
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
                 return updatedBattleEmbed;
             }
-            
+
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 console.log(timea);
@@ -111,7 +111,6 @@ module.exports = {
                         console.log(r.emoji.name);
                         playerAction = r.emoji.name;
                         resolve();
-                        console.log(collector.time);
                         timea = collector.time;
                         checkTimeout();
                     });
@@ -139,10 +138,12 @@ module.exports = {
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
             }
-            console.log(timea);
         }
         function checkTimeout() {
-            setInterval(function() { timea -= 1000, console.log(timea); }, 1000);
+            setInterval(function () {
+                timea -= 1000;
+                console.log(timea);
+            }, 1000);
 
         }
         function makeNewEnemy() {
