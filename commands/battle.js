@@ -59,18 +59,14 @@ module.exports = {
         function gotAReaction() {
             new Promise((resolve, reject) => {
                 const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
-                loop();
-                function loop(){
-                    collector.on('collect', r => {
-                        collector.time = 60000;
-                        console.log(r.emoji.name);
-                        return r.emoji.name;
-                    });
-                    collector.once('end', (reactions, reason) => {
-                        return "nothing";
-                    });
-                    setTimeout(loop(),0) ;
-                }
+                collector.on('collect', r => {
+                    collector.time = 60000;
+                    console.log(r.emoji.name);
+                    return r.emoji.name;
+                });
+                collector.once('end', (reactions, reason) => {
+                    return "nothing";
+                });
             });
         }
 
