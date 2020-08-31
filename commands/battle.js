@@ -126,10 +126,10 @@ module.exports = {
                 }
 
                 if (player.hp > 0) {
-                    console.log(player.name + ' defeated ' + enemy.name + '!');
+                    message.channel.send(player.name + ' defeated ' + enemy.name + '!');
                 }
                 else {
-                    console.log(player.name + ' has been defeated by ' + enemy.name + '!');
+                    message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
                 }
             }
 
