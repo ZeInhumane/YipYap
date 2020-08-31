@@ -58,7 +58,7 @@ module.exports = {
 
         function gotAReaction() {
             botEmbedMessage.awaitReactions(filter, { max: 1, time: 60000 })
-            await new Promise((resolve, reject) => {
+            new Promise((resolve, reject) => {
                 const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 collector.on('collect', r => {
                     collector.time = 60000;
