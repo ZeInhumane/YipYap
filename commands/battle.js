@@ -104,6 +104,7 @@ module.exports = {
                     collector.on('collect', r => {
                         collector.time = 60000;
                         timea = collector.time;
+                        clearInterval(collectorExpireTime);
                         collectorExpireTime = setInterval(function () {
                             timea -= 1000;
                             console.log(timea);
