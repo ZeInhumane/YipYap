@@ -96,7 +96,7 @@ module.exports = {
             }
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
-                var turn, playerAction, playerTurnAction, enemyTurnAction, timea;
+                var turn, playerAction, playerTurnAction, enemyTurnAction;
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                     collector.on('collect', r => {
@@ -123,7 +123,8 @@ module.exports = {
                     }
                 }
                 botEmbedMessage.edit(createUpdatedMessage());
-                if(timea < 0){
+                checkTimeout();
+                if (timea < 0) {
                     message.channel.send('Battle expired. Your fatass took too long');
                 }
             }
@@ -135,7 +136,10 @@ module.exports = {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
             }
         }
-
+        var timea;
+        function checkTimeout() {
+            setInterval(function() { timea -= 1000; }, 1000);
+        }
         function makeNewEnemy() {
             var enemyHP = Math.floor(Math.random() * 51 + 10);
             var enemyAttack = Math.floor(Math.random() * 11);
