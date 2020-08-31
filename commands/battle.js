@@ -104,9 +104,10 @@ module.exports = {
                         });
                         collector.once('end', (reactions, reason) => {
                             playerAction = "nothing";
-                             return;
+                            return;
                         });
-                    });;
+                    });
+                    console.log("BATTLE STARTS");
                     if (player.speed > enemy.speed) {
                         playerTurn(playerAction);
                         if (enemy.hp > 0) {
