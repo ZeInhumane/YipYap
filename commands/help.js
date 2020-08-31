@@ -43,13 +43,12 @@ module.exports = {
             default:
                 helpEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle('All commands')
+                    .setTitle('All commands, To get help for each command do =help {command name}')
                     .addFields(
-                        { name: 'start', value: "​" },
-                        { name: 'battle', value: "​" },
-                        { name:'gay', value: "​" },
-                        { name:'jerick', value: "​" },
-                        { name: 'To get help for each command do =help {command name}', value: "​" },
+                        { name: 'Start', value: "​" },
+                        { name: 'Battle', value: "​" },
+                        { name:'Gay', value: "​" },
+                        { name:'Jerick', value: "​" },
                     );
                 message.channel.send(helpEmbed);
         }
