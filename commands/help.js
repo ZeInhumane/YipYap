@@ -8,49 +8,36 @@ module.exports = {
             case "battle":
                 var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle('Batlle help')
+                    .setTitle('Battle help')
                     .addFields(
-                        { name: 'command1', value: "Battle is to fight against enemies to gain gold and exp" },
-                        { name: 'command2', value: "nothing" },
-                        { name: 'command3', value: "nothing" }
-                    )
-                    .addField('To get help for each command, do =help (command name)');
-                message.channel.send(helpEmbed);
+                        { name: 'Battle allows you to engage enemies and gain gold and experience as a result of your engagement', value: "​" },
+                    );
                 break;
-            case "starthelp":
+            case "start":
                 var startEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle('Batlle help')
+                    .setTitle('start')
                     .addFields(
-                        { name: 'command1', value: "Battle is to fight against enemies to gain gold and exp" },
-                        { name: 'command2', value: "nothing" },
-                        { name: 'command3', value: "nothing" }
-                    )
-                    .addField('To get help for each command, do =help (command name)');
+                        { name: 'Start registers you to the bot database to allow you to play the bot', value: "​" },
+                    );
                 message.channel.send(startEmbed);
                 break;
-            case "battlehelp":
+            case "jerick":
                 var battleEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle('Batlle help')
+                    .setTitle(`Jerica's gayness`)
                     .addFields(
-                        { name: 'command1', value: "Battle is to fight against enemies to gain gold and exp" },
-                        { name: 'command2', value: "nothing" },
-                        { name: 'command3', value: "nothing" }
-                    )
-                    .addField('To get help for each command, do =help (command name)');
+                        { name: 'Jerica rates your gayness on a scale of 1 to 100, Jerica is still 100% gay tho(and fat)', value: "​" },
+                    );
                 message.channel.send(battleEmbed);
                 break;
-            case "gayhelp":
+            case "gay":
                 var gayEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle('Batlle help')
+                    .setTitle('GAY')
                     .addFields(
-                        { name: 'command1', value: "Battle is to fight against enemies to gain gold and exp" },
-                        { name: 'command2', value: "nothing" },
-                        { name: 'command3', value: "nothing" },
-                    )
-                    .addField('To get help for each command, do =help (command name)');
+                        { name: 'GAY', value: "​" },
+                    );
                 message.channel.send(gayEmbed);
                 break;
             default:
@@ -58,9 +45,10 @@ module.exports = {
                     .setColor('#0099ff')
                     .setTitle('All commands')
                     .addFields(
-                        { name: 'starthelp', value: "​" },
-                        { name: 'battlehelp', value: "​" },
-                        { name:'gayhelp', value: "​" },
+                        { name: 'start', value: "​" },
+                        { name: 'battle', value: "​" },
+                        { name:'gay', value: "​" },
+                        { name:'jerick', value: "​" },
                         { name: 'To get help for each command do =help {command name}', value: "​" },
                     );
                 message.channel.send(helpEmbed);
