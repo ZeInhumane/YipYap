@@ -104,7 +104,7 @@ module.exports = {
                         console.log(r.emoji.name);
                         playerAction = r.emoji.name;
                         resolve();
-
+                        console.log(collector.time);
                     });
                 });
                 console.log("BATTLE STARTS");
