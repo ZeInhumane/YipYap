@@ -60,16 +60,19 @@ module.exports = {
             async function battle(player, enemy) {
                 function playerTurn(action) {
                     if (action == "⚔️") {
-                        turn = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
+                        playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
+                    }
+                    else if (action == "🛡️"){
+                        playerTurnAction = "You shield yourself, it didn't work";
                     }
                     else {
-                        turn = "Nothing happened";
+                        playerTurnAction = "Nothing happened";
                     }
 
                 }
 
                 function enemyTurn() {
-                    turn = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
+                    enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
                 }
                 function createUpdatedMessage() {
                     var updatedBattleEmbed = new Discord.MessageEmbed()
@@ -83,7 +86,8 @@ module.exports = {
                             { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
                             { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
                             { name: '\u200B', value: '\u200B' },
-                            { name: 'Turn', value: turn },
+                            { name: 'Turn', value: playerTurnAction },
+                            { name: '​', value: enemyTurnAction }
                         )
                         .addField('Bloody battlefield', '10% Less speed debuff', true)
                         .setImage('https://tinyurl.com/y4yl2xaa')
@@ -93,7 +97,7 @@ module.exports = {
                 }
                 while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                     console.log(player.hp, enemy.hp)
-                    var turn, playerAction;
+                    var turn, playerAction, playerTurnAction, enemyTurnAction;
                     await new Promise((resolve, reject) => {
                         const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                         collector.on('collect', r => {
