@@ -100,14 +100,15 @@ module.exports = {
                             collector.time = 60000;
                             console.log(r.emoji.name);
                             playerAction = r.emoji.name
-                            return;
+                            resolve();
                         });
                         collector.once('end', (reactions, reason) => {
                             playerAction = "nothing";
-                            return;
+                            resolve();
                         });
                     });
                     console.log("BATTLE STARTS");
+                    console.log(playerAction);
                     if (player.speed > enemy.speed) {
                         playerTurn(playerAction);
                         if (enemy.hp > 0) {
