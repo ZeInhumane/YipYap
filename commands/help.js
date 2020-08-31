@@ -60,7 +60,7 @@ module.exports = {
                     .addFields(
                         { name: 'battle', value: "battle" },
                         { name: 'battle', value: "battle" },
-                        { value: "battle" },
+                        { name:'​', value: "battle" },
                         { name: 'To get help for each command do =help {command name}', value: "thanks" },
                     );
                 message.channel.send(helpEmbed);
