@@ -103,14 +103,14 @@ module.exports = {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                     collector.on('collect', r => {
                         collector.time = 60000;
-                        console.log(r.emoji.name);
-                        playerAction = r.emoji.name;
-                        resolve();
                         timea = collector.time;
                         collectorExpireTime = setInterval(function () {
                             timea -= 1000;
                             console.log(timea);
                         }, 1000);
+                        console.log(r.emoji.name);
+                        playerAction = r.emoji.name;
+                        resolve();
                     });
                     collector.on('end', () => {
                         console.log("Collecter Ended: " + timea);
