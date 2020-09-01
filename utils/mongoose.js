@@ -5,10 +5,13 @@ module.exports = {
         const dbOptions = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            autoIndex: false,
-            poolSize: 5,
-            connectTimeoutMS: 10000,
-            family:4
+            useCreateIndex: true,
+            useFindAndModify: false,
+            autoIndex: false, // Don't build indexes
+            poolSize: 10, // Maintain up to 10 socket connections
+            serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+            socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+            family: 4 // Use IPv4, skip trying IPv6
         };
 
         mongoose.connect('mongodb+srv://admin:<jericksenpai>@cluster0.qxkjs.mongodb.net/YipYap?retryWrites=true&w=majority', dbOptions);
