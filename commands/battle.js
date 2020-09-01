@@ -140,19 +140,20 @@ module.exports = {
                     if (enemy.hp > 0) {
                         enemyTurn();
                     }
-                    else {
-                        enemy.hp = 0;
-                    }
                 }
                 else {
                     enemyTurn();
                     if (player.hp > 0) {
                         playerTurn(playerAction);
                     }
-                    else {
-                        player.hp = 0;
-                    }
                 }
+                if(enemy.hp < 0){
+                    enemy.hp = 0;
+                }
+                if(player.hp < 0){
+                    player.hp = 0;
+                }
+
                 botEmbedMessage.edit(createUpdatedMessage());
             }
             // Checks for who won
