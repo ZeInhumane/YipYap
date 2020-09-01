@@ -23,6 +23,10 @@ module.exports = {
                     attMulti = 1.5;
                 }
                 var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+                if (playerAction == "🛡️") {
+                    // Change it later so higher level reduces damagetaken too
+                    damageTaken *= (100 - this.defense) / 100;
+                }
                 // Ensures damage taken is not negative
                 if (damageTaken < 0) {
                     damageTaken = 0;
@@ -74,12 +78,7 @@ module.exports = {
             }
             // Gives an Enemy (Probably add shielding here)
             function enemyTurn() {
-                if (playerAction == "🛡️") {
-                    enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(0) + ' damage!\n';
-                }
-                else {
-                    enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
-                }
+                enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
             // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
@@ -103,7 +102,7 @@ module.exports = {
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
                 return updatedBattleEmbed;
             }
-            // Ensures battle goes on when Player/Enemy is still alive
+            // Battle goes on when Player and Enemy is still alive
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 var turn, playerAction, playerTurnAction, enemyTurnAction, collectorExpireTime;
@@ -140,11 +139,17 @@ module.exports = {
                     if (enemy.hp > 0) {
                         enemyTurn();
                     }
+                    else {
+                        enemy.hp = 0;
+                    }
                 }
                 else {
                     enemyTurn();
                     if (player.hp > 0) {
                         playerTurn(playerAction);
+                    }
+                    else {
+                        player.hp = 0;
                     }
                 }
                 botEmbedMessage.edit(createUpdatedMessage());
@@ -180,6 +185,7 @@ module.exports = {
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
         console.log(message.author.id);
+        // Filter for which emojis the reaction collector will accept 
         const filter = (reaction, user) => {
             console.log("Check " + reaction.emoji.name);
             if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
@@ -206,15 +212,12 @@ module.exports = {
             .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
 
-        var botEmbedMessage;
-        var collector;
+        var botEmbedMessage, collector;
         message.channel.send(battleEmbed)
             .then(botMessage => {
                 botEmbedMessage = botMessage;
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
-
-                // collector = botMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                 // Replace matthew with the message author
                 battle(matthew, enemy);
             });
