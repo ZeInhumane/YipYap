@@ -23,6 +23,7 @@ module.exports = {
                     attMulti = 1.5;
                 }
                 var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+                console.log(playerAction);
                 if (playerAction == "🛡️") {
                     // Change it later so higher level reduces damagetaken too
                     damageTaken *= (100 - this.defense) / 100;
