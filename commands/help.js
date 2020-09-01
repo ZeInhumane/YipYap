@@ -45,8 +45,8 @@ module.exports = {
                     .setColor('#FF69B4')
                     .setTitle('All commands, To get help for each command do =help {command name}')
                     .addFields(
-                        { name: 'Start', value: "​" },
-                        { name: 'Battle', value: "​" },
+                        { name: 'start', value: "​" },
+                        { name: 'battle', value: "​" },
                         { name:'highlight', value: "​" },
                         { name:'jerick', value: "​" },
                     );
