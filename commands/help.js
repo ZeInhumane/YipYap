@@ -31,12 +31,12 @@ module.exports = {
                     );
                 message.channel.send(battleEmbed);
                 break;
-            case "gay":
+            case "highlight":
                 var gayEmbed = new Discord.MessageEmbed()
                     .setColor('#FF69B4')
-                    .setTitle('GAY')
+                    .setTitle('highlight')
                     .addFields(
-                        { name: 'GAY', value: "​" },
+                        { name: 'Highlights a text with the embed', value: "​" },
                     );
                 message.channel.send(gayEmbed);
                 break;
@@ -47,7 +47,7 @@ module.exports = {
                     .addFields(
                         { name: 'Start', value: "​" },
                         { name: 'Battle', value: "​" },
-                        { name:'Gay', value: "​" },
+                        { name:'highlight', value: "​" },
                         { name:'Jerick', value: "​" },
                     );
                 message.channel.send(helpEmbed);
