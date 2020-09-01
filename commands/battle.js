@@ -4,6 +4,7 @@ module.exports = {
     execute(message, args) {
         var timea;
         const Discord = require('discord.js');
+        // Creates hero class
         class Hero {
             constructor(name, hp, attack, defense, speed) {
                 this.name = name;
@@ -12,7 +13,7 @@ module.exports = {
                 this.defense = defense;
                 this.speed = speed;
             }
-
+            // Method to check for damage taken by hero
             takeDamage(damage) {
                 let attMulti = damage / this.defense;
                 if (attMulti < 0.4) {
@@ -29,7 +30,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-
+        // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type) {
                 this.name = name;
@@ -39,7 +40,7 @@ module.exports = {
                 this.speed = speed;
                 this.type = type;
             }
-
+            // Method to check for damage taken by Enemy
             takeDamage(damage) {
                 let attMulti = damage / this.defense;
                 if (attMulti < 0.4) {
@@ -56,7 +57,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-
+        // Awaits for Player reaction
         async function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
@@ -70,10 +71,11 @@ module.exports = {
                 }
 
             }
-
+            // Gives an Enemy (Probably add shielding here)
             function enemyTurn() {
                 enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
             }
+            // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
                 var updatedBattleEmbed = new Discord.MessageEmbed()
                     .setColor('#0099ff')
@@ -95,7 +97,7 @@ module.exports = {
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
                 return updatedBattleEmbed;
             }
-
+            // Ensures battle goes on when Player/Enemy is still alive
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 var turn, playerAction, playerTurnAction, enemyTurnAction, collectorExpireTime;
@@ -104,6 +106,7 @@ module.exports = {
                     collector.on('collect', r => {
                         collector.time = 60000;
                         timea = collector.time;
+                        // Cheap fix to display battle run out time(may change)
                         clearInterval(collectorExpireTime);
                         collectorExpireTime = setInterval(function () {
                             timea -= 1000;
@@ -113,6 +116,7 @@ module.exports = {
                         playerAction = r.emoji.name;
                         resolve();
                     });
+                    // Continued cheap fix
                     collector.on('end', () => {
                         console.log("Collecter Ended: " + timea);
                         if (timea <= 1000) {
@@ -123,6 +127,7 @@ module.exports = {
                 });
                 console.log("BATTLE STARTS");
                 console.log(playerAction);
+                // Checks for who has first turn
                 if (player.speed > enemy.speed) {
                     playerTurn(playerAction);
                     if (enemy.hp > 0) {
@@ -137,7 +142,7 @@ module.exports = {
                 }
                 botEmbedMessage.edit(createUpdatedMessage());
             }
-
+            // Checks for who won
             if (player.hp > 0) {
                 message.channel.send(player.name + ' defeated ' + enemy.name + '!');
                 clearInterval(collectorExpireTime);
@@ -149,7 +154,7 @@ module.exports = {
         }
 
 
-
+        // Makes new random enemy
         function makeNewEnemy() {
             var enemyHP = Math.floor(Math.random() * 51 + 10);
             var enemyAttack = Math.floor(Math.random() * 11);
@@ -159,11 +164,11 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
-
+        // Fetches player stuff from database
         function makeNewPlayer(playerName) {
             playerDataBase.push(new Hero(playerName, 50, 5, 5, 5));
         }
-
+        // Checks whether it is the user who reacted
         var playerDataBase = [];
         var matthew = new Hero('Matthew', 100, 7, 10, 15);
         var enemy = makeNewEnemy();
@@ -175,7 +180,7 @@ module.exports = {
                 return reaction;
             }
         };
-
+        // Makes battle embed probably need to add more things like speed
         const battleEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Battle Start! :crossed_swords:')
