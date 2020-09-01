@@ -64,7 +64,7 @@ module.exports = {
                     playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
                 }
                 else if (action == "🛡️") {
-                    playerTurnAction = "You shield yourself, it didn't work";
+                    playerTurnAction = "You shield yourself, it works";
                 }
                 else {
                     playerTurnAction = "Nothing happened";
@@ -73,7 +73,12 @@ module.exports = {
             }
             // Gives an Enemy (Probably add shielding here)
             function enemyTurn() {
-                enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
+                if (playerAction == "🛡️") {
+                    enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(0) + ' damage!\n';
+                }
+                else {
+                    enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
+                }
             }
             // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
