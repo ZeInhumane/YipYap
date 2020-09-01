@@ -48,7 +48,7 @@ module.exports = {
                         { name: 'Start', value: "​" },
                         { name: 'Battle', value: "​" },
                         { name:'highlight', value: "​" },
-                        { name:'Jerick', value: "​" },
+                        { name:'jerick', value: "​" },
                     );
                 message.channel.send(helpEmbed);
         }
