@@ -7,10 +7,10 @@ module.exports = {
         args.forEach(arg => {
             highlightedMessage += arg + " ";
         });
-        
+
         user = message.member.user.tag;
         user = user.toString();
-        user = user.split("#", user.length-4);
+        user = user.split("#", user.length - 4);
         authorName = user[0];
 
         var highlightEmbed = new Discord.MessageEmbed()
