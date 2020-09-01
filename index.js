@@ -3,8 +3,6 @@ const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
 
-// const nodemon = require('nodemon');
-
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
 
