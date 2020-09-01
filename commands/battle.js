@@ -57,7 +57,7 @@ module.exports = {
                 return damageTaken;
             }
         }
-        // Awaits for Player reaction
+        // Battle function
         async function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
@@ -94,7 +94,7 @@ module.exports = {
                         { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
                         { name: '\u200B', value: '\u200B' },
                         { name: 'Turn', value: playerTurnAction },
-                        { name: '​', value: enemyTurnAction }
+                        { name: '​', value: enemyTurnAction },
                     )
                     .addField('Bloody battlefield', '10% Less speed debuff', true)
                     .setImage('https://tinyurl.com/y4yl2xaa')
@@ -106,6 +106,7 @@ module.exports = {
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
                 var turn, playerAction, playerTurnAction, enemyTurnAction, collectorExpireTime;
+                // awaits Player reaction
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
                     collector.on('collect', r => {
