@@ -23,8 +23,8 @@ module.exports = {
                     attMulti = 1.5;
                 }
                 var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
-                if (damageTaken < 1) {
-                    damageTaken = 1;
+                if (damageTaken < 0) {
+                    damageTaken = 0;
                 }
                 this.hp -= damageTaken;
                 return damageTaken;
