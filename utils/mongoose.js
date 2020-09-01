@@ -14,7 +14,7 @@ module.exports = {
             family: 4 // Use IPv4, skip trying IPv6
         };
 
-        mongoose.connect('mongodb+srv://admin:<jericksenpai>@cluster0.qxkjs.mongodb.net/YipYap?retryWrites=true&w=majority', dbOptions);
+        mongoose.connect('mongodb+srv://admin:jericksenpai@cluster0.qxkjs.mongodb.net/YipYap?retryWrites=true&w=majority', dbOptions);
         mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
 
