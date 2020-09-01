@@ -23,6 +23,7 @@ module.exports = {
                     attMulti = 1.5;
                 }
                 var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
+                // Ensures damage taken is not negative
                 if (damageTaken < 0) {
                     damageTaken = 0;
                 }
