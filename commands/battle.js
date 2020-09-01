@@ -105,7 +105,7 @@ module.exports = {
             // Battle goes on when Player and Enemy is still alive
             while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
                 console.log(player.hp, enemy.hp);
-                var turn, playerAction, playerTurnAction, enemyTurnAction, collectorExpireTime;
+                var turn, playerTurnAction, enemyTurnAction, collectorExpireTime;
                 // awaits Player reaction
                 await new Promise((resolve, reject) => {
                     const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
@@ -212,7 +212,7 @@ module.exports = {
             .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
 
-        var botEmbedMessage, collector;
+        var botEmbedMessage, collector, playerAction;
         message.channel.send(battleEmbed)
             .then(botMessage => {
                 botEmbedMessage = botMessage;
