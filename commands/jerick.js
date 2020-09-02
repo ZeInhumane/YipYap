@@ -2,6 +2,9 @@ module.exports = {
     name: "jerick",
     description: "Pings Jerick",
     execute(message, args) {
-        message.channel.send('<@272202473827991557> is the best');
-    }
-}
+        setInterval(botStatus, 1000);
+        function botStatus() {
+           message.channel.send('<@272202473827991557> is the best');
+        }
+    },
+};
