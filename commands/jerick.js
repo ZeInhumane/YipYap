@@ -5,7 +5,7 @@ module.exports = {
         var i;
         var increment = parseInt(args[1]);
         function pingPerson() {
-            args[1] += parseInt(increment);
+            args[1] = parseInt(increment) + args[1];
             setTimeout(pingPersonOnce, args[1]);
             console.log(args[1]);
         }
