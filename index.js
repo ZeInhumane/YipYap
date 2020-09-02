@@ -47,7 +47,7 @@ client.on('message', message => {
             client.commands.get('highlight').execute(message, args);
             break;
         case 'jerick':
-            client.commands.get('jerick').execute(message, args);
+            client.commands.get('jerick').execute(message, args, client);
             break;
     }
 });
