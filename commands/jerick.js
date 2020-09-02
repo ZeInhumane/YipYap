@@ -20,9 +20,9 @@ module.exports = {
                 message.channel.send('Maximum message send speed is 1 per second');
                 timer = 1000;
             }
-            else if(timer > 18000000){
-                message.channel.send('Minimum message send speed is 1 per 5 hours');
-                timer = 18000000;
+            else if(timer > 86400000){
+                message.channel.send('Minimum message send speed is 1 per day');
+                timer = 86400000;
             }
             if(args[0] > 100){
                 message.channel.send('Maximum messages able to be sent is 100');
