@@ -3,6 +3,7 @@ module.exports = {
     description: "Pings Jerick",
     execute(message, args) {
         function pingPerson() {
+            var i;
             for (i = 0; i < args[0]; i++) {
                 setInterval(pingPersonOnce, args[1]);
                 function pingPersonOnce() {
