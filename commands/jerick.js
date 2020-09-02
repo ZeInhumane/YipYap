@@ -5,7 +5,8 @@ module.exports = {
         var i;
         function pingPerson() {
                 setTimeout(pingPersonOnce, args[1]);
-                args[1] += args[1];
+                var increment = args[1];
+                args[1] += increment;
         }
         function pingPersonOnce() {
             message.channel.send('<@692612058860224543> is the best');
