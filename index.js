@@ -46,9 +46,6 @@ client.on('message', message => {
         case 'highlight':
             client.commands.get('highlight').execute(message, args);
             break;
-        case 'jerick':
-            client.commands.get('jerick').execute(message, args, client);
-            break;
     }
 });
 fs.readdir('./events/', (err, files) => {
