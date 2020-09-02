@@ -1,7 +1,7 @@
 module.exports = {
     name: "jerick",
     description: "Pings Jerick",
-    execute(message, args) {
+    execute(message, args, client) {
         function pingPersonOnce() {
             if(user != null){
                 message.channel.send('<@' + user + '> is the best');
