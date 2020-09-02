@@ -2,7 +2,7 @@ module.exports = {
     name: "jerick",
     description: "Pings Jerick",
     execute(message, args) {
-        var variableName, i;
+        var variableName;
         function pingPerson() {
                 variableName = setInterval(pingPersonOnce, args[1]);
         }
@@ -10,8 +10,6 @@ module.exports = {
             message.channel.send('<@692612058860224543> is the best');
             clearInterval(variableName);
         }
-        for(i = 0; i < args[0]; i++){
-            pingPerson();
-        }
+        setInterval(pingPerson, args[0]);
     },
 };
