@@ -3,9 +3,9 @@ module.exports = {
     description: "Pings Jerick",
     execute(message, args, client) {
         function pingPersonOnce() {
-            console.log(arg[2])
+            console.log(args[2])
             if(arg[2] != undefined){
-                message.channel.send('<@' + arg[2] + '> is the best');
+                message.channel.send('<@' + args[2] + '> is the best');
             }
             else{
                 message.channel.send('<@692612058860224543> is the best');
