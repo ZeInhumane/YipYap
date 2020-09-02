@@ -3,7 +3,7 @@ module.exports = {
     description: "Pings Jerick",
     execute(message, args) {
         var i;
-        var increment = args[1];
+        var increment = parseInt(args[1]);
         function pingPerson() {
             args[1] += parseInt(increment);
             setTimeout(pingPersonOnce, args[1]);
