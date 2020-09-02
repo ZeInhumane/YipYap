@@ -11,11 +11,18 @@ module.exports = {
                 message.channel.send('<@' + message.author.id + '> is the best');
             }
         }
-        if (message.member.roles.cache.some(role => role.name === 'Admin') || message.member.roles.cache.some(role => role.name === 'cat')) {
+        if (message.member.roles.cache.some(role => role.name === 'Admin' || role.name === 'admin' || role.name === 'Admins' || role.name === 'admins' || role.name === 'cat')) {
             var timer = parseInt(args[1]);
+            if(isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2])){
+                message.channel.send('Invaild arguments, all arguments must be a number');
+            }
             if(timer < 1000){
-                message.channel.send('Minimum message send speed is 1 per second');
+                message.channel.send('Maximum message send speed is 1 per second');
                 timer = 1000;
+            }
+            else if(timer > 18000000){
+                message.channel.send('Minimum message send speed is 1 per 5 hours');
+                timer = 18000000;
             }
             if(args[0] > 100){
                 message.channel.send('Maximum messages able to be sent is 100');
