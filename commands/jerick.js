@@ -4,11 +4,11 @@ module.exports = {
     execute(message, args, client) {
         function pingPersonOnce() {
             console.log(args[2])
-            if(arg[2] != undefined){
+            if(args[2] != undefined){
                 message.channel.send('<@' + args[2] + '> is the best');
             }
             else{
-                message.channel.send('<@692612058860224543> is the best');
+                message.channel.send('<@' + message.author.id + '> is the best');
             }
         }
 
