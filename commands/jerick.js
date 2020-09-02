@@ -5,10 +5,10 @@ module.exports = {
         function pingPerson() {
             var i;
             for (i = 0; i < args[0]; i++) {
-                setInterval(pingPersonOnce, args[1]);
+                var variableName = setInterval(pingPersonOnce, args[1]);
                 function pingPersonOnce() {
                     message.channel.send('<@692612058860224543> is the best');
-                    clearInterval()
+                    clearInterval(variableName);
                 }
             }
         }
