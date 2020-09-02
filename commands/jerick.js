@@ -2,7 +2,7 @@ module.exports = {
     name: "jerick",
     description: "Pings Jerick",
     execute(message, args) {
-        var i;
+        /*var i;
         args[1] = parseInt(args[1]);
         var increment = parseInt(args[1]);
         function pingPerson() {
@@ -17,4 +17,4 @@ module.exports = {
             pingPerson();
         }
     },
-};
+};*/
