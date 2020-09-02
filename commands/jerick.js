@@ -1,7 +1,7 @@
 module.exports = {
     name: "jerick",
     description: "Pings Jerick",
-    /*execute(message, args, client) {
+    execute(message, args, client) {
         function pingPersonOnce() {
             console.log(args[2])
             if(args[2] != undefined){
@@ -18,4 +18,4 @@ module.exports = {
             setTimeout(pingPersonOnce, messageTimer);
         }
     },
-};*/
+};
