@@ -2,10 +2,10 @@ module.exports = {
     name: "jerick",
     description: "Pings Jerick",
     execute(message, args) {
-        args[1] = parseInt(args[1]);
+        var timer = parseInt(args[1]);
         function pingPerson(i) {
-            args[1] *= i
-            setTimeout(pingPersonOnce, parseInt(args[1]));
+            var messageTimer = timer * i
+            setTimeout(pingPersonOnce, messageTimer);
             console.log(args[1]);
         }
         function pingPersonOnce() {
