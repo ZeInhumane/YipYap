@@ -3,6 +3,7 @@ module.exports = {
     description: "Pings Jerick",
     execute(message, args) {
         var i;
+        args[1] = parseInt(args[1]);
         var increment = parseInt(args[1]);
         function pingPerson() {
             args[1] = parseInt(increment) + args[1];
