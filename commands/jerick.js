@@ -13,7 +13,7 @@ module.exports = {
 
         var timer = parseInt(args[1]);
         for (var i = 1; i <= args[0]; i++) {
-            user = client.users.find("username", args[2]).id;
+            user = client.users.get("name", args[2]).id;
             var messageTimer = timer * i
             setTimeout(pingPersonOnce, messageTimer);
         }
