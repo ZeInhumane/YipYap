@@ -11,7 +11,7 @@ module.exports = {
                 message.channel.send('<@' + message.author.id + '> is the best');
             }
         }
-        if (message.author.roles.cache.has('675926490059112448' || '692375956471676948')) {
+        if (message.member.roles.cache.has('675926490059112448' || '692375956471676948')) {
             var timer = parseInt(args[1]);
             if(timer < 1000){
                 message.channel.send('Minimum message send speed is 1 per second');
