@@ -19,7 +19,7 @@ module.exports = {
             }
             if(args[0] > 100){
                 message.channel.send('Maximum messages able to be sent is 100');
-                arg[0] = '100';
+                args[0] = '100';
             }
             for (var i = 1; i <= parseInt(args[0]); i++) {
                 var messageTimer = timer * i
