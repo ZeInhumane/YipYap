@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Discord = require('discord.js');
 
 module.exports = {
-    name: "start",
-    description: "Sets up a new player",
+    name: "currency",
+    description: "Shows the amount of currency a player has",
     execute(message, args, user) {
         User.findOne({ userID: message.author.id }, (err) => {
             if (err) {
