@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
+const { db } = require('../models/user');
 
 module.exports = {
     name: "start",
@@ -15,7 +16,7 @@ module.exports = {
         .then(result => console.log(result))
         .catch(err => console.error(err));
         console.log('user!' + message.author.id + 'registered');
-        var localCurrency = user.userSchema.find({ 'userID' : message.author.id }, { 'currency':1, _id:0 });
+        var localCurrency = db.userSchema.find({ 'userID' : message.author.id }, { 'currency':1, _id:0 });
         console.log(localCurrency);
         message.channel.send('Successful registration you start with' + localCurrency);
     },
