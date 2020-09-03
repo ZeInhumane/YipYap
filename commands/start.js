@@ -15,6 +15,6 @@ module.exports = {
         .then(result => console.log(result))
         .catch(err => console.error(err));
         console.log('user!' + message.author.id + 'registered');
-        message.channel.send('Successful registration you start with' + user.find.currency);
+        message.channel.send('Successful registration you start with' + user.find({ 'userID' : message.author.id }, { 'currency':1, _id:0 }));
     },
 }
