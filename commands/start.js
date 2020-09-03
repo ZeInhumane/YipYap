@@ -15,7 +15,7 @@ module.exports = {
             .then(result => console.log(result))
             .catch(err => console.error(err));
         console.log('user!' + message.author.id + 'registered');
-        User.findOne({ userID: message.author.id }, (err, user) => {
+        User.findOne({ userID: message.author.id }, (err) => {
             if (err) console.log(err);
 
             let embed = new Discord.MessageEmbed()
@@ -24,4 +24,4 @@ module.exports = {
             embed.addField(user.currency);
         });
     },
-},
+};
