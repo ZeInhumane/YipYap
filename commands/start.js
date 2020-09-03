@@ -12,16 +12,16 @@ module.exports = {
             currency: 0,
         });
         user.save()
-        .then(result => console.log(result))
-        .catch(err => console.error(err));
+            .then(result => console.log(result))
+            .catch(err => console.error(err));
         console.log('user!' + message.author.id + 'registered');
-        User.findOne({ userID : message.author.id }, (err, user) =>{
-            if(err) console.log(err);
+        User.findOne({ userID: message.author.id }, (err, user) => {
+            if (err) console.log(err);
 
             let embed = new Discord.MessageEmbed()
-            .setTitle('Currency')
-            .setColor('#000000')
+                .setTitle('Currency')
+                .setColor('#000000')
             embed.addField(user.currency);
-        }
+        });
     },
-}
+},
