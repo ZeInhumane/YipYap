@@ -10,18 +10,18 @@ module.exports = {
             console.log(err);
             if (err) {
                 user = new User({
-                    _id: mongoose.Types.ObjectId(),
-                    userID: message.author.id,
-                    currency: 0,
-                });
-                user.save()
-                    .then(result => console.log(result))
-                    .catch(err => console.error(err));
-                console.log('user!' + message.author.id + 'registered');
+                _id: mongoose.Types.ObjectId(),
+                userID: message.author.id,
+                currency: 0,
+            });
+            user.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
+            console.log('user!' + message.author.id + 'registered');
             }
-            else {
+            else{
                 message.channel.send("You have already made a player");
             }
-        }
+        });
     }
 };
