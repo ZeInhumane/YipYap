@@ -3,7 +3,7 @@ module.exports = {
     description: "Help command",
     execute(message, args) {
         const Discord = require('discord.js');
-        const index = require('index.js');
+        const index = require('../index.js');
         message.channel.send('type help + {command name for specific help on that command}');
         switch (args[0]) {
             case "battle":
