@@ -35,20 +35,14 @@ client.on('message', message => {
 
     switch (command) {
         case 'start':
-            client.commands.get(command).execute(message, args);
-            break;
         case 'battle':
-            client.commands.get(command).execute(message, args);
-            break;
         case 'help':
-            client.commands.get(command).execute(message, args);
-            break;
         case 'highlight':
-            client.commands.get(command).execute(message, args);
-            break;
         case 'ping':
             client.commands.get(command).execute(message, args);
             break;
+        default:
+            message.channel.send('Invaild command. Type =help for commands to use.');
     }
 });
 fs.readdir('./events/', (err, files) => {
