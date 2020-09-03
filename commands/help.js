@@ -12,7 +12,7 @@ module.exports = {
             case "highlight":
                 var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#FF69B4')
-                    .setTitle('Battle help')
+                    .setTitle(client.commands.get(args[0]).name.charAt(0).toUpperCase() + client.commands.get(args[0]).name.slice(1) + ' help')
                     .addFields(
                         { name: client.commands.get(args[0]).description, value: "​" },
                     );
