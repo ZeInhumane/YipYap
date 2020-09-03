@@ -6,10 +6,9 @@ module.exports = {
     name: "start",
     description: "Sets up a new player",
     execute(message, args) {
-        User.findOne({ userID: message.author.id }, (err) => {
-            console.log(err);
-            if (err) {
-                user = new User({
+        user = User.findOne({ userID: message.author.id });
+        if (err) {
+            user = new User({
                 _id: mongoose.Types.ObjectId(),
                 userID: message.author.id,
                 currency: 0,
@@ -18,10 +17,9 @@ module.exports = {
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
             console.log('user!' + message.author.id + 'registered');
-            }
-            else{
-                message.channel.send("You have already made a player");
-            }
-        });
+        }
+        else {
+            message.channel.send("You have already made a player");
+        }
     }
 };
