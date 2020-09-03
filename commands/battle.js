@@ -32,6 +32,7 @@ module.exports = {
                 if (damageTaken < 0) {
                     damageTaken = 0;
                 }
+                damageTaken = Math.floor(damageTaken);
                 this.hp -= damageTaken;
                 return damageTaken;
             }
