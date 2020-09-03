@@ -6,7 +6,7 @@ module.exports = {
     name: "start",
     description: "Sets up a new player",
     execute(message, args) {
-        user = db.users.findOne({ "userID": message.author.id });
+        user = mongoose.users.findOne({ "userID": message.author.id });
         console.log("This is the user " + user);
         console.log(user);
         //if (err) {
