@@ -35,19 +35,19 @@ client.on('message', message => {
 
     switch (command) {
         case 'start':
-            client.commands.get('start').execute(message, args);
+            client.commands.get(command).execute(message, args);
             break;
         case 'battle':
-            client.commands.get('battle').execute(message, args);
+            client.commands.get(command).execute(message, args);
             break;
         case 'help':
-            client.commands.get('help').execute(message, args);
+            client.commands.get(command).execute(message, args);
             break;
         case 'highlight':
-            client.commands.get('highlight').execute(message, args);
+            client.commands.get(command).execute(message, args);
             break;
-        case 'jerick':
-            client.commands.get('jerick').execute(message, args);
+        case 'ping':
+            client.commands.get(command).execute(message, args);
             break;
     }
 });

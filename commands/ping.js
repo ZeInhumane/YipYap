@@ -1,6 +1,6 @@
 module.exports = {
-    name: "jerick",
-    description: "Pings Jerick",
+    name: "ping",
+    description: "Pings Someone",
     execute(message, args, client) {
         function pingPersonOnce() {
             console.log(args[2])
@@ -11,8 +11,10 @@ module.exports = {
                 message.channel.send('<@' + message.author.id + '> is the best');
             }
         }
-        if (message.member.roles.cache.some(role => role.name === 'Admin' || role.name === 'admin' || role.name === 'Admins' || role.name === 'admins' || role.name === 'cat' || role.name === 'Best')) {
+        //Checks if the user's permissions to see if they can use it
+        if (message.member.roles.cache.some(role => role.name === 'cat') || message.member.hasPermission(['KICK_MEMBERS']) || message.member.hasPermission(['BAN_MEMBERS'])) {
             var timer = parseInt(args[1]);
+            //Check for vaild arguments
             if(isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2])){
                 message.channel.send('Invaild arguments, all arguments must be a number');
             }
@@ -28,6 +30,8 @@ module.exports = {
                 message.channel.send('Maximum messages able to be sent is 100');
                 args[0] = '100';
             }
+
+            //Sends messages after timer
             for (var i = 1; i <= parseInt(args[0]); i++) {
                 var messageTimer = timer * i
                 setTimeout(pingPersonOnce, messageTimer);
