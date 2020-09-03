@@ -3,52 +3,32 @@ module.exports = {
     description: "Help command",
     execute(message, args) {
         const Discord = require('discord.js');
+        const index = require('index.js');
         message.channel.send('type help + {command name for specific help on that command}');
         switch (args[0]) {
             case "battle":
+            case "start":
+            case "ping":
+            case "highlight":
                 var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#FF69B4')
                     .setTitle('Battle help')
                     .addFields(
-                        { name: 'Battle allows you to engage enemies and gain gold and experience as a result of your engagement', value: "​" },
+                        { name: client.commands.get(command).description, value: "​" },
                     );
+                message.channel.send(helpEmbed);
                 break;
-            case "start":
-                var startEmbed = new Discord.MessageEmbed()
-                    .setColor('#FF69B4')
-                    .setTitle('start')
-                    .addFields(
-                        { name: 'Start registers you to the bot database to allow you to play the bot', value: "​" },
-                    );
-                message.channel.send(startEmbed);
-                break;
-            case "jerick":
-                var battleEmbed = new Discord.MessageEmbed()
-                    .setColor('#FF69B4')
-                    .setTitle(`Jerica's gayness`)
-                    .addFields(
-                        { name: 'Jerica rates your gayness on a scale of 1 to 100, Jerica is still 100% gay tho(and fat)', value: "​" },
-                    );
-                message.channel.send(battleEmbed);
-                break;
-            case "highlight":
-                var gayEmbed = new Discord.MessageEmbed()
-                    .setColor('#FF69B4')
-                    .setTitle('highlight')
-                    .addFields(
-                        { name: 'Highlights a text with the embed', value: "​" },
-                    );
-                message.channel.send(gayEmbed);
-                break;
+            //Description of start
+            //'Start registers you to the bot database to allow you to play the bot'
             default:
-                helpEmbed = new Discord.MessageEmbed()
+                var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#FF69B4')
                     .setTitle('All commands, To get help for each command do =help {command name}')
                     .addFields(
                         { name: 'start', value: "​" },
                         { name: 'battle', value: "​" },
-                        { name:'highlight', value: "​" },
-                        { name:'ping', value: "​" },
+                        { name: 'highlight', value: "​" },
+                        { name: 'ping', value: "​" },
                     );
                 message.channel.send(helpEmbed);
         }
