@@ -1,6 +1,6 @@
 module.exports = {
     name: "ping",
-    description: "Pings Someone",
+    description: "Pings someone a set number of times every set interval",
     execute(message, args, client) {
         function pingPersonOnce() {
             console.log(args[2])

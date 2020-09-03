@@ -1,6 +1,6 @@
 module.exports = {
     name: "battle",
-    description: "Battles an enemy",
+    description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
     execute(message, args) {
         var timea;
         const Discord = require('discord.js');
