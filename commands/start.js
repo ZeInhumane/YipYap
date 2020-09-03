@@ -6,7 +6,7 @@ module.exports = {
     name: "start",
     description: "Sets up a new player",
     execute(message, args) {
-        user = User.findOne({ userID: message.author.id });
+        user = User.findOne({ "userID": message.author.id });
         console.log("This is the user " + user.get("userID"));
         //if (err) {
             user = new User({
