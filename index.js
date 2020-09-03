@@ -17,6 +17,7 @@ client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
     console.log("This updates");
+    exports.client = client;
 });
 
 setInterval(botStatus, 60000);
