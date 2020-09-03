@@ -7,6 +7,7 @@ module.exports = {
     description: "Sets up a new player",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err) => {
+            console.log(err);
             if (err) {
                 user = new User({
                 _id: mongoose.Types.ObjectId(),
