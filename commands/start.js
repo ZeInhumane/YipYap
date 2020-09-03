@@ -22,6 +22,7 @@ module.exports = {
                 .setTitle('Currency')
                 .setColor('#000000')
             embed.addField(user.currency);
+            return message.channel.send(embed);
         });
     },
 };
