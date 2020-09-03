@@ -11,7 +11,7 @@ module.exports = {
                 message.channel.send('<@' + message.author.id + '> is the best');
             }
         }
-        if (message.member.roles.cache.some(role => role.name === 'Admin' || role.name === 'admin' || role.name === 'Admins' || role.name === 'admins' || role.name === 'cat')) {
+        if (message.member.roles.cache.some(role => role.name === 'Admin' || role.name === 'admin' || role.name === 'Admins' || role.name === 'admins' || role.name === 'cat' || role.name === 'Best')) {
             var timer = parseInt(args[1]);
             if(isNaN(args[0]) || isNaN(args[1]) || isNaN(args[2])){
                 message.channel.send('Invaild arguments, all arguments must be a number');
