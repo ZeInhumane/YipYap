@@ -40,6 +40,7 @@ client.on('message', message => {
         case 'help':
         case 'highlight':
         case 'ping':
+        case 'currency':
             client.commands.get(command).execute(message, args);
             break;
         default:

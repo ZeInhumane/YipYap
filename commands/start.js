@@ -6,23 +6,21 @@ module.exports = {
     name: "start",
     description: "Sets up a new player",
     execute(message, args, user) {
-        user = new User({
-            _id: mongoose.Types.ObjectId(),
-            userID: message.author.id,
-            currency: 0,
-        });
-        user.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
-        console.log('user!' + message.author.id + 'registered');
         User.findOne({ userID: message.author.id }, (err) => {
-            if (err) console.log(err);
-
-            let embed = new Discord.MessageEmbed()
-                .setTitle('Currency')
-                .setColor('#000000')
-            embed.addField(user.currency, "​");
-            return message.channel.send(embed);
+            if (err) {
+                user = new User({
+                _id: mongoose.Types.ObjectId(),
+                userID: message.author.id,
+                currency: 0,
+            });
+            user.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
+            console.log('user!' + message.author.id + 'registered');
+            }
+            else{
+                message.channel.send("You have already made a player");
+            }
         });
-    },
+    }
 };
