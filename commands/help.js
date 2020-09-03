@@ -14,7 +14,7 @@ module.exports = {
                     .setColor('#FF69B4')
                     .setTitle('Battle help')
                     .addFields(
-                        { name: client.commands.get(command).description, value: "​" },
+                        { name: index.client.commands.get(command).description, value: "​" },
                     );
                 message.channel.send(helpEmbed);
                 break;
