@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
-const Hero = require('./battle.js').Hero;
+import Hero from './battle.js';
 
 module.exports = {
     name: "start",

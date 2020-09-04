@@ -6,7 +6,7 @@ module.exports = {
         const Discord = require('discord.js');
         const User = require('../models/user');
         // Creates hero class
-        class Hero {
+        export class Hero {
             constructor(name, hp, attack, defense, speed) {
                 this.name = name;
                 this.hp = hp;
@@ -38,7 +38,6 @@ module.exports = {
                 return damageTaken;
             }
         }
-        exports.Hero = Hero;
         // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type) {
