@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "start",
     description: "Sets up a new player",
-    execute(message, args) {
+    execute(message, args, user) {
         User.findOne({ userID: message.author.id }, (err) => {
             console.log(err);
             if (err) {
