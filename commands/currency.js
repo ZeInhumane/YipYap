@@ -9,14 +9,14 @@ module.exports = {
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
-                console.log("You have not set up a player yet! Do =start to start.")
+                message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
                 let embed = new Discord.MessageEmbed()
                     .setTitle('Currency')
                     .setColor('#000000')
                 embed.addField(user.currency, "​");
-                return message.channel.send(embed);
+                message.channel.send(embed);
             }
         });
     }

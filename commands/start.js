@@ -17,7 +17,7 @@ module.exports = {
                 user.save()
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
-                console.log('user!' + message.author.id + 'registered');
+                message.channel.send('You have been successfully registered');
             }
             else {
                 message.channel.send("You have already made a player");
