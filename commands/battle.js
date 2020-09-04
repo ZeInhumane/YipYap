@@ -38,6 +38,7 @@ module.exports = {
                 return damageTaken;
             }
         }
+        exports.Hero = Hero;
         // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type) {
