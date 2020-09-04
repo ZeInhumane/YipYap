@@ -14,7 +14,7 @@ module.exports = {
                 let embed = new Discord.MessageEmbed()
                     .setTitle('Currency')
                     .setColor('#000000')
-                embed.addField(user.currency, "​");
+                embed.addField(User.currency, "​");
                 return message.channel.send(embed);
             }
         });
