@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
+const battle = require('./battle.js');
 
 module.exports = {
     name: "start",
@@ -13,6 +14,7 @@ module.exports = {
                     _id: mongoose.Types.ObjectId(),
                     userID: message.author.id,
                     currency: 0,
+                    player: new Hero(message.member.user.tag.toString().split("#", user.length - 4)[0], 50, 5, 5, 5)
                 });
                 user.save()
                     .then(result => console.log(result))

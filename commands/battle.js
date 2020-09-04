@@ -4,6 +4,7 @@ module.exports = {
     execute(message, args) {
         var timea;
         const Discord = require('discord.js');
+        const User = require('../models/user');
         // Creates hero class
         class Hero {
             constructor(name, hp, attack, defense, speed) {
@@ -148,10 +149,10 @@ module.exports = {
                         playerTurn(playerAction);
                     }
                 }
-                if(enemy.hp < 0){
+                if (enemy.hp < 0) {
                     enemy.hp = 0;
                 }
-                if(player.hp < 0){
+                if (player.hp < 0) {
                     player.hp = 0;
                 }
 
@@ -179,13 +180,15 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
-        // Fetches player stuff from database
-        function makeNewPlayer(playerName) {
-            playerDataBase.push(new Hero(playerName, 50, 5, 5, 5));
-        }
-        // Checks whether it is the user who reacted
-        var playerDataBase = [];
-        var matthew = new Hero('Matthew', 100, 7, 10, 15);
+        var player;
+        User.findOne({ userID: message.author.id }, (err, user) => {
+            if (user == null) {
+                message.channel.send("You have not set up a player yet! Do =start to start.");
+            }
+            else{
+                player = user.player;
+            }
+        });
         var enemy = makeNewEnemy();
         console.log(message.author.id);
         // Filter for which emojis the reaction collector will accept 
@@ -205,7 +208,7 @@ module.exports = {
             .setDescription('Absolute best')
             .setThumbnail('https://i.imgur.com/wSTFkRM.png')
             .addFields(
-                { name: 'Player HP', value: matthew.name + '\'s HP: ' + matthew.hp },
+                { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
                 { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
                 { name: '\u200B', value: '\u200B' }
             )
@@ -222,7 +225,7 @@ module.exports = {
                 botMessage.react("⚔️");
                 botMessage.react("🛡️");
                 // Replace matthew with the message author
-                battle(matthew, enemy);
+                battle(player, enemy);
             });
     }
 }
