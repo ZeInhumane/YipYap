@@ -147,6 +147,7 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
+        var botEmbedMessage, collector, playerAction;
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
@@ -181,8 +182,6 @@ module.exports = {
                     .setTimestamp()
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
-
-                var botEmbedMessage, collector, playerAction;
                 message.channel.send(battleEmbed)
                     .then(botMessage => {
                         botEmbedMessage = botMessage;
