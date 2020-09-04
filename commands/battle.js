@@ -5,39 +5,6 @@ module.exports = {
         var timea;
         const Discord = require('discord.js');
         const User = require('../models/user');
-        // Creates hero class
-        export class Hero {
-            constructor(name, hp, attack, defense, speed) {
-                this.name = name;
-                this.hp = hp;
-                this.attack = attack;
-                this.defense = defense;
-                this.speed = speed;
-            }
-            // Method to check for damage taken by hero
-            takeDamage(damage) {
-                let attMulti = damage / this.defense;
-                if (attMulti < 0.4) {
-                    attMulti = 0.4;
-                }
-                else if (attMulti > 1.5) {
-                    attMulti = 1.5;
-                }
-                var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
-                console.log(playerAction);
-                if (playerAction == "🛡️") {
-                    // Change it later so higher level reduces damagetaken too
-                    damageTaken *= (100 - this.defense) / 100;
-                }
-                // Ensures damage taken is not negative
-                if (damageTaken < 0) {
-                    damageTaken = 0;
-                }
-                damageTaken = Math.floor(damageTaken);
-                this.hp -= damageTaken;
-                return damageTaken;
-            }
-        }
         // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type) {
