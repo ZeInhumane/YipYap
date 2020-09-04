@@ -147,7 +147,7 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
-        var botEmbedMessage, collector, playerAction;
+        var botEmbedMessage, collector, playerAction, filter;
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
@@ -157,7 +157,7 @@ module.exports = {
                 var enemy = makeNewEnemy();
                 console.log(message.author.id);
                 // Filter for which emojis the reaction collector will accept 
-                const filter = (reaction, user) => {
+                var filter = (reaction, user) => {
                     console.log("Check " + reaction.emoji.name);
                     if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
                         console.log(reaction.emoji.name + " passed");
