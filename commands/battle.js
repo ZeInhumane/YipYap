@@ -180,52 +180,51 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
-        var player;
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
-            else{
-                player = user.player;
+            else {
+                var player = user.player;
+                var enemy = makeNewEnemy();
+                console.log(message.author.id);
+                // Filter for which emojis the reaction collector will accept 
+                const filter = (reaction, user) => {
+                    console.log("Check " + reaction.emoji.name);
+                    if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
+                        console.log(reaction.emoji.name + " passed");
+                        return reaction;
+                    }
+                };
+                // Makes battle embed probably need to add more things like speed
+                const battleEmbed = new Discord.MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle('Battle Start! :crossed_swords:')
+                    .setURL('https://discord.gg/CTMTtQV')
+                    .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+                    .setDescription('Absolute best')
+                    .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                    .addFields(
+                        { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
+                        { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                        { name: '\u200B', value: '\u200B' }
+                    )
+                    .addField('Bloody battlefield', '10% Less speed debuff', true)
+                    .setImage('https://tinyurl.com/y4yl2xaa')
+                    .setTimestamp()
+                    .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+
+
+                var botEmbedMessage, collector, playerAction;
+                message.channel.send(battleEmbed)
+                    .then(botMessage => {
+                        botEmbedMessage = botMessage;
+                        botMessage.react("⚔️");
+                        botMessage.react("🛡️");
+                        // Replace matthew with the message author
+                        battle(player, enemy);
+                    });
             }
         });
-        var enemy = makeNewEnemy();
-        console.log(message.author.id);
-        // Filter for which emojis the reaction collector will accept 
-        const filter = (reaction, user) => {
-            console.log("Check " + reaction.emoji.name);
-            if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
-                console.log(reaction.emoji.name + " passed");
-                return reaction;
-            }
-        };
-        // Makes battle embed probably need to add more things like speed
-        const battleEmbed = new Discord.MessageEmbed()
-            .setColor('#0099ff')
-            .setTitle('Battle Start! :crossed_swords:')
-            .setURL('https://discord.gg/CTMTtQV')
-            .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
-            .setDescription('Absolute best')
-            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
-            .addFields(
-                { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
-                { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
-                { name: '\u200B', value: '\u200B' }
-            )
-            .addField('Bloody battlefield', '10% Less speed debuff', true)
-            .setImage('https://tinyurl.com/y4yl2xaa')
-            .setTimestamp()
-            .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
-
-
-        var botEmbedMessage, collector, playerAction;
-        message.channel.send(battleEmbed)
-            .then(botMessage => {
-                botEmbedMessage = botMessage;
-                botMessage.react("⚔️");
-                botMessage.react("🛡️");
-                // Replace matthew with the message author
-                battle(player, enemy);
-            });
     }
 }
