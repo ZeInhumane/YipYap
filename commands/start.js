@@ -20,7 +20,7 @@ module.exports = {
             if (err) console.log(err);
             if (user == null) {
                 name = message.member.user.tag.toString();
-                name = name.split("#", m.length - 4);
+                name = name.split("#", name.length - 4);
                 name = name[0];
                 user = new User({
                     _id: mongoose.Types.ObjectId(),
