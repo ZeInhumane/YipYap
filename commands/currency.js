@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "currency",
-    alias: "cash",
+    aliases:['cash' , 'balance' , 'fat']
     description: "Shows the amount of currency a player has",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
