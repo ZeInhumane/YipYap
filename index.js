@@ -59,6 +59,7 @@ client.on('message', message => {
         }
         else {
             command.execute(message, args);
+            expirationTime == 0;
         }
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
