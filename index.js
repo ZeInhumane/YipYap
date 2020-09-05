@@ -52,7 +52,7 @@ client.on('message', message => {
         const cooldownAmount = (command.cooldown || 3) * 1000;
 
         if (timestamps.has(message.author.id)) {
-            var expirationTime = timestamps.get(message.author.id)[1];
+            var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
@@ -61,9 +61,9 @@ client.on('message', message => {
         }
         else {
             command.execute(message, args);
+            timestamps.set(message.author.id, now);
+            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         }
-        timestamps.set(message.author.id, [now, now+cooldownAmount]);
-        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
 });
 fs.readdir('./events/', (err, files) => {
