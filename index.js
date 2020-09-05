@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
 const { cooldown } = require('./commands/ping');
+const { time } = require('console');
 
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
@@ -51,22 +52,20 @@ client.on('message', message => {
         const cooldownAmount = (command.cooldown || 3) * 1000;
 
         if (timestamps.has(message.author.id)) {
-            if (expirationTime == undefined) {
-                var expirationTime = timestamps.get(message.author.id)[0] + cooldownAmount;
-                console.log(timestamps.get(message.author.id))
-                console.log(cooldownAmount);
-                console.log(expirationTime);
-            }
+            var expirationTime = timestamps.get(message.author.id)[0] + timestamps.get(message.author.id)[1];
+            console.log(timestamps.get(message.author.id))
+            console.log(cooldownAmount);
+            console.log(expirationTime);
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                timestamps.get(cooldownAmount) = timeLeft;
+                timestamps.delete(message.author.id);
+                timestamps.set(message.author.id, [now, timeLeft]);
                 message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
             }
         }
         else {
             command.execute(message, args);
-            expirationTime == 0;
         }
         timestamps.set(message.author.id, [now, cooldownAmount]);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
