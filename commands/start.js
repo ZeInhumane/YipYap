@@ -23,7 +23,11 @@ module.exports = {
                     _id: mongoose.Types.ObjectId(),
                     userID: message.author.id,
                     currency: 0,
-                    player: new Hero((m = message.member.user.tag.toString()) => {m = m.split("#", m.length - 4); return m[0]} , 50, 5, 5, 5)
+                    player: new Hero(() => {
+                        m = message.member.user.tag.toString();
+                        m = m.split("#", m.length - 4);
+                        return m[0]
+                    }, 50, 5, 5, 5)
                 });
                 user.save()
                     .then(result => console.log(result))
