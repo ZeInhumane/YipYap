@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const Discord = require('discord.js');
 
 module.exports = {
-    name: "currency",
+    name: "daily",
     description: "Shows the amount of currency a player has",
-    aliases:['cash', 'balance', 'fat'],
+    aliases:['dailies'],
     cooldown:5,
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
@@ -14,11 +14,7 @@ module.exports = {
             }
             else {
                 user.currency += 5;
-                let embed = new Discord.MessageEmbed()
-                    .setTitle('Currency')
-                    .setColor('#000000')
-                embed.addField(user.currency, "​");
-                message.channel.send(embed);
+                message.channel.send(user.currency);
             }
             user.save()
                     .then(result => console.log(result))
