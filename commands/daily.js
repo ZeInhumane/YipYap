@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "daily",
     description: "Claims a daily",
-    aliases:['dailies'],
+    aliases: ['dailies'],
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
@@ -14,7 +14,7 @@ module.exports = {
             else {
                 user.currency += 5;
                 message.channel.send(user.currency);
-            user.save()
+                user.save()
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
                 message.channel.send('You have successfully claimed your daily of ' + user.currency + ":money_with_wings:");
