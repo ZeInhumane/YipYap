@@ -6,7 +6,6 @@ module.exports = {
     name: "daily",
     description: "Claims a daily",
     aliases:['dailies'],
-    cooldown:5,
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
