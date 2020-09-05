@@ -53,7 +53,7 @@ client.on('message', message => {
         if (timestamps.has(message.author.id)) {
             if (expirationTime == undefined) {
                 var expirationTime = timestamps.get(message.author.id) + timestamps.get(cooldownAmount);
-                console.log(timestamps.get(cooldownAmount))
+                console.log(timestamps.get(message.author.id))
                 console.log(expirationTime);
             }
 
