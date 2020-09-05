@@ -34,7 +34,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
     console.log(args);
 
-    switch (command) {
+    switch (commandName) {
         case 'start':
         case 'battle':
         case 'help':
