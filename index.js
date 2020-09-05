@@ -42,8 +42,7 @@ client.on('message', message => {
         case 'ping':
         case 'reminder':
         case 'currency':
-            client.commands.get(commandName).execute(message, args)
-            || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+            client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
             break;
         default:
             message.channel.send('Invaild command. Type =help for commands to use.');
