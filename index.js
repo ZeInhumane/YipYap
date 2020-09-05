@@ -52,24 +52,18 @@ client.on('message', message => {
         const cooldownAmount = (command.cooldown || 3) * 1000;
 
         if (timestamps.has(message.author.id)) {
-            var expirationTime = timestamps.get(message.author.id)[0] + timestamps.get(message.author.id)[1];
-            console.log(timestamps.get(message.author.id))
-            console.log(cooldownAmount);
-            console.log(expirationTime);
+            var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                var pastNow = timestamps.get(message.author.id)[0];
-                timestamps.delete(message.author.id);
-                timestamps.set(message.author.id, [pastNow, timeLeft]);
                 message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
             }
         }
         else {
             command.execute(message, args);
+            timestamps.set(message.author.id, now);
+            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         }
-        timestamps.set(message.author.id, [now, cooldownAmount]);
-        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
 });
 fs.readdir('./events/', (err, files) => {
