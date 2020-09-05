@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "daily",
-    description: "Shows the amount of currency a player has",
+    description: "Claims a daily",
     aliases:['dailies'],
     cooldown:5,
     execute(message, args) {
