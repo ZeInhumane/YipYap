@@ -34,8 +34,6 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     console.log(args);
-    console.log(command);
-    console.log(!command);
     if (!command) {
         message.channel.send('Invalid command. Type =help for commands to use.');
     }
