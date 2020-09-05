@@ -29,6 +29,9 @@ module.exports = {
                         { name: 'battle', value: "​" },
                         { name: 'highlight', value: "​" },
                         { name: 'ping', value: "​" },
+                        { name: 'reminder', value: "​" },
+                        { name: 'daily', value: "​" },
+                        { name: 'currency', value: "​" },
                     );
                 message.channel.send(helpEmbed);
         }
