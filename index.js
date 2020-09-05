@@ -5,7 +5,7 @@ const fs = require('fs');
 
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
-
+const cooldowns = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -41,8 +41,6 @@ client.on('message', message => {
     }
     else {
         // discord js api for cooldown
-        const cooldowns = new Discord.Collection();
-
         if (!cooldowns.has(command.name)) {
             cooldowns.set(command.name, new Discord.Collection());
         }
