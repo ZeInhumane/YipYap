@@ -35,19 +35,13 @@ client.on('message', message => {
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     console.log(args);
     console.log("command is " + command);
-    switch (command) {
-        case 'start':
-        case 'battle':
-        case 'help':
-        case 'highlight':
-        case 'ping':
-        case 'reminder':
-        case 'currency':
-            command.execute(message, args);
-            break;
-        default:
-            message.channel.send('Invalid command. Type =help for commands to use.');
+    if (!command) {
+        message.channel.send('Invalid command. Type =help for commands to use.');
     }
+    else {
+        command.execute(message, args);
+    }
+
 });
 fs.readdir('./events/', (err, files) => {
     if (err) return console.error;
