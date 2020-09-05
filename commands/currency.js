@@ -19,6 +19,7 @@ module.exports = {
                     .setTitle(name + `'s Balance`)
                     .setColor('#000000');
                 embed.addField(user.currency + "<:cash_24:751784973488357457>​");
+                console.log(embed);
                 message.channel.send(embed);
             }
         });
