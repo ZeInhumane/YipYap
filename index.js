@@ -59,8 +59,9 @@ client.on('message', message => {
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
+                var pastNow = timestamps.get(message.author.id)[0];
                 timestamps.delete(message.author.id);
-                timestamps.set(message.author.id, [now, timeLeft]);
+                timestamps.set(message.author.id, [pastNow, timeLeft]);
                 message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
             }
         }
