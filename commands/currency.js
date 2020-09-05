@@ -16,7 +16,7 @@ module.exports = {
                 name = name.split("#", name.length - 4);
                 name = name[0];
                 const embed = new Discord.MessageEmbed()
-                    .setTitle(name + `'sCurrency`)
+                    .setTitle(name + `'s Balance`)
                     .setColor('#000000')
                 embed.addField(user.currency + "<:cash_24:751784973488357457>​");
                 message.channel.send(embed);
