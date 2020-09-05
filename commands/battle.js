@@ -159,6 +159,7 @@ module.exports = {
                 // Filter for which emojis the reaction collector will accept 
                 var filter = (reaction, user) => {
                     console.log("Check " + reaction.emoji.name);
+                    console.log("User is " + user);
                     if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️') && user == message.author.id) {
                         console.log(reaction.emoji.name + " passed");
                         return reaction;
