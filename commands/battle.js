@@ -20,7 +20,12 @@ module.exports = {
             var damageTaken = Math.floor((damage + Math.floor((damage - defender.defense) / 4)) * attMulti);
             if (playerAction == "🛡️" && isHero) {
                 // Change it later so higher level reduces damagetaken too
-                damageTaken *= (100 - defender.defense) / 100;
+                if (defender.defense > 99) {
+                    damageTaken *= 1 / 100;
+                }
+                else{
+                    damageTaken *= (100 - defender.defense) / 100;
+                }
             }
             // Ensures damage taken is not negative
             if (damageTaken < 0) {
