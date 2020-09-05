@@ -10,6 +10,9 @@ module.exports = {
             case "start":
             case "ping":
             case "highlight":
+            case "reminder":
+            case "daily":
+            case "currency":
                 var helpEmbed = new Discord.MessageEmbed()
                     .setColor('#FF69B4')
                     .setTitle(client.commands.get(args[0]).name.charAt(0).toUpperCase() + client.commands.get(args[0]).name.slice(1) + ' help')
