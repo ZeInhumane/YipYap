@@ -8,10 +8,10 @@ module.exports = {
             highlightedMessage += arg + " ";
         });
 
-        user = message.member.user.tag;
+        var user = message.member.user.tag;
         user = user.toString();
         user = user.split("#", user.length - 4);
-        authorName = user[0];
+        var authorName = user[0];
 
         var highlightEmbed = new Discord.MessageEmbed()
             .setColor('#0099ff')
