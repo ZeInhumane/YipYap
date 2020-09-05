@@ -31,7 +31,7 @@ client.on('message', message => {
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
+    const commandName = args.shift().toLowerCase();
     console.log(args);
 
     switch (command) {
@@ -42,7 +42,8 @@ client.on('message', message => {
         case 'ping':
         case 'reminder':
         case 'currency':
-            client.commands.get(command).execute(message, args) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(command));
+            client.commands.get(commandName).execute(message, args)
+            || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
             break;
         default:
             message.channel.send('Invaild command. Type =help for commands to use.');
