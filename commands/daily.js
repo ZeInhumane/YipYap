@@ -19,7 +19,7 @@ module.exports = {
                     .catch(err => console.error(err));
                 message.channel.send('You have successfully claimed your daily of ' + 5 + "<:cash_24:751784973488357457>​");
                 message.channel.send("This database is gonna be purged so there really is no point in spamming daily, abby")
-                message.channel.send('you now have' + user.currency + '<:cash_24:751784973488357457>');
+                message.channel.send('you now have ' + user.currency + '<:cash_24:751784973488357457>');
             }
         });
     }
