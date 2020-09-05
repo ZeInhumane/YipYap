@@ -43,7 +43,7 @@ client.on('message', message => {
         case 'ping':
         case 'reminder':
         case 'currency':
-            client.commands.get(command).execute(message, args);
+            command.execute(message, args);
             break;
         default:
             message.channel.send('Invalid command. Type =help for commands to use.');
