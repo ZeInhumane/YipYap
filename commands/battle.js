@@ -1,3 +1,5 @@
+const user = require('../models/user');
+
 module.exports = {
     name: "battle",
     description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
@@ -136,6 +138,9 @@ module.exports = {
             if (player.hp > 0) {
                 message.channel.send(player.name + ' defeated ' + enemy.name + '!');
                 clearInterval(collectorExpireTime);
+                User.findOne({ userID: message.author.id }, (err, user) => {
+                    user.currency += 1;
+                });
             }
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
