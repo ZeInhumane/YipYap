@@ -52,10 +52,9 @@ client.on('message', message => {
 
         if (timestamps.has(message.author.id)) {
             if (expirationTime == undefined) {
-                var expirationTime = timestamps.get(message.author.id) + timestamps.get(""+cooldownAmount);
+                var expirationTime = timestamps.get(message.author.id)[0] + cooldownAmount;
                 console.log(timestamps.get(message.author.id))
                 console.log(cooldownAmount);
-                console.log(timestamps.get(""+cooldownAmount))
                 console.log(expirationTime);
             }
 
@@ -69,7 +68,7 @@ client.on('message', message => {
             command.execute(message, args);
             expirationTime == 0;
         }
-        timestamps.set(message.author.id, now, cooldownAmount);
+        timestamps.set(message.author.id, [now, cooldownAmount]);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
 });
