@@ -18,7 +18,7 @@ module.exports = {
             user.save()
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
-                message.channel.send('You have successfully claimed your daily of ' + user.currency);
+                message.channel.send('You have successfully claimed your daily of ' + user.currency + ":money_with_wings:");
         });
     }
 }
