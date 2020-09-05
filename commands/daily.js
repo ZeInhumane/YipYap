@@ -18,6 +18,7 @@ module.exports = {
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
                 message.channel.send('You have successfully claimed your daily of ' + user.currency + ":money_with_wings:");
+                message.channel.send("This database is gonna be purged so there really is no point in spamming daily, abby")
             }
         });
     }
