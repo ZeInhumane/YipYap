@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "daily",
     description: "Claims a daily",
+    cooldown: 86400,
     aliases: ['dailies'],
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
