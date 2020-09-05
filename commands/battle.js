@@ -5,6 +5,29 @@ module.exports = {
         var timea;
         const Discord = require('discord.js');
         const User = require('../models/user');
+
+        // Method to check for damage taken by hero
+        function takeDamage(damage, defender, isHero) {
+            let attMulti = damage / defender.defense;
+            if (attMulti < 0.4) {
+                attMulti = 0.4;
+            }
+            else if (attMulti > 1.5) {
+                attMulti = 1.5;
+            }
+            var damageTaken = Math.floor((damage + Math.floor((damage - defender.defense) / 4)) * attMulti);
+            if (playerAction == "🛡️" && isHero) {
+                // Change it later so higher level reduces damagetaken too
+                damageTaken *= (100 - defender.defense) / 100;
+            }
+            // Ensures damage taken is not negative
+            if (damageTaken < 0) {
+                damageTaken = 0;
+            }
+            damageTaken = Math.floor(damageTaken);
+            defender.hp -= damageTaken;
+            return damageTaken;
+        }
         // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type) {
@@ -15,28 +38,12 @@ module.exports = {
                 this.speed = speed;
                 this.type = type;
             }
-            // Method to check for damage taken by Enemy
-            takeDamage(damage) {
-                let attMulti = damage / this.defense;
-                if (attMulti < 0.4) {
-                    attMulti = 0.4;
-                }
-                else if (attMulti > 1.5) {
-                    attMulti = 1.5;
-                }
-                var damageTaken = Math.floor((damage + Math.floor((damage - this.defense) / 4)) * attMulti);
-                if (damageTaken < 1) {
-                    damageTaken = 1;
-                }
-                this.hp -= damageTaken;
-                return damageTaken;
-            }
         }
         // Battle function
         async function battle(player, enemy) {
             function playerTurn(action) {
                 if (action == "⚔️") {
-                    playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + enemy.takeDamage(player.attack) + ' damage!\n';
+                    playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack, enemy, false) + ' damage!\n';
                 }
                 else if (action == "🛡️") {
                     playerTurnAction = "You shield yourself, it works";
@@ -48,7 +55,7 @@ module.exports = {
             }
             // Gives an Enemy (Probably add shielding here)
             function enemyTurn() {
-                enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + player.takeDamage(enemy.attack) + ' damage!\n';
+                enemyTurnAction = enemy.name + '\'s turn!\n' + enemy.name + ' does ' + takeDamage(enemy.attack, player, true) + ' damage!\n';
             }
             // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
@@ -154,6 +161,7 @@ module.exports = {
             }
             else {
                 var player = user.player;
+                console.log(player);
                 var enemy = makeNewEnemy();
                 console.log(message.author.id);
                 // Filter for which emojis the reaction collector will accept 
