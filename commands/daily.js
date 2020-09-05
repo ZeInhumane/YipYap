@@ -14,11 +14,11 @@ module.exports = {
             else {
                 user.currency += 5;
                 message.channel.send(user.currency);
-            }
             user.save()
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
                 message.channel.send('You have successfully claimed your daily of ' + user.currency + ":money_with_wings:");
+            }
         });
     }
 }
