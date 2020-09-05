@@ -45,7 +45,7 @@ client.on('message', message => {
             client.commands.get(commandName).execute(message, args) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
             break;
         default:
-            message.channel.send('Invaild command. Type =help for commands to use.');
+            message.channel.send('Invalid command. Type =help for commands to use.');
     }
 });
 fs.readdir('./events/', (err, files) => {
