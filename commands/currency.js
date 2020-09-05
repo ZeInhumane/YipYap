@@ -12,7 +12,14 @@ module.exports = {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                message.channel.send(user.currency + "<:cash_24:751784973488357457>​");
+                var name = message.member.user.tag.toString();
+                name = name.split("#", name.length - 4);
+                name = name[0];
+                const embed = new Discord.MessageEmbed()
+                    .setTitle(name + `'sCurrency`)
+                    .setColor('#000000')
+                embed.addField(user.currency + "<:cash_24:751784973488357457>​");
+                message.channel.send(embed);
             }
         });
     }
