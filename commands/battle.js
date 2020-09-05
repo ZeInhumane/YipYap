@@ -162,7 +162,6 @@ module.exports = {
             else {
                 var player = user.player;
                 console.log(player);
-                var testHero = new Hero("Test", 1, 1, 1);
                 var enemy = makeNewEnemy();
                 console.log(message.author.id);
                 // Filter for which emojis the reaction collector will accept 

@@ -19,15 +19,14 @@ module.exports = {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (err) console.log(err);
             if (user == null) {
+                name = message.member.user.tag.toString();
+                name = name.split("#", m.length - 4);
+                name = name[0];
                 user = new User({
                     _id: mongoose.Types.ObjectId(),
                     userID: message.author.id,
                     currency: 0,
-                    player: new Hero(() => {
-                        m = message.member.user.tag.toString();
-                        m = m.split("#", m.length - 4);
-                        return m[0]
-                    }, 50, 5, 5, 5)
+                    player: new Hero(name, 50, 5, 5, 5)
                 });
                 user.save()
                     .then(result => console.log(result))
