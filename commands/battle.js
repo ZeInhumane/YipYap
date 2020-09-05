@@ -178,7 +178,7 @@ module.exports = {
                         { name: '\u200B', value: '\u200B' }
                     )
                     .addField('Bloody battlefield', '10% Less speed debuff', true)
-                    .setImage('https://tinyurl.com/y4yl2xaa')
+                    .setImage('https://i.pinimg.com/564x/49/7c/22/497c226576e8684e4dfddb4a923a6282.jpg')
                     .setTimestamp()
                     .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
 
