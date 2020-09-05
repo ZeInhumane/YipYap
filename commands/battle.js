@@ -179,7 +179,7 @@ module.exports = {
                     .setURL('https://discord.gg/CTMTtQV')
                     .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
                     .setDescription('Absolute best')
-                    .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                    .setThumbnail('https://i.pinimg.com/564x/49/7c/22/497c226576e8684e4dfddb4a923a6282.jpg')
                     .addFields(
                         { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
                         { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
