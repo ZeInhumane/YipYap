@@ -34,7 +34,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     console.log(args);
-
+    console.log("command is " + command);
     switch (command) {
         case 'start':
         case 'battle':
@@ -43,6 +43,7 @@ client.on('message', message => {
         case 'ping':
         case 'reminder':
         case 'currency':
+            client.commands.get(command).execute(message, args);
             break;
         default:
             message.channel.send('Invalid command. Type =help for commands to use.');
