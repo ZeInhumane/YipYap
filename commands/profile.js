@@ -20,7 +20,7 @@ module.exports = {
                     .setColor('#000000')
                     .addField("<:cash_24:751784973488357457>  ​" + user.currency + , "​")
                     .addField(":level_slider:  " + user.level , "​")
-                    .addField(":hearts:  " + user.player.hp + , "​")
+                    .addField(":hearts:  " + user.player.hp  , "​")
                     .addField(":crossed_swords:  " + user.player.attack, "​")
                     .addField(":shield:  " + user.player.defense, "​")
                     .addField(":speedboat:  " + user.player.speed, "​")
