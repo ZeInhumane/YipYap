@@ -18,12 +18,12 @@ module.exports = {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(name + `'s profile`)
                     .setColor('#000000')
-                    .addField(user.currency + "  <:cash_24:751784973488357457>​", "​")
-                    .addField(user.level + "  :level_slider:", "​")
-                    .addField(user.player.hp + "  :hearts:", "​")
-                    .addField(user.player.attack + "  :crossed_swords: ", "​")
-                    .addField(user.player.defense + "  :shield:", "​")
-                    .addField(user.player.speed + "  :speedboat:", "​")
+                    .addField("<:cash_24:751784973488357457>  ​" + user.currency + , "​")
+                    .addField(":level_slider:  " + user.level , "​")
+                    .addField(":hearts:  " + user.player.hp + , "​")
+                    .addField(":crossed_swords:  " + user.player.attack, "​")
+                    .addField(":shield:  " + user.player.defense, "​")
+                    .addField(":speedboat:  " + user.player.speed, "​")
                 console.log(embed);
                 message.channel.send(embed);
             }
