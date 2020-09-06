@@ -4,53 +4,34 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "give",
-    description: "Claims a daily",
+    description: "Give someone your money",
     cooldown: 5,
     aliases: ['transfer'],
     execute(message, args) {
-        const currentAmount = User.findOne({ userID: message.author.id }, (err, user) => {
+        const transferAmount = args.find(arg => !/<@!?\d+>/g.test(arg));
+        const transferTarget = message.mentions.users.first();
+
+        User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                user.currency;
+                const currentAmount = user.currency;
+                if (!transferAmount || isNaN(transferAmount)) message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
+                if (transferAmount > currentAmount) message.channel.send(`Sorry ${message.author}, you only have ${currentAmount}.`);
+                if (transferAmount <= 0) message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
             }
 
-            const transferAmount = commandArgs.split(/ +/g).find(arg => !/<@!?\d+>/g.test(arg));
-
-            const transferTarget = User.findOne({ userID: message.mentions.users.first().id }, (err, user) => {
-                if (user == null) {
-                    message.channel.send("You have not set up a player yet! Do =start to start.");
+            User.findOne({ userID: transferTarget.id }, (err, target) => {
+                if (target == null) {
+                    message.channel.send("The person you are trying to give money to has not set up a player yet! Do =start to start.");
                 }
                 else {
-                    user.currency;
+                    user.currency -= transferAmount;
+                    target.currency += transferAmount;
+                    message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your current balance is ${user.currency}💰`);
                 }
-
-                if (!transferAmount || isNaN(transferAmount)) return message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
-                if (transferAmount > currentAmount) return message.channel.send(`Sorry ${message.author}, you only have ${currentAmount}.`);
-                if (transferAmount <= 0) return message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
-
-                const currentAmount = User.findOne({ userID: message.author.id }, (err, user) => {
-                    if (user == null) {
-                        message.channel.send("You have not set up a player yet! Do =start to start.");
-                    }
-                    else {
-                        user.currency -= transferAmount;
-                    }
-
-                    const transferTarget = User.findOne({ userID: message.mentions.users.first().id }, (err, user) => {
-                        if (user == null) {
-                            message.channel.send("You have not set up a player yet! Do =start to start.");
-                        }
-                        else {
-                            user.currency += transferAmount;
-                        }
-
-                        return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your current balance is ${user.currency}💰`);
-                    }
-        });
-
-            })
+            });
         })
     }
 }
