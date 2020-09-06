@@ -18,7 +18,6 @@ module.exports = {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(name + `s profile`)
                     .setColor('#000000')
-                    .setThumbnail(message.author.id)
                     .addField(user.currency + "<:cash_24:751784973488357457>​", "​")
                     .addField(user.level + ":level_slider:", "​")
                     .addField(user.player.hp + ":man_health_worker:", "​")
