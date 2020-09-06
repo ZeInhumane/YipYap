@@ -14,7 +14,7 @@ module.exports = {
             family: 4 // Use IPv4, skip trying IPv6
         };
 
-        mongoose.connect('', dbOptions);
+        mongoose.connect(process.env.MONGODB_URI, dbOptions);
         mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
 
