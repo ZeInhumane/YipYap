@@ -18,6 +18,7 @@ module.exports = {
                     { name: 'reminder', value: "​" },
                     { name: 'daily', value: "​" },
                     { name: 'currency', value: "​" },
+                    { name: 'profile', value: "​" },
                 );
             message.channel.send(helpEmbed);
         }
