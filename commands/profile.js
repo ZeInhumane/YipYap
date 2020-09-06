@@ -19,11 +19,11 @@ module.exports = {
                     .setTitle(name + `s profile`)
                     .setColor('#000000')
                     .setThumbnail(message.author.id)
-                    .addField(user.currency + "<:cash_24:751784973488357457>​", true)
-                    .addField(user.player.hp + "hp", true)
-                    .addField(user.player.attack + "hp", true)
-                    .addField(user.player.defense + "defense", true)
-                    .addField(user.player.speed + "speed​", true)
+                    .addField(user.currency + "<:cash_24:751784973488357457>​", "​")
+                    .addField(user.player.hp + ":man_health_worker:", "​")
+                    .addField(user.player.attack + ":crossed_swords: ", "​")
+                    .addField(user.player.defense + ":person_fencing:", "​")
+                    .addField(user.player.speed + ":speedboat:", "​")
                 console.log(embed);
                 message.channel.send(embed);
             }
