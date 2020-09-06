@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "profile",
-    description: "Shows the amount of currency a player has",
+    description: "Displays user profile, stats and weapons",
     aliases:['me', 'meme', 'stats'],
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
