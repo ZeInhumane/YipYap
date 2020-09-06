@@ -49,5 +49,8 @@ module.exports = {
                         return message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your current balance is ${user.currency}💰`);
                     }
         });
-            }
+
+            })
+        })
+    }
 }
