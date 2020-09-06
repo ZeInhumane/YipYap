@@ -19,6 +19,7 @@ module.exports = {
                     { name: 'daily', value: "​" },
                     { name: 'currency', value: "​" },
                     { name: 'profile', value: "​" },
+                    { name: 'give', value: "​" },
                 );
             message.channel.send(helpEmbed);
         }
