@@ -10,9 +10,6 @@ module.exports = {
     execute(message, args) {
         const transferAmount = args.find(arg => !/<@!?\d+>/g.test(arg));
         const transferTarget = message.mentions.users.first();
-        if (args.length > 2) {
-            message.channel.send("Invaild Syntax");
-        }
 
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
