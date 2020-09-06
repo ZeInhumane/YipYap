@@ -20,9 +20,9 @@ module.exports = {
                     .setColor('#000000')
                     .addField(user.currency + "  <:cash_24:751784973488357457>​", "​")
                     .addField(user.level + "  :level_slider:", "​")
-                    .addField(user.player.hp + "  :man_health_worker:", "​")
+                    .addField(user.player.hp + "  :hearts:", "​")
                     .addField(user.player.attack + "  :crossed_swords: ", "​")
-                    .addField(user.player.defense + "  :person_fencing:", "​")
+                    .addField(user.player.defense + "  :shield:", "​")
                     .addField(user.player.speed + "  :speedboat:", "​")
                 console.log(embed);
                 message.channel.send(embed);
