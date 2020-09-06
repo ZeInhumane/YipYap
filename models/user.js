@@ -5,6 +5,7 @@ const userSchema = mongoose.Schema({
     userID: String,
     currency: Number,
     player: Object,
+    level: Number,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');
