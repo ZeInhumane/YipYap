@@ -20,6 +20,7 @@ module.exports = {
                     .setColor('#000000')
                     .setThumbnail(message.author.id)
                     .addField(user.currency + "<:cash_24:751784973488357457>​", "​")
+                    .addField(user.level + ":level_slider:", "​")
                     .addField(user.player.hp + ":man_health_worker:", "​")
                     .addField(user.player.attack + ":crossed_swords: ", "​")
                     .addField(user.player.defense + ":person_fencing:", "​")
