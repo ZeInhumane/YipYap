@@ -24,9 +24,9 @@ module.exports = {
         else {
             var helpEmbed = new Discord.MessageEmbed()
                 .setColor('#FF69B4')
-                .setTitle(client.commands.get(args[0]).name.charAt(0).toUpperCase() + client.commands.get(args[0]).name.slice(1) + ' help')
+                .setTitle(command.name.charAt(0).toUpperCase() + command.name.slice(1) + ' help')
                 .addFields(
-                    { name: client.commands.get(args[0]).description, value: "​" },
+                    { name: command.description, value: "​" },
                 );
             message.channel.send(helpEmbed);
         }
