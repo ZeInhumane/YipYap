@@ -17,9 +17,19 @@ module.exports = {
             }
             else {
                 const currentAmount = user.currency;
-                if (!transferAmount || isNaN(transferAmount)) message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
-                if (transferAmount > currentAmount) message.channel.send(`Sorry ${message.author}, you only have ${currentAmount}.`);
-                if (transferAmount <= 0) message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
+                if (!transferAmount || isNaN(transferAmount)) {
+                    message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
+                    return;
+                }
+                if (transferAmount > currentAmount) {
+                    message.channel.send(`Sorry ${message.author}, you only have ${currentAmount}.`);
+                    return;
+                }
+                if (transferAmount <= 0) {
+                    message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
+                    return;
+                }
+
             }
 
             User.findOne({ userID: transferTarget.id }, (err, target) => {
