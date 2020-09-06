@@ -10,6 +10,9 @@ module.exports = {
     execute(message, args) {
         const transferAmount = args.find(arg => !/<@!?\d+>/g.test(arg));
         const transferTarget = message.mentions.users.first();
+        if (args.length > 2) {
+            message.channel.send("Invaild Syntax");
+        }
 
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
@@ -29,7 +32,6 @@ module.exports = {
                     message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
                     return;
                 }
-
             }
 
             User.findOne({ userID: transferTarget.id }, (err, target) => {
