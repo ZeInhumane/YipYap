@@ -16,14 +16,14 @@ module.exports = {
                 name = name.split("#", name.length - 4);
                 name = name[0];
                 const embed = new Discord.MessageEmbed()
-                    .setTitle(name + `s profile`)
+                    .setTitle(name + `'s profile`)
                     .setColor('#000000')
-                    .addField(user.currency + " <:cash_24:751784973488357457>​", "​")
-                    .addField(user.level + " :level_slider:", "​")
-                    .addField(user.player.hp + " :man_health_worker:", "​")
-                    .addField(user.player.attack + " :crossed_swords: ", "​")
-                    .addField(user.player.defense + " :person_fencing:", "​")
-                    .addField(user.player.speed + " :speedboat:", "​")
+                    .addField(user.currency + "  <:cash_24:751784973488357457>​", "​")
+                    .addField(user.level + "  :level_slider:", "​")
+                    .addField(user.player.hp + "  :man_health_worker:", "​")
+                    .addField(user.player.attack + "  :crossed_swords: ", "​")
+                    .addField(user.player.defense + "  :person_fencing:", "​")
+                    .addField(user.player.speed + "  :speedboat:", "​")
                 console.log(embed);
                 message.channel.send(embed);
             }
