@@ -62,7 +62,7 @@ client.once('ready', () => {
 //             });
 //         }, 10000);
 //     })
-// });
+ });
 
 setInterval(botStatus, 60000);
 function botStatus() {
