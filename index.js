@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
-const { cooldown } = require('./commands/ping');
+var { cooldown } = require('./commands/ping');
 const { time } = require('console');
 const BotData = require('./models/botData');
 var cooldowns;
@@ -33,7 +33,7 @@ client.once('ready', () => {
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
-            Data.update()
+            Data.data.update()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
             cooldowns = Data.data;
@@ -51,7 +51,7 @@ client.once('ready', () => {
                 // eslint-disable-next-line max-nested-callbacks
                 BotData.find({ dataName: 'Cooldowns' }, (_err, Data) => {
                     Data.data = cooldowns;
-                    Data.update()
+                    Data.data.update()
                         // eslint-disable-next-line max-nested-callbacks
                         .then(result => console.log(result))
                         // eslint-disable-next-line max-nested-callbacks
