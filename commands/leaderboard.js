@@ -5,7 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "leaderboard",
     description: "Checks  leaderboard",
-    cooldown: 86400,
+    cooldown: 10,
     aliases: ['top'],
     execute(message, args) {
         User.find({}, "currency userID", function(err, user) {
