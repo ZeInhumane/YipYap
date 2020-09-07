@@ -23,11 +23,13 @@ client.once('ready', () => {
     console.log("This updates");
     exports.client = client;
     try {
+        console.log("IT TRY")
         BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
             cooldowns = Data.data;
         })
     }
     catch{
+        console.log("IT CATCH")
         Data = new BotData({
             _id: Mongoose.Types.ObjectId(),
             dataName: 'Cooldowns',
