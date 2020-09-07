@@ -34,7 +34,6 @@ client.once('ready', () => {
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
-            Data.markModified("data", '_id', 'dataName');
             Data.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
