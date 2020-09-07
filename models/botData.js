@@ -6,4 +6,4 @@ const dataSchema = mongoose.Schema({
     data: Object,
 });
 
-module.exports = mongoose.model('BotData', dataSchema, 'botData');
+module.exports = mongoose.model('BotData', dataSchema, 'botDatas');
