@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const Mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
@@ -29,7 +29,7 @@ client.once('ready', () => {
         if (Data == null) {
             console.log("Data is nothing")
             Data = new BotData({
-                _id: Mongoose.Types.ObjectId(),
+                _id: mongoose.Types.ObjectId(),
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
@@ -48,10 +48,13 @@ client.once('ready', () => {
         console.log(cooldowns)
         setTimeout(() => {
             setInterval(() => {
-                BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+                // eslint-disable-next-line max-nested-callbacks
+                BotData.find({ dataName: 'Cooldowns' }, (_err, Data) => {
                     Data.data = cooldowns;
                     Data.update()
+                        // eslint-disable-next-line max-nested-callbacks
                         .then(result => console.log(result))
+                        // eslint-disable-next-line max-nested-callbacks
                         .catch(err => console.error(err));
                 }, 300000)
             });
