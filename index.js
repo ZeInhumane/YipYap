@@ -27,6 +27,7 @@ client.once('ready', () => {
     })
         .catch(() => {
             Data = new BotData({
+                _id: mongoose.Types.ObjectId(),
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
