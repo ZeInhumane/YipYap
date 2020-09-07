@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const Mongoose = require('mongoose');
 const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
@@ -21,18 +22,21 @@ client.once('ready', () => {
     console.log(bot_age);
     console.log("This updates");
     exports.client = client;
-    BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
-        cooldowns = Data.data;
-    })
-        .catch(() => {
-            Data = new BotData({
-                dataName: 'Cooldowns',
-                data: new Discord.Collection(),
-            })
-            Data.save()
-                .then(result => console.log(result))
-                .catch(err => console.error(err));
-        });
+    try {
+        BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+            cooldowns = Data.data;
+        })
+    }
+    catch{
+        Data = new BotData({
+            _id: Mongoose.Types.ObjectId(),
+            dataName: 'Cooldowns',
+            data: new Discord.Collection(),
+        })
+        Data.save()
+            .then(result => console.log(result))
+            .catch(err => console.error(err));
+    };
     setInterval(() => {
         BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
             Data.data = cooldowns;
