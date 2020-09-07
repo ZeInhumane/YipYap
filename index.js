@@ -72,6 +72,7 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
+    console.log(cooldowns)
     console.log(args);
     console.log("command is " + command);
     if (!command) {
