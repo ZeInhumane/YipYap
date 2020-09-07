@@ -25,7 +25,9 @@ client.once('ready', () => {
     exports.client = client;
 
     BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+        console.log("Entered Find")
         if (Data == null) {
+            console.log("Data is nothing")
             Data = new BotData({
                 _id: Mongoose.Types.ObjectId(),
                 dataName: 'Cooldowns',
@@ -36,6 +38,7 @@ client.once('ready', () => {
                 .catch(err => console.error(err));
         }
         else {
+            console.log("Cooldown gotten")
             cooldowns = Data.data;
         }
         setTimeout(() => {
