@@ -1,5 +1,3 @@
-const user = require('../models/user');
-
 module.exports = {
     name: "battle",
     description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
@@ -7,6 +5,7 @@ module.exports = {
         var timea;
         const Discord = require('discord.js');
         const User = require('../models/user');
+        const win = require('./battle/win.js');
 
         // Method to check for damage taken by hero
         function takeDamage(damage, defender, isHero) {
@@ -141,11 +140,8 @@ module.exports = {
             }
             // Checks for who won
             if (player.hp > 0) {
-                message.channel.send(player.name + ' defeated ' + enemy.name + '!');
+                win.execute(message, player, enemy);
                 clearInterval(collectorExpireTime);
-                User.findOne({ userID: message.author.id }, (err, user) => {
-                    user.currency += 1;
-                });
             }
             else {
                 message.channel.send(player.name + ' has been defeated by ' + enemy.name + '!');
