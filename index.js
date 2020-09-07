@@ -4,10 +4,10 @@ const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
 const { cooldown } = require('./commands/ping');
 const { time } = require('console');
+const BotData = require('./models/botData');
 
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
-const cooldowns = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -15,11 +15,32 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
+
 client.once('ready', () => {
     console.log(prefix);
     console.log(bot_age);
     console.log("This updates");
     exports.client = client;
+    BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+        cooldowns = Data.data;
+    })
+        .catch(() => {
+            Data = new BotData({
+                dataName: 'Cooldowns',
+                data: new Discord.Collection(),
+            })
+            Data.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
+        });
+    setInterval(() => {
+        BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+            Data.data = cooldowns;
+            Data.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
+        }, 300000)
+    });
 });
 
 setInterval(botStatus, 60000);
