@@ -54,7 +54,9 @@ client.once('ready', () => {
             });
         }, 300000);
     })
-
+    BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
+        console.log(Data.data);
+    });
 
 });
 
