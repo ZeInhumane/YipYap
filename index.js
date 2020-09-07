@@ -42,6 +42,7 @@ client.once('ready', () => {
             console.log("Cooldown gotten")
             cooldowns = Data.data;
         }
+        console.log(cooldowns)
         setTimeout(() => {
             setInterval(() => {
                 BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
