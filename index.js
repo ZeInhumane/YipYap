@@ -43,7 +43,6 @@ client.once('ready', () => {
             cooldowns = Data.data;
         }
         console.log(cooldowns)
-        console.log("type of collection is " + typeof(new Discord.Collection()))
         setTimeout(() => {
             setInterval(() => {
                 BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
@@ -53,12 +52,8 @@ client.once('ready', () => {
                         .catch(err => console.error(err));
                 }, 300000)
             });
-        }, 300000);
+        }, 1000);
     })
-    BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
-        console.log(Data.data);
-    });
-
 });
 
 setInterval(botStatus, 60000);
