@@ -25,6 +25,7 @@ client.once('ready', () => {
     exports.client = client;
 
     BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
+        if (err) console.log(err);
         console.log("Entered Find")
         if (Data == null) {
             console.log("Data is nothing")
@@ -33,7 +34,7 @@ client.once('ready', () => {
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
-            Data.data.update()
+            Data.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
             cooldowns = Data.data;
@@ -51,7 +52,7 @@ client.once('ready', () => {
                 // eslint-disable-next-line max-nested-callbacks
                 BotData.find({ dataName: 'Cooldowns' }, (_err, Data) => {
                     Data.data = cooldowns;
-                    Data.data.update()
+                    Data.save()
                         // eslint-disable-next-line max-nested-callbacks
                         .then(result => console.log(result))
                         // eslint-disable-next-line max-nested-callbacks
