@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const Mongoose = require('mongoose');
 const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
@@ -26,7 +27,7 @@ client.once('ready', () => {
     })
         .catch(() => {
             Data = new BotData({
-                _id: mongoose.Types.ObjectId(),
+                _id: Mongoose.Types.ObjectId(),
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
