@@ -24,7 +24,7 @@ client.once('ready', () => {
     console.log("This updates");
     exports.client = client;
 
-    var cool = BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+    BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
         if (Data == null) {
             Data = new BotData({
                 _id: Mongoose.Types.ObjectId(),
@@ -38,14 +38,16 @@ client.once('ready', () => {
         else {
             cooldowns = Data.data;
         }
-        setInterval(() => {
-            BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
-                Data.data = cooldowns;
-                Data.save()
-                    .then(result => console.log(result))
-                    .catch(err => console.error(err));
-            }, 300000)
-        });
+        setTimeout(() => {
+            setInterval(() => {
+                BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+                    Data.data = cooldowns;
+                    Data.save()
+                        .then(result => console.log(result))
+                        .catch(err => console.error(err));
+                }, 300000)
+            });
+        }, 300000);
     })
 
 
