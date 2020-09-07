@@ -33,7 +33,7 @@ client.once('ready', () => {
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
-            Data.save()
+            Data.update()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
             cooldowns = Data.data;
