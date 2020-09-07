@@ -50,7 +50,7 @@ client.once('ready', () => {
             setInterval(() => {
                 BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
                     Data.data = cooldowns;
-                    Data.save()
+                    Data.update()
                         .then(result => console.log(result))
                         .catch(err => console.error(err));
                 }, 300000)
