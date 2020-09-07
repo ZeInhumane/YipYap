@@ -41,6 +41,9 @@ client.once('ready', () => {
         else {
             console.log("Cooldown gotten")
             cooldowns = Data.data;
+            if(cooldown == undefined){
+                cooldown = new Discord.Collection();
+            }
         }
         console.log(cooldowns)
         setTimeout(() => {
@@ -52,7 +55,7 @@ client.once('ready', () => {
                         .catch(err => console.error(err));
                 }, 300000)
             });
-        }, 1000);
+        }, 10000);
     })
 });
 
