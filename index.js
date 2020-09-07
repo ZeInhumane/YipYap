@@ -43,6 +43,7 @@ client.once('ready', () => {
             cooldowns = Data.data;
         }
         console.log(cooldowns)
+        console.log("type of collection is " + typeof(cooldowns))
         setTimeout(() => {
             setInterval(() => {
                 BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
