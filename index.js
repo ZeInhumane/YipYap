@@ -27,7 +27,8 @@ client.once('ready', () => {
     BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
         console.log("Entered Find")
         console.log(Data)
-        if (Data == []) {
+        console.log(""+Data)
+        if (Data == undefined) {
             console.log("Data is nothing")
             Data = new BotData({
                 _id: Mongoose.Types.ObjectId(),
