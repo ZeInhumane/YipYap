@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const mongoose = require('mongoose');
 const client = new Discord.Client();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
