@@ -34,6 +34,7 @@ client.once('ready', () => {
                 dataName: 'Cooldowns',
                 data: new Discord.Collection(),
             })
+            Data.markModified("data");
             Data.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
@@ -52,6 +53,7 @@ client.once('ready', () => {
                 // eslint-disable-next-line max-nested-callbacks
                 BotData.find({ dataName: 'Cooldowns' }, (_err, Data) => {
                     Data.data = cooldowns;
+                    Data.markModified("data");
                     Data.save()
                         // eslint-disable-next-line max-nested-callbacks
                         .then(result => console.log(result))
