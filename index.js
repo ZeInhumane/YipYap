@@ -24,11 +24,11 @@ client.once('ready', () => {
     console.log("This updates");
     exports.client = client;
 
-    BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+    BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
         console.log("Entered Find")
         console.log(Data)
         console.log(typeof(Data))
-        if (Data[0] == null) {
+        if (Data == null) {
             console.log("Data is nothing")
             Data = new BotData({
                 _id: Mongoose.Types.ObjectId(),
