@@ -1,7 +1,6 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
-const currency = require('./currency');
 
 module.exports = {
     name: "leaderboard",
@@ -9,11 +8,11 @@ module.exports = {
     cooldown: 86400,
     aliases: ['top'],
     execute(message, args) {
-        User.find({}, "currency userID", function(err, docs) {
+        User.find({}, "currency userID", function(err, user) {
             if (err) console.log(err);
-            console.log(docs);
+            console.log(user);
             })
             .sort([["currency", 1], ["userID", "descending"]]);
-            message.channel.send(currency);
+            message.channel.send(user.currency);
     },
 };
