@@ -2,7 +2,6 @@ module.exports = {
     name: "battle",
     description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
     execute(message, args) {
-        var timea;
         const Discord = require('discord.js');
         const User = require('../models/user');
         const win = require('./battle/win.js');
@@ -160,7 +159,7 @@ module.exports = {
             var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
             return enemy;
         }
-        var botEmbedMessage, playerAction, filter;
+        var botEmbedMessage, playerAction, filter, timea;
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
