@@ -26,8 +26,6 @@ client.once('ready', () => {
 
     BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
         console.log("Entered Find")
-        console.log(Data)
-        console.log(typeof(Data))
         if (Data == null) {
             console.log("Data is nothing")
             Data = new BotData({
@@ -38,6 +36,7 @@ client.once('ready', () => {
             Data.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
+            cooldowns = Data.data;
         }
         else {
             console.log("Cooldown gotten")
