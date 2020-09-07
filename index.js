@@ -6,6 +6,7 @@ const fs = require('fs');
 const { cooldown } = require('./commands/ping');
 const { time } = require('console');
 const BotData = require('./models/botData');
+var cooldowns;
 
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
@@ -22,29 +23,32 @@ client.once('ready', () => {
     console.log(bot_age);
     console.log("This updates");
     exports.client = client;
-    try {
-        BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
-            cooldowns = Data.data;
-        })
-    }
-    catch{
-        Data = new BotData({
-            _id: Mongoose.Types.ObjectId(),
-            dataName: 'Cooldowns',
-            data: new Discord.Collection(),
-        })
-        Data.save()
-            .then(result => console.log(result))
-            .catch(err => console.error(err));
-    };
-    setInterval(() => {
-        BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
-            Data.data = cooldowns;
+
+    var cool = BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+        if (Data == null) {
+            Data = new BotData({
+                _id: Mongoose.Types.ObjectId(),
+                dataName: 'Cooldowns',
+                data: new Discord.Collection(),
+            })
             Data.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
-        }, 300000)
-    });
+        }
+        else {
+            cooldowns = Data.data;
+        }
+        setInterval(() => {
+            BotData.find({ dataName: 'Cooldowns' }, (err, Data) => {
+                Data.data = cooldowns;
+                Data.save()
+                    .then(result => console.log(result))
+                    .catch(err => console.error(err));
+            }, 300000)
+        });
+    })
+
+
 });
 
 setInterval(botStatus, 60000);
