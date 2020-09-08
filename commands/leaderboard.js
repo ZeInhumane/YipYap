@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Discord = require('discord.js');
 
 module.exports = {
-    name: "leaderboard",
+    name: "a",
     description: "Checks  leaderboard",
     cooldown: 10,
     aliases: ['top'],
