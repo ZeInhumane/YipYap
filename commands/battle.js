@@ -45,7 +45,8 @@ module.exports = {
             }
         }
         // Battle function
-        async function battle(player, enemy) {
+        async function battle(user, enemy) {
+            var player = user.player;
             function playerTurn(action) {
                 if (action == "⚔️") {
                     playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack, enemy, false) + ' damage!\n';
@@ -139,7 +140,7 @@ module.exports = {
             }
             // Checks for who won
             if (player.hp > 0) {
-                win.execute(message, player, enemy);
+                win.execute(message, user, enemy);
                 clearInterval(collectorExpireTime);
             }
             else {
@@ -165,8 +166,6 @@ module.exports = {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                var player = user.player;
-                console.log(player);
                 var enemy = makeNewEnemy();
                 console.log(message.author.id);
                 // Filter for which emojis the reaction collector will accept 
@@ -186,7 +185,7 @@ module.exports = {
                     .setDescription('Absolute best')
                     .setThumbnail('https://i.pinimg.com/564x/49/7c/22/497c226576e8684e4dfddb4a923a6282.jpg')
                     .addFields(
-                        { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
+                        { name: 'Player HP', value: user.player.name + '\'s HP: ' + user.player.hp },
                         { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
                         { name: '\u200B', value: '\u200B' }
                     )
@@ -201,7 +200,7 @@ module.exports = {
                         botMessage.react("⚔️");
                         botMessage.react("🛡️");
                         // Replace matthew with the message author
-                        battle(player, enemy);
+                        battle(user, enemy);
                     });
             }
         });

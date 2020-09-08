@@ -1,14 +1,14 @@
 module.exports = {
     execute(message, winner, loser) {
         const User = require('../../models/user');
-        message.channel.send(winner.name + ' defeated ' + loser.name + '!');
+        message.channel.send(winner.player.name + ' defeated ' + loser.name || loser.player.name + '!');
         var moneyEarned = 1;
-        User.findOne({ player: winner }, (err, user) => {
+        User.findOne({ userID: winner.userID }, (err, user) => {
             user.currency += moneyEarned;
             user.save()
                     .then(result => console.log(result))
                     .catch(err => console.error(err));
         });
-        message.channel.send(winner.name + " got " + moneyEarned + "<:cash_24:751784973488357457>");
+        message.channel.send(winner.player.name + " got " + moneyEarned + "<:cash_24:751784973488357457>");
     }
 }
