@@ -38,6 +38,12 @@ module.exports = {
                 else {
                     user.currency -= transferAmount;
                     target.currency += transferAmount;
+                    user.save()
+                        .then(result => console.log(result))
+                        .catch(err => console.error(err));
+                    target.save()
+                        .then(result => console.log(result))
+                        .catch(err => console.error(err));
                     message.channel.send(`Successfully transferred ${transferAmount}💰 to ${transferTarget.tag}. Your current balance is ${user.currency}💰`);
                 }
             });
