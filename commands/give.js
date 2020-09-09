@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['transfer'],
     execute(message, args) {
-        const transferAmount = args.find(arg => !/<@!?\d+>/g.test(arg));
+        const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();
 
         User.findOne({ userID: message.author.id }, (err, user) => {
