@@ -1,13 +1,12 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const client = new Discord.Client();
-const cooldowns = new Discord.Collection();
 const { prefix, bot_age } = require('./config.json');
 const fs = require('fs');
 var { cooldown } = require('./commands/ping');
 const { time } = require('console');
 const BotData = require('./models/botData');
-//var cooldowns;
+var cooldowns = new Discord.Collection();
 
 client.mongoose = require('./utils/mongoose');
 client.commands = new Discord.Collection();
@@ -25,44 +24,34 @@ client.once('ready', () => {
     console.log("This updates");
     exports.client = client;
 
-    //     BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
-    //         if (err) console.log(err);
-    //         console.log("Entered Find")
-    //         if (Data == null) {
-    //             console.log("Data is nothing")
-    //             Data = new BotData({
-    //                 _id: mongoose.Types.ObjectId(),
-    //                 dataName: 'Cooldowns',
-    //                 data: new Discord.Collection(),
-    //             });
-    //             Data.save()
-    //                 .then(result => console.log(result))
-    //                 .catch(err => console.error(err));
-    //             cooldowns = Data.data;
-    //         }
-    //         else {
-    //             console.log("Cooldown gotten")
-    //             cooldowns = Data.data;
-    //             if(cooldown == undefined){
-    //                 cooldown = new Discord.Collection();
-    //             }
-    //         }
-    //         console.log(cooldowns)
-    //         setTimeout(() => {
-    //             setInterval(() => {
-    //                 // eslint-disable-next-line max-nested-callbacks
-    //                 BotData.find({ dataName: 'Cooldowns' }, (_err, Data) => {
-    //                     Data.data = cooldowns;
-    //                     Data.markModified("data");
-    //                     Data.save()
-    //                         // eslint-disable-next-line max-nested-callbacks
-    //                         .then(result => console.log(result))
-    //                         // eslint-disable-next-line max-nested-callbacks
-    //                         .catch(err => console.error(err));
-    //                 }, 300000)
-    //             });
-    //         }, 10000);
-    //     })
+    BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
+        if (err) console.log(err);
+        console.log("Entered Find")
+        if (Data == null) {
+            console.log("Data is nothing")
+            Data = new BotData({
+                _id: mongoose.Types.ObjectId(),
+                dataName: 'Cooldowns',
+                data: new Discord.Collection(),
+            });
+            Data.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
+        }
+        else {
+            console.log("Cooldown gotten")
+            cooldowns = Data.data;
+        }
+        console.log(cooldowns)
+        setInterval(() => {
+            BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
+                Data.data = cooldowns
+                Data.save()
+                    .then(result => console.log(result))
+                    .catch(err => console.error(err));
+            })
+        }, 120000);
+    })
 });
 
 setInterval(botStatus, 60000);
