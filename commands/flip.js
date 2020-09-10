@@ -34,7 +34,7 @@ module.exports = {
                         faceLanded = "upright! <:CoinStanding:753516348507815966>.";
                         winLoseStatement = "got";
                     }
-                    else if (rng < 500) {
+                    else if (rng < 5000) {
                         if(faceBetted == "head" || faceBetted == "heads"){
                             user.currency += bet;
                             winLoseStatement = "got";
