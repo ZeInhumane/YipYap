@@ -27,14 +27,14 @@ module.exports = {
                     message.channel.send("You do not have enough money for that bet");
                 }
                 else {
-                    var rng = Math.floor(Math.random() * 1001);
+                    var rng = Math.floor(Math.random() * 10001);
                     var faceLanded, winLoseStatement;
-                    if (rng == 451) {
-                        user.currency += bet * 50;
+                    if (rng == 5000) {
+                        user.currency += bet * 100;
                         faceLanded = "upright! <:CoinStanding:753516348507815966>.";
                         winLoseStatement = "got";
                     }
-                    else if (rng < 451) {
+                    else if (rng < 500) {
                         if(faceBetted == "head" || faceBetted == "heads"){
                             user.currency += bet;
                             winLoseStatement = "got";
