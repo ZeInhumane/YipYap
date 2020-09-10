@@ -9,20 +9,10 @@ module.exports = {
         if (!command) {
             var helpEmbed = new Discord.MessageEmbed()
                 .setColor('#FF69B4')
-                .setTitle('All commands, To get help for each command do =help {command name}')
-                .addFields(
-                    { name: 'start', value: "​" },
-                    { name: 'battle', value: "​" },
-                    { name: 'highlight', value: "​" },
-                    { name: 'ping', value: "​" },
-                    { name: 'reminder', value: "​" },
-                    { name: 'daily', value: "​" },
-                    { name: 'currency', value: "​" },
-                    { name: 'profile', value: "​" },
-                    { name: 'give', value: "​" },
-                    { name: 'leaderboard', value: "​" },
-                    { name: 'flip', value: "​" },
-                );
+                .setTitle('All commands, To get help for each command do =help {command name}');
+            for (let commandName of client.commands.keys()) {
+                helpEmbed.addField(commandName, "​");
+            }
             message.channel.send(helpEmbed);
         }
         else {
