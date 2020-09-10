@@ -11,6 +11,15 @@ module.exports = {
             }
             else {
                 var bet = parseInt(args[0]);
+                if(args[1] == undefined){
+                    message.channel.send("Invaild syntax");
+                    return;
+                }
+                var faceBetted = args[1].toLowerCase();
+                if(faceBetted != "head" && faceBetted != "tail" && faceBetted != "heads" && faceBetted != "tails"){
+                    message.channel.send("Invaild face of coin betted on");
+                    return;
+                }
                 if(bet == undefined || isNaN(bet)){
                     message.channel.send("Invaild amount");
                 }
@@ -19,18 +28,35 @@ module.exports = {
                 }
                 else {
                     var rng = Math.floor(Math.random() * 1001);
+                    var faceLanded, winLoseStatement;
                     if (rng == 451) {
                         user.currency += bet * 50;
-                        message.channel.send("The coin landed upright! <:CoinStanding:753516348507815966> \nYou got " + bet * 50 + "<:cash_24:751784973488357457>");
+                        faceLanded = "upright! <:CoinStanding:753516348507815966>.";
+                        winLoseStatement = "got";
                     }
                     else if (rng < 451) {
-                        user.currency += bet;
-                        message.channel.send("The coin landed on heads <:CoinHead:753518321214816297> .\nYou got " + bet + "<:cash_24:751784973488357457>");
+                        if(faceBetted == "head" || faceBetted == "heads"){
+                            user.currency += bet;
+                            winLoseStatement = "got";
+                        }
+                        else{
+                            user.currency -= bet;
+                            winLoseStatement = "lost";
+                        }
+                        faceLanded = "on heads <:CoinHead:753518321214816297>.";
                     }
                     else {
-                        user.currency -= bet;
-                        message.channel.send("The coin landed on tails <:CoinTail:753516329453092904>.\nYou lost " + bet + "<:cash_24:751784973488357457>");
+                        if(faceBetted == "tail" || faceBetted == "tails"){
+                            user.currency += bet;
+                            winLoseStatement = "got";
+                        }
+                        else{
+                            user.currency -= bet;
+                            winLoseStatement = "lost";
+                        }
+                        faceLanded = "on tails <:CoinTail:753516329453092904>.";
                     }
+                    message.channel.send("The coin landed " + faceLanded + "\nYou " + winLoseStatement + " " + bet + "<:cash_24:751784973488357457>");
                     user.save()
                         .then(result => console.log(result))
                         .catch(err => console.error(err));
