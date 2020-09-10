@@ -20,6 +20,8 @@ module.exports = {
                     { name: 'currency', value: "​" },
                     { name: 'profile', value: "​" },
                     { name: 'give', value: "​" },
+                    { name: 'leaderboard', value: "​" },
+                    { name: 'flip', value: "​" },
                 );
             message.channel.send(helpEmbed);
         }
