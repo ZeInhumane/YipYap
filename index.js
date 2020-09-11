@@ -83,13 +83,18 @@ client.on('message', message => {
         const now = Date.now();
         const timestamps = cooldowns.get(command.name);
         const cooldownAmount = (command.cooldown || 3) * 1000;
-
         if (timestamps.has(message.author.id)) {
             var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
                 message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+            }
+            else {
+                command.execute(message, args);
+                timestamps.delete(message.author.id);
+                timestamps.set(message.author.id, now);
+                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+                console.log(cooldownAmount)
             }
         }
         else {
