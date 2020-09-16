@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "start",
     description: "Sets up a new player",
+    syntax: "",
     execute(message, args) {
         // Creates hero class
         class Hero {
@@ -16,6 +17,12 @@ module.exports = {
                 this.speed = speed;
             }
         }
+        class Item {
+            constructor(itemName, itemQuantity) {
+                this.itemName = itemName;
+                this.itemQuantity = itemQuantity;
+             }
+        }
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (err) console.log(err);
             if (user == null) {
@@ -26,8 +33,11 @@ module.exports = {
                     _id: mongoose.Types.ObjectId(),
                     userID: message.author.id,
                     currency: 0,
-                    level:0,
+                    level: 1,
+                    exp: 0,
+                    sp: 0,
                     player: new Hero(name, 50, 5, 5, 5),
+                    inv: [],
                 });
                 user.save()
                     .then(result => console.log(result))
