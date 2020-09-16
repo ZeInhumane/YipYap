@@ -6,6 +6,9 @@ const userSchema = mongoose.Schema({
     currency: Number,
     player: Object,
     level: Number,
+    exp: Number,
+    sp: Number,
+    inv: Array,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');

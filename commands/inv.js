@@ -11,6 +11,9 @@ module.exports = {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
+            else if(item == null){
+                
+            }
             else {
                 var name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
