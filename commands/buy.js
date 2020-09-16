@@ -21,8 +21,8 @@ module.exports = {
                         message.channel.send("You have not set up a player yet! Do =start to start.");
                         return;
                     }
-                    else if (item.itemCost > user.currency) {
-                            message.channel.send(`You currently have ${user.currency}, but ${item.itemName} costs ${item.itemCost}!`);
+                    else if (itemQuantity * item.itemCost > user.currency) {
+                            message.channel.send(`You currently have ${user.currency}, but ${itemQuantity} ${item.itemName}(s) costs ${itemQuantity * item.itemCost}!`);
                             return;
                         }
                         else {
