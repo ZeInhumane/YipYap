@@ -22,7 +22,7 @@ module.exports = {
                         return;
                     }
                     else if (itemQuantity * item.itemCost > user.currency) {
-                            message.channel.send(`You currently have ${user.currency}, but ${itemQuantity} ${item.itemName}(s) costs ${itemQuantity * item.itemCost}!`);
+                            message.channel.send(`You currently have ${user.currency}<:cash_24:751784973488357457>​, but ${itemQuantity} ${item.itemName}(s) costs ${itemQuantity * item.itemCost}<:cash_24:751784973488357457>​!`);
                             return;
                         }
                         else {
