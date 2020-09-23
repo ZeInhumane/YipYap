@@ -1,11 +1,14 @@
 module.exports = {
     name: "battle",
     description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
+    syntax: "",
+    category: "Fun",
     execute(message, args) {
         const Discord = require('discord.js');
         const User = require('../models/user');
         const win = require('./battle/win.js');
-
+        const lvl_edit = require('./battle/lvl_edit.js');
+        var currentColor = '#0099ff';
         // Method to check for damage taken by hero
         function takeDamage(damage, defender, isHero) {
             let attMulti = damage / defender.defense;
@@ -25,9 +28,9 @@ module.exports = {
                     damageTaken *= (100 - defender.defense) / 100;
                 }
             }
-            // Ensures damage taken is not negative
-            if (damageTaken < 0) {
-                damageTaken = 0;
+            // Ensures damage taken is at least 1
+            if (damageTaken < 1) {
+                damageTaken = 1;
             }
             damageTaken = Math.floor(damageTaken);
             defender.hp -= damageTaken;
@@ -35,13 +38,14 @@ module.exports = {
         }
         // Creates Enemy class
         class Enemy {
-            constructor(name, hp, attack, defense, speed, type) {
+            constructor(name, hp, attack, defense, speed, type, lvl) {
                 this.name = name;
                 this.hp = hp;
                 this.attack = attack;
                 this.defense = defense;
                 this.speed = speed;
                 this.type = type;
+                this.level = lvl;
             }
         }
         // Battle function
@@ -66,7 +70,7 @@ module.exports = {
             // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
                 var updatedBattleEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor(currentColor)
                     .setTitle('Battle Start! :crossed_swords:')
                     .setURL('https://discord.gg/CTMTtQV')
                     .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
@@ -74,7 +78,9 @@ module.exports = {
                     .setThumbnail('https://i.pinimg.com/564x/49/7c/22/497c226576e8684e4dfddb4a923a6282.jpg')
                     .addFields(
                         { name: 'Player HP', value: player.name + '\'s HP: ' + player.hp },
+                        { name: 'Player Lvl', value: user.level },
                         { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                        { name: 'Enemy Lvl', value: enemy.level },
                         { name: '\u200B', value: '\u200B' },
                         { name: 'Turn', value: playerTurnAction },
                         { name: '​', value: enemyTurnAction },
@@ -108,6 +114,8 @@ module.exports = {
                     // Continued cheap fix
                     collector.on('end', () => {
                         console.log("Collecter Ended: " + timea);
+                        currentColor = '#FF0000';
+                        botEmbedMessage.edit(createUpdatedMessage());
                         if (timea <= 1000) {
                             message.channel.send('Battle expired. Your fatass took too long');
                             clearInterval(collectorExpireTime);
@@ -141,6 +149,7 @@ module.exports = {
             // Checks for who won
             if (player.hp > 0) {
                 win.execute(message, user, enemy);
+                lvl_edit.execute(message, user, enemy);
                 clearInterval(collectorExpireTime);
             }
             else {
@@ -151,13 +160,17 @@ module.exports = {
 
 
         // Makes new random enemy
-        function makeNewEnemy() {
-            var enemyHP = Math.floor(Math.random() * 51 + 10);
-            var enemyAttack = Math.floor(Math.random() * 11);
-            var enemyDefense = Math.floor(Math.random() * 11);
-            var enemySpeed = Math.floor(Math.random() * 50 + 10);
+        function makeNewEnemy(user) {
+            var enemyLvl = Math.floor(Math.random() * 11) -5 + user.level;
+            if (enemyLvl < 1){
+                enemyLvl = 1;
+            }
+            var enemyHP = Math.floor(Math.random() * 51 + enemyLvl);
+            var enemyAttack = Math.floor(Math.random() * enemyLvl + 1);
+            var enemyDefense = Math.floor(Math.random() * enemyLvl + 1);
+            var enemySpeed = Math.floor(Math.random() * enemyLvl + 1);
             var enemyType = "undead";
-            var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType);
+            var enemy = new Enemy("Skele Man", enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType, enemyLvl);
             return enemy;
         }
         var botEmbedMessage, playerAction, filter, timea;
@@ -166,7 +179,7 @@ module.exports = {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                var enemy = makeNewEnemy();
+                var enemy = makeNewEnemy(user);
                 console.log(message.author.id);
                 // Filter for which emojis the reaction collector will accept 
                 filter = (reaction, user) => {
@@ -178,7 +191,7 @@ module.exports = {
                 };
                 // Makes battle embed probably need to add more things like speed
                 const battleEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor(currentColor)
                     .setTitle('Battle Start! :crossed_swords:')
                     .setURL('https://discord.gg/CTMTtQV')
                     .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
@@ -186,7 +199,9 @@ module.exports = {
                     .setThumbnail('https://i.pinimg.com/564x/49/7c/22/497c226576e8684e4dfddb4a923a6282.jpg')
                     .addFields(
                         { name: 'Player HP', value: user.player.name + '\'s HP: ' + user.player.hp },
+                        { name: 'Player Lvl', value: user.level },
                         { name: 'Enemy HP', value: enemy.name + '\'s HP: ' + enemy.hp },
+                        { name: 'Enemy Lvl', value: enemy.level },
                         { name: '\u200B', value: '\u200B' }
                     )
                     .addField('Bloody battlefield', '10% Less speed debuff', true)
