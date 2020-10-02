@@ -4,9 +4,11 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "leaderboard",
-    description: "Checks leaderboard\n =top {checks by requirement} {leaderboard size}",
+    description: "Checks leaderboard",
+    syntax: "{Checks by requirement} {Leaderboard size}",
     cooldown: 10,
     aliases: ['top'],
+    category: "Fun",
     execute(message, args) {
         var sortBy;
         const client = require('../index.js').client;
@@ -39,3 +41,4 @@ module.exports = {
             });
     },
 };
+    
