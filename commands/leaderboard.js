@@ -4,9 +4,11 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "leaderboard",
-    description: "Checks leaderboard\n =top {checks by requirement} {leaderboard size}",
+    description: "Checks leaderboard",
+    syntax: "{Checks by requirement} {Leaderboard size}",
     cooldown: 10,
     aliases: ['top'],
+    category: "Fun",
     execute(message, args) {
         var sortBy;
         const client = require('../index.js').client;
@@ -33,10 +35,10 @@ module.exports = {
                 console.log(' this is sorted by' + sortBy);
                 for (var i = 0; i < args[1]; i++) {
                     console.log(user[i].userID);
-                    console.log(client.users.cache);
                     lb += "\n" + client.users.cache.get(user[i].userID).tag + "\n " + user[i][sortBy] + ":person_fencing: ";
                 }
                 message.channel.send("``` " + "\n" + lb + "```");
             });
     },
 };
+    
