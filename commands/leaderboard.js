@@ -33,7 +33,7 @@ module.exports = {
                 console.log(' this is sorted by' + sortBy);
                 for (var i = 0; i < args[1]; i++) {
                     console.log(user[i].userID);
-                    console.log(client.users.cache.get(user[i].userID));
+                    console.log(client.users.cache);
                     lb += "\n" + client.users.cache.get(user[i].userID).tag + "\n " + user[i][sortBy] + ":person_fencing: ";
                 }
                 message.channel.send("``` " + "\n" + lb + "```");
