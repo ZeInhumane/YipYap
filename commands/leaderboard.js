@@ -35,7 +35,7 @@ module.exports = {
                 console.log(' this is sorted by' + sortBy);
                 for (var i = 0; i < args[1]; i++) {
                     console.log(user[i].userID);
-                    lb += "\n" + client.users.fetch(user[i].userID).tag + "\n " + user[i][sortBy] + ":person_fencing: ";
+                    lb += "\n" + client.users.fetch(user[i].userID).tag + "\n " + user[i][sortBy];
                     console.log(typeof user[i].userID);
                 }
                 message.channel.send("``` " + "\n" + lb + "```");
