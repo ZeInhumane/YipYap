@@ -7,6 +7,7 @@ module.exports = {
     description: "Buys something from the shop",
     cooldown: 10,
     aliases: ['purchase'],
+    category: "Economy",
     execute(message, args) {
         const itemName = args[0];
         const itemQuantity = parseInt(args[1]);

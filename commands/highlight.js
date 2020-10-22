@@ -1,6 +1,8 @@
 module.exports = {
     name: "highlight",
     description: "Highlights a text with the embed",
+    syntax: "{Message}",
+    category: "Utility",
     execute(message, args) {
         const Discord = require('discord.js');
         var highlightedMessage = "";

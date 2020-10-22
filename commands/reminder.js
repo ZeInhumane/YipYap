@@ -1,6 +1,8 @@
 module.exports = {
     name: "reminder",
-    description: "Pings someone a set number of times every set interval\nSyntax: =reminder [Num ping] [Inteval(ms)] [Persona's ID]",
+    description: "Pings someone a set number of times every set interval",
+    syntax: "{Num ping} {Inteval(ms)} {Person's ID}",
+    category: "Utility",
     execute(message, args) {
         function pingPersonOnce() {
             console.log(args[2])

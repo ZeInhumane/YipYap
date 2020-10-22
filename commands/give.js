@@ -7,6 +7,7 @@ module.exports = {
     description: "Give someone your money",
     cooldown: 5,
     aliases: ['transfer'],
+    category: "Economy",
     execute(message, args) {
         const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();

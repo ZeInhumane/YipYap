@@ -4,6 +4,7 @@ module.exports = {
     name: 'invite',
     description: 'Invite bot',
     cooldown:10,
+    category: "Utility",
     async execute(message, args) {
 
         const embed = new MessageEmbed()

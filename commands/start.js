@@ -6,6 +6,7 @@ module.exports = {
     name: "start",
     description: "Sets up a new player",
     syntax: "",
+    category: "Fun",
     execute(message, args) {
         // Creates hero class
         class Hero {

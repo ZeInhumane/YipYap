@@ -7,6 +7,7 @@ module.exports = {
     description: "Claims a daily",
     cooldown: 86400,
     aliases: ['dailies'],
+    category: "Economy",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {

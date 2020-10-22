@@ -6,6 +6,7 @@ module.exports = {
     name: "inventory",
     description: "Shows player inventory",
     aliases: ['inv', 'i', 'icbm'],
+    category: "Fun",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {

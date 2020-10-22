@@ -2,6 +2,7 @@ module.exports = {
     name: "flip",
     description: "Bet and flip a coin. Getting heads will double your bet, getting tails will lose it all.",
     cooldown: 10,
+    category: "Gambling",
     execute(message, args) {
         const User = require('../models/user');
         const mongoose = require('mongoose');
