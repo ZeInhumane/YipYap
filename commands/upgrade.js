@@ -6,13 +6,18 @@ module.exports = {
     execute(message, args) {
         const Discord = require('discord.js');
         const User = require('../models/user');
-
+        let currentColor = "#0099ff";
         // Edited battle function
         async function stat(user) {
             function upgrade(stat_str) {
                 user.sp--;
-                user.player[stat_str]++;
-                messageDisplayed = `Your ${stat_str} stat has been upgraded by 1!`;
+                if (stat_str == 'hp'){
+                    user.player[stat_str] += 5;
+                    messageDisplayed = `Your ${stat_str} stat has been upgraded by 5!`;
+                }else{
+                    user.player[stat_str]++;
+                    messageDisplayed = `Your ${stat_str} stat has been upgraded by 1!`;
+                }
                 user.markModified('player');
                 user.save()
                     .then(result => console.log(result))
@@ -40,20 +45,20 @@ module.exports = {
 
             // Updates battle embed to display ongoing input
             function createUpdatedMessage() {
+                // theres a difference here check later for something
                 var updatedBattleEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor(currentColor)
                     .setTitle(user.player.name + '\'s sp: ' + user.sp)
                     .setURL('https://discord.gg/CTMTtQV')
-                    .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                     .setDescription('Upgrade you character using sp earned every level up! (upgrader will be cancelled if left untouched for a few minutes)')
                     .addFields(
-                        { name: ':level_slider:  ', value: user.level },
-                        { name: ':hearts:  ', value: user.player.hp },
-                        { name: ':crossed_swords:  ', value: user.player.attack },
-                        { name: ':shield:  ', value: user.player.defense },
-                        { name: ':speedboat:  ', value: user.player.speed },
-                        { name: 'sp:  ', value: user.sp }
-
+                        { name: `:level_slider: ${user.level}`, value: "\u200b"},
+                        { name: `:hearts: ${user.player.hp}`, value: "(+5)" , inline: true},
+                        { name: `:crossed_swords: ${user.player.attack}`, value: "(+1)" , inline: true},
+                        { name: `:shield: ${user.player.defense}`, value: "(+1)" , inline: true},
+                        { name: `:dash: ${user.player.speed}`, value: "(+1)" , inline: true},
+                        { name: `sp: ${user.sp}`, value: "1 used per upgrade"}
                     )
                     .addField('Update: upgrade completed', messageDisplayed)
 
@@ -73,28 +78,24 @@ module.exports = {
                         clearInterval(collectorExpireTime);
                         collectorExpireTime = setInterval(function () {
                             timea -= 1000;
-                            console.log(timea);
                         }, 1000);
-                        console.log(r.emoji.name);
                         playerAction = r.emoji.name;
                         resolve();
                     });
                     // Continued cheap fix
                     collector.on('end', () => {
-                        console.log("Collecter Ended: " + timea);
                         if (timea <= 1000) {
                             message.channel.send('Upgrade expired. Your fatass took too long');
                             clearInterval(collectorExpireTime);
                         }
                     });
                 });
-                console.log("START STAT CHANGE");
-                console.log(playerAction);
                 playerTurn(playerAction);
 
                 botEmbedMessage.edit(createUpdatedMessage());
             }
             messageDisplayed = "Stopped upgrading";
+            currentColor = '#FF0000';
             botEmbedMessage.edit(createUpdatedMessage());
             clearInterval(collectorExpireTime);
         }
@@ -106,12 +107,8 @@ module.exports = {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                console.log(message.author.id);
-                console.log(user.player.name);
                 filter = (reaction, user) => {
-                    console.log("Check " + reaction.emoji.name);
                     if ((reaction.emoji.name === '♥️' || reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️' || reaction.emoji.name === '❎' || reaction.emoji.name === '🚤') && user == message.author.id) {
-                        console.log(reaction.emoji.name + " passed");
                         return reaction;
                     }
                 };
@@ -123,17 +120,19 @@ module.exports = {
 
                 // Makes battle embed probably need to add more things like speed
                 const spEmbed = new Discord.MessageEmbed()
-                    .setColor('#0099ff')
+                    .setColor(currentColor)
                     .setTitle(user.player.name + '\'s sp: ' + user.sp)
                     .setURL('https://discord.gg/CTMTtQV')
-                    .setAuthor('Inhumane', 'https://vignette.wikia.nocookie.net/hunter-x-hunter-fanon/images/a/a9/BABC6A23-98EF-498E-9D0E-3EBFC7ED8626.jpeg/revision/latest?cb=20170930221652', 'https://discord.js.org')
+                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                     .setDescription('Upgrade you character using sp earned every level up!')
-                    .addField(":level_slider:  " + user.level, "​")
-                    .addField(":hearts:  " + user.player.hp, "​")
-                    .addField(":crossed_swords:  " + user.player.attack, "​")
-                    .addField(":shield:  " + user.player.defense, "​")
-                    .addField(":speedboat:  " + user.player.speed, "​")
-                    .addField('sp: ' + user.sp, "​")
+                    .addFields(
+                        { name: `:level_slider: ${user.level}`, value: "\u200b"},
+                        { name: `:hearts: ${user.player.hp}`, value: "(+5)" , inline: true},
+                        { name: `:crossed_swords: ${user.player.attack}`, value: "(+1)" , inline: true},
+                        { name: `:shield: ${user.player.defense}`, value: "(+1)" , inline: true},
+                        { name: `:dash: ${user.player.speed}`, value: "(+1)" , inline: true},
+                        { name: `sp: ${user.sp}`, value: "1 used per upgrade"}
+                    )
 
                 message.channel.send(spEmbed)
                     .then(botMessage => {

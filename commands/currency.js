@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "currency",
     description: "Shows the amount of currency a player has",
+    syntax: "",
     aliases:['cash', 'balance', 'fat', 'bal'],
     category: "Economy",
     execute(message, args) {
@@ -20,7 +21,6 @@ module.exports = {
                     .setTitle(name + `'s Balance`)
                     .setColor('#000000')
                     .addField(user.currency + "<:cash_24:751784973488357457>​", "​");
-                console.log(embed);
                 message.channel.send(embed);
             }
         });

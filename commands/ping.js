@@ -4,7 +4,7 @@ module.exports = {
     name: 'ping',
     description: 'Returns bot and API latency in milliseconds.',
     syntax: "",
-    cooldown: 10,
+    cooldown:10,
     category: "Utility",
     async execute(message, args) {
         const client = require('../index.js').client;

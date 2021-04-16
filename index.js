@@ -1,15 +1,15 @@
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
 const client = new Discord.Client();
-const { prefix, bot_age } = require('./config.json');
+const { bot_age, token } = require('./config.json');
 const fs = require('fs');
-var { cooldown } = require('./commands/ping');
-const { time } = require('console');
 const BotData = require('./models/botData');
 var cooldowns = new Discord.Collection();
-
+const prefix = require('./models/prefix.js');
 client.mongoose = require('./utils/mongoose');
+
 client.commands = new Discord.Collection();
+
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
@@ -19,9 +19,6 @@ for (const file of commandFiles) {
 
 
 client.once('ready', () => {
-    console.log(prefix);
-    console.log(bot_age);
-    console.log("This updates");
     exports.client = client;
 
     BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
@@ -59,48 +56,103 @@ function botStatus() {
     client.user.setActivity(client.guilds.cache.size + " servers");
 }
 
-client.login(process.env.token);
+client.login(token);
 
-client.on('message', message => {
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+client.on('message', async message => {
+    if (message.author.bot) return;
 
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const commandName = args.shift().toLowerCase();
-    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+    //Getting the data from the model
+    const data = await prefix.findOne({
+        GuildID: message.guild.id
+    });
 
-    console.log(cooldowns)
-    console.log(args);
-    console.log("command is " + command);
-    if (!command) {
-        message.channel.send('Invalid command. Type =help for commands to use.');
-    }
-    else {
-        // discord js api for cooldown
-        if (!cooldowns.has(command.name)) {
-            cooldowns.set(command.name, new Discord.Collection());
+    const messageArray = message.content.split(' ');
+
+    //If there was a data, use the database prefix BUT if there is no data, use the default prefix which you have to set!
+    if (data) {
+        const prefix = data.Prefix;
+
+        if (!message.content.startsWith(prefix)) return;
+        const args = message.content.slice(prefix.length).match(/\S+/g);
+        const commandName = args.shift().toLowerCase();
+        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        if (!command) {
+            message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
         }
+        else {
+            // discord js api for cooldown
+            if (!cooldowns.has(command.name)) {
+                cooldowns.set(command.name, new Discord.Collection());
+            }
 
-        const now = Date.now();
-        const timestamps = cooldowns.get(command.name);
-        const cooldownAmount = (command.cooldown || 3) * 1000;
-        if (timestamps.has(message.author.id)) {
-            var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-            if (now < expirationTime) {
-                const timeLeft = (expirationTime - now) / 1000;
-                message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+            const now = Date.now();
+            const timestamps = cooldowns.get(command.name);
+            const cooldownAmount = (command.cooldown || 3) * 1000;
+            console.log(command.cooldown)
+
+            if (timestamps.has(message.author.id)) {
+                var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+                if (now < expirationTime) {
+                    const timeLeft = (expirationTime - now) / 1000;
+                    message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+                }
+                else {
+                    command.execute(message, args);
+                    timestamps.delete(message.author.id);
+                    timestamps.set(message.author.id, now);
+                    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+                    console.log(cooldownAmount)
+                }
             }
             else {
                 command.execute(message, args);
-                timestamps.delete(message.author.id);
                 timestamps.set(message.author.id, now);
                 setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-                console.log(cooldownAmount)
             }
         }
+    } else if (!data) {
+        //set the default prefix here
+        const prefix = "-";
+
+        if (!message.content.startsWith(prefix)) return;
+        const args = message.content.slice(prefix.length).match(/\S+/g);
+        const commandName = args.shift().toLowerCase();
+        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        if (!command) {
+            message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
+        }
         else {
-            command.execute(message, args);
-            timestamps.set(message.author.id, now);
-            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+            // discord js api for cooldown
+            if (!cooldowns.has(command.name)) {
+                cooldowns.set(command.name, new Discord.Collection());
+            }
+
+            const now = Date.now();
+            const timestamps = cooldowns.get(command.name);
+            const cooldownAmount = (command.cooldown || 3) * 1000;
+            console.log(command.cooldown)
+
+            if (timestamps.has(message.author.id)) {
+                var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+                if (now < expirationTime) {
+                    const timeLeft = (expirationTime - now) / 1000;
+                    message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+                }
+                else {
+                    command.execute(message, args);
+                    timestamps.delete(message.author.id);
+                    timestamps.set(message.author.id, now);
+                    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+                    console.log(cooldownAmount)
+                }
+            }
+            else {
+                command.execute(message, args);
+                timestamps.set(message.author.id, now);
+                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+            }
         }
     }
 });

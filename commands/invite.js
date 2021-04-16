@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'invite',
     description: 'Invite bot',
+    syntax: "",
     cooldown:10,
     category: "Utility",
     async execute(message, args) {

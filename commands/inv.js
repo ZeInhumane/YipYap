@@ -17,13 +17,16 @@ module.exports = {
                 name = name.split("#", name.length - 4);
                 name = name[0];
                 var embed = new Discord.MessageEmbed()
-                    .setTitle(name + `'s Inventory`)
-                    .setColor('#000000');
-                user.inv.forEach((item) => {
-                    embed.addField(item.itemName.charAt(0).toUpperCase() + item.itemName.slice(1), item.itemQuantity);
-                })
-
-                console.log(embed);
+                    .setTitle(`${name}'s Inventory`)
+                    .setColor('#000001');
+                ;
+                
+                let items = Object.entries(user.inv)
+                for(i = 0; i < Object.entries(user.inv).length; i++){
+                    let name = items[i][0];
+                    let itemProperty = items[i][1];
+                    embed.addField(`${itemProperty.emote} ${name.charAt(0).toUpperCase() + name.slice(1)}`,  itemProperty.quantity);
+                }
                 message.channel.send(embed);
             }
         });

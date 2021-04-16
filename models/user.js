@@ -8,7 +8,8 @@ const userSchema = mongoose.Schema({
     level: Number,
     exp: Number,
     sp: Number,
-    inv: Array,
+    location: Number,
+    inv: Object,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');

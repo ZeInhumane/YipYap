@@ -4,14 +4,15 @@ const Discord = require('discord.js');
 
 module.exports = {
     name: "leaderboard",
-    description: "Checks leaderboard",
+    description: "Checks leaderboard. Valid sorts args are **currency,level**",
     syntax: "{Checks by requirement} {Leaderboard size}",
     cooldown: 10,
     aliases: ['top'],
     category: "Fun",
     execute(message, args) {
-        var sortBy;
-        const client = require('../index.js').client;
+        let sortBy;
+        let leaderboardSize = parseInt(args[1]);
+        if(leaderboardSize > 5) leaderboardSize = 5;
         // Find First 10 News Items
         switch (args[0]) {
             case "currency":
@@ -26,16 +27,11 @@ module.exports = {
         }
         User.find({})
             .sort("-" + sortBy)
+            .limit(leaderboardSize)
             .exec(function (err, user) {
-                var lb = "Leaderboard for " + sortBy + "\n";
-                console.log("it is entering the before the for loop");
-                if (args[1] < 0 || args[1] > 5 || args[1] == null) {
-                    args[1] = 5;
-                }
-                console.log(' this is sorted by' + sortBy);
-                for (var i = 0; i < args[1]; i++) {
-                    console.log(user[i].userID);
-                    lb += "\n" + user[i].player.name + "\n " + user[i][sortBy] + ` ${sortBy}`;
+                let lb = "Global leaderboard for " + sortBy + "\n";
+                for (let i = 0; i < leaderboardSize; i++) {
+                    lb += "\n" + (i + 1) + "." + user[i].player.name + "\n " + user[i][sortBy] + ` ${sortBy}`;
                 }
                 message.channel.send("``` " + "\n" + lb + "```");
             });

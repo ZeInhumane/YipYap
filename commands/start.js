@@ -16,14 +16,19 @@ module.exports = {
                 this.attack = attack;
                 this.defense = defense;
                 this.speed = speed;
+                this.helmet = {};
+                this.leggings = {};
+                this.chestplate = {};
+                this.boots = {};
+                this.weapon = {};
             }
         }
-        class Item {
-            constructor(itemName, itemQuantity) {
-                this.itemName = itemName;
-                this.itemQuantity = itemQuantity;
-             }
-        }
+        // class Item {
+        //     constructor(itemName, itemQuantity) {
+        //         this.itemName = itemName;
+        //         this.itemQuantity = itemQuantity;
+        //      }
+        // }
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (err) console.log(err);
             if (user == null) {
@@ -33,12 +38,14 @@ module.exports = {
                 user = new User({
                     _id: mongoose.Types.ObjectId(),
                     userID: message.author.id,
+                    username: message.member.user.tag,
                     currency: 0,
                     level: 1,
                     exp: 0,
                     sp: 0,
+                    location:1,
                     player: new Hero(name, 50, 5, 5, 5),
-                    inv: [],
+                    inv: {"Apple": {"quantity": 1,"emote": "🍎","type": "fruit"}},
                 });
                 user.save()
                     .then(result => console.log(result))

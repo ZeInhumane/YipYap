@@ -6,7 +6,7 @@ module.exports = {
     name: "level",
     description: "Allows you to check the current exp, exp till next level and current level of character",
     syntax: "",
-    cooldown: 10,
+    cooldown: 3,
     category: "Fun",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, (err, user) => {
@@ -15,7 +15,7 @@ module.exports = {
             }
             else { 
                 // exp needed for each level
-                var next_lvl = Math.floor(user.level * (user.level/10 * 21));
+                var next_lvl = Math.floor(user.level * (user.level/10 * 15));
                 var to_upgrade = next_lvl - user.exp;
 
                 // put into discord
@@ -29,10 +29,10 @@ module.exports = {
                     .addField('current exp: ' + user.exp, "​")
                     .addField('exp to next level: ' + to_upgrade, "​")
                     .addField('total sp: ' + user.sp, "​")
-                console.log(embed);
                 message.channel.send(embed);
             }
         });
     }
 }
+    
     

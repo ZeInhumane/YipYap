@@ -1,47 +1,58 @@
 module.exports = {
-    execute(message, winner, loser) {
+    execute(message, winner, loser,experienceMultiplier) {
         // const Discord = require('../discord.js');
         const User = require('../../models/user');
-
-
         // level diff to calculate exp multiplier
         var lvl_diff = winner.level - loser.level;
         var winner_higher = true;
-        if (lvl_diff < 0) {
+        if (lvl_diff <= 0) {
             winner_higher = false;
-            lvl_diff = lvl_diff * -1;
+            lvl_diff *= -1;
         }
 
         // calculating actual exp characters get
-        function winning_exp(winner_higher, lvl_diff) {
+        function winning_exp(user_level, winner_higher, lvl_diff,experienceMultiplier) {
             var exp_gain;
             if (winner_higher) {
-                exp_gain = Math.ceil(1 / lvl_diff * 10);
+                exp_gain = Math.ceil((lvl_diff * -0.8 + user_level * 0.5) * experienceMultiplier);
+                if (exp_gain <= 0) {
+                    console.log('exp_gain is neg')
+                    exp_gain = 1;
+                }
             }
             else {
-                exp_gain = Math.ceil(lvl_diff * 5 + 5);
+                if (lvl_diff == 0) {
+                    exp_gain = Math.ceil((user_level * 0.5) * experienceMultiplier )
+                }
+                else {
+                    exp_gain = Math.ceil((lvl_diff * 4 + user_level * 0.5) * experienceMultiplier);
+                }
+
             }
+            console.log(exp_gain)
             return exp_gain;
         }
 
-        var exp_gain = winning_exp(winner_higher, lvl_diff);
+        var exp_gain = winning_exp(winner.level, winner_higher, lvl_diff,experienceMultiplier);
 
         // adding exp
         var winner_exp = winner.exp + exp_gain;
 
         // message gain exp
-        message.channel.send(winner.player.name + ' has gained ' + exp_gain + ' exp!');
+        let embedText = `${winner.player.name} has gained ${exp_gain} exp!`;
 
         // calculating if user lvl up or not
         class is_lvlup {
             constructor(current_exp, user_lvl, user_name) {
                 var total_lvls = 0;
-                var next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 21));
+                var next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 15));
+                console.log(next_lvl)
                 while (current_exp >= next_lvl) {
                     current_exp -= next_lvl;
                     total_lvls++;
                     user_lvl++;
-                    next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 21));
+                    next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 15));
+                    console.log(next_lvl)
                 }
                 this.total_lvls = total_lvls;
                 this.current_exp = current_exp;
@@ -51,7 +62,7 @@ module.exports = {
             }
             level_up() {
                 if (this.total_lvls > 0) {
-                    return 'Congratulations! ' + this.user_name + ' has gained ' + this.total_lvls + ' levels!\n' + this.user_name + ' is now at level ' + this.user_lvl + ' !' + '\nYou have gained 5 sp with each level up!';
+                    return `Congratulations! ${this.user_name} has gained ${this.total_lvls} levels!\n${this.user_name} is now at level ${this.user_lvl}!\n${this.user_name} has gained ${5 * this.total_lvls} SP!`;
                 }
                 return '';
             }
@@ -61,9 +72,9 @@ module.exports = {
             new_lvl() {
                 return this.user_lvl;
             }
-            new_sp(){
+            new_sp() {
                 var add_sp = 0;
-                if(this.total_lvls > 0){
+                if (this.total_lvls > 0) {
                     add_sp = this.total_lvls * 5;
                 }
                 return add_sp;
@@ -82,6 +93,9 @@ module.exports = {
         });
 
         // congratulate those who level up
-        message.channel.send(update_winner.level_up());
+        if (update_winner.level_up()) {
+            embedText += `\n${update_winner.level_up()}`;
+        }
+        return embedText;
     }
 }
