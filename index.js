@@ -56,7 +56,7 @@ function botStatus() {
     client.user.setActivity(client.guilds.cache.size + " servers");
 }
 
-client.login(token);
+client.login(process.env.token);
 
 client.on('message', async message => {
     if (message.author.bot) return;
