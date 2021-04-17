@@ -33,6 +33,23 @@ module.exports = {
             }
         }
 
+        async function setStatBuffs(user, item) {
+            let stats = Object.values(item)[0].stats
+            for (statName in stats) {
+                for (let i = 0; i < stats[statName].length; i++) {
+                    switch (stats[statName][i].substring(0, 1)) {
+                        case "+":
+                            user.player[statName] += parseInt(stats[statName][i].substring(1));
+                            break;
+                        case "x":
+                            user.player[statName] *= eval(stats[statName][i].substring(1));
+                            break;
+                    }
+                }
+
+            }
+        }
+
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
@@ -45,31 +62,51 @@ module.exports = {
             else {
                 if (user.inv[itemName].type == "equipment") {
                     let equipmentType = user.inv[itemName].equipmentType;
-                    // Checks if player has an equipment in that equipment slot
-                    if (user.player[user.inv[itemName].equipmentType] != "") {
-                        let currentEquippedItem = user.player[user.inv[itemName].equipmentType];
-                        let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
-                        // Adds currently equiped item back into inventory
-                        if (user.inv[currentEquippedItemName] != null) {
-                            user.inv[currentEquippedItemName].quantity += 1;
-                        }
-                        else {
-                            user.inv[currentEquippedItemName] = currentEquippedItem;
-                            user.inv[currentEquippedItemName].quantity = 1;
-                        }
+                    if (Object.keys(user.player[equipmentType])[0] != itemName) {
+                        // Checks if player has an equipment in that equipment slot
+                        if (user.player[equipmentType] != "" || user.player[equipmentType] != null) {
+                            let currentEquippedItem = user.player[equipmentType];
+                            let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
+                            let stats = currentEquippedItem.stats
+                            for (statName in stats) {
+                                for (let i = 0; i < stats[statName].length; i++) {
+                                    switch (stats[statName][i].substring(0, 1)) {
+                                        case "+":
+                                            user.player[statName] -= parseInt(stats[statName][i].substring(1));
+                                            break;
+                                        case "x":
+                                            user.player[statName] /= eval(stats[statName][i].substring(1));
+                                            break;
+                                    }
+                                }
 
+                            }
+                            // Adds currently equiped item back into inventory
+                            if (user.inv[currentEquippedItemName] != null) {
+                                user.inv[currentEquippedItemName].quantity += 1;
+                            }
+                            else {
+                                user.inv[currentEquippedItemName] = currentEquippedItem;
+                                user.inv[currentEquippedItemName].quantity = 1;
+                            }
+
+                        }
+                        await equipItemSetup(user);
+                        await setStatBuffs(user, itemToEquip);
+                        user.player[equipmentType] = itemToEquip;
+                        user.markModified('inv');
+                        user.markModified('player');
+                        user.save()
+                            .then(result => console.log(result))
+                            .catch(err => console.error(err));
+                        message.channel.send(`You've equiped: ${itemName}.`);
+                        return;
                     }
-                    await equipItemSetup(user)
-                    user.player[equipmentType] = itemToEquip;
-                    user.markModified('inv');
-                    user.markModified('player');
-                    user.save()
-                        .then(result => console.log(result))
-                        .catch(err => console.error(err));
-                    message.channel.send(`You've equiped: ${itemName}.`);
-                    return;
+                    else {
+                        message.channel.send(`You already have that equipped.`);
+                    }
                 }
-                message.channel.send(`That is not an equipment.`);
+                else { message.channel.send(`That is not an equipment.`); }
             }
         });
     }
