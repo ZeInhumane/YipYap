@@ -22,11 +22,11 @@ module.exports = {
             // get embed text from lvl_edit
             const embedText = lvl_edit.execute(message, winner, loser, experienceMultiplier);
             // change this to change the chances of getting a lootbox currently set at 50%
-            if (Math.floor(Math.random() * 1 + 1) == 1) {
+            if (Math.floor(Math.random() * 3 + 1) == 3) {
                 commonTreasureChest = true;
             }
             //change this to change the chances of getting a sword pack
-            if (Math.floor(Math.random() * 1 + 1) == 1) {
+            if (Math.floor(Math.random() * 5 + 1) == 5) {
                 weaponPack = true;
             }
             User.findOne({ userID: winner.userID }, async (err, user) => {
