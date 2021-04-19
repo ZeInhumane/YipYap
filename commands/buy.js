@@ -11,16 +11,16 @@ module.exports = {
     execute(message, args) {
         let itemQuantity;
         // help fix this
-        if (isNaN(parseInt(args[-1]))) {
+        if (isNaN(parseInt(args[args.length - 1]))) {
             itemQuantity = 1;
+            console.log("here")
+        } else {
+            itemQuantity = args.pop();
+            console.log("there")
         }
-        itemQuantity = parseInt(args.pop());
         //ensures that at least one item is bought
         let itemName = args.join(" ");
-        if (args.pop() == undefined) {
-            itemQuantity = 1;
-        }
-
+        if(itemName == "") return message.channel.send("SELECT SOMETHING TO BUY. YOU CANNOT BUY NOTHING.. REMEMBER TO SELECT SOMETHING TO BUY!!");
         function titleCase(str) {
             var splitStr = str.toLowerCase().split(' ');
             for (var i = 0; i < splitStr.length; i++) {
@@ -32,7 +32,6 @@ module.exports = {
             itemName = splitStr.join(' ');
         }
         titleCase(itemName);
-
         Shop.findOne({ itemName: itemName }, (err, item) => {
             if (item == null) {
                 message.channel.send(`That item doesn't exist.`);
@@ -71,3 +70,4 @@ module.exports = {
         })
     }
 }
+
