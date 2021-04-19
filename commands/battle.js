@@ -5,7 +5,7 @@ module.exports = {
     aliases: ['b'],
     category: "Fun",
     // change timing in main bot
-    cooldown: 60000,
+    cooldown: 60,
     execute(message, args) {
 
         const Discord = require('discord.js');
