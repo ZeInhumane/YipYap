@@ -64,6 +64,10 @@ module.exports = {
                         message.channel.send(`You do currently have ${user.inv[preEvolution].quantity} ${preEvolution} but you need ${usedForEvolution} ${preEvolution} to evolve ${preEvolution} into a ${itemName} `)
                     }
                     if (user.inv[itemName]) {
+                        if (!user.inv[preEvolution]){
+                            message.channel.send(`You do not have ${preEvolution}`);
+                            return;
+                        }
                         if (user.inv[preEvolution].quantity < usedForEvolution) {
                             errorMessage()
                         } else {
@@ -72,6 +76,10 @@ module.exports = {
                         }
                     }
                     else {
+                        if (!user.inv[preEvolution]){
+                            message.channel.send(`You do not have ${preEvolution}`);
+                            return;
+                        }
                         if (user.inv[preEvolution].quantity < usedForEvolution) {
                             errorMessage()
                         } else {
