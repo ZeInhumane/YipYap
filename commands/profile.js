@@ -14,7 +14,7 @@ module.exports = {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
-                var name = message.member.user.tag.toString();
+                let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
                 const embed = new Discord.MessageEmbed()
@@ -28,9 +28,8 @@ module.exports = {
                     .addField(":shield:  " + user.player.defense,"\u200b",true)
                     .addField(":speedboat:  " + user.player.speed,"\u200b",true)
                 if(Object.values(user.player.weapon) != ""){
-                    embed.addField("⚔️Equipped Equipment⚔️"  ,  Object.values(user.player.weapon)[0].emote + " " +  Object.keys(user.player.weapon) + " " +  Object.values(user.player.weapon)[0].stats[0],true)
+                    embed.addField("⚔️Equipped Equipment⚔️"  ,  Object.values(user.player.weapon)[0].emote + " " +  Object.keys(user.player.weapon) + " " +  Object.values(user.player.weapon)[0].stats.attack + "attack",true)
                 }
-                console.log(embed);
                 message.channel.send(embed);
             }
         });

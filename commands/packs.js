@@ -19,14 +19,14 @@ module.exports = {
         }
         // get type of packs to open
         let packType = args[0];
+        if(packType == undefined || packType == '') return message.channel.send("Please enter a pack type that you would like to open")
         let packEmbed = new Discord.MessageEmbed()
                     .setTitle(`Pack opened!`)
                     .setColor('#000001');
-                ;
         
         function titleCase(str) {
-            var splitStr = str.toLowerCase().split(' ');
-            for (var i = 0; i < splitStr.length; i++) {
+            let splitStr = str.toLowerCase().split(' ');
+            for (let i = 0; i < splitStr.length; i++) {
                 // You do not need to check if i is larger than splitStr length, as your for does that for you
                 // Assign it back to the array
                 splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
@@ -80,7 +80,7 @@ module.exports = {
                         names = Object.keys(spoils)
                         emotes = Object.values(emoji)
                         amts = Object.values(spoils)
-                        for (var f = 0; f < names.length; f++) {
+                        for (let f = 0; f < names.length; f++) {
                             if (user.inv[names[f]]) {
                                 user.inv[names[f]].quantity += amts[f] * packAmt;
                             }
@@ -104,15 +104,15 @@ module.exports = {
                         let goldTotal = 0;
                         // unfair generation, low prob of high numbers, but officially get between 30 to 120 gold
                         for (i = 0; i < packAmt; i++) {
-                            var prec = randomGoldgen(10, 100.01) / 100
-                            var gachaGold = randomGoldgen(30, prec * 120)
+                            let prec = randomGoldgen(10, 100.01) / 100
+                            let gachaGold = randomGoldgen(30, prec * 120)
                             goldTotal += gachaGold;
                         }
                         user.currency += goldTotal;
                         message.channel.send(`${guest} gained ${goldTotal} currency from Gold Pack <:cash_24:751784973488357457>​`);
                         break;
                     case 'Jericho':
-                        var jericho = 0;
+                        let jericho = 0;
                         for (i = 0; i < packAmt; i++) {
                             let jroll = Math.floor(Math.random() * 6);
                             if (jroll == 0){
@@ -145,21 +145,21 @@ module.exports = {
                             'Wooden Sword':{
                                 'emote':"",
                                 'stats':{
-                                    0:"+2atk"
+                                    "attack":['+2']
                                 }
-                                    
+
                             },
                             'Stone Sword':{
                                 'emote':"",
                                 'stats':{
-                                    0:"+3atk"
+                                    "attack":['+3']
                                 }
                                     
                             },
                             'Iron Sword':{
                                 'emote':"",
                                 'stats':{
-                                    0:"+4atk"
+                                    "attack":['+4']
                                 }
                                     
                             }
