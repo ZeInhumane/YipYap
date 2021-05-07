@@ -53,7 +53,7 @@ client.once('ready', () => {
 
 setInterval(botStatus, 60000);
 function botStatus() {
-    client.user.setActivity(client.guilds.cache.size + " servers");
+    client.user.setActivity(client.guilds.cache.size + " servers| -help for help");
 }
 
 client.login(process.env.token);
