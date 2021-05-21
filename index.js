@@ -81,7 +81,7 @@ function cooldownUpdate(command,message,args){
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
 }
-client.login(token);
+client.login(process.env.token);
 
 client.on('message', async message => {
     if (message.author.bot) return;
