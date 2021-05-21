@@ -23,9 +23,7 @@ client.once('ready', () => {
 
     BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
         if (err) console.log(err);
-        console.log("Entered Find")
         if (Data == null) {
-            console.log("Data is nothing")
             Data = new BotData({
                 _id: mongoose.Types.ObjectId(),
                 dataName: 'Cooldowns',
@@ -36,10 +34,8 @@ client.once('ready', () => {
                 .catch(err => console.error(err));
         }
         else {
-            console.log("Cooldown gotten")
             cooldowns = Data.data;
         }
-        console.log(cooldowns)
         setInterval(() => {
             BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
                 Data.data = cooldowns
@@ -55,8 +51,37 @@ setInterval(botStatus, 60000);
 function botStatus() {
     client.user.setActivity(client.guilds.cache.size + " servers| -help for help");
 }
+function cooldownUpdate(command,message,args){
+    // discord js api for cooldown
+    if (!cooldowns.has(command.name)) {
+        cooldowns.set(command.name, new Discord.Collection());
+    }
 
-client.login(process.env.token);
+    const now = Date.now();
+    const timestamps = cooldowns.get(command.name);
+    const cooldownAmount = (command.cooldown || 3) * 1000;
+
+    if (timestamps.has(message.author.id)) {
+        var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+
+        if (now < expirationTime) {
+            const timeLeft = (expirationTime - now) / 1000;
+            message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+        }
+        else {
+            command.execute(message, args);
+            timestamps.delete(message.author.id);
+            timestamps.set(message.author.id, now);
+            setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+        }
+    }
+    else {
+        command.execute(message, args);
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+    }
+}
+client.login(token);
 
 client.on('message', async message => {
     if (message.author.bot) return;
@@ -65,9 +90,6 @@ client.on('message', async message => {
     const data = await prefix.findOne({
         GuildID: message.guild.id
     });
-
-    const messageArray = message.content.split(' ');
-
     //If there was a data, use the database prefix BUT if there is no data, use the default prefix which you have to set!
     if (data) {
         const prefix = data.Prefix;
@@ -80,36 +102,7 @@ client.on('message', async message => {
             message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
         }
         else {
-            // discord js api for cooldown
-            if (!cooldowns.has(command.name)) {
-                cooldowns.set(command.name, new Discord.Collection());
-            }
-
-            const now = Date.now();
-            const timestamps = cooldowns.get(command.name);
-            const cooldownAmount = (command.cooldown || 3) * 1000;
-            console.log(command.cooldown)
-
-            if (timestamps.has(message.author.id)) {
-                var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-                if (now < expirationTime) {
-                    const timeLeft = (expirationTime - now) / 1000;
-                    message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-                }
-                else {
-                    command.execute(message, args);
-                    timestamps.delete(message.author.id);
-                    timestamps.set(message.author.id, now);
-                    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-                    console.log(cooldownAmount)
-                }
-            }
-            else {
-                command.execute(message, args);
-                timestamps.set(message.author.id, now);
-                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-            }
+            cooldownUpdate(command,message,args);
         }
     } else if (!data) {
         //set the default prefix here
@@ -123,36 +116,7 @@ client.on('message', async message => {
             message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
         }
         else {
-            // discord js api for cooldown
-            if (!cooldowns.has(command.name)) {
-                cooldowns.set(command.name, new Discord.Collection());
-            }
-
-            const now = Date.now();
-            const timestamps = cooldowns.get(command.name);
-            const cooldownAmount = (command.cooldown || 3) * 1000;
-            console.log(command.cooldown)
-
-            if (timestamps.has(message.author.id)) {
-                var expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-                if (now < expirationTime) {
-                    const timeLeft = (expirationTime - now) / 1000;
-                    message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
-                }
-                else {
-                    command.execute(message, args);
-                    timestamps.delete(message.author.id);
-                    timestamps.set(message.author.id, now);
-                    setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-                    console.log(cooldownAmount)
-                }
-            }
-            else {
-                command.execute(message, args);
-                timestamps.set(message.author.id, now);
-                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-            }
+            cooldownUpdate(command,message,args);
         }
     }
 });
