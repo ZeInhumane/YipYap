@@ -64,7 +64,7 @@ module.exports = {
                     let equipmentType = user.inv[itemName].equipmentType;
                     if (Object.keys(user.player[equipmentType])[0] != itemName) {
                         // Checks if player has an equipment in that equipment slot
-                        if (Object.keys(user.player[equipmentType]).length === 0) {
+                        if (Object.keys(user.player[equipmentType]).length != 0) {
                             
                             let currentEquippedItem = user.player[equipmentType];
                             let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
