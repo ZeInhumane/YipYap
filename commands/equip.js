@@ -27,7 +27,7 @@ module.exports = {
         async function equipItemSetup(user) {
             itemToEquip = user.inv[itemName];
             itemToEquip = { [itemName]: itemToEquip };
-            user.inv[itemName].quantity - 1;
+            user.inv[itemName].quantity -= 1;
             if (user.inv[itemName].quantity == 0) {
                 delete user.inv[itemName];
             }
