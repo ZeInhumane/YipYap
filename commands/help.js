@@ -14,14 +14,15 @@ module.exports = {
             GuildID: message.guild.id
         });
         if (!command || args[0] == undefined) {
-            var helpEmbed = new Discord.MessageEmbed()
+            let helpEmbed = new Discord.MessageEmbed()
                 .setColor('#FF69B4')
-                .setTitle('All commands, To get help for each command do =help {command name}');
-            var fieldsToAdd = [];
+                .setTitle('Enter this server for updates on the bot \n https://discord.gg/cJgAG3W%7D');
+            let fieldsToAdd = [];
             for (let commandName of client.commands.keys()) {
                 let categoryExists = false;
                 let commandCategory = client.commands.get(commandName).category;
-                for (var i = 0; i < fieldsToAdd.length; i++) {
+                
+                for (let i = 0; i < fieldsToAdd.length; i++) {
                     if (commandCategory == fieldsToAdd[i][0]) {
                         fieldsToAdd[i][1].push(commandName);
                         categoryExists = true;
@@ -30,12 +31,18 @@ module.exports = {
                 if (!categoryExists) {
                     fieldsToAdd.push([commandCategory, [commandName]]);
                 }
+            
+            }
+            if (!(message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557")) {
+                console.log(fieldsToAdd)
+                fieldsToAdd.shift()
+                console.log(fieldsToAdd)
             }
             let numCategory = fieldsToAdd.length;
-            for (var i = 0; i < numCategory; i++) {
+            for (let i = 0; i < numCategory; i++) {
                 let fieldValue = "";
                 let numCommandsInCategory = fieldsToAdd[i][1].length;
-                for (var j = 0; j < numCommandsInCategory; j++) {
+                for (let j = 0; j < numCommandsInCategory; j++) {
                     fieldValue += "`" + fieldsToAdd[i][1][j] + "` ";
                 }
                 helpEmbed.addField(fieldsToAdd[i][0], fieldValue);

@@ -35,7 +35,7 @@ module.exports = {
                     .addField(":speedboat:  " + user.player.speed,"\u200b",true)
                     .addField('Level: ' , user.level,true)
                     .addField('Current Experience: '  , `${user.exp}/${to_upgrade}`,true)
-                    .addField('Experience to next level: ', to_upgrade,true)
+                    .addField('Experience to next level: ', to_upgrade-user.exp,true)
                     .addField('Total sp: ' , user.sp,true)
                     .addField(`Location Name: \n${locationInfo.Level.LocationName}`, "\u200b", true)
                     .setImage(locationInfo.Level.LocationImage)
