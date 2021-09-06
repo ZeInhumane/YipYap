@@ -5,9 +5,10 @@ const User = require('../models/user');
 module.exports = {
     name: "buy",
     description: "Buys something from the shop",
-    cooldown: 5,
+    syntax: "{item from the shop}",
     aliases: ['purchase'],
     category: "Economy",
+    cooldown: 5,
     execute(message, args) {
         let itemQuantity;
         // help fix this
@@ -15,15 +16,15 @@ module.exports = {
             itemQuantity = 1;
             console.log("here")
         } else {
-            itemQuantity = args.pop();
+            itemQuantity = parseInt(args.pop());
             console.log("there")
         }
         //ensures that at least one item is bought
         let itemName = args.join(" ");
-        if(itemName == "") return message.channel.send("SELECT SOMETHING TO BUY. YOU CANNOT BUY NOTHING.. REMEMBER TO SELECT SOMETHING TO BUY!!");
+        if(itemName == "") return message.channel.send("SELECT SOMETHING TO BUY. YOU CANNOT BUY NOTHING.. REMEMBER TO SELECT SOMETHING TO BUY!! NOTHING IS NOT SOMETHING TO BUY BUT SOMETHING IS NOT NOTHING THAT YOU BUY");
         function titleCase(str) {
-            var splitStr = str.toLowerCase().split(' ');
-            for (var i = 0; i < splitStr.length; i++) {
+            let splitStr = str.toLowerCase().split(' ');
+            for (let i = 0; i < splitStr.length; i++) {
                 // You do not need to check if i is larger than splitStr length, as your for does that for you
                 // Assign it back to the array
                 splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
@@ -70,4 +71,3 @@ module.exports = {
         })
     }
 }
-
