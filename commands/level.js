@@ -1,38 +1,39 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
+const findPrefix = require('../functions/findPrefix');
 
 module.exports = {
     name: "level",
-    description: "Allows you to check the current exp, exp till next level and current level of character",
+    description: "Checks for level, basically a simplified version of profile.",
     syntax: "",
-    cooldown: 3,
+    cooldown: 5,
     category: "Fun",
     execute(message, args) {
-        User.findOne({ userID: message.author.id }, (err, user) => {
+        User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
+                //Getting the prefix from db
+                const prefix = await findPrefix(message.guild.id);
+                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
+                return;
             }
-            else { 
-                // exp needed for each level
-                var next_lvl = Math.floor(user.level * (user.level/10 * 15));
-                var to_upgrade = next_lvl - user.exp;
+            // exp needed for each level
+            let next_lvl = Math.floor(user.level * (user.level / 10 * 15));
+            let to_upgrade = next_lvl - user.exp;
 
-                // put into discord
-                var name = message.member.user.tag.toString();
-                name = name.split("#", name.length - 4);
-                name = name[0];
-                const embed = new Discord.MessageEmbed()
-                    .setTitle(name + "'s level information")
-                    .setColor('#000000')
-                    .addField('level: ' + user.level, "​")
-                    .addField('current exp: ' + user.exp, "​")
-                    .addField('exp to next level: ' + to_upgrade, "​")
-                    .addField('total sp: ' + user.sp, "​")
-                message.channel.send(embed);
-            }
+            // put into discord
+            let name = message.member.user.tag.toString();
+            // Removes tag from name
+            name = name.split("#", name.length - 4)[0];
+
+            const embed = new Discord.MessageEmbed()
+                .setTitle(name + "'s level information")
+                .setColor('#000000')
+                .addField('Level: ', ` ${user.level}`, true)
+                .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
+                .addField('Experience to next level: ', ` ${to_upgrade}`, true)
+                .addField('Total Available Special Points: ', ` ${user.sp}`, true)
+            message.channel.send({ embeds: [embed] });
         });
     }
 }
-    
-    

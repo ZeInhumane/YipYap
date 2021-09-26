@@ -12,7 +12,7 @@ module.exports = {
     execute(message, args) {
         const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();
-        if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625") {
+        if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557") {
         User.findOne({ userID: message.author.id }, (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");

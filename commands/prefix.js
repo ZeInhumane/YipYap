@@ -2,15 +2,16 @@ const prefixModel = require("../models/prefix")
 
 module.exports = {
     name: "prefix",
-    description: "Displays user profile, stats and weapons",
+    description: "Change the command prefix with this command",
     syntax: "",
     aliases:[],
+    cooldown: 5,
     category: "Admin",
     async execute(message, args) {
         const data = await prefixModel.findOne({
             GuildID: message.guild.id
         });
-        if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.channel.send('You must have the **Manage Server** permission to use this command!')
+        if (!message.member.permissions.has('MANAGE_MESSAGES')) return message.channel.send('You must have the **Manage Server** permission to use this command!')
         if (!args[0]) return message.channel.send('You must provide a **new prefix**!');
     
         if (args[0].length > 5) return message.channel.send('Your new prefix must be under \`5\` characters!')

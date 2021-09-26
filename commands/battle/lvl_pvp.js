@@ -6,17 +6,17 @@ module.exports = {
 
         // level diff to calculate exp multiplier
         if (winner.level > loser.level) {
-            var lvl_diff = winner.level - loser.level;
-            var winner_higher = true;
+            let lvl_diff = winner.level - loser.level;
+            let winner_higher = true;
         }
         else {
-            var lvl_diff = loser.level - winner.level;
-            var winner_higher = false;
+            let lvl_diff = loser.level - winner.level;
+            let winner_higher = false;
         }
 
         // calculating actual exp characters get
         function winning_exp(winner_higher, lvl_diff) {
-            var exp_gain;
+            let exp_gain;
             if (winner_higher) {
                 exp_gain = Math.ceil(1 / lvl_diff * 10);
             }
@@ -27,7 +27,7 @@ module.exports = {
         }
 
         function losing_exp(winner_higher, lvl_diff) {
-            var exp_gain;
+            let exp_gain;
             if (winner_higher) {
                 exp_gain = Math.ceil(lvl_diff + lvl_diff * 0.5 + 3);
             }
@@ -37,8 +37,8 @@ module.exports = {
             return exp_gain;
         }
 
-        var winner_exp = winning_exp(winner_higher, lvl_diff);
-        var loser_exp = losing_exp(winner_higher, lvl_diff);
+        let winner_exp = winning_exp(winner_higher, lvl_diff);
+        let loser_exp = losing_exp(winner_higher, lvl_diff);
 
         // adding exp
         winner.player.exp += winner_exp;
@@ -50,8 +50,8 @@ module.exports = {
         // calculating if user lvl up or not
         class is_lvlup {
             constructor(current_exp, user_lvl, user_name) {
-                var total_lvls = 0;
-                var next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 21));
+                let total_lvls = 0;
+                let next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 21));
                 while (current_exp >= next_lvl) {
                     current_exp -= next_lvl;
                     total_lvls++;
@@ -79,8 +79,8 @@ module.exports = {
         }
 
         // updating level and current exp to database
-        var update_winner = new is_lvlup(winner.exp, winner.level, winner.userID);
-        var update_loser = new is_lvlup(loser.exp, loser.level, loser.userID);
+        let update_winner = new is_lvlup(winner.exp, winner.level, winner.userID);
+        let update_loser = new is_lvlup(loser.exp, loser.level, loser.userID);
         User.findOne({ userID: winner.userID }, (err, user) => {
             user.exp = update_winner.new_exp();
             user.lvl = update_winner.new_lvl();

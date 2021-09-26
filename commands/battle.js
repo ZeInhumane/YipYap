@@ -1,17 +1,19 @@
+const Discord = require('discord.js');
+const botLevel = require('../models/botLevel');
+const User = require('../models/user');
+const win = require('./battle/win.js');
+const userEffects = require('../models/userEffects.js');
+
 module.exports = {
     name: "battle",
-    description: "Battle allows you to engage enemies and gain gold and experience as a result of your engagement",
+    description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
     syntax: "",
+    cooldown: 30,
     aliases: ['b'],
     category: "Fun",
     // change timing in main bot
-    cooldown: 60,
-    execute(message, args) {
-
-        const Discord = require('discord.js');
-        const botLevel = require('../models/botLevel');
-        const User = require('../models/user');
-        const win = require('./battle/win.js');
+    cooldown: 0,
+    async execute(message, args) {
         const ultimateEmote = ":Ultimate:822042890955128872"
         const emptyUltimateEmote = "<:blank:829270386986319882>"
         const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>"
@@ -45,7 +47,7 @@ module.exports = {
             }
 
             if (isHero) {
-                if (playerAction == "🛡️") {
+                if (playerAction == "defend") {
                     // Change it later so higher level reduces damagetaken too
                     if (defender.defense > 99) {
                         damageTaken *= 1 / 100;
@@ -87,22 +89,46 @@ module.exports = {
                 this.level = lvl;
             }
         }
+
         // Battle function
-        async function battle(user, enemy) {
-            let turn, playerTurnAction, enemyTurnAction, collectorExpireTime;
-            let player = user.player;
-            function playerTurn(action) {
-                if (action == "⚔️") {
-                    playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack, enemy, false) + ' damage!\n';
+        async function battle(user, player, enemy, expMsg, goldMsg) {
+            let playerTurnAction = "nothing";
+            let enemyTurnAction = "nothing";
+
+            function dodgeAttack(attacker, defender) {
+                if (defender.speed > attacker.speed) {
+                    speedDifference = defender.speed - attacker.speed;
+                    rng = speedDifference / attacker.speed;
+                    if (rng > 0.2) {
+                        rng = 0.2;
+                    }
+                    dodge = Math.random() <= rng;
+                    return dodge;
                 }
-                else if (action == "🛡️") {
+                return false;
+            }
+
+            function playerTurn(action) {
+                if (action == "attack") {
+                    if (dodgeAttack(player, enemy)) {
+                        playerTurnAction = `${player.name}'s turn!\n${player.name} attacked but ${enemy.name} dodged!\n`
+                    }
+                    else {
+                        playerTurnAction = `${player.name}'s turn!\n${player.name} does ${takeDamage(player.attack, enemy, false)} damage!\n`;
+                    }
+                }
+                else if (action == "defend") {
                     playerTurnAction = "You shield yourself, it works";
                 }
-                else if (action == "Ultimate") {
+                else if (action == "ultimate") {
                     if (ultimate == 100) {
                         ultimate = 0;
+                        // Change ult button to red
+                        row.components[2].setStyle('DANGER');
+
                         playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack * 2.5, enemy, false)
-                            + ' damage with his super saiyann ultimate!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n';
+                            + ' damage with his super saiyann ultimate!!\n';
+                        displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
                     }
                     else {
                         playerTurnAction = `You only have ${ultimate} ultimate charge, you need 100 to use your ultimate.`;
@@ -115,166 +141,241 @@ module.exports = {
             }
             // Gives an Enemy (Probably add shielding here)
             function enemyTurn() {
-                enemyTurnAction = `${enemy.name}'s turn!\n${enemy.name} does ${takeDamage(enemy.attack, player, true)} damage!\n`;
+                if (dodgeAttack(enemy, player)) {
+                    enemyTurnAction = `${enemy.name}'s turn!\n${enemy.name} attacked but ${player.name} dodged!\n`
+                }
+                else {
+                    enemyTurnAction = `${enemy.name}'s turn!\n${enemy.name} does ${takeDamage(enemy.attack, player, true)} damage!\n`;
+                }
             }
 
             // Updates battle embed to display ongoing input
-            function createUpdatedMessage() {
+            async function createUpdatedMessage(expMsg, goldMsg) {
                 let updatedBattleEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(user.player.name + '\'s ultimate charge: ' + ultimate + "/100")
                     .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                     .setDescription(displayUltimateString)
                     .addFields(
-                        { name: 'Player HP', value: `${user.player.name}'s **HP**: ${user.player.hp}/${originalPlayerHP}` },
-                        { name: 'Player Lvl', value: user.level },
-                        { name: 'Enemy HP', value: `${enemy.name}'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
-                        { name: 'Enemy Lvl', value: enemy.level },
-                        { name: '\u200B', value: '\u200B' },
+                        { name: 'Experience Ticket', value: expMsg, inline: true },
+                        { name: 'Gold Ticket', value: goldMsg, inline: true },
+                        { name: 'Player HP', value: `Lvl ${user.level} **${player.name}**'s **HP**: ${player.hp}/${originalPlayerHP}` },
+                        { name: 'Enemy HP', value: `Lvl ${enemy.level} **${enemy.name}**'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
                         { name: 'Turn', value: playerTurnAction },
                         { name: '​', value: enemyTurnAction },
                     )
-                    .addField(`Location Name: \n${locationInfo.Level.LocationName}`, `Applied modifiers from ${locationInfo.Level.LocationName}\n${locationInfo.Level.Description}`, true)
-                    .setImage(locationInfo.Level.LocationImage)
-                    .setTimestamp()
-                    .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+                    .setImage(locationInfo._doc.LocationImage)
+                    .setFooter(`${locationInfo._doc.Description}`);
                 return updatedBattleEmbed;
             }
-            // Battle goes on when Player and Enemy is still alive
-            while (!(player.hp <= 0) && !(enemy.hp <= 0)) {
 
+            // Battle goes on when Player and Enemy is still alive
+            let isExpired = false;
+            while (player.hp > 0 && enemy.hp > 0 && !isExpired) {
                 // awaits Player reaction
-                await new Promise((resolve, reject) => {
-                    const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
-                    collector.on('collect', r => {
+                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                    .then(async i => {
                         currentColor = '#0099ff';
-                        collector.time = 60000;
-                        timea = collector.time;
-                        // Cheap fix to display battle run out time(may change)
-                        clearInterval(collectorExpireTime);
-                        collectorExpireTime = setInterval(function () {
-                            timea -= 1000;
-                        }, 1000);
-                        playerAction = r.emoji.name;
-                        resolve();
-                    });
-                    // Continued cheap fix
-                    collector.on('end', () => {
-                        botEmbedMessage.edit(createUpdatedMessage());
-                        if (timea <= 1000) {
-                            message.channel.send('Battle expired. Your fatass took too long');
-                            clearInterval(collectorExpireTime);
+                        playerAction = i.customId;
+
+                        // Checks for who has first turn
+                        if (player.speed > enemy.speed) {
+                            playerTurn(playerAction);
+                            if (enemy.hp > 0) {
+                                enemyTurn();
+                            }
+                            else {
+                                enemyTurnAction = 'Enemy has been defeated!'
+                            }
                         }
+                        else {
+                            enemyTurn();
+                            if (player.hp > 0) playerTurn(playerAction);
+                        }
+                        if (enemy.hp < 0) {
+                            enemy.hp = 0;
+                            currentColor = '#FF0000';
+                        };
+                        if (player.hp < 0) {
+                            player.hp = 0;
+                            currentColor = '#FF0000';
+                        };
+                        if (ultimate == 100) {
+                            // Change ult button to green
+                            row.components[2].setStyle('SUCCESS');
+                        }
+                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(expMsg, goldMsg)], components: [row] });
+                    })
+                    .catch(async err => {
+                        currentColor = '#FF0000';
+                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(expMsg, goldMsg)], components: [] });
+                        message.channel.send('Battle expired. Your fatass took too long');
+                        isExpired = true;
                     });
-                });
-                // Checks for who has first turn
-                if (player.speed > enemy.speed) {
-                    playerTurn(playerAction);
-                    if (enemy.hp > 0) {
-                        enemyTurn();
-                    }
-                    else {
-                        enemyTurnAction = 'Enemy has been defeated!'
-                    }
+            }
+            // Removes buttons
+            botEmbedMessage.edit({ embeds: [await createUpdatedMessage(expMsg, goldMsg)], components: [] });
+
+            if (!isExpired) {
+                // Checks for who won
+                if (player.hp > 0) {
+                    win.execute(message, user, enemy, locationInfo._doc);
                 }
                 else {
-                    enemyTurn();
-                    if (player.hp > 0) playerTurn(playerAction);
+                    message.channel.send(`${player.name} has been defeated by ${enemy.name}!`);
                 }
-                if (enemy.hp < 0) {
-                    enemy.hp = 0;
-                    currentColor = '#FF0000';
-                };
-                if (player.hp < 0) {
-                    player.hp = 0;
-                    currentColor = '#FF0000';
-                };
-                botEmbedMessage.edit(createUpdatedMessage());
-            }
-            // Checks for who won
-            if (player.hp > 0) {
-                win.execute(message, user, enemy, location);
-                clearInterval(collectorExpireTime);
-            }
-            else {
-                message.channel.send(`${player.name} has been defeated by ${enemy.name}!`);
-                clearInterval(collectorExpireTime);
             }
         }
         async function generateEnemyName() {
             let locationInfo;
             let enemyName;
-            locationInfo = await botLevel.findOne({ 'Level.Location': location }, (err, enemy) => {
+            locationInfo = await botLevel.findOne({ 'Location': location }, (err, enemy) => {
             });
-            enemyName = locationInfo.Level.Enemy;
+            enemyName = locationInfo._doc.Enemy;
             return enemyName[Math.floor(Math.random() * enemyName.length)];
         }
 
         // Makes new random enemy
         async function makeNewEnemy(user) {
-            locationInfo = await botLevel.findOne({ 'Level.Location': location }, (err, enemy) => {
+            locationInfo = await botLevel.findOne({ 'Location': location }, (err, enemy) => {
             });
             let enemyLvl = Math.floor(Math.random() * 11) - 5 + user.level;
             if (enemyLvl < 1) enemyLvl = 1;
+
+            let baseStat = enemyLvl / 2 < 1 ? Math.floor(enemyLvl / 2) : 1;
+            let minStat = 5;
             // Takes the buff from the db and applies it to the enemies
-            const { hp: hpMulti, attack: attackMulti, defense: defenseMulti, speed: speedMulti } = locationInfo.Level.Buff;
-            let enemyHP = Math.floor((Math.random() * 51 + enemyLvl) * hpMulti);
-            let enemyAttack = Math.floor((Math.random() * enemyLvl + 1) * attackMulti);
-            let enemyDefense = Math.floor((Math.random() * enemyLvl + 1) * defenseMulti);
-            let enemySpeed = Math.floor((Math.random() * enemyLvl + 1) * speedMulti);
+            const { hp: hpMulti, attack: attackMulti, defense: defenseMulti, speed: speedMulti } = locationInfo._doc.Buff;
+            let enemyHP = Math.floor((Math.random() * (Math.exp(enemyLvl) ** (1 / 20)) + minStat * 5 + enemyLvl * 5) * hpMulti);
+            let enemyAttack = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * attackMulti);
+            let enemyDefense = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * defenseMulti);
+            let enemySpeed = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * speedMulti);
             let enemyType = "undead";
             let enemy = new Enemy(await generateEnemyName(), enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType, enemyLvl);
             return enemy;
         }
 
-        async function getDescription() {
-            location = await botLevel.findOne({ 'Level.Location': location });
-            return location.Level.Description;
-        }
 
-        let botEmbedMessage, playerAction, filter, timea, description;
+        let botEmbedMessage, playerAction, filter, row;
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
+                let expMsg = 'No active EXP Ticket.';
+                let goldMsg = 'No active Gold Ticket.';
+                await userEffects.findOne({ userID: message.author.id }, async (err, effects) => {
+
+                    if (effects != null) {
+                        let tickets = Object.keys(effects.tickets)
+                        for (i = 0; i < tickets.length; i++) {
+                            let ticketName = tickets[i]
+                            let ticket = effects.tickets[ticketName];
+                            let today = new Date();
+                            if (today >= ticket.endTime) {
+                                let msg = `You do not have auto active. Your ${ticketName} has been used up.`;
+                                if (ticket.auto == 'true') {
+                                    await User.findOne({ userID: message.author.id }, async (err, user) => {
+                                        if (user.inv[ticketName]) {
+                                            msg = `Auto is active, another ${ticketName} has been activated.`
+                                            user.inv[ticketName].quantity -= 1;
+                                            ticket.startTime = new Date()
+                                            Date.prototype.addHours = function (h) {
+                                                this.setHours(this.getHours() + h);
+                                                return this;
+                                            }
+                                            ticket.endTime = new Date().addHours(ticket.duration)
+                                            if (user.inv[ticketName].quantity == 0) {
+                                                msg += ` This is your last ${ticketName}.`
+                                                delete user.inv[ticketName]
+                                            }
+
+                                        }
+                                        else {
+                                            msg = `Your inventory does not have any more ${ticketName}. auto will be deactivated.`
+                                            delete effects.tickets[ticketName];
+                                        }
+                                        user.markModified('inv');
+                                        user.save()
+                                            .then(result => console.log(result))
+                                            .catch(err => console.error(err));
+                                    })
+                                }
+                                else {
+                                    delete effects.tickets[ticketName];
+                                }
+                                message.channel.send(msg)
+                            }
+                        }
+                        let expTicketName = Object.keys(effects.tickets).filter(key => key.includes('Experience'))[0]
+                        let expTicketObject = effects.tickets[expTicketName]
+                        let goldTicketName = Object.keys(effects.tickets).filter(key => key.includes('Gold'))[0]
+                        let goldTicketObject = effects.tickets[goldTicketName]
+                        if (expTicketName) {
+                            expMsg = `${expTicketName} active: Boost Experience gained by ${expTicketObject.multiplier}`
+                        }
+                        if (goldTicketName) {
+                            goldMsg = `${goldTicketName} active: Boost Gold gained by ${goldTicketObject.multiplier}`
+                        }
+                        effects.markModified('tickets');
+                        effects.save()
+                            .then(result => console.log(result))
+                            .catch(err => console.error(err));
+                    }
+                });
                 location = user.location;
                 let enemy = await makeNewEnemy(user);
-                // Filter for which emojis the reaction collector will accept 
-                filter = (reaction, user) => {
-                    if ((reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️' || reaction.emoji.name === 'Ultimate') && user == message.author.id) {
-                        return reaction;
-                    }
+                // Filter so only user can interact with the buttons
+                filter = i => {
+                    i.deferUpdate();
+                    return i.user.id === message.author.id;
                 };
 
-                description = await getDescription();
-                // Makes battle embed probably need to add more things like speed
-                originalPlayerHP = user.player.hp;
+                // user.player
+                let player = { name: user.player.name };
+
+                for (stat in user.player.baseStats) {
+                    player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat)
+                }
+
+                originalPlayerHP = player.hp;
                 originalEnemyHP = enemy.hp;
+                // Makes battle embed
                 const battleEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(user.player.name + '\'s ultimate charge: ' + ultimate + "/100")
                     .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                     .setDescription(displayUltimateString)
                     .addFields(
-                        { name: 'Player HP', value: `${user.player.name}'s **HP**: ${user.player.hp}/${originalPlayerHP}` },
-                        { name: 'Player Lvl', value: user.level },
-                        { name: 'Enemy HP', value: `${enemy.name}'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
-                        { name: 'Enemy Lvl', value: enemy.level },
-                        { name: '\u200B', value: '\u200B' }
+                        { name: 'Experience Ticket', value: expMsg, inline: true },
+                        { name: 'Gold Ticket', value: goldMsg, inline: true },
+                        { name: 'Player HP', value: `Lvl ${user.level} **${player.name}**'s **HP**: ${player.hp}/${originalPlayerHP}` },
+                        { name: 'Enemy HP', value: `Lvl ${enemy.level} **${enemy.name}**'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
                     )
-                    .addField(`Location Name: \n${locationInfo.Level.LocationName}`, `Applied \n${locationInfo.Level.Description}`, true)
-                    .setImage(locationInfo.Level.LocationImage)
-                    .setFooter('Fight', 'https://tinyurl.com/y4yl2xaa');
+                    .setImage(locationInfo._doc.LocationImage)
+                    .setFooter(`${locationInfo._doc.Description}`);
 
-                message.channel.send(battleEmbed)
+                row = new Discord.MessageActionRow()
+                    .addComponents(
+                        new Discord.MessageButton()
+                            .setCustomId('attack')
+                            .setLabel('⚔️')
+                            .setStyle('PRIMARY'),
+                        new Discord.MessageButton()
+                            .setCustomId('defend')
+                            .setLabel('🛡️')
+                            .setStyle('PRIMARY'),
+                        new Discord.MessageButton()
+                            .setCustomId('ultimate')
+                            .setLabel('')
+                            .setStyle('DANGER')
+                            .setEmoji(ultimateEmote),
+                    );
+
+                message.channel.send({ embeds: [battleEmbed], components: [row] })
                     .then(botMessage => {
                         botEmbedMessage = botMessage;
-                        botMessage.react("⚔️");
-                        botMessage.react("🛡️");
-                        botMessage.react(ultimateEmote);
-                        // Replace matthew with the message author
-                        battle(user, enemy);
+                        battle(user, player, enemy, expMsg, goldMsg);
                     });
             }
         });
