@@ -6,11 +6,12 @@ module.exports = async function (equipmentName) {
         "Uncommon": 3000,
         "Rare": 9000,
         "Epic": 40000,
-        "Lengendary": 100000,
+        "Legendary": 100000,
         "Mythic": 500000
     }
     let equipment = await findItem(equipmentName);
     equipment.level = 1;
+    equipment.ascension = 0;
     equipment.exp = 0;
     equipment.quantity = 1;
     equipment.expToLevelUp = expRarityTable[equipment.rarity];

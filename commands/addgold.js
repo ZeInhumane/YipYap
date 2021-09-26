@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
+const findPrefix = require('../functions/findPrefix');
 
 module.exports = {
     name: "addgold",
@@ -9,46 +10,42 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    execute(message, args) {
-        const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
-        const transferTarget = message.mentions.users.first();
-        if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557") {
-        User.findOne({ userID: message.author.id }, (err, user) => {
-            if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
-            }
-            else {
-                if (!transferAmount || isNaN(transferAmount)) {
-                    message.channel.send(`Sorry ${message.author}, that's an invalid amount.`);
+    async execute(message, args) {
+        // Check for admin ID
+        switch (message.author.id) {
+            case "752724534028795955":
+            case "344431410360090625":
+            case "272202473827991557":
+                let transferAmount = 1;
+                const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+                const transferTarget = message.mentions.users.first();
+                if (transferTarget == undefined) {
+                    message.channel.send("Invalid id");
                     return;
                 }
-                if (transferAmount <= 0) {
-                    message.channel.send(`Please enter an amount greater than zero, ${message.author}.`);
-                    return;
-                }
-            }
-            if(transferTarget == undefined){
-                message.channel.send("invalid id");
-                return;
-            }
-            User.findOne({ userID: transferTarget.id }, (err, target) => {
-                if (target == null) {
-                    message.channel.send("The person you are trying to give money to has not set up a player yet! Do =start to start.");
-                }
-                else {
-                    target.currency += transferAmount;
-                    user.save()
-                        .then(result => console.log(result))
-                        .catch(err => console.error(err));
-                    target.save()
-                        .then(result => console.log(result))
-                        .catch(err => console.error(err));
-                    message.channel.send(`Successfully added ${transferAmount}<:cash_24:751784973488357457> to ${transferTarget.tag}. Their current balance is ${target.currency}<:cash_24:751784973488357457>`);
-                }
-            });
-        })
-    }else{
-        message.channel.send("You have to be a bot developer to use this command")
+
+                User.findOne({ userID: transferTarget.id }, async (err, target) => {
+                    if (target == null) {
+                        //Getting the prefix from db
+                        const prefix = await findPrefix(message.guild.id);
+                        message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
+                    }
+                    else {
+                        // Check if user entered a vaild transfer amount (else use default)
+                        if (transferAmountIndex != -1) {
+                            transferAmount = parseInt(args[transferAmountIndex]);
+                        }
+                        target.currency += transferAmount;
+                        target.save()
+                            .then(result => console.log(result))
+                            .catch(err => console.error(err));
+                        message.channel.send(`Successfully added ${transferAmount}<:cash_24:751784973488357457> to ${transferTarget.tag}. Their current balance is ${target.currency}<:cash_24:751784973488357457>`);
+                    }
+                });
+                break;
+
+            default:
+                message.channel.send("You have to be a bot developer to use this command");
+        }
     }
-}
 }

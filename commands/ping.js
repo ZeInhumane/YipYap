@@ -4,7 +4,7 @@ module.exports = {
     name: 'ping',
     description: 'Returns bot and API latency in milliseconds.',
     syntax: "",
-    cooldown:10,
+    cooldown: 10,
     category: "Utility",
     async execute(message, args) {
         const client = require('../index.js').client;
@@ -15,6 +15,6 @@ module.exports = {
             .setTitle('🏓 Pong!')
             .setDescription(`Bot Latency is **${Math.floor(msg.createdTimestamp - message.createdTimestamp)} ms** \nAPI Latency is **${Math.round(client.ws.ping)} ms**`);
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     }
 }

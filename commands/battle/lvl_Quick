@@ -1,0 +1,8 @@
+
+what we need to make lvls:
+
+1. (storage)database to store exp earned ==> added the exp part in user.js
+2. (mechanics)how much exp earned each battle
+3. (mechanics)lvl mechanics, how much exp needed to upgrade
+4. (console.log)when lvl up must congrat the people and after each match how much exp they gain or have
+5. (mechanics)each lvl gained what do u obtain? get better stats or smt?

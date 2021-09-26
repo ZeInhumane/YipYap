@@ -1,98 +1,67 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
+const findPrefix = require('../functions/findPrefix');
+const findItem = require('../functions/findItem.js');
+const titleCase = require('../functions/titleCase');
 
 module.exports = {
     name: "evolve",
-    description: "Upgrade lootboxes. Every 5 of previous tier gets the next tier upgrade, this also consumes the lootbox",
+    description: "Evolve your lootboxes. Every 5 of previous tier gets the next tier upgrade, this also consumes the lootbox",
     aliases: ['ev'],
+    cooldown: 5,
     syntax: "{evolution type}",
     category: "Fun",
-    execute(message, args) {
+    async execute(message, args) {
         const evoType = args[0];
         const itemQuantity = 1;
         const usedForEvolution = 5;
-        let itemName;
-        let preEvolution;
-        let chestEmote;
-        const type = "Chest"
-        switch (evoType) {
-            case "common":
-                itemName = "Uncommon Treasure Chest"
-                preEvolution = "Common Treasure Chest"
-                chestEmote = "<:UncommonChest:820272834348711976>"
-                break;
-            case "uncommon":
-                itemName = "Rare Treasure Chest"
-                preEvolution = "Uncommon Treasure Chest"
-                chestEmote = "<:RareChest:820273250629582858>"
-                break;
-            case "rare":
-                itemName = "Epic Treasure Chest"
-                preEvolution = "Rare Treasure Chest"
-                chestEmote = "<:EpicChest:820273750289023007>"
-                break;
-            case "epic":
-                itemName = "Legendary Treasure Chest"
-                preEvolution = "Epic Treasure Chest"
-                chestEmote = "<:LegendaryChest:820274118817611777>"
-                break;
-            case "legendary":
-                itemName = "Mythic Treasure Chest"
-                preEvolution = "Legendary Treasure Chest"
-                chestEmote = "<:MythicChest:820274344059994122>"
-                break;
-            default:
-                message.channel.send("Please enter a valid rarity to evolve by")
-                return
-        }
+        const rarityArr = ["common", "uncommon", "rare", "epic", "legendary"];
 
-        User.findOne({ userID: message.author.id }, (err, user) => {
+        User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
+                //Getting the prefix from db
+                const prefix = await findPrefix(message.guild.id);
+                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
+                return;
+            }
+            // Checks if user entered a vaild rarity
+            let rarityIndex = rarityArr.findIndex(arg => arg == evoType.toLowerCase());
+            if (rarityIndex == -1) {
+                message.channel.send("Please enter a valid rarity to evolve by");
+                return;
+            }
+            let itemName = `${titleCase(rarityArr[rarityIndex + 1])} Treasure Chest`;
+            let preEvolution = `${titleCase(rarityArr[rarityIndex])} Treasure Chest`;
+
+            // Checks if user has the items needed
+            if (!user.inv[preEvolution]) {
+                message.channel.send(`You do not have ${preEvolution}`);
+                return;
+            }
+            if (user.inv[preEvolution].quantity < usedForEvolution) {
+                message.channel.send(`You do currently have ${user.inv[preEvolution].quantity} ${preEvolution} but you need ${usedForEvolution} ${preEvolution} to evolve ${preEvolution} into a ${itemName}`);
+                return;
+            }
+            if (user.inv[itemName]) {
+                user.inv[itemName].quantity += itemQuantity;
             }
             else {
-                User.findOne({ userID: message.author.id }, (err, user) => {
-                    function evolve() {
-                        user.inv[preEvolution].quantity -= usedForEvolution;
-                        if (user.inv[preEvolution].quantity == 0) {
-                            delete user.inv[preEvolution];
-                        }
-                        message.channel.send(`:white_check_mark: You have evolved 5 ${preEvolution} into 1 ${itemName}!!`)
-                    }
-                    function errorMessage() {
-                        message.channel.send(`You do currently have ${user.inv[preEvolution].quantity} ${preEvolution} but you need ${usedForEvolution} ${preEvolution} to evolve ${preEvolution} into a ${itemName} `)
-                    }
-                    if (user.inv[itemName]) {
-                        if (!user.inv[preEvolution]){
-                            message.channel.send(`You do not have ${preEvolution}`);
-                            return;
-                        }
-                        if (user.inv[preEvolution].quantity < usedForEvolution) {
-                            errorMessage()
-                        } else {
-                            user.inv[itemName].quantity += itemQuantity;
-                            evolve();
-                        }
-                    }
-                    else {
-                        if (!user.inv[preEvolution]){
-                            message.channel.send(`You do not have ${preEvolution}`);
-                            return;
-                        }
-                        if (user.inv[preEvolution].quantity < usedForEvolution) {
-                            errorMessage()
-                        } else {
-                            user.inv[itemName] = { "quantity": itemQuantity, "emote": chestEmote, "type": type };
-                            evolve();
-                        }
-                    }
-                    user.markModified('inv');
-                    user.save()
-                        .then(result => console.log(result))
-                        .catch(err => console.error(err));
-                });
+                let chest = await findItem(itemName);
+                chest.quantity = itemQuantity;
+                user.inv[itemName] = chest;
             }
+            // Evolves the Chest
+            user.inv[preEvolution].quantity -= usedForEvolution;
+            if (user.inv[preEvolution].quantity == 0) {
+                delete user.inv[preEvolution];
+            }
+            message.channel.send(`:white_check_mark: You have evolved 5 ${preEvolution} into 1 ${itemName}!!`);
+
+            user.markModified('inv');
+            user.save()
+                .then(result => console.log(result))
+                .catch(err => console.error(err));
         });
     }
 }

@@ -3,6 +3,7 @@ const Equipment = require('../models/equipment');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
 const titleCase = require('./titleCase.js');
+
 module.exports = async function (itemName, itemTypes = []) {
     // IDK why it needs _docs, but it breaks without it
     // This is pain
@@ -10,22 +11,23 @@ module.exports = async function (itemName, itemTypes = []) {
     // First part of regex
     let reg = `^.*?\\b${itemNameArr[0]}`;
     // Appends middle part of regex to each new key search term
-    for(i=1; i<itemNameArr.length;i++){
+    for (i = 1; i < itemNameArr.length; i++) {
         reg += `\\b.*?\\b${itemNameArr[i]}`;
     }
     // Closes the regex
     reg += `\\b.*?$`;
-    let partialName = new RegExp(reg, 'gmi')
-    let items = await Items.find({ itemName: partialName }, { _id: 0 }).exec();
+    let items = await Items.find({ itemName: { '$regex': reg, $options: 'i' } }, { _id: 0 }).exec();
     let item;
+    console.log(items)
     if (items.length == 0) {
-        return;
+        return [];
     }
     if (items.length == 1) {
         item = items[0];
     }
     else {
         let itemNames = [];
+        
         for (i = 0; i < items.length; i++) {
             itemNames.push(items[i].itemName);
             if (items[i].itemName == titleCase(itemName)) {
@@ -44,5 +46,5 @@ module.exports = async function (itemName, itemTypes = []) {
         }
     }
 
-    return item._doc;
+    return [item._doc];
 };

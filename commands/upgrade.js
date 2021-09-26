@@ -1,76 +1,77 @@
+const Discord = require('discord.js');
+const User = require('../models/user');
+const findPrefix = require('../functions/findPrefix');
+
 module.exports = {
     name: "upgrade",
-    description: "Upgrade you stats using sp (sp can be earned from battle)",
+    description: "Upgrade your stats using special points. Special Points are earned through leveling.",
     syntax: "",
+    cooldown: 5,
     category: "Fun",
     execute(message, args) {
-        const Discord = require('discord.js');
-        const User = require('../models/user');
         let currentColor = "#0099ff";
         // Edited upgrade function
         async function stat(user) {
-
-            function multiplier(playeraction){
-                switch(playeraction){
+            function multiplier(playeraction) {
+                switch (playeraction) {
                     case 'up':
-                        if(multi < 5){
+                        if (multi < 5) {
                             multi += 1
                             messageDisplayed = 'Multiplier increased by 1'
                         }
-                        else{
+                        else {
                             messageDisplayed = 'Multiplier cannot exceed 5'
                         }
                         break;
                     case 'down':
-                        if(multi > 1){
+                        if (multi > 1) {
                             multi -= 1
                             messageDisplayed = 'Multiplier decreased by 1'
                         }
-                        else{
+                        else {
                             messageDisplayed = 'Multiplier cannot go below 1'
                         }
                 }
-
             }
 
             function upgrade(stat_str) {
-                if(user.sp >= multi){
-                    user.sp-= multi;
-                if (stat_str == 'hp'){
-                    user.player[stat_str] += 5*multi;
-                    messageDisplayed = `Your ${stat_str} stat has been upgraded by ${5*multi}!`;
-                }else{
-                    user.player[stat_str]+= multi;
-                    messageDisplayed = `Your ${stat_str} stat has been upgraded by ${multi}!`;
+                if (user.sp >= multi) {
+                    user.sp -= multi;
+                    if (stat_str == 'hp') {
+                        user.player.baseStats[stat_str] += 5 * multi;
+                        messageDisplayed = `Your ${stat_str} stat has been upgraded by ${5 * multi}!`;
+                    } else {
+                        user.player.baseStats[stat_str] += multi;
+                        messageDisplayed = `Your ${stat_str} stat has been upgraded by ${multi}!`;
+                    }
+                    user.markModified('player');
+                    user.save()
+                        .then(result => console.log(result))
+                        .catch(err => console.error(err));
                 }
-                user.markModified('player');
-                user.save()
-                    .then(result => console.log(result))
-                    .catch(err => console.error(err));
-                }
-                else{
+                else {
                     messageDisplayed = 'Not enough sp to upgrade.'
                 }
             }
-
+            
             function playerTurn(action) {
-                switch(action){
-                    case "⬆️":
+                switch (action) {
+                    case "up":
                         multiplier('up');
                         break;
-                    case "⬇️":
+                    case "down":
                         multiplier('down');
                         break;
-                    case "♥️":
+                    case "hp":
                         upgrade('hp');
                         break;
-                    case "⚔️":
+                    case "attack":
                         upgrade('attack');
                         break;
-                    case "🛡️":
+                    case "defense":
                         upgrade('defense');
                         break;
-                    case "🚤":
+                    case "speed":
                         upgrade('speed');
                         break;
                     default:
@@ -79,113 +80,129 @@ module.exports = {
             }
 
             // Updates battle embed to display ongoing input
-            function createUpdatedMessage() {
+            async function createUpdatedMessage() {
                 // theres a difference here check later for something
                 let updatedBattleEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(user.player.name + '\'s sp: ' + user.sp)
                     .setURL('https://discord.gg/CTMTtQV')
                     .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                    .setDescription('Upgrade you character using sp earned every level up! (upgrader will be cancelled if left untouched for a few minutes)')
+                    .setDescription('Upgrade your character using sp earned every level up!')
                     .addFields(
-                        { name: `:level_slider: ${user.level}`, value: "\u200b"},
-                        { name: `:hearts: ${user.player.hp}`, value: `(+${5*multi})` , inline: true},
-                        { name: `:crossed_swords: ${user.player.attack}`, value: `(+${multi})` , inline: true},
-                        { name: `:shield: ${user.player.defense}`, value: `(+${multi})` , inline: true},
-                        { name: `:dash: ${user.player.speed}`, value: `(+${multi})` , inline: true},
-                        { name: `sp: ${user.sp}`, value: `${multi} used per upgrade`}
+                        { name: `:level_slider: ${user.level}`, value: "\u200b" },
+                        { name: `Base stats`, value: "\u200b" },
+                        { name: `:hearts: ${user.player.baseStats.hp}`, value: `(+${5*multi})`, inline: true },
+                        { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: `(+${1*multi})`, inline: true },
+                        { name: `:shield: ${user.player.baseStats.defense}`, value: `(+${1*multi})`, inline: true },
+                        { name: `:dash: ${user.player.baseStats.speed}`, value: `(+${1*multi})`, inline: true },
+                        { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
                     )
                     .addField('Update: ', messageDisplayed)
 
 
                 return updatedBattleEmbed;
             }
-            while (user.sp > 0 && playerAction != "❎") {
-                let collectorExpireTime;
+            while (user.sp > 0 && playerAction != "stop") {
                 // awaits Player reaction
-                await new Promise((resolve, reject) => {
-                    let timea;
-                    const collector = botEmbedMessage.createReactionCollector(filter, { max: 1, time: 60000 });
-                    collector.on('collect', r => {
-                        collector.time = 60000;
-                        timea = collector.time;
-                        // Cheap fix to display battle run out time(may change)
-                        clearInterval(collectorExpireTime);
-                        collectorExpireTime = setInterval(function () {
-                            timea -= 1000;
-                        }, 1000);
-                        playerAction = r.emoji.name;
-                        resolve();
+                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                    .then(async i => {
+                        currentColor = '#0099ff';
+                        playerAction = i.customId;
+                        console.log(playerAction + "Player action")
+                        playerTurn(playerAction);
+                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [row1, row2] });
+                    })
+                    .catch(async err => {
+                        currentColor = '#FF0000';
+                        messageDisplayed = "Upgrade expired";
+                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
+                        isExpired = true;
                     });
-                    // Continued cheap fix
-                    collector.on('end', () => {
-                        if (timea <= 1000) {
-                            message.channel.send('Upgrade expired. Your fatass took too long');
-                            clearInterval(collectorExpireTime);
-                        }
-                    });
-                });
-                playerTurn(playerAction);
-
-                botEmbedMessage.edit(createUpdatedMessage());
             }
             messageDisplayed = "Stopped upgrading";
             currentColor = '#FF0000';
-            botEmbedMessage.edit(createUpdatedMessage());
-            clearInterval(collectorExpireTime);
+            botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
         }
 
-        let playerAction = "nothing";
         let multi = 1;
-        let messageDisplayed;
+        let messageDisplayed, filter, playerAction;
         // is edited version of the one at the bottom of battle.js
-        User.findOne({ userID: message.author.id }, (err, user) => {
+        User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
+                //Getting the prefix from db
+                const prefix = await findPrefix(message.guild.id);
+                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
+                return;
             }
-            else {
-                filter = (reaction, user) => {
-                    if ((reaction.emoji.name === '⬆️' || reaction.emoji.name === '⬇️' || reaction.emoji.name === '♥️' || reaction.emoji.name === '⚔️' || reaction.emoji.name === '🛡️' || reaction.emoji.name === '❎' || reaction.emoji.name === '🚤') && user == message.author.id) {
-                        return reaction;
-                    }
-                };
+            // Filter so only user can interact with the buttons
+            filter = i => {
+                i.deferUpdate();
+                return i.user.id === message.author.id;
+            };
 
-                //For users who were created before sp was created
-                if (user.sp == null) {
-                    user.sp = (user.level - 1) * 5;
-                }
-                
-
-                // Makes battle embed probably need to add more things like speed
-                const spEmbed = new Discord.MessageEmbed()
-                    .setColor(currentColor)
-                    .setTitle(user.player.name + '\'s sp: ' + user.sp)
-                    .setURL('https://discord.gg/CTMTtQV')
-                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                    .setDescription('Upgrade you character using sp earned every level up!')
-                    .addFields(
-                        { name: `:level_slider: ${user.level}`, value: "\u200b"},
-                        { name: `:hearts: ${user.player.hp}`, value: "(+5)" , inline: true},
-                        { name: `:crossed_swords: ${user.player.attack}`, value: "(+1)" , inline: true},
-                        { name: `:shield: ${user.player.defense}`, value: "(+1)" , inline: true},
-                        { name: `:dash: ${user.player.speed}`, value: "(+1)" , inline: true},
-                        { name: `sp: ${user.sp}`, value: `${multi} used per upgrade`}
-                    )
-
-                message.channel.send(spEmbed)
-                    .then(botMessage => {
-                        botEmbedMessage = botMessage;
-                        botMessage.react("⬆️");
-                        botMessage.react("⬇️");
-                        botMessage.react("♥️");
-                        botMessage.react("⚔️");
-                        botMessage.react("🛡️");
-                        botMessage.react("🚤");
-                        botMessage.react("❎");
-                        stat(user);
-                    });
+            //For users who were created before sp was created
+            if (user.sp == null) {
+                user.sp = (user.level - 1) * 5;
             }
+
+            // Makes battle embed probably need to add more things like speed
+            const spEmbed = new Discord.MessageEmbed()
+                .setColor(currentColor)
+                .setTitle(user.player.name + '\'s sp: ' + user.sp)
+                .setURL('https://discord.gg/CTMTtQV')
+                .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                .setDescription('Upgrade your character using sp earned every level up!')
+                .addFields(
+                    { name: `:level_slider: ${user.level}`, value: "\u200b" },
+                    { name: `Base stats`, value: "\u200b" },
+                    { name: `:hearts: ${user.player.baseStats.hp}`, value: "(+5)", inline: true },
+                    { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: "(+1)", inline: true },
+                    { name: `:shield: ${user.player.baseStats.defense}`, value: "(+1)", inline: true },
+                    { name: `:dash: ${user.player.baseStats.speed}`, value: "(+1)", inline: true },
+                    { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
+                )
+
+            row1 = new Discord.MessageActionRow()
+                .addComponents(
+                    new Discord.MessageButton()
+                        .setCustomId('hp')
+                        .setLabel('❤️')
+                        .setStyle('PRIMARY'),
+                    new Discord.MessageButton()
+                        .setCustomId('attack')
+                        .setLabel('⚔️')
+                        .setStyle('PRIMARY'),
+                    new Discord.MessageButton()
+                        .setCustomId('defense')
+                        .setLabel('🛡️')
+                        .setStyle('PRIMARY'),
+                    new Discord.MessageButton()
+                        .setCustomId('speed')
+                        .setLabel('💨')
+                        .setStyle('PRIMARY'),
+                );
+
+            row2 = new Discord.MessageActionRow()
+                .addComponents(
+                    new Discord.MessageButton()
+                        .setCustomId('up')
+                        .setLabel('⬆️')
+                        .setStyle('PRIMARY'),
+                    new Discord.MessageButton()
+                        .setCustomId('down')
+                        .setLabel('⬇️')
+                        .setStyle('PRIMARY'),
+                    new Discord.MessageButton()
+                        .setCustomId('stop')
+                        .setLabel('✖️')
+                        .setStyle('DANGER'),
+                );
+
+            message.channel.send({ embeds: [spEmbed], components: [row1, row2] })
+                .then(botMessage => {
+                    botEmbedMessage = botMessage;
+                    stat(user);
+                });
         });
-
     }
 }

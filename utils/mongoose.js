@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const dotenv = require('dotenv');
+dotenv.config(); //Build the process.env object.
 module.exports = {
     init: () => {
         const dbOptions = {
@@ -13,7 +14,7 @@ module.exports = {
             socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
             family: 4 // Use IPv4, skip trying IPv6
         };
-        // Somehow this works and connects so don't change it thanks
+         // Somehow this works and connects so don't change it thanks
         mongoose.connect(process.env.MONGODB_URI, dbOptions);
         mongoose.set('useFindAndModify', false);
         mongoose.Promise = global.Promise;
