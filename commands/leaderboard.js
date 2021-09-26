@@ -62,6 +62,7 @@ module.exports = {
             .limit(leaderboardSize)
             .exec(function (err, user) {
                 lb = "Global leaderboard for " + sortBy + "\n";
+                if(user[i].player){
                 for (let i = 0; i < leaderboardSize; i++) {
                     lb += `\n${(i + 1)}. ${user[i].player.name}\n${user[i][sortBy]} ${sortBy}`;
                 }
@@ -71,6 +72,7 @@ module.exports = {
                         botEmbedMessage = botMessage;
                         leaderboardUpdate();
                     });
+                }
             });
 
         async function leaderboardUpdate() {
