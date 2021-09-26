@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // Finds packType
-        let packTypeIndex = args.findIndex(arg => /^[a-z]+$/g.test(arg))
+        let packTypeIndex = args.findIndex(arg => /^[a-z]+$/ig.test(arg))
         if (packTypeIndex == -1) {
             message.channel.send('Please specify a chest or pack that you would like to open');
             return;
