@@ -21,7 +21,7 @@ module.exports = {
             //For event(chance for getting a ticket or sth :))
 
             let d = Math.random();
-            if (d < 1) {
+            if (d < 0.5) {
                 if (user.inv["X2 Experience Ticket (1 Hour)"]) {
                     user.inv["X2 Experience Ticket (1 Hour)"].quantity += 1;
                 } else {
