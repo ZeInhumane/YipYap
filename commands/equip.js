@@ -23,6 +23,10 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+            if(!user.inv[itemName]){
+                message.channel.send(`You do not have ${itemName} in your inventory!`)
+                return;
+            }
             if (user.inv[itemName].type != "equipment") {
                 message.channel.send(`That is not an equipment.`);
                 return;
@@ -36,10 +40,6 @@ module.exports = {
             // Checks if player already has that specific equipment equipped
             if (Object.keys(user.player[equipmentType])[0] == itemName) {
                 message.channel.send(`You already have that equipped.`);
-                return;
-            }
-            if (user.inv[itemName] == undefined) {
-                message.channel.send(`You do not have that item!`);
                 return;
             }
 
