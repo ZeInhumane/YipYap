@@ -44,13 +44,14 @@ module.exports = {
             .addComponents(
                 new Discord.MessageButton()
                     .setCustomId('currency')
-                    .setLabel('')
-                    .setStyle('DANGER')
+                    .setLabel('Currency')
+                    .setStyle('PRIMARY')
                     .setEmoji('<:cash_24:751784973488357457>'),
                 new Discord.MessageButton()
                     .setCustomId('level')
-                    .setLabel('🎚️')
-                    .setStyle('DANGER'),
+                    .setLabel('Level')
+                    .setStyle('PRIMARY')
+                    .setEmoji('🎚️'),
             );
         // Turns type selected to green
         row.components.find(button => button.customId == sortBy).setStyle('SUCCESS');
@@ -62,11 +63,12 @@ module.exports = {
             .limit(leaderboardSize)
             .exec(function (err, user) {
                 lb = "Global leaderboard for " + sortBy + "\n";
-
+                // For when there isnt enough players
+                if (user.length < leaderboardSize) {
+                    leaderboardSize = user.length;
+                }
                 for (let i = 0; i < leaderboardSize; i++) {
-                    if (user[i]?.player) {
-                        lb += `\n${(i + 1)}. ${user[i].player.name}\n${user[i][sortBy]} ${sortBy}`;
-                    }
+                    lb += `\n${(i + 1)}. ${user[i].player.name}\n${user[i][sortBy]} ${sortBy}`;
                 }
 
                 message.channel.send({ content: "``` " + "\n" + lb + "```", components: [row] })
@@ -84,7 +86,7 @@ module.exports = {
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                     .then(async i => {
                         // Turns type previously selected to red
-                        row.components.find(button => button.customId == sortBy).setStyle('DANGER');
+                        row.components.find(button => button.customId == sortBy).setStyle('PRIMARY');
 
                         sortBy = i.customId;
 
