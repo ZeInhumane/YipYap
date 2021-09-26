@@ -62,11 +62,12 @@ module.exports = {
             .limit(leaderboardSize)
             .exec(function (err, user) {
                 lb = "Global leaderboard for " + sortBy + "\n";
-
+                // For when there isnt enough players
+                if (user.length < leaderboardSize) {
+                    leaderboardSize = user.length;
+                }
                 for (let i = 0; i < leaderboardSize; i++) {
-                    if (user[i]?.player) {
-                        lb += `\n${(i + 1)}. ${user[i].player.name}\n${user[i][sortBy]} ${sortBy}`;
-                    }
+                    lb += `\n${(i + 1)}. ${user[i].player.name}\n${user[i][sortBy]} ${sortBy}`;
                 }
 
                 message.channel.send({ content: "``` " + "\n" + lb + "```", components: [row] })
