@@ -24,7 +24,7 @@ module.exports = {
         // get embed text from lvl_edit
         const embedText = await lvl_edit.execute(message, winner, loser, experienceMultiplier);
         // change this to change the chances of getting a lootbox currently set at 25%
-        if (Math.floor(Math.random() * 1 + 4) == 4) {
+        if (Math.floor(Math.random() * 5 + 1) == 5) {
             // since only have 1 treasure chest after all
             drops.push(chestName[0])
         }
