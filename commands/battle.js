@@ -12,7 +12,7 @@ module.exports = {
     aliases: ['b'],
     category: "Fun",
     // change timing in main bot
-    cooldown: 0,
+    cooldown: 30,
     async execute(message, args) {
         const ultimateEmote = ":Ultimate:822042890955128872"
         const emptyUltimateEmote = "<:blank:829270386986319882>"
