@@ -23,8 +23,8 @@ module.exports = {
         let experienceMultiplier = location.Rewards.ExpMultiplier;
         // get embed text from lvl_edit
         const embedText = await lvl_edit.execute(message, winner, loser, experienceMultiplier);
-        // change this to change the chances of getting a lootbox currently set at 50%
-        if (Math.floor(Math.random() * 1 + 1) == 1) {
+        // change this to change the chances of getting a lootbox currently set at 25%
+        if (Math.floor(Math.random() * 1 + 4) == 4) {
             // since only have 1 treasure chest after all
             drops.push(chestName[0])
         }
