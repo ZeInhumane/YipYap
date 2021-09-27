@@ -40,7 +40,7 @@ module.exports = {
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
             message.channel.send(`You have successfully claimed your daily of ${currencyReward} <:cash_24:751784973488357457>​`);
-            message.channel.send("Claim everyay for a chance to get experience tickets!")
+            message.channel.send("Claim everyday for a chance to get experience tickets!")
             message.channel.send(`You now have ${user.currency} <:cash_24:751784973488357457>`);
         });
     }
