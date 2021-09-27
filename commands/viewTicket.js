@@ -57,8 +57,8 @@ module.exports = {
                                             { name: `${ticketTypes[i]} Ticket: `, value: `Your ${ticketTypes[i]} ticket has been used up. Another ${ticketName} has been used. To stop automatically using tickets, use the changeauto command.` },
                                             { name: 'Muliplier: ', value: `x ${ticket.multiplier}` },
                                             { name: 'Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
-                                            { name: 'Start time: ', value: `${start}` },
-                                            { name: 'End time: ', value: `${end}` },
+                                            { name: 'Start time: ', value: `${start} UTC` },
+                                            { name: 'End time: ', value: `${end} UTC` },
                                             { name: 'Auto: ', value: `${ticket.auto}` },
                                             { name: '\u200B', value: '\u200B' }
                                         )
