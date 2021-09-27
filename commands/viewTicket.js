@@ -87,8 +87,8 @@ module.exports = {
                                     { name: `${ticketTypes[i]} Ticket: `, value: '\u200B' },
                                     { name: 'Muliplier: ', value: `x ${ticket.multiplier}` },
                                     { name: 'Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
-                                    { name: 'Start time: ', value: `${start}` },
-                                    { name: 'End time: ', value: `${end}` },
+                                    { name: 'Start time: ', value: `${start} UTC` },
+                                    { name: 'End time: ', value: `${end} UTC` },
                                     { name: 'Auto: ', value: `${ticket.auto}` },
                                     { name: '\u200B', value: '\u200B' }
                                 )
