@@ -9,7 +9,7 @@ module.exports = {
     name: "equip",
     description: "Equips a weapon or armor on your character. Equip another item of the same type to unequip that weapon. Equipping a particular weapon means that you are unable to info/enhance/ascend that weapon.",
     syntax: "{equipment name}",
-    cooldown: 5,
+    cooldown: 1,
     aliases: ['e'],
     category: "Fun",
     execute(message, args) {
@@ -43,12 +43,14 @@ module.exports = {
                 return;
             }
 
+
             // Checks if player has an equipment in that equipment slot
             if (Object.keys(user.player[equipmentType]).length != 0) {
+                
                 let currentEquippedItem = user.player[equipmentType];
                 let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
-                let stats = getFinalStats(Object.values(currentEquippedItem)[0], dbEquipment);
-
+                //Should be stats for current equipped item
+                let stats = getFinalStats(Object.values(currentEquippedItem)[0], await findItem(currentEquippedItemName.split("#")[0], true));
                 // Removes stats given by equipped item
                 for (statName in stats) {
                     user.player.additionalStats[statName].flat -= stats[statName].flat;
@@ -81,7 +83,7 @@ module.exports = {
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("result"))
                 .catch(err => console.error(err));
             message.channel.send(`You've equiped: ${itemName}.`);
         });

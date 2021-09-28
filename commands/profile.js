@@ -8,7 +8,6 @@ module.exports = {
     description: "Displays user profile, stats and weapons of the user.",
     syntax: "",
     aliases: ['me', 'meme', 'stats'],
-    cooldown: 5,
     category: "Fun",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
@@ -38,7 +37,7 @@ module.exports = {
                     .addField(":hearts: Health Point: " + calulateFinalStat("hp"), " \u200b", true)
                     .addField(":crossed_swords: Attack: " + calulateFinalStat("attack"), " \u200b", true)
                     .addField(":shield: Defense: " + calulateFinalStat("defense"), " \u200b", true)
-                    .addField(":speedboat: Speed: " + calulateFinalStat("speed"), " \u200b", true)
+                    .addField("💨 Speed: " + calulateFinalStat("speed"), " \u200b", true)
                     .addField('Level: ', ` ${user.level}`, true)
                     .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
                     .addField('Experience to next level: ', ` ${to_upgrade}`, true)
@@ -52,7 +51,7 @@ module.exports = {
                 }
                 embed.addField("⚔️Equipped Equipment⚔️", ` \u200b`)
                 for (let i = 0; i < equipementLength; i++) {
-                    
+
                     if (Object.values(equipment[i]) != '') {
                         //gets the weapons stats from db
                         //itemName gets the item name.. a bit messy but its required
@@ -62,8 +61,12 @@ module.exports = {
                         let statsmsg = ''
                         for (let j = 0; j < Object.keys(stats).length; j++) {
                             let statname = Object.keys(stats)[j]
+                            statname = statname.replace("attack", " Attack ⚔️ \n");
+                            statname = statname.replace("defense", " Defense 🛡️ \n");
+                            statname = statname.replace("speed", " Speed 💨 \n");
+                            statname = statname.replace("hp", " Health Point :hearts: \n");
                             //wth does this do?
-                            statsmsg += `${(Object.values(stats)[0].flat != 0) ? '+ ' + Object.values(stats)[0].flat : ''} ${(Object.values(stats)[0].multi != 0) ? 'x' + Object.values(stats)[0].multi + '%' : ''} ${statname} `
+                            statsmsg += `${(Object.values(stats)[0].flat != 0) ? '+' + Object.values(stats)[0].flat + statname : ''} ${(Object.values(stats)[0].multi != 0) ? '+' + Object.values(stats)[0].multi + '%' + statname : ''} `
                         }
                         embed.addField(`${dbEquipmentStats.emote} ${Object.keys(equipment[i])} `, ` ${statsmsg}`, true)
                     }
