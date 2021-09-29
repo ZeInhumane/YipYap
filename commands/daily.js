@@ -24,6 +24,7 @@ module.exports = {
             if (d < 0.5) {
                 if (user.inv["X2 Experience Ticket (1 Hour)"]) {
                     user.inv["X2 Experience Ticket (1 Hour)"].quantity += 1;
+                    message.channel.send("Congratulations on playing during a major update, you have gotten a small token of appreciation from us :)")
                 } else {
                     let addItem = await findItem("X2 Experience Ticket (1 Hour)");
                     user.inv["X2 Experience Ticket (1 Hour)"] = addItem;
