@@ -47,7 +47,7 @@ module.exports = {
                 message.channel.send('You have been successfully registered, get free items using starterpack command! Use help command to find useful commands.');
             }
             else {
-                message.channel.send("You have already made a player. Use the starterpack command to get some gifts ti start your journey!");
+                message.channel.send("You have already made a player. Use the starterpack command to get some gifts to start your journey!");
             }
         });
     }
