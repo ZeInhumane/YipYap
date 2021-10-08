@@ -25,11 +25,12 @@ module.exports = {
             //checks if argument is keyed in properly
             if(isNaN(floorToAccess)) floorToAccess = parseInt(user.location)
             let locationInfo = await botLevel.findOne({ 'Location': floorToAccess }).exec();
-            locationInfo = locationInfo._doc;
             if (!locationInfo) {
                 message.channel.send("It looks like this isn't a valid location")
                 return;
             }
+            locationInfo = locationInfo._doc;
+            
             userInfo = await User.findOne({ userID: message.author.id }, (err, user) => {
                 if (locationInfo.Requirement > user.level) {
                     message.channel.send(`It looks like you do not meet the requirements to access this floor, come back when you are level ${locationInfo.Requirement}`);
