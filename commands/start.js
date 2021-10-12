@@ -6,7 +6,6 @@ module.exports = {
     name: "start",
     description: "Sets up a new player. Maybe consider getting the starter pack",
     syntax: "",
-    cooldown: 5,
     category: "Fun",
     execute(message, args) {
         // Creates hero class
@@ -15,11 +14,11 @@ module.exports = {
                 this.name = name;
                 this.baseStats = { hp: hp, attack: attack, defense: defense, speed: speed }
                 this.additionalStats = { hp: { flat: 0, multi: 0 }, attack: { flat: 0, multi: 0 }, defense: { flat: 0, multi: 0 }, speed: { flat: 0, multi: 0 } }
-                this.helmet = {};
-                this.leggings = {};
-                this.chestplate = {};
-                this.boots = {};
-                this.weapon = {};
+                // this.helmet = {};
+                // this.leggings = {};
+                // this.chestplate = {};
+                // this.boots = {};
+                // this.weapon = {};
             }
         }
         
@@ -47,7 +46,7 @@ module.exports = {
                 message.channel.send('You have been successfully registered, get free items using starterpack command! Use help command to find useful commands.');
             }
             else {
-                message.channel.send("You have already made a player. Use the starterpack command to get some gifts to start your journey!");
+                message.channel.send("You have already made a player");
             }
         });
     }

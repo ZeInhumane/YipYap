@@ -46,7 +46,7 @@ module.exports = {
             return message.channel.send("Specify ticket duration!");
         }
         // Extracts ticketDuration
-        ticketDuration = parseInt(args[ticketDurationIndex]);
+        ticketDuration = parseInt(args[ticketDurationIndex].match(/\d+/)[0]);
         // Removes ticketDuration from args list
         args.splice(ticketDurationIndex, 1);
 

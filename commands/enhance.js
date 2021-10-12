@@ -2,12 +2,12 @@ const Discord = require('discord.js');
 const User = require('../models/user');
 const findPrefix = require('../functions/findPrefix');
 const titleCase = require('../functions/titleCase');
+const findItem = require('../functions/findItem.js');
 
 module.exports = {
     name: "enhance",
     description: "Enhance your equipment using materials to increase its stats. Enhancing equipment requires Jericho Jehammads",
     syntax: "{item name} {number of materials}",
-    cooldown: 5,
     category: "Fun",
     async execute(message, args) {
         let currentColor = "#0099ff";
@@ -120,7 +120,17 @@ module.exports = {
                 delete user.inv[upgradeMaterial];
             }
 
+            // Checks if any equipped item leveled up
+            if (userEquipment.equipped && levelsGained > 0){
+                dbEquipment = await findItem(itemName.split("#")[0], true);
+                console.log(dbEquipment)
+                for (statName in dbEquipment.statsUpPerLvl) {
+                    user.player.additionalStats[statName].flat += dbEquipment.statsUpPerLvl[statName] * levelsGained;
+                }
+            }
+
             user.markModified('inv');
+            user.markModified('player');
             user.save()
                 .then(result => console.log(result))
                 .catch(err => console.error(err));

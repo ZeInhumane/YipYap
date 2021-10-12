@@ -67,7 +67,25 @@ function cooldownUpdate(command, message, args) {
 
         if (now < expirationTime) {
             const timeLeft = (expirationTime - now) / 1000;
-            message.channel.send(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+            if(timeLeft.toFixed(1) > 60){
+                function secondsToHms(d) {
+                    d = Number(d);
+                    let h = Math.floor(d / 3600);
+                    let m = Math.floor(d % 3600 / 60);
+                    let s = Math.floor(d % 3600 % 60);
+                
+                    let hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
+                    let mDisplay = m > 0 ? m + (m == 1 ? " minute and " : " minutes and ") : "";
+                    let sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
+                    return hDisplay + mDisplay + sDisplay; 
+                }
+                let timeFormatted = secondsToHms(timeLeft.toFixed(1))
+                message.channel.send(`please wait ${timeFormatted} before reusing the \`${command.name}\` command.`);
+            }
+            else{
+                message.channel.send(`please wait ${timeLeft.toFixed(1) + (timeLeft.toFixed(1) == 1 ? ' second' : ' seconds')} before reusing the \`${command.name}\` command.`);
+            }
+            
         }
         else {
             command.execute(message, args);

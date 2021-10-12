@@ -23,7 +23,7 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
-            if(!user.inv[itemName]){
+            if (!user.inv[itemName]) {
                 message.channel.send(`You do not have ${itemName} in your inventory!`)
                 return;
             }
@@ -35,19 +35,21 @@ module.exports = {
             // Gets equipment info from db
             let dbItemName = itemName.split("#")[0];
             let dbEquipment = await findItem(dbItemName, true);
-            
+
             let equipmentType = dbEquipment.equipmentType;
             // Checks if player already has that specific equipment equipped
-            if (Object.keys(user.player[equipmentType])[0] == itemName) {
+            if (user.inv[itemName].equipped == true) {
                 message.channel.send(`You already have that equipped.`);
                 return;
             }
 
-
             // Checks if player has an equipment in that equipment slot
-            if (Object.keys(user.player[equipmentType]).length != 0) {
-                
-                let currentEquippedItem = user.player[equipmentType];
+            let userItemsArr = Object.keys(user.inv);
+            var currentEquippedItem = userItemsArr.find(item => {
+                return user.inv[item].equipmentType === equipmentType && user.inv[item].equipped === true;
+            });
+
+            if (currentEquippedItem) {
                 let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
                 //Should be stats for current equipped item
                 let stats = getFinalStats(Object.values(currentEquippedItem)[0], await findItem(currentEquippedItemName.split("#")[0], true));
@@ -56,21 +58,15 @@ module.exports = {
                     user.player.additionalStats[statName].flat -= stats[statName].flat;
                     user.player.additionalStats[statName].multi -= stats[statName].multi;
                 }
-                // Adds currently equiped item back into inventory
-                Object.assign(user.inv, currentEquippedItem);
-                user.inv[currentEquippedItemName].quantity = 1;
+                // Unequips item
+                user.inv[currentEquippedItemName].equipped = false;
             }
 
             // Equip item setup
             let itemToEquip = user.inv[itemName];
-            itemToEquip = { [itemName]: itemToEquip };
-            user.inv[itemName].quantity -= 1;
-            if (user.inv[itemName].quantity == 0) {
-                delete user.inv[itemName];
-            }
 
             // Setting stat buffs
-            let stats = getFinalStats(Object.values(itemToEquip)[0], dbEquipment);
+            let stats = getFinalStats(itemToEquip, dbEquipment);
             for (statName in stats) {
                 user.player.additionalStats[statName].flat += stats[statName].flat;
                 user.player.additionalStats[statName].multi += stats[statName].multi;
@@ -79,7 +75,7 @@ module.exports = {
             }
 
             // Equips item
-            user.player[equipmentType] = itemToEquip;
+            itemToEquip.equipped = true;
             user.markModified('inv');
             user.markModified('player');
             user.save()

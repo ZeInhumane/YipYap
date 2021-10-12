@@ -15,5 +15,6 @@ module.exports = async function (equipmentName) {
     equipment.exp = 0;
     equipment.quantity = 1;
     equipment.expToLevelUp = expRarityTable[equipment.rarity];
+    equipment.equipped = false;
     return equipment;
 };

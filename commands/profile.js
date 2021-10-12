@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const Discord = require('discord.js');
 const botLevel = require('../models/botLevel');
 const findItem = require('../functions/findItem.js');
+const getFinalStats = require('../functions/getFinalStats');
+const equip = require('./equip');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -44,32 +46,30 @@ module.exports = {
                     .addField('Total Available Special Points: ', ` ${user.sp}`, true)
                     .addField(`Location Name: \n${locationInfo._doc.LocationName}`, " \u200b", true)
                     .setImage(locationInfo._doc.LocationImage)
-                let equipment = [user.player.weapon, user.player.helmet, user.player.leggings, user.player.chestplate, user.player.boots]
-                equipementLength = 0;
-                for (i = 0; i < equipment.length; i++) {
-                    equipment[0] != {} ? equipementLength++ : console.log("hi")
-                }
-                embed.addField("⚔️Equipped Equipment⚔️", ` \u200b`)
-                for (let i = 0; i < equipementLength; i++) {
 
-                    if (Object.values(equipment[i]) != '') {
-                        //gets the weapons stats from db
-                        //itemName gets the item name.. a bit messy but its required
-                        let itemName = Object.keys(equipment[i])[0].split("#")[0];
-                        let dbEquipmentStats = await findItem(itemName, true);
-                        let stats = dbEquipmentStats.stats
-                        let statsmsg = ''
-                        for (let j = 0; j < Object.keys(stats).length; j++) {
-                            let statname = Object.keys(stats)[j]
-                            statname = statname.replace("attack", " Attack ⚔️ \n");
-                            statname = statname.replace("defense", " Defense 🛡️ \n");
-                            statname = statname.replace("speed", " Speed 💨 \n");
-                            statname = statname.replace("hp", " Health Point :hearts: \n");
-                            //wth does this do?
-                            statsmsg += `${(Object.values(stats)[0].flat != 0) ? '+' + Object.values(stats)[0].flat + statname : ''} ${(Object.values(stats)[0].multi != 0) ? '+' + Object.values(stats)[0].multi + '%' + statname : ''} `
-                        }
-                        embed.addField(`${dbEquipmentStats.emote} ${Object.keys(equipment[i])} `, ` ${statsmsg}`, true)
+                // Finds all equipped items
+                let userItemsArr = Object.keys(user.inv);
+                var equipment = userItemsArr.filter(item => {
+                    return user.inv[item].equipped === true;
+                });
+                embed.addField("⚔️Equipped Equipment⚔️", ` \u200b`)
+                for (let i = 0; i < equipment.length; i++) {
+                    //gets the weapons stats from db
+                    //itemName gets the item name.. a bit messy but its required
+                    let itemName = equipment[i].split("#")[0];
+                    let dbEquipmentStats = await findItem(itemName, true);
+                    let stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
+                    let statsmsg = ''
+                    for (let j = 0; j < Object.keys(stats).length; j++) {
+                        let statname = Object.keys(stats)[j]
+                        statname = statname.replace("attack", " Attack ⚔️ \n");
+                        statname = statname.replace("defense", " Defense 🛡️ \n");
+                        statname = statname.replace("speed", " Speed 💨 \n");
+                        statname = statname.replace("hp", " Health Point :hearts: \n");
+                        //wth does this do?
+                        statsmsg += `${(Object.values(stats)[0].flat != 0) ? '+' + Object.values(stats)[0].flat + statname : ''} ${(Object.values(stats)[0].multi != 0) ? '+' + Object.values(stats)[0].multi + '%' + statname : ''} `
                     }
+                    embed.addField(`${dbEquipmentStats.emote} ${equipment[i]} `, ` ${statsmsg}`, true)
                 }
                 message.channel.send({ embeds: [embed] });
             }
