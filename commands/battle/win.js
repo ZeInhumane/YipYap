@@ -59,7 +59,7 @@ module.exports = {
                         }
                         else {
                             user.inv[drops[i][0]] = await findItem(drops[i][0]);
-                            user.inv[drops[i][0]].quantity = drops[drops[i]][1];
+                            user.inv[drops[i][0]].quantity = drops[i][1];
                         }  
                         winEmbed.addField(`You've gotten: ${drops[i][1]} ${drops[i][2]} ${drops[i][0]}.`, "\u200b");
                     }
