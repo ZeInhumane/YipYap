@@ -8,6 +8,7 @@ module.exports = {
     name: "inventory",
     description: "Wanna check what you have in your inventory? Scroll between the pages!",
     aliases: ['inv', 'itemCount', 'icbm'],
+    cooldown: 5,
     category: "Fun",
     async execute(message, args) {
         User.findOne({ userID: message.author.id })

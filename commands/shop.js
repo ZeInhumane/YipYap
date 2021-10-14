@@ -8,6 +8,7 @@ module.exports = {
     name: "shop",
     description: "Shopee pee pee pee. No its just the shop.",
     syntax: "",
+    cooldown: 5,
     category: "Fun",
     async execute(message, args) {
         let onPage = 0;
