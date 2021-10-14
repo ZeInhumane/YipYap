@@ -8,7 +8,6 @@ module.exports = {
     name: "inventory",
     description: "Wanna check what you have in your inventory? Scroll between the pages!",
     aliases: ['inv', 'itemCount', 'icbm'],
-    cooldown: 5,
     category: "Fun",
     async execute(message, args) {
         User.findOne({ userID: message.author.id })
@@ -28,7 +27,7 @@ module.exports = {
                 let currentColor = '#0099ff';
 
                 // Edited shop function
-                async function page(user) {
+                async function page(user, botEmbedMessage) {
                     async function createUpdatedMessage() {
                         let itemsOnCurrentPage = 0;
                         if (onPage < 0) {
@@ -151,8 +150,7 @@ module.exports = {
 
                 message.channel.send({ embeds: [shopEmbed], components: [row] })
                     .then(botMessage => {
-                        botEmbedMessage = botMessage;
-                        page(user);
+                        page(user, botMessage);
                     });
             });
     }

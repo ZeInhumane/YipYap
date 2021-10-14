@@ -109,6 +109,7 @@ client.on('messageCreate', async message => {
     const prefix = await findPrefix(message.guild.id);
     
     if (!message.content.startsWith(prefix)) return;
+    if (message.content == prefix) return;
     const args = message.content.slice(prefix.length).match(/\S+/g);
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));

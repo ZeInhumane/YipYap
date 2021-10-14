@@ -8,7 +8,6 @@ module.exports = {
     name: "shop",
     description: "Shopee pee pee pee. No its just the shop.",
     syntax: "",
-    cooldown: 5,
     category: "Fun",
     async execute(message, args) {
         let onPage = 0;
@@ -20,7 +19,7 @@ module.exports = {
         // Lets shop know what the max page to be displayed is
         let maxPage = Math.floor(totalItems / maxOnPage);
         // Edited shop function
-        async function page(user) {
+        async function page(user, botEmbedMessage) {
             async function createUpdatedMessage() {
                 let itemNamea;
                 let i = 0;
@@ -94,6 +93,10 @@ module.exports = {
             }
             else {
                 filter = i => {
+                    console.log(`isMessageOwner: ${i.user.id === message.author.id}`)
+                    console.log(`user id: ${i.user.id}`)
+                    console.log(`user name: ${i.user.username}`)
+                    console.log(`message owner: ${message.author.id}\n`)
                     i.deferUpdate();
                     return i.user.id === message.author.id;
                 };
@@ -143,8 +146,7 @@ module.exports = {
 
                         message.channel.send({ embeds: [shopEmbed], components: [row] })
                             .then(botMessage => {
-                                botEmbedMessage = botMessage;
-                                page(user);
+                                page(user, botMessage);
                             });
                     });
             }

@@ -6,12 +6,11 @@ module.exports = {
     name: "upgrade",
     description: "Upgrade your stats using special points. Special Points are earned through leveling.",
     syntax: "",
-    cooldown: 5,
     category: "Fun",
     execute(message, args) {
         let currentColor = "#0099ff";
         // Edited upgrade function
-        async function stat(user) {
+        async function stat(user, botEmbedMessage) {
             function multiplier(playeraction) {
                 switch (playeraction) {
                     case 'up':
@@ -200,8 +199,7 @@ module.exports = {
 
             message.channel.send({ embeds: [spEmbed], components: [row1, row2] })
                 .then(botMessage => {
-                    botEmbedMessage = botMessage;
-                    stat(user);
+                    stat(user, botMessage);
                 });
         });
     }
