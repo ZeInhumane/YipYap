@@ -28,7 +28,7 @@ module.exports = {
                 let currentColor = '#0099ff';
 
                 // Edited shop function
-                async function page(user) {
+                async function page(user, botEmbedMessage) {
                     async function createUpdatedMessage() {
                         let itemsOnCurrentPage = 0;
                         if (onPage < 0) {
@@ -151,8 +151,7 @@ module.exports = {
 
                 message.channel.send({ embeds: [shopEmbed], components: [row] })
                     .then(botMessage => {
-                        botEmbedMessage = botMessage;
-                        page(user);
+                        page(user, botMessage);
                     });
             });
     }
