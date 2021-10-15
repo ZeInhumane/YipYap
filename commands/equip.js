@@ -50,16 +50,16 @@ module.exports = {
             });
 
             if (currentEquippedItem) {
-                let currentEquippedItemName = Object.keys(currentEquippedItem)[0];
+                let currentEquippedItemName = currentEquippedItem.split("#")[0]
                 //Should be stats for current equipped item
-                let stats = getFinalStats(Object.values(currentEquippedItem)[0], await findItem(currentEquippedItemName.split("#")[0], true));
+                let stats = getFinalStats(user.inv[currentEquippedItem], await findItem(currentEquippedItemName, true));
                 // Removes stats given by equipped item
                 for (statName in stats) {
                     user.player.additionalStats[statName].flat -= stats[statName].flat;
                     user.player.additionalStats[statName].multi -= stats[statName].multi;
                 }
                 // Unequips item
-                user.inv[currentEquippedItemName].equipped = false;
+                user.inv[currentEquippedItem].equipped = false;
             }
 
             // Equip item setup
