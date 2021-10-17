@@ -8,7 +8,7 @@ module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
     syntax: "",
-    cooldown: 30,
+    cooldown: 20,
     aliases: ['b'],
     category: "Fun",
     // change timing in main bot
