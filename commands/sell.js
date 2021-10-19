@@ -6,6 +6,7 @@ const Equipment = require('../models/equipment');
 const findItem = require('../functions/findItem.js');
 const titleCase = require('../functions/titleCase');
 const findPrefix = require('../functions/findPrefix');
+const getFinalStats = require('../functions/getFinalStats');
 
 module.exports = {
     name: "sell",
@@ -50,7 +51,6 @@ module.exports = {
                     }
                     User.findOne({ userID: message.author.id }, async (err, user) => {
                         if (user == null) {
-
                             message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                             return;
                         }
@@ -84,10 +84,23 @@ module.exports = {
                             user.inv['Jericho Jehammad'].quantity = totalJericho;
                         }
                         message.channel.send(`You have sold ${fullName} and gained ${totalJericho} Jericho Jehammads.`);
+
+                        // Removes stats from equipment if it is equipped
+                        if (user.inv[fullName].equipped) {
+                            //Should be stats for current equipped item
+                            let stats = getFinalStats(user.inv[fullName], await findItem(eqName, true));
+                            // Removes stats given by equipped item
+                            for (statName in stats) {
+                                user.player.additionalStats[statName].flat -= stats[statName].flat;
+                                user.player.additionalStats[statName].multi -= stats[statName].multi;
+                            }
+                        }
+
                         // Removes equipment from inv
                         delete user.inv[fullName];
 
                         user.markModified('inv');
+                        user.markModified('player');
                         user.save()
                             .then(result => console.log(result))
                             .catch(err => console.error(err));
