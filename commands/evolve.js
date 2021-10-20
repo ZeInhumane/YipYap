@@ -13,6 +13,10 @@ module.exports = {
     syntax: "{evolution type}",
     category: "Fun",
     async execute(message, args) {
+        if (args.length < 1){
+            message.channel.send('Enter the rarity of treasure chest that you want to evolve.')
+            return
+        }
         const evoType = args[0];
         const itemQuantity = 1;
         const usedForEvolution = 5;
