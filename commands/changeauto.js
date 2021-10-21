@@ -8,7 +8,7 @@ const findPrefix = require('../functions/findPrefix');
 module.exports = {
     name: "changeauto",
     description: "Change auto use mode for tickets",
-    syntax: "",
+    syntax: "{ticket full name as shown in inventory} {auto/on (sets auto to true) off (sets auto to false) If argument is null, it will become the opposite of current status}",
     cooldown: 5,
     aliases: ['changeAuto'],
     category: "Fun",
