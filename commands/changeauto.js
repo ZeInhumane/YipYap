@@ -11,7 +11,7 @@ module.exports = {
     syntax: "",
     cooldown: 5,
     aliases: ['changeAuto'],
-    category: "Admin",
+    category: "Fun",
     async execute(message, args) {
         // Gets multiplier (up to 1 dp)
         let multiplierIndex = args.findIndex(arg => /^x[^0|\D]\d{0,9}(\.\d)?$/gmi.test(arg))
