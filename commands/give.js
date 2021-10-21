@@ -12,7 +12,7 @@ module.exports = {
     category: "Economy",
     async execute(message, args) {
         let transferAmount = 1;
-        const transferAmountIndex = args.find(arg => /^[1-9]\d*$/g.test(arg));
+        const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
         const transferTarget = message.mentions.users.first();
         //Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);
