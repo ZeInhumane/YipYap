@@ -10,8 +10,8 @@ const getFinalStats = require('../functions/getFinalStats');
 
 module.exports = {
     name: "sell",
-    description: "Sells something that can be sold. Can also be used to get Jericho Jehammad with excess weapons :)",
-    cooldown: 10,
+    description: "Sells something that can be sold for half the price. Can also be used to get Jericho Jehammad with excess weapons :)",
+    cooldown: 5,
     aliases: ['s'],
     category: "Economy",
     execute(message, args) {
@@ -83,7 +83,7 @@ module.exports = {
                             user.inv['Jericho Jehammad'] = await findItem('Jericho Jehammad');
                             user.inv['Jericho Jehammad'].quantity = totalJericho;
                         }
-                        message.channel.send(`You have sold ${fullName} and gained ${totalJericho} Jericho Jehammads.`);
+                        
 
                         // Removes stats from equipment if it is equipped
                         if (user.inv[fullName].equipped) {
@@ -95,7 +95,8 @@ module.exports = {
                                 user.player.additionalStats[statName].multi -= stats[statName].multi;
                             }
                         }
-
+                        message.channel.send(`You have sold ${fullName} and gained ${totalJericho} Jericho Jehammads.`);
+                        message.channel.send(`Your currently have ${user.inv['Jericho Jehammad'].quantity} Jericho Jehammads.`);
                         // Removes equipment from inv
                         delete user.inv[fullName];
 
@@ -119,11 +120,11 @@ module.exports = {
                         return;
                     }
                     if (!user.inv[itemName]) {
-                        message.channel.send(`You do not have ${itemQuantity} ${itemName}.`);
+                        message.channel.send(`You do not have ${itemQuantity} ${itemName}${itemQuantity == 1 ? '' : 's'}.`);
                         return;
                     }
                     if (user.inv[itemName].quantity < itemQuantity) {
-                        message.channel.send(`You currently have ${user.inv[itemName].quantity} ${item.itemName}(s), so you cannot sell ${itemQuantity} amount of ${itemName}(s) `);
+                        message.channel.send(`You currently have ${user.inv[itemName].quantity} ${item.itemName}${user.inv[itemName].quantity == 1 ? '' : 's'}, so you cannot sell ${itemQuantity} amount of ${itemName}${itemQuantity == 1 ? '' : 's'} `);
                         return;
                     }
 
@@ -131,12 +132,13 @@ module.exports = {
                     if (user.inv[itemName].quantity == 0) {
                         delete user.inv[itemName];
                     }
-                    user.currency += item.itemCost * itemQuantity;
+                    user.currency += item.itemCost * 0.5 * itemQuantity;
                     user.markModified('inv');
                     user.save()
                         .then(result => console.log(result))
                         .catch(err => console.error(err));
-                    message.channel.send(`You've sold: ${itemQuantity} ${itemName}.`);
+                    message.channel.send(`You've sold: ${itemQuantity} ${itemName}${itemName == 1 ? '' : 's'}.`);
+                    message.channel.send(`You earned ${item.itemCost * 0.5 * itemQuantity}<:cash_24:751784973488357457>\nYour current balance is ${user.currency}<:cash_24:751784973488357457>`);
                 })
             }
         })
