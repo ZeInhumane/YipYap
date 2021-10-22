@@ -115,7 +115,7 @@ module.exports = {
                                 }
                                 else {
                                     user.inv[names[i]] = await findItem(names[i])
-                                    user.inv[names[i]].quantity = amts[i]
+                                    user.inv[names[i]].quantity = amts[i] * packAmt;
                                 }
                                 openEmbed.addField(`${guest} gained ${amts[i] * packAmt} ${names[i]}${(amts[i] * packAmt) > 1 ? "s" : ""}.`, '\u200b')
                             }
