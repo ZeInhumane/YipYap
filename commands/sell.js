@@ -13,6 +13,7 @@ module.exports = {
     description: "Sells something that can be sold for half the price. Can also be used to get Jericho Jehammad with excess weapons :)",
     cooldown: 10,
     aliases: ['s'],
+    syntax: '',
     category: "Economy",
     execute(message, args) {
         let itemQuantity = 1;
