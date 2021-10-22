@@ -11,7 +11,7 @@ const getFinalStats = require('../functions/getFinalStats');
 module.exports = {
     name: "sell",
     description: "Sells something that can be sold for half the price. Can also be used to get Jericho Jehammad with excess weapons :)",
-    cooldown: 5,
+    cooldown: 10,
     aliases: ['s'],
     category: "Economy",
     execute(message, args) {
