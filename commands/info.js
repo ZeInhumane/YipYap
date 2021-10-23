@@ -44,7 +44,6 @@ module.exports = {
                 // findItem = await items.findOne({ itemName: weaponName }).exec();
                 let dbEquipment = await findItem(weaponName, true);
                 let stats = await getFinalStats(user.inv[itemName], dbEquipment);
-                console.log(dbEquipment)
                 embed.setTitle(`${dbEquipment.emote} ${weaponName}`);
                 embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity : "No rarity")
                 embed.addField("Type", dbEquipment.type ? dbEquipment.type : "No rarity")
@@ -53,7 +52,6 @@ module.exports = {
 
                 let statNames = Object.keys(stats)
                 for (let i = 0; i < statNames.length; i++) {
-                    console.log(Object.values(stats)[i])
                     let stat_text = `**Flat Modifier**: ${Object.values(stats)[i].flat}`;
                     if (Object.values(stats)[i].multi != 0) {
                         stat_text += `\n **Multiplier Modifier(%)**: ${Object.values(stats)[i].multi}`;
@@ -72,7 +70,6 @@ module.exports = {
                 embed.addField("Rarity", findItem.rarity ? findItem.rarity : "No rarity");
                 embed.addField("Type", findItem.type ? findItem.type : "No type");
                 if (findItem.type == "consumable") {
-                    console.log(findItem.experience)
                     embed.addField("Experience Gain", findItem.experience.toString() ? findItem.experience.toString() : "No description");
                 }
                 embed.addField("Description", findItem.description ? findItem.description : "No description");

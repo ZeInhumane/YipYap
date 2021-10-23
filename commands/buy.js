@@ -68,7 +68,7 @@ module.exports = {
                 user.currency -= item.itemCost * itemQuantity;
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("buy"))
                     .catch(err => console.error(err));
                 message.channel.send(`You've bought: ${itemQuantity} ${itemName} for ${item.itemCost * itemQuantity} <:cash_24:751784973488357457>.`);
             });

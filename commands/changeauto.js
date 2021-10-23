@@ -89,7 +89,7 @@ module.exports = {
                 message.channel.send(`You have turned auto for ${ticket} ${effects.tickets[ticket].auto ? 'on' : 'off'}.`);
                 effects.markModified('tickets');
                 effects.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("changeauto"))
                     .catch(err => console.error(err));
             });
         });

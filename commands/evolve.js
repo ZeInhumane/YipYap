@@ -64,7 +64,7 @@ module.exports = {
 
             user.markModified('inv');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("evikve"))
                 .catch(err => console.error(err));
         });
     }

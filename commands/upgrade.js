@@ -45,7 +45,7 @@ module.exports = {
                     }
                     user.markModified('player');
                     user.save()
-                        .then(result => console.log(result))
+                        .then(result => console.log("upgrade"))
                         .catch(err => console.error(err));
                 }
                 else {
@@ -107,7 +107,6 @@ module.exports = {
                     .then(async i => {
                         currentColor = '#0099ff';
                         playerAction = i.customId;
-                        console.log(playerAction + "Player action")
                         playerTurn(playerAction);
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [row1, row2] });
                     })

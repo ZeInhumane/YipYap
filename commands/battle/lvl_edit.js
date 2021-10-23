@@ -51,7 +51,7 @@ module.exports = {
             user.level = update_winner.new_lvl();
             user.sp += update_winner.new_sp();
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("lvl edit"))
                 .catch(err => console.error(err));
         });
 

@@ -296,7 +296,7 @@ module.exports = {
                                         }
                                         user.markModified('inv');
                                         user.save()
-                                            .then(result => console.log(result))
+                                            .then(result => console.log("battle"))
                                             .catch(err => console.error(err));
                                     })
                                 }
@@ -318,7 +318,7 @@ module.exports = {
                         }
                         effects.markModified('tickets');
                         effects.save()
-                            .then(result => console.log(result))
+                            .then(result => console.log("battle"))
                             .catch(err => console.error(err));
                     }
                 });

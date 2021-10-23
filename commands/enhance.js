@@ -132,7 +132,7 @@ module.exports = {
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("enhance"))
                 .catch(err => console.error(err));
 
             const enhanceEmbed = new Discord.MessageEmbed()

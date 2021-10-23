@@ -2,13 +2,11 @@ class is_lvlup {
     constructor(current_exp, user_lvl, user_name) {
         let total_lvls = 0;
         let next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 15));
-        console.log(next_lvl)
         while (current_exp >= next_lvl) {
             current_exp -= next_lvl;
             total_lvls++;
             user_lvl++;
             next_lvl = Math.floor(user_lvl * (user_lvl / 10 * 15));
-            console.log(next_lvl)
         }
         this.total_lvls = total_lvls;
         this.current_exp = current_exp;

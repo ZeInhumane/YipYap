@@ -38,7 +38,7 @@ module.exports = {
                 }
                 user.location = floorToAccess;
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("floor"))
                     .catch(err => console.error(err));
 
                 const floorEmbed = new Discord.MessageEmbed()

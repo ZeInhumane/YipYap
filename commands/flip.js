@@ -74,7 +74,7 @@ module.exports = {
             }
             message.channel.send(`The coin landed ${faceLanded}\nYou ${winLoseStatement} ${betAmount} <:cash_24:751784973488357457>`);
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("flip"))
                 .catch(err => console.error(err));
         });
     }

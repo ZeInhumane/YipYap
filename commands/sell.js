@@ -32,9 +32,7 @@ module.exports = {
         if (itemName == "") return message.channel.send("SELECT SOMETHING TO SELL");
 
         itemName = titleCase(itemName);
-        console.log(itemName)
         Shop.findOne({ itemName: itemName }, async (err, item) => {
-            console.log(item)
             //Getting the prefix from db
             const prefix = await findPrefix(message.guild.id);
 
@@ -104,7 +102,7 @@ module.exports = {
                         user.markModified('inv');
                         user.markModified('player');
                         user.save()
-                            .then(result => console.log(result))
+                            .then(result => console.log("sell"))
                             .catch(err => console.error(err));
                     })
                 })
@@ -136,7 +134,7 @@ module.exports = {
                     user.currency += item.itemCost * 0.5 * itemQuantity;
                     user.markModified('inv');
                     user.save()
-                        .then(result => console.log(result))
+                        .then(result => console.log("sell"))
                         .catch(err => console.error(err));
                     message.channel.send(`You've sold: ${itemQuantity} ${itemName}${itemName == 1 ? '' : 's'}.`);
                     message.channel.send(`You earned ${item.itemCost * 0.5 * itemQuantity}<:cash_24:751784973488357457>\nYour current balance is ${user.currency}<:cash_24:751784973488357457>`);

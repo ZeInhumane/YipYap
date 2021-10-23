@@ -50,7 +50,7 @@ module.exports = {
                 user.inv[itemName].ascension = 0;
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("ascended"))
                     .catch(err => console.error(err));
                 message.channel.send(`This equipment does not have enough levels to ascend.`);
                 return;
@@ -134,7 +134,7 @@ module.exports = {
 
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("ascended"))
                     .catch(err => console.error(err));
 
                 // Ascended message
@@ -182,7 +182,6 @@ module.exports = {
             let ascendEmotes = [];
             let ascensionRequirements = Object.entries(dbEquipment.ascensionRequirements[userEquipment.ascension])
             for (let i = 0; i < ascensionRequirements.length; i++) {
-                console.log(ascensionRequirements[i])
                 let materialDBInfo = await findItem(ascensionRequirements[i][0]);
                 ascendEmotes.push(materialDBInfo.emote);
                 // 0 is material name, 1 is num of materials needed
