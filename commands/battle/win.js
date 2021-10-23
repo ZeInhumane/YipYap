@@ -69,7 +69,6 @@ module.exports = {
 
                 user.currency += moneyEarned * goldMulti;
                 user.save()
-                    .then(result => console.log(result))
                     .catch(err => console.error(err));
 
             
