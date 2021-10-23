@@ -41,7 +41,7 @@ module.exports = {
                     inv: { "Apple": { "quantity": 1, "emote": "🍎", "type": "fruit" } },
                 });
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("start"))
                     .catch(err => console.error(err));
                 message.channel.send('You have been successfully registered, get free items using starterpack command! Use help command to find useful commands.');
             }

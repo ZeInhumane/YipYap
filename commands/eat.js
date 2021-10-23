@@ -83,7 +83,7 @@ module.exports = {
             user.sp += update_winner.new_sp();
             user.markModified('inv');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("eat"))
                 .catch(err => console.error(err));
         });
     }

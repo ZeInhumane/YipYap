@@ -49,10 +49,10 @@ module.exports = {
                 user.currency -= transferAmount;
                 target.currency += transferAmount;
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("give"))
                     .catch(err => console.error(err));
                 target.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("give"))
                     .catch(err => console.error(err));
                 message.channel.send(`Successfully transferred ${transferAmount}<:cash_24:751784973488357457> to ${transferTarget.tag}. Your current balance is ${user.currency}<:cash_24:751784973488357457>`);
             });

@@ -130,12 +130,12 @@ module.exports = {
                 }
                 effects.markModified('tickets')
                 effects.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("ticket"))
                     .catch(err => console.error(err));
 
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log("ticket"))
                     .catch(err => console.error(err));
             });
         });

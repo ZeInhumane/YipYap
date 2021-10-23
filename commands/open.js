@@ -422,7 +422,7 @@ module.exports = {
             message.channel.send({ embeds: [openEmbed] })
             user.markModified('inv');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log("open"))
                 .catch(err => console.error(err));
         });
     }
