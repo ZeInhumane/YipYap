@@ -47,7 +47,6 @@ module.exports = {
         args.splice(packTypeIndex, 1);
         // Uppercase first letter
         packType = packType.charAt(0).toUpperCase() + packType.substring(1);
-        console.log(packType)
 
         let boxType = titleCase(args.join(" "));
 
@@ -58,7 +57,6 @@ module.exports = {
 
         // Try to find similar item in db
         let item = await findPartialItem(`${packType}${boxType ? " " + boxType : ""}`);
-        console.log(item)
         if (!item) {
             message.channel.send(`That item does not exist!`);
             return;
@@ -73,7 +71,6 @@ module.exports = {
             }
         }
         else {
-            console.log('more than 1 item returned? need to be more specific')
             // maybe send message
             message.channel.send(`More than 1 item similar to ${packType}${boxType ? " " + boxType : ""}. Need to be more specific.`);
             return;
@@ -115,7 +112,7 @@ module.exports = {
                                 }
                                 else {
                                     user.inv[names[i]] = await findItem(names[i])
-                                    user.inv[names[i]].quantity = amts[i] * packAmt;
+                                    user.inv[names[i]].quantity = amts[i] * packAmt
                                 }
                                 openEmbed.addField(`${guest} gained ${amts[i] * packAmt} ${names[i]}${(amts[i] * packAmt) > 1 ? "s" : ""}.`, '\u200b')
                             }
@@ -200,7 +197,6 @@ module.exports = {
                             let no_eq = Object.keys(equipment).length
                             for (i = 0; i < no_eq; i++) {
                                 totalChance += Object.values(equipment)[i];
-                                console.log(Object.values(equipment))
                             }
 
                             for (i = 0; i < packAmt; i++) {
@@ -209,7 +205,6 @@ module.exports = {
                                 // while no item is picked
                                 while (randomeqid == -1) {
                                     for (j = 0; j < no_eq; j++) {
-                                        console.log(`Chance ${Object.values(equipment)[j] / totalChance}`)
                                         if (Math.random() < Object.values(equipment)[j] / totalChance) {
                                             randomeqid = j;
                                         }
@@ -369,15 +364,11 @@ module.exports = {
                                 if (rng <= dropInfo[i].dropChance / totalChance) {
                                     quantityDropped = Math.floor(Math.random() * dropInfo[i].maxQuantity + dropInfo[i].minQuantity);
                                     drops.push([dropNames[i], quantityDropped])
-                                    console.log(dropNames[i])
-                                    console.log(quantityDropped)
                                     if (totalDrops.find(element => element[0] == dropNames[i])) {
                                         totalDrops.find(element => element[0] == dropNames[i])[1] += quantityDropped;
-                                        console.log(totalDrops.find(element => element[0] == dropNames[i]))
                                     }
                                     else {
                                         totalDrops.push([dropNames[i], quantityDropped])
-                                        console.log(totalDrops)
                                     }
 
                                 }
@@ -414,8 +405,6 @@ module.exports = {
                             user.inv[itemName] = itemObject;
                             user.inv[itemName].quantity = totalDrops[i][1];
                         }
-
-                        console.log(itemName)
                         openEmbed.addField(`${itemObject.emote + itemName}`, `${totalDrops[i][1]}`);
                     }
                     // Removes treasure chest from inventory
