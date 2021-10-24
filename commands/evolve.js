@@ -31,7 +31,7 @@ module.exports = {
             }
             // Checks if user entered a vaild rarity
             let rarityIndex = rarityArr.findIndex(arg => arg == evoType.toLowerCase());
-            if (rarityIndex == -1) {
+            if (rarityIndex == -1 || rarityArr.length <= rarityIndex + 1) {
                 message.channel.send("Please enter a valid rarity to evolve by");
                 return;
             }
