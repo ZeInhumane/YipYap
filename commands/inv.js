@@ -83,12 +83,12 @@ module.exports = {
                                 botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [row] });
                             })
                             .catch(async err => {
-                                currentColor = '#FF0000';
                                 isExpired = true;
                             });
 
                         // Check if interaction expired
                         if (isExpired) {
+                            currentColor = '#FF0000';
                             botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
                             return;
                         }
