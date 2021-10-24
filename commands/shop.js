@@ -77,7 +77,7 @@ module.exports = {
 
                 // Check if interaction expired
                 if (isExpired) {
-                    botEmbedMessage.delete();
+                    botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
                     return;
                 }
             }
