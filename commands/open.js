@@ -382,6 +382,8 @@ module.exports = {
                     // Removes tag from name
                     name = name.split("#", name.length - 4)[0];
 
+                    console.log("TOTAL DROPS")
+                    console.log(totalDrops)
                     for (i = 0; i < totalDrops.length; i++) {
                         let itemName = totalDrops[i][0];
                         let itemObject = await findItem(itemName)
