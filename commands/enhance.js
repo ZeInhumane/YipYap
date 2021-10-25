@@ -52,9 +52,9 @@ module.exports = {
             }
             // Sets materialUseCount to all of the user's item count
             if (materialUseCount == 'all') {
-                materialUseCount = user.inv[itemName].quantity;
+                materialUseCount = user.inv[upgradeMaterial].quantity;
             }
-            if (user.inv[upgradeMaterial] < materialUseCount) {
+            if (user.inv[upgradeMaterial].quantity < materialUseCount) {
                 message.channel.send(`You do not have that much ${upgradeMaterial}s!`);
                 return;
             }
@@ -132,7 +132,7 @@ module.exports = {
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log("enhance"))
+                .then(result => console.log('inv saved at enhance'))
                 .catch(err => console.error(err));
 
             const enhanceEmbed = new Discord.MessageEmbed()

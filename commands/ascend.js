@@ -17,6 +17,14 @@ module.exports = {
 
         let rarityArr = ["Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"];
         let playerAction = "nothing";
+        let expRarityTable = {
+            "Common": 1000,
+            "Uncommon": 3000,
+            "Rare": 9000,
+            "Epic": 40000,
+            "Legendary": 100000,
+            "Mythic": 500000
+        }
 
         // is edited version of the one at the bottom of battle.js
         await User.findOne({ userID: message.author.id }, async (err, user) => {
@@ -36,21 +44,13 @@ module.exports = {
             }
             //For users who were created before weapon level was created
             if (user.inv[itemName].exp == null) {
-                let expRarityTable = {
-                    "Common": 1000,
-                    "Uncommon": 3000,
-                    "Rare": 9000,
-                    "Epic": 40000,
-                    "Legendary": 100000,
-                    "Mythic": 500000
-                }
                 user.inv[itemName].level = 1;
                 user.inv[itemName].exp = 0;
                 user.inv[itemName].expToLevelUp = expRarityTable[user.inv[itemName].rarity];
                 user.inv[itemName].ascension = 0;
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log("ascended"))
+                    .then(result => console.log(result))
                     .catch(err => console.error(err));
                 message.channel.send(`This equipment does not have enough levels to ascend.`);
                 return;
@@ -130,11 +130,18 @@ module.exports = {
                     user.inv[ascensionRequirements[i][0]].quantity -= ascensionRequirements[i][1];
                 }
 
+                // Ascend up
                 userEquipment.ascension += 1;
+
+                // Reset experience needed if still able to ascend
+                if (userEquipment.ascension <= rarityArr.indexOf(userEquipment.rarity)) {
+                    let expPercentageIncrease = 1.5;
+                    userEquipment.expToLevelUp = expRarityTable[userEquipment.rarity] * expPercentageIncrease * userEquipment.ascension;
+                }
 
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log("ascended"))
+                    .then(result => console.log(result))
                     .catch(err => console.error(err));
 
                 // Ascended message
@@ -151,7 +158,7 @@ module.exports = {
                     if (dbEquipment.ascensionStatsUp[statName].multi) {
                         multiText = `, Multi: ${dbEquipment.ascensionStatsUp[statName].multi}`
                     }
-                    updatedAscendEmbed.setField(`${statName} Up`, `Flat: ${dbEquipment.ascensionStatsUp[statName].flat}${multiText}`);
+                    updatedAscendEmbed.addField(`${statName} Up`, `Flat: ${dbEquipment.ascensionStatsUp[statName].flat}${multiText}`);
                 }
 
                 botEmbedMessage.edit({ embeds: [updatedAscendEmbed], components: [] });
@@ -185,7 +192,7 @@ module.exports = {
                 let materialDBInfo = await findItem(ascensionRequirements[i][0]);
                 ascendEmotes.push(materialDBInfo.emote);
                 // 0 is material name, 1 is num of materials needed
-                ascendEmbed.addField(`${materialDBInfo.emote} ${ascensionRequirements[i][0]}`, ascensionRequirements[i][1]);
+                ascendEmbed.addField(`${materialDBInfo.emote} ${ascensionRequirements[i][0]}`, `${ascensionRequirements[i][1]}`);
 
             }
             message.channel.send({ embeds: [ascendEmbed], components: [row] })
