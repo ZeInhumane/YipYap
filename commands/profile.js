@@ -2,7 +2,6 @@ const User = require('../models/user');
 const mongoose = require('mongoose');
 const Discord = require('discord.js');
 const botLevel = require('../models/botLevel');
-const findPrefix = require('../functions/findPrefix');
 const findItem = require('../functions/findItem.js');
 const getFinalStats = require('../functions/getFinalStats');
 const equip = require('./equip');
@@ -15,8 +14,7 @@ module.exports = {
     execute(message, args) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                const prefix = await findPrefix(message.guild.id);
-                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
+                message.channel.send("You have not set up a player yet! Do =start to start.");
             }
             else {
                 function calulateFinalStat(statName) {
