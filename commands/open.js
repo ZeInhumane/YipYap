@@ -267,9 +267,9 @@ module.exports = {
                             "Jericho Jehammad": { dropChance: 1, minQuantity: 3, maxQuantity: 3 }
                         },
                         "rare": {
-                            "Apple": { dropChance: 1, minQuantity: 5, maxQuantity: 20 },
-                            "Banana": { dropChance: 3, minQuantity: 5, maxQuantity: 10 },
-                            "Orange": { dropChance: 4, minQuantity: 2, maxQuantity: 5 },
+                            "Apple": { dropChance: 60, minQuantity: 5, maxQuantity: 20 },
+                            "Banana": { dropChance: 40, minQuantity: 5, maxQuantity: 10 },
+                            "Orange": { dropChance: 10, minQuantity: 2, maxQuantity: 5 },
                             "Axe": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
                             "Bow": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
                             "Staff": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
@@ -279,13 +279,13 @@ module.exports = {
                             "Magic Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
                             "Clown Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
                             "Elven Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-                            "Jericho Jehammad": { dropChance: 1, minQuantity: 5, maxQuantity: 5 }
+                            "Jericho Jehammad": { dropChance: 5, minQuantity: 5, maxQuantity: 10 }
                         },
                         "epic": {
                             "Watermelon": { dropChance: 10, minQuantity: 2, maxQuantity: 5 },
-                            "Banana": { dropChance: 50, minQuantity: 10, maxQuantity: 30 },
-                            "Orange": { dropChance: 39, minQuantity: 5, maxQuantity: 10 },
-                            "Jericho Jehammad": { dropChance: 1, minQuantity: 50, maxQuantity: 50 },
+                            "Banana": { dropChance: 60, minQuantity: 10, maxQuantity: 30 },
+                            "Orange": { dropChance: 40, minQuantity: 5, maxQuantity: 10 },
+                            "Jericho Jehammad": { dropChance: 5, minQuantity: 15, maxQuantity: 50 },
                             "Dusk Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
                             "Eclipse Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
                             "Spiked Cowboy Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
