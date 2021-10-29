@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const botLevel = require('../models/botLevel');
 const User = require('../models/user');
 const win = require('./battle/win.js');
+const findPrefix = require('../functions/findPrefix');
 const userEffects = require('../models/userEffects.js');
 
 module.exports = {
@@ -258,7 +259,8 @@ module.exports = {
         let botEmbedMessage, playerAction, filter, row;
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
+                const prefix = await findPrefix(message.guild.id);
+                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
             }
             else {
                 let expMsg = 'No active EXP Ticket.';
