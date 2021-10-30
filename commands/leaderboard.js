@@ -36,7 +36,7 @@ module.exports = {
         };
 
         // Filter so only user can interact with the buttons
-        filter = i => {
+        const filter = i => {
             i.deferUpdate();
             return i.user.id === message.author.id;
         };
