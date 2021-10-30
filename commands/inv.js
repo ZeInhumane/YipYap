@@ -63,6 +63,11 @@ module.exports = {
                     }
 
                     let isExpired = false;
+                    // Filter so only user can interact with the buttons
+                    const filter = i => {
+                    i.deferUpdate();
+                    return i.user.id === message.author.id;
+                    };
                     while (true) {
                         // awaits Player interaction
                         await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
@@ -96,12 +101,6 @@ module.exports = {
                 }
 
                 let playerAction;
-
-                // Filter so only user can interact with the buttons
-                filter = i => {
-                    i.deferUpdate();
-                    return i.user.id === message.author.id;
-                };
                 let onPage = 0;
                 let itemsOnCurrentPage = 0;
                 // Sets how many items are displayed on a single shop page

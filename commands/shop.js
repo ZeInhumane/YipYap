@@ -51,6 +51,10 @@ module.exports = {
                 return updatedShopEmbed;
             }
             let isExpired = false;
+            const filter = i => {
+                i.deferUpdate();
+                return i.user.id === message.author.id;
+            };
             while (true) {
                 // awaits Player interaction
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
@@ -93,14 +97,6 @@ module.exports = {
                 return;
             }
             else {
-                filter = i => {
-                    console.log(`isMessageOwner: ${i.user.id === message.author.id}`)
-                    console.log(`user id: ${i.user.id}`)
-                    console.log(`user name: ${i.user.username}`)
-                    console.log(`message owner: ${message.author.id}\n`)
-                    i.deferUpdate();
-                    return i.user.id === message.author.id;
-                };
                 let itemName;
                 let i = 0;
                 let counter = 0;

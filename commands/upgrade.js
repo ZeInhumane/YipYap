@@ -101,6 +101,11 @@ module.exports = {
 
                 return updatedBattleEmbed;
             }
+            // Filter so only user can interact with the buttons
+            const filter = i => {
+                i.deferUpdate();
+                return i.user.id === message.author.id;
+            };
             while (user.sp > 0 && playerAction != "stop") {
                 // awaits Player reaction
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
@@ -132,11 +137,7 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
-            // Filter so only user can interact with the buttons
-            filter = i => {
-                i.deferUpdate();
-                return i.user.id === message.author.id;
-            };
+            
 
             //For users who were created before sp was created
             if (user.sp == null) {
