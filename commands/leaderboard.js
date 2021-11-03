@@ -40,7 +40,7 @@ module.exports = {
             i.deferUpdate();
             return i.user.id === message.author.id;
         };
-        row = new Discord.MessageActionRow()
+        const row = new Discord.MessageActionRow()
             .addComponents(
                 new Discord.MessageButton()
                     .setCustomId('currency')

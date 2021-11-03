@@ -26,6 +26,21 @@ module.exports = {
                 name = name.split("#", name.length - 4)[0];
 
                 let currentColor = '#0099ff';
+                const row = new Discord.MessageActionRow()
+                    .addComponents(
+                        new Discord.MessageButton()
+                            .setCustomId('back')
+                            .setLabel('◀️')
+                            .setStyle('PRIMARY'),
+                        new Discord.MessageButton()
+                            .setCustomId('forward')
+                            .setLabel('▶️')
+                            .setStyle('PRIMARY'),
+                        new Discord.MessageButton()
+                            .setCustomId('delete')
+                            .setLabel('🗑️')
+                            .setStyle('DANGER'),
+                    );
 
                 // Edited shop function
                 async function page(user, botEmbedMessage) {
@@ -65,8 +80,8 @@ module.exports = {
                     let isExpired = false;
                     // Filter so only user can interact with the buttons
                     const filter = i => {
-                    i.deferUpdate();
-                    return i.user.id === message.author.id;
+                        i.deferUpdate();
+                        return i.user.id === message.author.id;
                     };
                     while (true) {
                         // awaits Player interaction
@@ -131,22 +146,6 @@ module.exports = {
                     itemCount++;
                     itemsOnCurrentPage++;
                 }
-
-                row = new Discord.MessageActionRow()
-                    .addComponents(
-                        new Discord.MessageButton()
-                            .setCustomId('back')
-                            .setLabel('◀️')
-                            .setStyle('PRIMARY'),
-                        new Discord.MessageButton()
-                            .setCustomId('forward')
-                            .setLabel('▶️')
-                            .setStyle('PRIMARY'),
-                        new Discord.MessageButton()
-                            .setCustomId('delete')
-                            .setLabel('🗑️')
-                            .setStyle('DANGER'),
-                    );
 
                 message.channel.send({ embeds: [shopEmbed], components: [row] })
                     .then(botMessage => {

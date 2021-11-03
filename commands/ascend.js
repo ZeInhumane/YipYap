@@ -174,7 +174,7 @@ module.exports = {
                     { name: `Materials needed: `, value: "\u200b", inline: true }
                 )
 
-            row = new Discord.MessageActionRow()
+            const row = new Discord.MessageActionRow()
                 .addComponents(
                     new Discord.MessageButton()
                         .setCustomId('yes')

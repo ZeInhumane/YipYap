@@ -69,12 +69,14 @@ module.exports = {
                                 onPage--;
                                 break;
                             case "delete":
+                                currentColor = '#FF0000';
                                 isExpired = true;
                                 return;
                         }
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [row] });
                     })
                     .catch(async err => {
+                        console.log(err);
                         currentColor = '#FF0000';
                         isExpired = true;
                     });
@@ -87,6 +89,21 @@ module.exports = {
             }
         }
 
+        const row = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setCustomId('back')
+                    .setLabel('◀️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('forward')
+                    .setLabel('▶️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('delete')
+                    .setLabel('🗑️')
+                    .setStyle('DANGER'),
+            );
         let playerAction = "nothing";
         // is edited version of the one at the bottom of battle.js
         User.findOne({ userID: message.author.id }, async (err, user) => {
@@ -125,21 +142,6 @@ module.exports = {
                             i++;
                             counter++;
                         }
-                        row = new Discord.MessageActionRow()
-                            .addComponents(
-                                new Discord.MessageButton()
-                                    .setCustomId('back')
-                                    .setLabel('◀️')
-                                    .setStyle('PRIMARY'),
-                                new Discord.MessageButton()
-                                    .setCustomId('forward')
-                                    .setLabel('▶️')
-                                    .setStyle('PRIMARY'),
-                                new Discord.MessageButton()
-                                    .setCustomId('delete')
-                                    .setLabel('🗑️')
-                                    .setStyle('DANGER'),
-                            );
 
                         message.channel.send({ embeds: [shopEmbed], components: [row] })
                             .then(botMessage => {
