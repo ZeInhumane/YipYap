@@ -17,7 +17,22 @@ module.exports = {
         const emptyUltimateEmote = "<:blank:829270386986319882>"
         const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>"
             , "<:6:829271966161567774>", "<:7:829271980397166612>", "<:8:829271994205208597>", "<:9:829272014946697246>", "<:10:829272027604713523>"]
-
+        const row = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setCustomId('attack')
+                    .setLabel('⚔️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('defend')
+                    .setLabel('🛡️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('ultimate')
+                    .setLabel('')
+                    .setStyle('DANGER')
+                    .setEmoji(ultimateEmote),
+            );
         let displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
 
         let currentColor = '#0099ff';
@@ -90,7 +105,7 @@ module.exports = {
         }
 
         // Battle function
-        async function battle(user, player, enemy, expMsg, goldMsg) {
+        async function battle(user, player, enemy, expMsg, goldMsg, botEmbedMessage) {
             let playerTurnAction = "nothing";
             let enemyTurnAction = "nothing";
 
@@ -170,6 +185,11 @@ module.exports = {
 
             // Battle goes on when Player and Enemy is still alive
             let isExpired = false;
+            // Filter so only user can interact with the buttons
+            const filter = i => {
+                i.deferUpdate();
+                return i.user.id === message.author.id;
+            };
             while (player.hp > 0 && enemy.hp > 0 && !isExpired) {
                 // awaits Player reaction
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
@@ -254,8 +274,7 @@ module.exports = {
             return enemy;
         }
 
-
-        let botEmbedMessage, playerAction, filter, row;
+        let playerAction;
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 message.channel.send("You have not set up a player yet! Do =start to start.");
@@ -296,7 +315,7 @@ module.exports = {
                                         }
                                         user.markModified('inv');
                                         user.save()
-                                            .then(result => console.log("battle"))
+                                            .then(result => console.log(result))
                                             .catch(err => console.error(err));
                                     })
                                 }
@@ -318,17 +337,13 @@ module.exports = {
                         }
                         effects.markModified('tickets');
                         effects.save()
-                            .then(result => console.log("battle"))
+                            .then(result => console.log(result))
                             .catch(err => console.error(err));
                     }
                 });
                 location = user.location;
                 let enemy = await makeNewEnemy(user);
-                // Filter so only user can interact with the buttons
-                filter = i => {
-                    i.deferUpdate();
-                    return i.user.id === message.author.id;
-                };
+
 
                 // user.player
                 let player = { name: user.player.name };
@@ -354,32 +369,17 @@ module.exports = {
                     .setImage(locationInfo._doc.LocationImage)
                     .setFooter(`${locationInfo._doc.Description}`);
 
-                const row = new Discord.MessageActionRow()
-                    .addComponents(
-                        new Discord.MessageButton()
-                            .setCustomId('attack')
-                            .setLabel('⚔️')
-                            .setStyle('PRIMARY'),
-                        new Discord.MessageButton()
-                            .setCustomId('defend')
-                            .setLabel('🛡️')
-                            .setStyle('PRIMARY'),
-                        new Discord.MessageButton()
-                            .setCustomId('ultimate')
-                            .setLabel('')
-                            .setStyle('DANGER')
-                            .setEmoji(ultimateEmote),
-                    );
+
 
                 message.channel.send({ embeds: [battleEmbed], components: [row] })
                     .then(botMessage => {
-                        botEmbedMessage = botMessage;
-                        battle(user, player, enemy, expMsg, goldMsg);
+                        battle(user, player, enemy, expMsg, goldMsg, botMessage);
                     });
             }
         });
 
 
     }
+
 
 }
