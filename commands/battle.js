@@ -354,7 +354,7 @@ module.exports = {
                     .setImage(locationInfo._doc.LocationImage)
                     .setFooter(`${locationInfo._doc.Description}`);
 
-                row = new Discord.MessageActionRow()
+                const row = new Discord.MessageActionRow()
                     .addComponents(
                         new Discord.MessageButton()
                             .setCustomId('attack')

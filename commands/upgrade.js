@@ -9,6 +9,41 @@ module.exports = {
     category: "Fun",
     execute(message, args) {
         let currentColor = "#0099ff";
+        const row1 = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setCustomId('hp')
+                    .setLabel('❤️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('attack')
+                    .setLabel('⚔️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('defense')
+                    .setLabel('🛡️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('speed')
+                    .setLabel('💨')
+                    .setStyle('PRIMARY'),
+            );
+
+        const row2 = new Discord.MessageActionRow()
+            .addComponents(
+                new Discord.MessageButton()
+                    .setCustomId('up')
+                    .setLabel('⬆️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('down')
+                    .setLabel('⬇️')
+                    .setStyle('PRIMARY'),
+                new Discord.MessageButton()
+                    .setCustomId('stop')
+                    .setLabel('✖️')
+                    .setStyle('DANGER'),
+            );
         // Edited upgrade function
         async function stat(user, botEmbedMessage) {
             function multiplier(playeraction) {
@@ -52,7 +87,7 @@ module.exports = {
                     messageDisplayed = 'Not enough sp to upgrade.'
                 }
             }
-            
+
             function playerTurn(action) {
                 switch (action) {
                     case "up":
@@ -90,10 +125,10 @@ module.exports = {
                     .addFields(
                         { name: `:level_slider: ${user.level}`, value: "\u200b" },
                         { name: `Base stats`, value: "\u200b" },
-                        { name: `:hearts: ${user.player.baseStats.hp}`, value: `(+${5*multi})`, inline: true },
-                        { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: `(+${1*multi})`, inline: true },
-                        { name: `:shield: ${user.player.baseStats.defense}`, value: `(+${1*multi})`, inline: true },
-                        { name: `:dash: ${user.player.baseStats.speed}`, value: `(+${1*multi})`, inline: true },
+                        { name: `:hearts: ${user.player.baseStats.hp}`, value: `(+${5 * multi})`, inline: true },
+                        { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: `(+${1 * multi})`, inline: true },
+                        { name: `:shield: ${user.player.baseStats.defense}`, value: `(+${1 * multi})`, inline: true },
+                        { name: `:dash: ${user.player.baseStats.speed}`, value: `(+${1 * multi})`, inline: true },
                         { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
                     )
                     .addField('Update: ', messageDisplayed)
@@ -137,7 +172,7 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
-            
+
 
             //For users who were created before sp was created
             if (user.sp == null) {
@@ -160,42 +195,6 @@ module.exports = {
                     { name: `:dash: ${user.player.baseStats.speed}`, value: "(+1)", inline: true },
                     { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
                 )
-
-            row1 = new Discord.MessageActionRow()
-                .addComponents(
-                    new Discord.MessageButton()
-                        .setCustomId('hp')
-                        .setLabel('❤️')
-                        .setStyle('PRIMARY'),
-                    new Discord.MessageButton()
-                        .setCustomId('attack')
-                        .setLabel('⚔️')
-                        .setStyle('PRIMARY'),
-                    new Discord.MessageButton()
-                        .setCustomId('defense')
-                        .setLabel('🛡️')
-                        .setStyle('PRIMARY'),
-                    new Discord.MessageButton()
-                        .setCustomId('speed')
-                        .setLabel('💨')
-                        .setStyle('PRIMARY'),
-                );
-
-            row2 = new Discord.MessageActionRow()
-                .addComponents(
-                    new Discord.MessageButton()
-                        .setCustomId('up')
-                        .setLabel('⬆️')
-                        .setStyle('PRIMARY'),
-                    new Discord.MessageButton()
-                        .setCustomId('down')
-                        .setLabel('⬇️')
-                        .setStyle('PRIMARY'),
-                    new Discord.MessageButton()
-                        .setCustomId('stop')
-                        .setLabel('✖️')
-                        .setStyle('DANGER'),
-                );
 
             message.channel.send({ embeds: [spEmbed], components: [row1, row2] })
                 .then(botMessage => {
