@@ -3,6 +3,7 @@ const botLevel = require('../models/botLevel');
 const User = require('../models/user');
 const win = require('./battle/win.js');
 const userEffects = require('../models/userEffects.js');
+const findPrefix = require('../functions/findPrefix');
 
 module.exports = {
     name: "battle",
@@ -277,7 +278,9 @@ module.exports = {
         let playerAction;
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                message.channel.send("You have not set up a player yet! Do =start to start.");
+                //Getting the prefix from db
+                const prefix = await findPrefix(message.guild.id);
+                message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
             }
             else {
                 let expMsg = 'No active EXP Ticket.';
