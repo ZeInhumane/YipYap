@@ -14,7 +14,7 @@ module.exports = {
         const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();
         if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557") {
-        User.findOne({ userID: message.author.id }, (err, user) => {
+        User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 //Getting the prefix from db
                 const prefix = await findPrefix(message.guild.id);

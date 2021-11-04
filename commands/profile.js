@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const botLevel = require('../models/botLevel');
 const findItem = require('../functions/findItem.js');
 const getFinalStats = require('../functions/getFinalStats');
-const findPrefix = require('../functions/findPrefix');
+const findPrefix = require('../functions/findPrefix')
 const equip = require('./equip');
 module.exports = {
     name: "profile",
