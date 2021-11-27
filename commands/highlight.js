@@ -23,6 +23,6 @@ module.exports = {
             .setFooter(authorName);
 
         message.channel.send({ embeds: [highlightEmbed] });
-        message.delete();
+        // message.delete();
     }
 }
