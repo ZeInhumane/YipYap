@@ -114,7 +114,7 @@ client.on('messageCreate', async message => {
     const commandName = args.shift().toLowerCase();
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
     if (!command) {
-        message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
+        // message.channel.send(`Invalid command. Type ${prefix}help for commands to use.`);
     }
     else {
         cooldownUpdate(command, message, args);
