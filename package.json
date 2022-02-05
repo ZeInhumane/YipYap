@@ -23,7 +23,7 @@
     "eslint": "^7.7.0",
     "mongoose": "^5.10.2",
     "node-fetch": "^2.6.1",
-    "sequelize": "^6.3.4"
+    "sequelize": "^6.15.0"
   },
    "engines": {
     "node": "16.x"
