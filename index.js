@@ -41,7 +41,6 @@ client.once('ready', () => {
             BotData.findOne({ dataName: 'Cooldowns' }, (err, Data) => {
                 Data.data = cooldowns
                 Data.save()
-                    // .then(result => console.log(result))
                     .catch(err => console.error(err));
             })
         }, 120000);
