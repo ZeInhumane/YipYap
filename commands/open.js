@@ -23,11 +23,11 @@ module.exports = {
         // Finds arguments no matter the position
         // Finds packAmt
         let packAmt = 1;
-        let packAmtIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg))
+        let packAmtIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
         if (packAmtIndex != -1) {
             // Extracts packAmt
             packAmt = args[packAmtIndex];
-            packAmt = parseInt(packAmt)
+            packAmt = parseInt(packAmt);
             if (packAmt > 5) {
                 packAmt = 5;
             }
@@ -36,7 +36,7 @@ module.exports = {
         }
 
         // Finds packType
-        let packTypeIndex = args.findIndex(arg => /^[a-z]+$/ig.test(arg))
+        let packTypeIndex = args.findIndex(arg => /^[a-z]+$/ig.test(arg));
         if (packTypeIndex == -1) {
             message.channel.send('Please specify a chest or pack that you would like to open');
             return;
@@ -62,9 +62,9 @@ module.exports = {
             return;
         }
         if (item.length == 1) {
-            boxType = item[0].itemName.split(' ')
-            boxType.shift()
-            boxType = boxType.join(' ')
+            boxType = item[0].itemName.split(' ');
+            boxType.shift();
+            boxType = boxType.join(' ');
             if (boxType == "" || !/^((treasure)? ?(chest)?|pack)$/ig.test(boxType)) {
                 message.channel.send(`Specify chest or pack to open.`);
                 return;
@@ -78,7 +78,7 @@ module.exports = {
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                //Getting the prefix from db
+                // Getting the prefix from db
                 const prefix = await findPrefix(message.guild.id);
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
@@ -102,10 +102,10 @@ module.exports = {
                                 "Banana": 2,
                                 "Orange": 3,
                                 "Pear": 4,
-                            }
+                            };
 
-                            names = Object.keys(spoils)
-                            amts = Object.values(spoils)
+                            names = Object.keys(spoils);
+                            amts = Object.values(spoils);
                             for (let i = 0; i < names.length; i++) {
                                 if (user.inv[names[i]]) {
                                     user.inv[names[i]].quantity += amts[i] * packAmt;
@@ -158,7 +158,7 @@ module.exports = {
                             break;
                         case 'Swords':
                         case 'Boots':
-                            //but why
+                            // but why
                             if (packAmt > 5) {
                                 packAmt = 5;
                                 message.channel.send(`You may only open up to 5 ${packType} packs at once!`);
@@ -194,7 +194,7 @@ module.exports = {
 
                             let totalChance = 0;
                             // no of equipment in chance table
-                            let no_eq = Object.keys(equipment).length
+                            let no_eq = Object.keys(equipment).length;
                             for (i = 0; i < no_eq; i++) {
                                 totalChance += Object.values(equipment)[i];
                             }
@@ -311,26 +311,26 @@ module.exports = {
 
                     switch (packType.toLowerCase()) {
                         case "common":
-                            chestEmote = "<:CommonChest:819856620572901387>"
+                            chestEmote = "<:CommonChest:819856620572901387>";
                             break;
                         case "uncommon":
-                            chestEmote = "<:UncommonChest:820272834348711976>"
+                            chestEmote = "<:UncommonChest:820272834348711976>";
                             break;
                         case "rare":
-                            chestEmote = "<:RareChest:820273250629582858>"
+                            chestEmote = "<:RareChest:820273250629582858>";
                             break;
                         case "epic":
-                            chestEmote = "<:EpicChest:820273750289023007>"
+                            chestEmote = "<:EpicChest:820273750289023007>";
                             break;
                         case "legendary":
-                            chestEmote = "<:LegendaryChest:820274118817611777>"
+                            chestEmote = "<:LegendaryChest:820274118817611777>";
                             break;
                         case "mythic":
-                            chestEmote = "<:MythicChest:820274344059994122>"
+                            chestEmote = "<:MythicChest:820274344059994122>";
                             break;
                     }
 
-                    //change 1 when quantityToOpen is implemented
+                    // change 1 when quantityToOpen is implemented
                     if (user.inv[packType + " Treasure Chest"].quantity < packAmt) {
                         message.channel.send("You do not have a sufficient number of chests to open");
                         return;
@@ -342,25 +342,25 @@ module.exports = {
                     // Change embed title
                     openEmbed.setTitle(`${packAmt} ${packType} Treasure Chest ${chestEmote} opened!`)
 
-                    //Contains drop rates for items in the boxes
+                    // Contains drop rates for items in the boxes
                     totalDrops = [];
-                    packType = packType.toLowerCase()
+                    packType = packType.toLowerCase();
 
                     // Contains chance and quantity dropped
                     dropInfo = Object.values(boxLootTable[packType]);
                     dropNames = Object.keys(boxLootTable[packType]);
 
-                    let totalChance = 0
+                    let totalChance = 0;
                     for (i = 0; i < dropInfo.length; i++) {
                         totalChance += dropInfo[i].dropChance;
                     }
                     // Opens amount of chest user wants to open
                     for (j = 0; j < packAmt; j++) {
                         // Makes sure user gets at least 1 drop per chest
-                        let drops = []
+                        let drops = [];
                         while (drops.length == 0) {
                             for (i = 0; i < dropNames.length; i++) {
-                                rng = Math.random()
+                                rng = Math.random();
                                 if (rng <= dropInfo[i].dropChance / totalChance) {
                                     quantityDropped = Math.floor(Math.random() * dropInfo[i].maxQuantity + dropInfo[i].minQuantity);
                                     drops.push([dropNames[i], quantityDropped])
@@ -382,11 +382,11 @@ module.exports = {
                     // Removes tag from name
                     name = name.split("#", name.length - 4)[0];
 
-                    console.log("TOTAL DROPS")
-                    console.log(totalDrops)
+                    console.log("TOTAL DROPS");
+                    console.log(totalDrops);
                     for (i = 0; i < totalDrops.length; i++) {
                         let itemName = totalDrops[i][0];
-                        let itemObject = await findItem(itemName)
+                        let itemObject = await findItem(itemName);
                         // drops = [[dropName, dropQuantity]]
                         if (itemObject.type == 'equipment') {
                             let addItem = await makeEquipment(itemName);
@@ -421,7 +421,7 @@ module.exports = {
                     return;
             }
 
-            message.channel.send({ embeds: [openEmbed] })
+            message.channel.send({ embeds: [openEmbed] });
             user.markModified('inv');
             user.save()
                 .then(result => console.log("open"))
