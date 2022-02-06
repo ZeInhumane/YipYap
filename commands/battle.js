@@ -332,7 +332,7 @@ module.exports = {
                             .catch(err => console.error(err));
                     }
                 });
-                await botLevel.findOne({ 'Location': user.location }, (err, result) => {locationInfo = result._doc});
+                await botLevel.findOne({ 'Location': user.location }, (err, result) => { locationInfo = result._doc });
                 let enemy = await makeNewEnemy(user);
 
                 // user.player
