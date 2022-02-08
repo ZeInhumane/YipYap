@@ -35,7 +35,7 @@ module.exports = {
         async function reset(user, botEmbedMessage, sp) {
             while (userSelection != "cancel") {
                 // awaits button interaction
-                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 30000 })
+                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                     .then(async btnInt => {
                         currentColor = '#0099ff';
                         userSelection = btnInt.customId;
