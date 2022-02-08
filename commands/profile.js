@@ -10,7 +10,7 @@ module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
     syntax: "",
-    aliases: ['me', 'meme', 'stats'],
+    aliases: ['me', 'meme', 'stats', 'p'],
     category: "Fun",
     execute(message, args) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
