@@ -4,16 +4,17 @@ const User = require('../models/user');
 const win = require('./battle/win.js');
 const userEffects = require('../models/userEffects.js');
 const findPrefix = require('../functions/findPrefix');
-
-module.exports = {
+const CommandInterface = require('../utils/commandInterface');
+module.exports = new CommandInterface({
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
     syntax: "",
     cooldown: 20,
     aliases: ['b'],
+    permissions:["SEND_MESSAGES"],
     category: "Fun",
     // change timing in main bot
-    async execute(message, args) {
+    execute: async function (message, args) {
         const ultimateEmote = ":Ultimate:822042890955128872"
         const emptyUltimateEmote = "<:blank:829270386986319882>"
         const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>"
@@ -43,6 +44,7 @@ module.exports = {
 
         // Method to check for damage taken by hero
         function takeDamage(damage, defender, isHero) {
+            console.log(defender);
             let attMulti = damage / defender.defense;
             if (attMulti < 0.4) {
                 attMulti = 0.4;
@@ -87,8 +89,9 @@ module.exports = {
             return damageTaken;
         }
         // Matthew do later (he say he lazy now)
-        function ultimateMove(damage, defender) {
+        function ultimateMove(player, enemy) {
             let damageDone;
+
             return damageDone;
         }
         // Creates Enemy class
@@ -139,7 +142,8 @@ module.exports = {
                         ultimate = 0;
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
-
+                        console.log(enemy)
+                        ultimateMove(player, enemy)
                         playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack * 2.5, enemy, false)
                             + ' damage with his super saiyann ultimate!!\n';
                         displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
@@ -370,4 +374,4 @@ module.exports = {
     }
 
 
-}
+})
