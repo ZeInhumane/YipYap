@@ -10,6 +10,7 @@ module.exports = {
     category: "Fun",
     execute(message) {
         let currentColor = "#0099ff";
+        // Buttons
         const row1 = new Discord.MessageActionRow()
             .addComponents(
                 new Discord.MessageButton()
@@ -34,12 +35,12 @@ module.exports = {
         // Reset prompt
         async function reset(user, botEmbedMessage, sp) {
             while (userSelection != "cancel") {
-                // awaits button interaction
+                // Awaits interaction
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                     .then(async btnInt => {
                         currentColor = '#0099ff';
                         userSelection = btnInt.customId;
-                        // parse button pressed
+                        // Parse button pressed
                         parse(userSelection);
                     })
                     .catch(async () => {
@@ -48,6 +49,7 @@ module.exports = {
                     });
             }
 
+            // Parse button pressed
             async function parse(action) {
                 switch (action) {
                     case "confirm":
@@ -57,6 +59,7 @@ module.exports = {
                         await confirm(user, botEmbedMessage, sp);
                         break;
                     case "cancel":
+                        // Cancel message
                         messageDisplayed = "Stats were not reset";
                         currentColor = '#FF0000';
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
@@ -74,6 +77,7 @@ module.exports = {
             return updatedBattleEmbed;
         }
 
+        // Confirm reset
         async function confirm(user, botEmbedMessage, sp) {
             // Creates confirmation message
             const confirmationEmbed = new Discord.MessageEmbed()
@@ -85,11 +89,13 @@ module.exports = {
 
             const confirmation = await botEmbedMessage.reply({ embeds: [confirmationEmbed], components: [row1], ephemeral: true });
 
+            // Confirmation interaction collector
             await confirmation.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                 .then(async btnInt => {
                     currentColor = '#0099ff';
                     userSelection = btnInt.customId;
                     if (userSelection == 'confirm') {
+                        // Reset stats
                         user.player.baseStats.hp = 50;
                         user.player.baseStats.attack = 5;
                         user.player.baseStats.defense = 5;
@@ -100,19 +106,25 @@ module.exports = {
                             .then(() => console.log("reset"))
                             .catch(err => console.error(err));
                         messageDisplayed = "Stats were reset";
+                        // Send success embed
                         const successEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
                             .setColor('#77DD66')
                             .setTitle('Stats were reset!')
                             .setDescription(`Your stats have been reset and you have been credited with ${sp} special points.`)
                             .setFooter('Spend your special points with the upgrade command!');
                         successEmbed.fields = [];
+                        // Delete confirmation message to prevent multiple inputs
                         await confirmation.delete();
+                        // Edit original message and remove buttons
                         await botEmbedMessage.edit({ embeds: [successEmbed], components: [] });
                     }
                     else {
+                        // Delete confirmation message
                         await confirmation.delete();
+                        // Remove awaiting confirmation field
                         const retryEmbed = await createUpdatedMessage(botEmbedMessage);
                         retryEmbed.fields.pop();
+                        // Send message along with buttons
                         await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
                     }
                 })
@@ -124,10 +136,9 @@ module.exports = {
                 });
         }
 
-        // is edited version of the one at the bottom of battle.js
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                // Getting the prefix from db
+                // Get the prefix from db
                 const prefix = await findPrefix(message.guild.id);
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
