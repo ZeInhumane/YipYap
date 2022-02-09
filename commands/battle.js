@@ -4,7 +4,7 @@ const User = require('../models/user');
 const win = require('./battle/win.js');
 const userEffects = require('../models/userEffects.js');
 const findPrefix = require('../functions/findPrefix');
-
+const ultimateBase = require('../commands/ultimate/lifesteal.js');
 module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
@@ -81,10 +81,13 @@ module.exports = {
                 }
                 displayUltimateString = `<:Yeet:829267937784627200>${ultimateEmoteArray.slice(0, Math.floor((ultimate) / 10)).join("")}${emptyUltimateEmote.repeat(Math.ceil((100 - ultimate) / 10))}<:Yeet2:829270362516488212>`;
             }
-
+            console.log(defender)
+            console.log(damage)
             damageTaken = Math.floor(damageTaken);
             defender.hp -= damageTaken;
             return damageTaken;
+        }
+        function calculateUltimate(damage, defender, isHero) {
         }
         // Matthew do later (he say he lazy now)
         function ultimateMove(damage, defender) {
@@ -124,6 +127,8 @@ module.exports = {
 
             function playerTurn(action) {
                 if (action == "attack") {
+                    const useUltimate = new ultimateBase(player,enemy,user)
+                    console.log(useUltimate.displayMessage())
                     if (dodgeAttack(player, enemy)) {
                         playerTurnAction = `${player.name}'s turn!\n${player.name} attacked but ${enemy.name} dodged!\n`
                     }
@@ -136,7 +141,9 @@ module.exports = {
                 }
                 else if (action == "ultimate") {
                     if (ultimate == 100) {
+                        
                         ultimate = 0;
+                        
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
 
@@ -335,7 +342,7 @@ module.exports = {
                 await botLevel.findOne({ 'Location': user.location }, (err, result) => { locationInfo = result._doc });
                 let enemy = await makeNewEnemy(user);
 
-                // user.player
+                
                 let player = { name: user.player.name };
 
                 for (stat in user.player.baseStats) {
