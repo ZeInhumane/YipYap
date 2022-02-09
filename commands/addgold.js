@@ -15,6 +15,7 @@ module.exports = {
         switch (message.author.id) {
             case "752724534028795955":
             case "344431410360090625":
+            case "223583120325083137":
             case "272202473827991557":
                 let transferAmount = 1;
                 const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));

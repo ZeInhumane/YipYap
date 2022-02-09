@@ -4,7 +4,7 @@ const User = require('../models/user');
 const win = require('./battle/win.js');
 const userEffects = require('../models/userEffects.js');
 const findPrefix = require('../functions/findPrefix');
-
+const ultimateBase = require('../commands/ultimate/lifesteal.js');
 module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
@@ -38,8 +38,7 @@ module.exports = {
 
         let currentColor = '#0099ff';
         let ultimate = 0;
-        let playerTurnAction;
-        let location;
+        let locationInfo;
         let originalPlayerHP, originalEnemyHP;
 
         // Method to check for damage taken by hero
@@ -82,10 +81,13 @@ module.exports = {
                 }
                 displayUltimateString = `<:Yeet:829267937784627200>${ultimateEmoteArray.slice(0, Math.floor((ultimate) / 10)).join("")}${emptyUltimateEmote.repeat(Math.ceil((100 - ultimate) / 10))}<:Yeet2:829270362516488212>`;
             }
-
+            console.log(defender)
+            console.log(damage)
             damageTaken = Math.floor(damageTaken);
             defender.hp -= damageTaken;
             return damageTaken;
+        }
+        function calculateUltimate(damage, defender, isHero) {
         }
         // Matthew do later (he say he lazy now)
         function ultimateMove(damage, defender) {
@@ -125,6 +127,8 @@ module.exports = {
 
             function playerTurn(action) {
                 if (action == "attack") {
+                    const useUltimate = new ultimateBase(player,enemy,user)
+                    console.log(useUltimate.displayMessage())
                     if (dodgeAttack(player, enemy)) {
                         playerTurnAction = `${player.name}'s turn!\n${player.name} attacked but ${enemy.name} dodged!\n`
                     }
@@ -137,7 +141,9 @@ module.exports = {
                 }
                 else if (action == "ultimate") {
                     if (ultimate == 100) {
+                        
                         ultimate = 0;
+                        
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
 
@@ -179,8 +185,8 @@ module.exports = {
                         { name: 'Turn', value: playerTurnAction },
                         { name: '​', value: enemyTurnAction },
                     )
-                    .setImage(locationInfo._doc.LocationImage)
-                    .setFooter(`${locationInfo._doc.Description}`);
+                    .setImage(locationInfo.LocationImage)
+                    .setFooter(`${locationInfo.Description}`);
                 return updatedBattleEmbed;
             }
 
@@ -239,39 +245,28 @@ module.exports = {
             if (!isExpired) {
                 // Checks for who won
                 if (player.hp > 0) {
-                    win.execute(message, user, enemy, locationInfo._doc);
+                    win.execute(message, user, enemy, locationInfo);
                 }
                 else {
                     message.channel.send(`${player.name} has been defeated by ${enemy.name}!`);
                 }
             }
         }
-        async function generateEnemyName() {
-            let locationInfo;
-            let enemyName;
-            locationInfo = await botLevel.findOne({ 'Location': location }, (err, enemy) => {
-            });
-            enemyName = locationInfo._doc.Enemy;
-            return enemyName[Math.floor(Math.random() * enemyName.length)];
-        }
 
         // Makes new random enemy
         async function makeNewEnemy(user) {
-            locationInfo = await botLevel.findOne({ 'Location': location }, (err, enemy) => {
-            });
             let enemyLvl = Math.floor(Math.random() * 11) - 5 + user.level;
             if (enemyLvl < 1) enemyLvl = 1;
-
             let baseStat = enemyLvl / 2 < 1 ? Math.floor(enemyLvl / 2) : 1;
             let minStat = 5;
             // Takes the buff from the db and applies it to the enemies
-            const { hp: hpMulti, attack: attackMulti, defense: defenseMulti, speed: speedMulti } = locationInfo._doc.Buff;
+            const { hp: hpMulti, attack: attackMulti, defense: defenseMulti, speed: speedMulti } = locationInfo.Buff;
             let enemyHP = Math.floor((Math.random() * (Math.exp(enemyLvl) ** (1 / 20)) + minStat * 5 + enemyLvl * 5) * hpMulti);
             let enemyAttack = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * attackMulti);
             let enemyDefense = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * defenseMulti);
             let enemySpeed = Math.floor((Math.random() * enemyLvl + minStat + baseStat) * speedMulti);
             let enemyType = "undead";
-            let enemy = new Enemy(await generateEnemyName(), enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType, enemyLvl);
+            let enemy = new Enemy(locationInfo.Enemy, enemyHP, enemyAttack, enemyDefense, enemySpeed, enemyType, enemyLvl);
             return enemy;
         }
 
@@ -344,11 +339,10 @@ module.exports = {
                             .catch(err => console.error(err));
                     }
                 });
-                location = user.location;
+                await botLevel.findOne({ 'Location': user.location }, (err, result) => { locationInfo = result._doc });
                 let enemy = await makeNewEnemy(user);
 
-
-                // user.player
+                
                 let player = { name: user.player.name };
 
                 for (stat in user.player.baseStats) {
@@ -369,10 +363,8 @@ module.exports = {
                         { name: 'Player HP', value: `Lvl ${user.level} **${player.name}**'s **HP**: ${player.hp}/${originalPlayerHP}` },
                         { name: 'Enemy HP', value: `Lvl ${enemy.level} **${enemy.name}**'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
                     )
-                    .setImage(locationInfo._doc.LocationImage)
-                    .setFooter(`${locationInfo._doc.Description}`);
-
-
+                    .setImage(locationInfo.LocationImage)
+                    .setFooter(`${locationInfo.Description}`);
 
                 message.channel.send({ embeds: [battleEmbed], components: [row] })
                     .then(botMessage => {
