@@ -6,8 +6,9 @@ module.exports = {
     name: "upgrade",
     description: "Upgrade your stats using special points. Special Points are earned through leveling.",
     syntax: "",
+    aliases: ['u'],
     category: "Fun",
-    execute(message, args) {
+    execute(message) {
         let currentColor = "#0099ff";
         const row1 = new Discord.MessageActionRow()
             .addComponents(
@@ -50,20 +51,20 @@ module.exports = {
                 switch (playeraction) {
                     case 'up':
                         if (multi < 5) {
-                            multi += 1
-                            messageDisplayed = 'Multiplier increased by 1'
+                            multi += 1;
+                            messageDisplayed = 'Multiplier increased by 1';
                         }
                         else {
-                            messageDisplayed = 'Multiplier cannot exceed 5'
+                            messageDisplayed = 'Multiplier cannot exceed 5';
                         }
                         break;
                     case 'down':
                         if (multi > 1) {
-                            multi -= 1
-                            messageDisplayed = 'Multiplier decreased by 1'
+                            multi -= 1;
+                            messageDisplayed = 'Multiplier decreased by 1';
                         }
                         else {
-                            messageDisplayed = 'Multiplier cannot go below 1'
+                            messageDisplayed = 'Multiplier cannot go below 1';
                         }
                 }
             }
@@ -74,17 +75,18 @@ module.exports = {
                     if (stat_str == 'hp') {
                         user.player.baseStats[stat_str] += 5 * multi;
                         messageDisplayed = `Your ${stat_str} stat has been upgraded by ${5 * multi}!`;
-                    } else {
+                    }
+                    else {
                         user.player.baseStats[stat_str] += multi;
                         messageDisplayed = `Your ${stat_str} stat has been upgraded by ${multi}!`;
                     }
                     user.markModified('player');
                     user.save()
-                        .then(result => console.log("upgrade"))
+                        .then(() => console.log("upgrade"))
                         .catch(err => console.error(err));
                 }
                 else {
-                    messageDisplayed = 'Not enough sp to upgrade.'
+                    messageDisplayed = 'Not enough sp to upgrade.';
                 }
             }
 
@@ -116,7 +118,7 @@ module.exports = {
             // Updates battle embed to display ongoing input
             async function createUpdatedMessage() {
                 // theres a difference here check later for something
-                let updatedBattleEmbed = new Discord.MessageEmbed()
+                const updatedBattleEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(user.player.name + '\'s sp: ' + user.sp)
                     .setURL('https://discord.gg/CTMTtQV')
@@ -129,9 +131,9 @@ module.exports = {
                         { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: `(+${1 * multi})`, inline: true },
                         { name: `:shield: ${user.player.baseStats.defense}`, value: `(+${1 * multi})`, inline: true },
                         { name: `:dash: ${user.player.baseStats.speed}`, value: `(+${1 * multi})`, inline: true },
-                        { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
+                        { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` },
                     )
-                    .addField('Update: ', messageDisplayed)
+                    .addField('Update: ', messageDisplayed);
 
 
                 return updatedBattleEmbed;
@@ -150,11 +152,10 @@ module.exports = {
                         playerTurn(playerAction);
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [row1, row2] });
                     })
-                    .catch(async err => {
+                    .catch(async () => {
                         currentColor = '#FF0000';
                         messageDisplayed = "Upgrade expired";
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
-                        isExpired = true;
                     });
             }
             messageDisplayed = "Stopped upgrading";
@@ -163,18 +164,18 @@ module.exports = {
         }
 
         let multi = 1;
-        let messageDisplayed, filter, playerAction;
+        let messageDisplayed, playerAction;
         // is edited version of the one at the bottom of battle.js
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
-                //Getting the prefix from db
+                // Getting the prefix from db
                 const prefix = await findPrefix(message.guild.id);
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
 
 
-            //For users who were created before sp was created
+            // For users who were created before sp was created
             if (user.sp == null) {
                 user.sp = (user.level - 1) * 5;
             }
@@ -193,13 +194,13 @@ module.exports = {
                     { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: "(+1)", inline: true },
                     { name: `:shield: ${user.player.baseStats.defense}`, value: "(+1)", inline: true },
                     { name: `:dash: ${user.player.baseStats.speed}`, value: "(+1)", inline: true },
-                    { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` }
-                )
+                    { name: `sp: ${user.sp}`, value: `${multi} used per upgrade` },
+                );
 
             message.channel.send({ embeds: [spEmbed], components: [row1, row2] })
                 .then(botMessage => {
                     stat(user, botMessage);
                 });
         });
-    }
-}
+    },
+};
