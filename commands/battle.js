@@ -81,8 +81,6 @@ module.exports = {
                 }
                 displayUltimateString = `<:Yeet:829267937784627200>${ultimateEmoteArray.slice(0, Math.floor((ultimate) / 10)).join("")}${emptyUltimateEmote.repeat(Math.ceil((100 - ultimate) / 10))}<:Yeet2:829270362516488212>`;
             }
-            console.log(defender)
-            console.log(damage)
             damageTaken = Math.floor(damageTaken);
             defender.hp -= damageTaken;
             return damageTaken;
