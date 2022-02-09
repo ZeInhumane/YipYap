@@ -43,8 +43,13 @@ module.exports = {
                         // Parse button pressed
                         parse(userSelection);
                     })
-                    .catch(async () => {
+                    .catch(async (error) => {
                         currentColor = '#FF0000';
+                        // If message was deleted, ignore
+                        if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                            userSelection = "cancel";
+                            return;
+                        }
                         botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
                     });
             }
@@ -94,18 +99,20 @@ module.exports = {
                 .then(async btnInt => {
                     currentColor = '#0099ff';
                     userSelection = btnInt.customId;
+                    // If user selected confirm, reset stats, give sp
                     if (userSelection == 'confirm') {
                         // Reset stats
                         user.player.baseStats.hp = 50;
                         user.player.baseStats.attack = 5;
                         user.player.baseStats.defense = 5;
                         user.player.baseStats.speed = 5;
+                        // Add sp
                         user.sp += sp;
+                        // Log
                         user.markModified('player');
                         user.save()
                             .then(() => console.log("reset"))
                             .catch(err => console.error(err));
-                        messageDisplayed = "Stats were reset";
                         // Send success embed
                         const successEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
                             .setColor('#77DD66')
@@ -113,22 +120,63 @@ module.exports = {
                             .setDescription(`Your stats have been reset and you have been credited with ${sp} special points.`)
                             .setFooter('Spend your special points with the upgrade command!');
                         successEmbed.fields = [];
-                        // Delete confirmation message to prevent multiple inputs
-                        await confirmation.delete();
-                        // Edit original message and remove buttons
-                        await botEmbedMessage.edit({ embeds: [successEmbed], components: [] });
+                        try {
+                            // Delete confirmation message to prevent multiple inputs
+                            await confirmation.delete();
+                            // Edit original message and remove buttons
+                            await botEmbedMessage.edit({ embeds: [successEmbed], components: [] });
+                        }
+                        catch (error) {
+                            // If either message was deleted, send success embed anyway since stats have been reset
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                await message.channel.send({ embeds: [successEmbed], components: [] });
+                            }
+                        }
                     }
+                    // If user selected cancel
                     else {
-                        // Delete confirmation message
-                        await confirmation.delete();
-                        // Remove awaiting confirmation field
-                        const retryEmbed = await createUpdatedMessage(botEmbedMessage);
-                        retryEmbed.fields.pop();
-                        // Send message along with buttons
-                        await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
+                        try {
+                            // Delete confirmation message
+                            await confirmation.delete();
+                            // Remove awaiting confirmation field from original message
+                            const retryEmbed = await createUpdatedMessage(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Re-add buttons to original message
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
+                        }
+                        catch (error) {
+                            // If original message was deleted
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                const failureEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
+                                    .setColor('#FF0000')
+                                    .setTitle('Stats were not reset!')
+                                    .setDescription(`Your stats have not been reset.`)
+                                    .setFooter('Reset your special points with the reset command!');
+                                failureEmbed.fields = [];
+                                await message.channel.send({ embeds: [failureEmbed], components: [] });
+                            }
+                        }
                     }
                 })
-                .catch(async () => {
+                .catch(async (error) => {
+                    // If confirmation message was deleted without any inputs, add buttons back to original message
+                    if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                        try {
+                            // Create retry embed
+                            const retryEmbed = await createUpdatedMessage(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Send message along with buttons
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
+                        }
+                        catch (err) {
+                            // If original message was deleted too, return
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                return;
+                            }
+                        }
+                        return;
+                    }
+                    // If message timed out
                     currentColor = '#FF0000';
                     messageDisplayed = "Confirmation expired";
                     confirmationEmbed.color = currentColor;
