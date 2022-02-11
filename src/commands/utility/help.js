@@ -67,39 +67,6 @@ module.exports = {
                 },
             );
 
-            // const helpEmbed = new Discord.MessageEmbed()
-            //     .setColor('#FF69B4')
-            //     .setTitle('Enter this server for updates on the bot \n https://discord.gg/cJgAG3W%7D');
-            // const fieldsToAdd = [];
-            // for (const commandName of client.commands.keys()) {
-            //     let categoryExists = false;
-            //     const commandCategory = client.commands.get(commandName).category;
-
-            //     // Skips adding admin command if user is not admin
-            //     if (!(message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557" || message.author.id == "223583120325083137") && commandCategory == "Admin") {
-            //         continue;
-            //     }
-
-            //     for (let i = 0; i < fieldsToAdd.length; i++) {
-            //         if (commandCategory == fieldsToAdd[i][0]) {
-            //             fieldsToAdd[i][1].push(commandName);
-            //             categoryExists = true;
-            //         }
-            //     }
-            //     if (!categoryExists) {
-            //         fieldsToAdd.push([commandCategory, [commandName]]);
-            //     }
-            // }
-
-            // const numCategory = fieldsToAdd.length;
-            // for (let i = 0; i < numCategory; i++) {
-            //     let fieldValue = "";
-            //     const numCommandsInCategory = fieldsToAdd[i][1].length;
-            //     for (let j = 0; j < numCommandsInCategory; j++) {
-            //         fieldValue += "`" + fieldsToAdd[i][1][j] + "` ";
-            //     }
-            //     helpEmbed.addField(fieldsToAdd[i][0], fieldValue);
-            // }
             message.channel.send({ embeds: [helpEmbed] });
         } else {
             // Specific help
