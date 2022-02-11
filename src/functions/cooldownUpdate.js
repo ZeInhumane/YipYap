@@ -1,11 +1,6 @@
 const Discord = require('discord.js');
 const cooldowns = new Discord.Collection();
 module.exports = function cooldownUpdate(command, message, args, client) {
-    // Check if command is for nsfw only
-    if (this.nsfw && !params.channel.nsfw) {
-        console.log(`something wrong boyo`);
-        return;
-    }
     // Discord js api for cooldown
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());
