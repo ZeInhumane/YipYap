@@ -7,9 +7,7 @@ module.exports = {
     syntax: "{Command to check} / none",
     cooldown: 5,
     category: "Utility",
-    async execute(message, args) {
-        const client = require('../index.js').client;
-
+    async execute(message, args, client) {
         // Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);
         message.channel.send(`type ${prefix}help + {command name for specific help on that command}`);
@@ -27,7 +25,7 @@ module.exports = {
                 const commandCategory = client.commands.get(commandName).category;
 
                 // Skips adding admin command if user is not admin
-                if (!(["752724534028795955", "344431410360090625", "272202473827991557", "223583120325083137"].includes(message.author.id)) && commandCategory == "Admin") {
+                if (!(message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557" || message.author.id == "223583120325083137") && commandCategory == "Admin") {
                     continue;
                 }
 
