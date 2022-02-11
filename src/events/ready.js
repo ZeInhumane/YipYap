@@ -2,7 +2,7 @@
 // const registerGuildCommand = require("../handlers/registerGuildCommand");
 const Discord = require('discord.js');
 const mongoose = require('mongoose');
-const BotData = require('./src/models/botData');
+const BotData = require('../models/botData');
 
 
 module.exports = async client => {

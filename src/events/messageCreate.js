@@ -1,5 +1,5 @@
-const findPrefix = require('./src/functions/findPrefix');
-const cooldownUpdate = require('./src/functions/cooldownUpdate');
+const findPrefix = require('../functions/findPrefix');
+const cooldownUpdate = require('../functions/cooldownUpdate');
 
 module.exports = async (client, message) => {
     if (message.author.bot) return;
@@ -20,6 +20,6 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
     if (command) {
-        cooldownUpdate(command, message, args);
+        cooldownUpdate(command, message, args, client);
     }
 };

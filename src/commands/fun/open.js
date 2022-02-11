@@ -90,19 +90,20 @@ module.exports = {
             const openEmbed = new Discord.MessageEmbed()
                 .setTitle(`${boxType} opened!`)
                 .setColor('#000001');
+
+            const spoils = {
+                "Apple": 1,
+                "Banana": 2,
+                "Orange": 3,
+                "Pear": 4,
+            };
+
+            const names = Object.keys(spoils);
+            const amts = Object.values(spoils);
             switch (boxType) {
                 case 'Pack':
                     switch (packType) {
                         case 'Fruits':
-                            const spoils = {
-                                "Apple": 1,
-                                "Banana": 2,
-                                "Orange": 3,
-                                "Pear": 4,
-                            };
-
-                            names = Object.keys(spoils);
-                            amts = Object.values(spoils);
                             for (let i = 0; i < names.length; i++) {
                                 if (user.inv[names[i]]) {
                                     user.inv[names[i]].quantity += amts[i] * packAmt;
@@ -122,7 +123,7 @@ module.exports = {
 
                             let goldTotal = 0;
                             // unfair generation, low prob of high numbers, but officially get between 30 to 120 gold
-                            for (i = 0; i < packAmt; i++) {
+                            for (let i = 0; i < packAmt; i++) {
                                 const prec = randomGoldgen(10, 100.01) / 100;
                                 const gachaGold = randomGoldgen(30, prec * 120);
                                 goldTotal += gachaGold;
@@ -130,9 +131,10 @@ module.exports = {
                             user.currency += goldTotal;
                             openEmbed.addField(`${guest} gained ${goldTotal} currency from Gold Pack <:cash_24:751784973488357457>​`, '\u200b');
                             break;
+
                         case 'Jericho':
                             let jericho = 0;
-                            for (i = 0; i < packAmt; i++) {
+                            for (let i = 0; i < packAmt; i++) {
                                 const jroll = Math.floor(Math.random() * 6);
                                 if (jroll == 0) {
                                     jericho += 1;
@@ -375,8 +377,6 @@ module.exports = {
                     // Removes tag from name
                     name = name.split("#", name.length - 4)[0];
 
-                    console.log("TOTAL DROPS");
-                    console.log(totalDrops);
                     for (i = 0; i < totalDrops.length; i++) {
                         const itemName = totalDrops[i][0];
                         const itemObject = await findItem(itemName);

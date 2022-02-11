@@ -4,7 +4,8 @@ const User = require('../../models/user');
 const win = require('../../classes/battle/win.js');
 const userEffects = require('../../models/userEffects.js');
 const findPrefix = require('../../functions/findPrefix');
-const ultimateBase = require('../../classes/ultimate/lifesteal.js');
+const useUltimate = require('../../classes/ultimate/useUltimate.js');
+
 module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
@@ -114,10 +115,10 @@ module.exports = {
                 return false;
             }
 
-            function playerTurn(action) {
+            async function playerTurn(action) {
                 if (action == "attack") {
-                    const useUltimate = new ultimateBase(player, enemy, user);
-                    console.log(useUltimate.displayMessage());
+
+
                     if (dodgeAttack(player, enemy)) {
                         playerTurnAction = `${player.name}'s turn!\n${player.name} attacked but ${enemy.name} dodged!\n`;
                     } else {
@@ -127,14 +128,13 @@ module.exports = {
                     playerTurnAction = "You shield yourself, it works";
                 } else if (action == "ultimate") {
                     if (ultimate == 100) {
-
+                        // set ultimate charge
                         ultimate = 0;
 
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
 
-                        playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack * 2.5, enemy, false)
-                            + ' damage with his super saiyann ultimate!!\n';
+                        playerTurnAction = await useUltimate(player, enemy, user);
                         displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
                     } else {
                         playerTurnAction = `You only have ${ultimate} ultimate charge, you need 100 to use your ultimate.`;
