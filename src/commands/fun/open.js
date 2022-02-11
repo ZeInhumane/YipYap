@@ -14,7 +14,7 @@ module.exports = {
     aliases: ['chest', 'chests', 'pack', 'lootbox', 'lb'],
     cooldown: 5,
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         // Lowercase all args
         args.map(item => item.toLowerCase());
 

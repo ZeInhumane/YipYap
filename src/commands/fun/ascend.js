@@ -10,7 +10,7 @@ module.exports = {
     syntax: "{item name}",
     cooldown: 10,
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         let currentColor = "#0099ff";
         let itemName = args.join(" ");
         itemName = titleCase(itemName);

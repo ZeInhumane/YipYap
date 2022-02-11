@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['starter'],
     category: "Economy",
-    execute(message) {
+    execute({ message }) {
         const itemName = "Common Treasure Chest";
         const itemQuantity = 5;
         User.findOne({ userID: message.author.id }, async (err, user) => {

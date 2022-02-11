@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['changeAuto'],
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         // Gets multiplier (up to 1 dp)
         const multiplierIndex = args.findIndex(arg => /^x[^0|\D]\d{0,9}(\.\d)?$/gmi.test(arg));
         if (multiplierIndex == -1) {

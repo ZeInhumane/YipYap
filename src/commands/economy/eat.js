@@ -12,7 +12,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['e'],
     category: "Economy",
-    async execute(message, args) {
+    async execute({ message, args }) {
         let toBeConsumed = 1;
         // Finds arguments no matter the position
         const toBeConsumedIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg) || arg.toLowerCase() == 'all');

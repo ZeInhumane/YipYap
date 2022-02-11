@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    execute(message, args) {
+    execute({ message, args }) {
         const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();
         if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557") {

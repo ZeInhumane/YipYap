@@ -14,7 +14,7 @@ module.exports = {
     aliases: ['b'],
     category: "Fun",
     // change timing in main bot
-    async execute(message) {
+    async execute({ message }) {
         const ultimateEmote = ":Ultimate:822042890955128872";
         const emptyUltimateEmote = "<:blank:829270386986319882>";
         const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>",

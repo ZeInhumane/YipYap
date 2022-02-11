@@ -8,7 +8,7 @@ module.exports = {
     syntax: "",
     aliases: ['u'],
     category: "Fun",
-    execute(message) {
+    execute({ message }) {
         let currentColor = "#0099ff";
         const row1 = new Discord.MessageActionRow()
             .addComponents(

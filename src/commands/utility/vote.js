@@ -7,7 +7,7 @@ module.exports = {
     cooldown: 10,
     aliases: ['v'],
     category: "Utility",
-    async execute(message) {
+    async execute({ message }) {
 
         const embed = new MessageEmbed()
             .setColor('#ADD8E6')

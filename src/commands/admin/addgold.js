@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    async execute(message, args) {
+    async execute({ message, args }) {
         // Transfer amount
         let transferAmount = 1;
         const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));

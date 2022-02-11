@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['inv', 'itemCount', 'icbm'],
     cooldown: 5,
     category: "Fun",
-    async execute(message) {
+    async execute({ message }) {
         User.findOne({ userID: message.author.id })
             .sort({ "inv": 1 })
             .exec(async function (err, user) {

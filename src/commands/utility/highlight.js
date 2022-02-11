@@ -5,7 +5,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['hl'],
     category: "Utility",
-    execute(message, args) {
+    execute({ message, args }) {
         const Discord = require('discord.js');
         let highlightedMessage = "";
         args.forEach(arg => {

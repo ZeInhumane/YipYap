@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 10,
     aliases: ['top'],
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         // Finds arguments no matter the position
         // Finds sortBy
         let sortBy = "currency";
