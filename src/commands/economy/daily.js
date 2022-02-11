@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 86400,
     aliases: ['dailies'],
     category: "Economy",
-    execute(message) {
+    execute({ message }) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 // Getting the prefix from db

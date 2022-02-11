@@ -7,7 +7,7 @@ module.exports = {
     syntax: "{Amount of money betted} {Face of coin to betAmount on}",
     cooldown: 10,
     category: "Gambling",
-    execute(message, args) {
+    execute({ message, args }) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 // Getting the prefix from db

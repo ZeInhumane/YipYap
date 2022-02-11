@@ -6,7 +6,7 @@ module.exports = {
     syntax: "",
     cooldown: 10,
     category: "Utility",
-    async execute(message, args, client) {
+    async execute({ message, client }) {
         const msg = await message.channel.send('🏓 Pinging...');
 
         try {

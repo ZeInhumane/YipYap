@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 1,
     aliases: ['ue'],
     category: "Fun",
-    execute(message, args) {
+    execute({ message, args }) {
         let itemName = args.join(' ');
         itemName = titleCase(itemName);
 

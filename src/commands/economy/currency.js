@@ -9,7 +9,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['cash', 'balance', 'fat', 'bal'],
     category: "Economy",
-    execute(message) {
+    execute({ message }) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 // Getting the prefix from db

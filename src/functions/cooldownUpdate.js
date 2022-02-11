@@ -50,7 +50,7 @@ function secondsToHms(d) {
 
 async function executeCommand(command, message, args, client) {
     try {
-        await command.execute(message, args, client);
+        await command.execute({ message, args, client });
     } catch (error) {
         console.error("Incorrect permissions");
     }

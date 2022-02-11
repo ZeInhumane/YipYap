@@ -11,7 +11,7 @@ module.exports = {
     cooldown: 10,
     aliases: ['ticket', 'tickets', 'tix'],
     category: "Economy",
-    execute(message, args) {
+    execute({ message, args }) {
         // Gets multiplier (up to 1 dp)
         const multiplierIndex = args.findIndex(arg => /^x[^0|\D]\d{0,9}(\.\d)?$/gmi.test(arg));
         if (multiplierIndex == -1) {

@@ -12,7 +12,7 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    async execute(message, args) {
+    async execute({ message, args }) {
         // regex to test for num with decimal (and a plus sign at the start for some reason?)
         //  /^[+]?\d+([.]\d+)?$/g.test(arg)
 

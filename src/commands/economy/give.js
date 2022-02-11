@@ -8,7 +8,7 @@ module.exports = {
     cooldown: 5,
     aliases: ['transfer'],
     category: "Economy",
-    async execute(message, args) {
+    async execute({ message, args }) {
         let transferAmount = 1;
         const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
         const transferTarget = message.mentions.users.first();

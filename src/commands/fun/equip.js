@@ -10,7 +10,7 @@ module.exports = {
     cooldown: 1,
     aliases: ['e'],
     category: "Fun",
-    execute(message, args) {
+    execute({ message, args }) {
         let itemName = args.join(' ');
         itemName = titleCase(itemName);
 

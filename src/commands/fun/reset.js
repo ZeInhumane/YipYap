@@ -8,7 +8,7 @@ module.exports = {
     syntax: "",
     aliases: ['r', 'resetsp'],
     category: "Fun",
-    execute(message) {
+    execute({ message }) {
         let currentColor = "#0099ff";
         // Buttons
         const row1 = new Discord.MessageActionRow()
