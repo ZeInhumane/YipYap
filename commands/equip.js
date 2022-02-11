@@ -81,7 +81,7 @@ module.exports = {
             user.save()
                 .then(result => console.log("result"))
                 .catch(err => console.error(err));
-            message.channel.send(`You've equiped: ${itemName}.`);
+            message.channel.send(`You've equipped: ${itemName}.`);
         });
     }
 }

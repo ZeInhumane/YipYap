@@ -123,7 +123,6 @@ module.exports = {
             // Checks if any equipped item leveled up
             if (userEquipment.equipped && levelsGained > 0){
                 dbEquipment = await findItem(itemName.split("#")[0], true);
-                console.log(dbEquipment)
                 for (statName in dbEquipment.statsUpPerLvl) {
                     user.player.additionalStats[statName].flat += dbEquipment.statsUpPerLvl[statName] * levelsGained;
                 }

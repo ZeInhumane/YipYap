@@ -63,14 +63,11 @@ module.exports = {
                     let dbEquipmentStats = await findItem(itemName, true);
                     let stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
                     let statsmsg = ''
+                    console.log(Object.keys(stats))
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         let statname = Object.keys(stats)[j]
-                        statname = statname.replace("attack", " Attack ⚔️ \n");
-                        statname = statname.replace("defense", " Defense 🛡️ \n");
-                        statname = statname.replace("speed", " Speed 💨 \n");
-                        statname = statname.replace("hp", " Health Point :hearts: \n");
-                        //wth does this do?
-                        statsmsg += `${(Object.values(stats)[0].flat != 0) ? '+' + Object.values(stats)[0].flat + statname : ''} ${(Object.values(stats)[0].multi != 0) ? '+' + Object.values(stats)[0].multi + '%' + statname : ''} `
+                        statname = statname.replace("attack", " Attack ⚔️ \n").replace("defense", " Defense 🛡️ \n").replace("speed", " Speed 💨 \n").replace("hp", " Health Point :hearts: \n");
+                        statsmsg += `${(Object.values(stats)[j].flat != 0) ? '+' + Object.values(stats)[j].flat + statname : ''} ${(Object.values(stats)[j].multi != 0) ? '+' + Object.values(stats)[j].multi + '%' + statname : ''} `
                     }
                     embed.addField(`${dbEquipmentStats.emote} ${equipment[i]} `, ` ${statsmsg}`, true)
                 }
