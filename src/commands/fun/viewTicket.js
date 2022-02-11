@@ -33,16 +33,16 @@ module.exports = {
                 const ticketTypes = ['Experience', 'Gold'];
 
                 if (Object.keys(effects.tickets).length > 0) {
-                    for (i = 0; i < ticketTypes.length; i++) {
+                    for (let i = 0; i < ticketTypes.length; i++) {
                         const ticketName = Object.keys(effects.tickets).filter(key => key.includes(ticketTypes[i]));
                         console.log(ticketName);
                         if (ticketName.length != 0) {
                             const ticket = effects.tickets[ticketName];
-                            const today = new Date();
+                            let today = new Date();
                             if (today >= ticket.endTime) {
                                 if (ticket.auto == 'true') {
                                     if (user.inv[ticket]) {
-                                        const today = new Date();
+                                        today = new Date();
                                         Date.prototype.addHours = function (h) {
                                             this.setHours(this.getHours() + h);
                                             return this;
