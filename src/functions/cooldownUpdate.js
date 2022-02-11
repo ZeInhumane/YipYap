@@ -35,7 +35,7 @@ module.exports = function cooldownUpdate(command, message, args, client) {
             setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
         }
     } else {
-        executeCommand(command, message, args);
+        executeCommand(command, message, args, client);
         timestamps.set(message.author.id, now);
         setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
     }
