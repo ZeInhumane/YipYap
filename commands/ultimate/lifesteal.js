@@ -4,14 +4,29 @@ module.exports = class lifesteal extends ultimateBase {
         super(player, enemy, user);
     }
 
-    displayMessage() {
-        console.log(this.player)
-        return "";
+    displayMessage(player, damageTaken, calculateLifesteal) {
+        console.log("player")
+        console.log(player)
+        return player.name + '\'s turn!\n' + player.name + ' does ' +
+            + damageTaken + ' damage with their life steal ultimate while healing for ' + calculateLifesteal + ' health!';
     }
 
-    lifesteal(user) {
-        
-        console.log("hiiiiii")
+    lifesteal(player, enemy, user) {
+        let damage = player.attack;
+        let attMulti = damage / enemy.defense;
+        if (attMulti < 0.4) {
+            attMulti = 0.4;
+        }
+        else if (attMulti > 1.5) {
+            attMulti = 1.5;
+        }
+
+        let damageTaken = Math.floor((damage + Math.floor((damage - enemy.defense) / 4)) * attMulti);
+        enemy.hp -= damageTaken;
+        // change in accordance to user stats
+        let calculateLifesteal = Math.floor(damageTaken/2);
+        player.hp += calculateLifesteal;
+        return [damageTaken, calculateLifesteal];
     }
 
 }

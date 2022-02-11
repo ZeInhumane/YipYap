@@ -5,7 +5,6 @@ const botLevel = require('../models/botLevel');
 const findItem = require('../functions/findItem.js');
 const getFinalStats = require('../functions/getFinalStats');
 const findPrefix = require('../functions/findPrefix')
-const equip = require('./equip');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -52,18 +51,16 @@ module.exports = {
 
                 // Finds all equipped items
                 let userItemsArr = Object.keys(user.inv);
-                var equipment = userItemsArr.filter(item => {
+                let equipment = userItemsArr.filter(item => {
                     return user.inv[item].equipped === true;
                 });
                 embed.addField("⚔️Equipped Equipment⚔️", ` \u200b`)
                 for (let i = 0; i < equipment.length; i++) {
-                    //gets the weapons stats from db
-                    //itemName gets the item name.. a bit messy but its required
+                    // gets item name, then gets said item name stats
                     let itemName = equipment[i].split("#")[0];
                     let dbEquipmentStats = await findItem(itemName, true);
                     let stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
                     let statsmsg = ''
-                    console.log(Object.keys(stats))
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         let statname = Object.keys(stats)[j]
                         statname = statname.replace("attack", " Attack ⚔️ \n").replace("defense", " Defense 🛡️ \n").replace("speed", " Speed 💨 \n").replace("hp", " Health Point :hearts: \n");

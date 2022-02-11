@@ -4,7 +4,8 @@ const User = require('../models/user');
 const win = require('./battle/win.js');
 const userEffects = require('../models/userEffects.js');
 const findPrefix = require('../functions/findPrefix');
-const ultimateBase = require('../commands/ultimate/lifesteal.js');
+const useUltimate = require('../commands/ultimate/useUltimate.js')
+
 module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
@@ -87,13 +88,7 @@ module.exports = {
             defender.hp -= damageTaken;
             return damageTaken;
         }
-        function calculateUltimate(damage, defender, isHero) {
-        }
-        // Matthew do later (he say he lazy now)
-        function ultimateMove(damage, defender) {
-            let damageDone;
-            return damageDone;
-        }
+
         // Creates Enemy class
         class Enemy {
             constructor(name, hp, attack, defense, speed, type, lvl) {
@@ -125,10 +120,10 @@ module.exports = {
                 return false;
             }
 
-            function playerTurn(action) {
+            async function playerTurn(action) {
                 if (action == "attack") {
-                    const useUltimate = new ultimateBase(player,enemy,user)
-                    console.log(useUltimate.displayMessage())
+                    
+                    
                     if (dodgeAttack(player, enemy)) {
                         playerTurnAction = `${player.name}'s turn!\n${player.name} attacked but ${enemy.name} dodged!\n`
                     }
@@ -141,14 +136,13 @@ module.exports = {
                 }
                 else if (action == "ultimate") {
                     if (ultimate == 100) {
-                        
+                        // set ultimate charge
                         ultimate = 0;
                         
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
 
-                        playerTurnAction = player.name + '\'s turn!\n' + player.name + ' does ' + takeDamage(player.attack * 2.5, enemy, false)
-                            + ' damage with his super saiyann ultimate!!\n';
+                        playerTurnAction = await useUltimate(player,enemy,user);
                         displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
                     }
                     else {
