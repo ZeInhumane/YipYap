@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema({
     sp: Number,
     location: Number,
     inv: Object,
+    rune: Number,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');

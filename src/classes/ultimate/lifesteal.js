@@ -5,8 +5,6 @@ module.exports = class lifesteal extends ultimateBase {
     }
 
     displayMessage(player, damageTaken, calculateLifesteal) {
-        console.log("player");
-        console.log(player);
         return player.name + '\'s turn!\n' + player.name + ' does ' +
             +damageTaken + ' damage with their life steal ultimate while healing for ' + calculateLifesteal + ' health!';
     }
@@ -27,5 +25,4 @@ module.exports = class lifesteal extends ultimateBase {
         player.hp += calculateLifesteal;
         return [damageTaken, calculateLifesteal];
     }
-
 };
