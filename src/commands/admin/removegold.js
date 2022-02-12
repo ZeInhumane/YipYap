@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
+var config = require('../../../config.json');
 
 module.exports = {
     name: "removegold",
@@ -11,7 +12,7 @@ module.exports = {
     execute({ message, args }) {
         const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
         const transferTarget = message.mentions.users.first();
-        if (message.author.id == "752724534028795955" || message.author.id == "344431410360090625" || message.author.id == "272202473827991557") {
+        if (config.admins.includes(message.author.id)) {
             User.findOne({ userID: message.author.id }, async (err, user) => {
                 if (user == null) {
                     // Getting the prefix from db

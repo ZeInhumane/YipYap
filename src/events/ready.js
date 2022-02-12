@@ -37,9 +37,5 @@ module.exports = async client => {
         }, 120000);
     });
 
-    const channel = client.channels.cache.get("851369323377459260");
-
-    if (!channel) return;
-
-    channel.send(`${client.user.username} has been restarted.`);
+    console.log(`${client.user.username} has been restarted.`);
 };

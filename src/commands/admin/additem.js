@@ -4,6 +4,7 @@ const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
+var config = require('../../../config.json');
 
 module.exports = {
     name: "additem",
@@ -41,46 +42,40 @@ module.exports = {
 
         itemName = titleCase(itemName);
         // Check for admin ID
-        switch (message.author.id) {
-            case "752724534028795955":
-            case "344431410360090625":
-            case "272202473827991557":
-                User.findOne({ userID: transferTarget.id }, async (err, target) => {
-                    if (target == null) {
-                        // Getting the prefix from db
-                        const prefix = await findPrefix(message.guild.id);
-                        message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
+        if (config.admins.includes(message.author.id)) {
+            User.findOne({ userID: transferTarget.id }, async (err, target) => {
+                if (target == null) {
+                    // Getting the prefix from db
+                    const prefix = await findPrefix(message.guild.id);
+                    message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
+                    return;
+                }
+                if (target.inv[itemName]) {
+                    target.inv[itemName].quantity += transferAmount;
+                } else {
+                    let addItem = await findItem(itemName);
+
+                    if (addItem == null) {
+                        message.channel.send(`${itemName} does not exist!`);
                         return;
                     }
-                    if (target.inv[itemName]) {
-                        target.inv[itemName].quantity += transferAmount;
-                    } else {
-                        let addItem = await findItem(itemName);
-
-                        if (addItem == null) {
-                            message.channel.send(`${itemName} does not exist!`);
-                            return;
-                        }
-                        if (addItem.type == 'equipment') {
-                            addItem = await makeEquipment(itemName);
-                            itemName = await giveWeaponID(itemName);
-                            transferAmount = 1;
-                        }
-
-                        target.inv[itemName] = addItem;
-                        target.inv[itemName].quantity = transferAmount;
+                    if (addItem.type == 'equipment') {
+                        addItem = await makeEquipment(itemName);
+                        itemName = await giveWeaponID(itemName);
+                        transferAmount = 1;
                     }
-                    target.markModified('inv');
-                    target.save()
-                        .then(result => console.log(result))
-                        .catch(err => console.error(err));
-                    message.channel.send(`Successfully added ${transferAmount} ${itemName} to ${transferTarget.tag}. Their current quantity of ${itemName} is ${target.inv[itemName].quantity}`);
-                });
 
-                break;
-
-            default:
-                message.channel.send("You have to be a bot developer to use this command");
+                    target.inv[itemName] = addItem;
+                    target.inv[itemName].quantity = transferAmount;
+                }
+                target.markModified('inv');
+                target.save()
+                    .then(result => console.log(result))
+                    .catch(err => console.error(err));
+                message.channel.send(`Successfully added ${transferAmount} ${itemName} to ${transferTarget.tag}. Their current quantity of ${itemName} is ${target.inv[itemName].quantity}`);
+            });
+        } else {
+            message.channel.send("You have to be a bot developer to use this command");
         }
     },
 };

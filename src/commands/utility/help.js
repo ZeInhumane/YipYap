@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
 const commonTags = require("common-tags");
+var config = require('../../../config.json');
 const fs = require("fs");
 
 module.exports = {
@@ -26,7 +27,7 @@ module.exports = {
                 .setTitle(`Commands`);
 
             let admin = false;
-            if (message.author.id in ["752724534028795955", "344431410360090625", "272202473827991557", "223583120325083137"]) {
+            if (config.admins.includes(message.author.id)) {
                 admin = true;
             }
 
