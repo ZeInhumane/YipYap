@@ -7,17 +7,21 @@ module.exports = {
     aliases: ['area'],
     cooldown: 5,
     category: "Area",
-    async execute({ message, args, client }) {
-        let text = '';
+    async execute({ message, args }) {
+        // let text = '';
         try {
-            console.log(AreaInterface.areaDir);
-            console.log(AreaInterface.areas);
-            if (args[0] == undefined) {
-                for (const area in AreaInterface.areas) {
-                    text += `${AreaInterface.areas[area].getName} - ${AreaInterface.areas[area].getDesc}\n`;
-                }
-            } else {
-                text += `${AreaInterface.areas[args[0]].getName} - ${AreaInterface.areas[args[0]].getDesc}`;
+            // console.log(AreaInterface.areaDir);
+            // console.log(AreaInterface.areas);
+            // if (args[0] == undefined) {
+            //     for (const area in AreaInterface.areas) {
+            //         text += `${AreaInterface.areas[area].getName} - ${AreaInterface.areas[area].getDesc}\n`;
+            //     }
+            // } else {
+            //     text += `${AreaInterface.areas[args[0]].getName} - ${AreaInterface.areas[args[0]].getDesc}`;
+            // }
+
+            if (!args[0]) {
+                return;
             }
 
             const areaEmbed = new Discord.MessageEmbed()
