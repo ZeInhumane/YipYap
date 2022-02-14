@@ -134,7 +134,7 @@ module.exports = {
                         // Change ult button to red
                         row.components[2].setStyle('DANGER');
 
-                        playerTurnAction = await useUltimate(player, enemy, user);
+                        playerTurnAction = `${player.name}'s turn!\n${player.name} does ${takeDamage(2 * player.attack, enemy, false)} damage with their ultimate!\n`;
                         displayUltimateString = `<:Yeet:829267937784627200>${emptyUltimateEmote.repeat(10)}<:Yeet2:829270362516488212>`;
                     } else {
                         playerTurnAction = `You only have ${ultimate} ultimate charge, you need 100 to use your ultimate.`;
