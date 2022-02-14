@@ -37,7 +37,7 @@ module.exports = async client => {
         }, 120000);
     });
 
-    const channel = client.channels.cache.get("851369323377459260");
+    const channel = client.channels.cache.get("752142827873632307");
 
     if (!channel) return;
 
