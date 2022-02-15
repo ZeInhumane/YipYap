@@ -52,6 +52,6 @@ async function executeCommand(command, message, args, client) {
     try {
         await command.execute({ message, args, client });
     } catch (error) {
-        console.error("Incorrect permissions");
+        console.log('An error has occurred:', error);
     }
 }

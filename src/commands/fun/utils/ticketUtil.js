@@ -1,4 +1,4 @@
-const userEffects = require('../../models/userEffects.js');
+const userEffects = require('../../../models/userEffects.js');
 
 /**
  * Handles ticket effects
@@ -12,9 +12,9 @@ exports.ticketEffects = async function (userID, user, message) {
     let expMsg = 'No active EXP Ticket.';
     let goldMsg = 'No active Gold Ticket.';
 
-    userEffects.findOne({ userID: userID }, async (err, effects) => {
+    await userEffects.findOne({ userID: userID }, async (err, effects) => {
         // Check if user has any active effects
-        if (effects) return;
+        if (!effects) return;
 
         // Check if user has any active tickets
         const tickets = Object.keys(effects.tickets);
