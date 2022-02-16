@@ -43,7 +43,7 @@ module.exports = {
         } else if (playerWon == false) {
             message.channel.send(`${user.player.name} has been defeated by ${enemy.name}!`);
         } else {
-            console.log("Battle inactive");
+            return;
         }
     },
 };

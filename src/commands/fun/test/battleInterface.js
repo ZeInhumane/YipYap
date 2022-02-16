@@ -97,6 +97,7 @@ module.exports = class Battle {
         this.message = message;
         this.expMsg = expMsg;
         this.goldMsg = goldMsg;
+        this.battleMessage = battleMessage;
 
         // Create interaction filter based on command message sender
         const filter = i => {
@@ -127,16 +128,16 @@ module.exports = class Battle {
 
                     // Checks for who has first turn
                     if (playerIsFirst(this.player, this.enemy)) {
-                        this.playerTurn(playerAction);
+                        await this.playerTurn(playerAction);
                         if (this.enemy.hp > 0) {
-                            this.enemyTurn();
+                            await this.enemyTurn();
                         } else {
                             this.enemyTurnAction = 'Enemy has been defeated!';
                         }
                     } else {
-                        this.enemyTurn();
+                        await this.enemyTurn();
                         if (this.player.hp > 0) {
-                            this.playerTurn(playerAction);
+                            await this.playerTurn(playerAction);
                         } else {
                             this.playerTurnAction = 'You died lmfao';
                         }
@@ -190,13 +191,17 @@ module.exports = class Battle {
                 this.playerTurnAction = "You shield yourself, it works.";
                 return;
             } else if (action == "ultimate") {
+
+                // /////////
+                // Broken //
+                // /////////
                 if (this.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
                     this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user);
                     return;
                 } else {
-                    this.playerTurnAction = `You only have ${this.ultimate} ultimate charge, you need 100 to use your ultimate.`;
+                    await this.message.channel.send(`You only have ${this.player.ultimate} ultimate charge, you need 100 to use your ultimate.`);
                 }
             } else {
                 this.playerTurnAction = "Nothing happened";
@@ -205,7 +210,7 @@ module.exports = class Battle {
         }
     }
     // Gives an Enemy (Probably add shielding here)
-    enemyTurn() {
+    async enemyTurn() {
         if (this.dodgeAttack(this.enemy, this.player)) {
             this.enemyTurnAction = `${this.enemy.name}'s turn!\n${this.enemy.name} attacked but ${this.player.name} dodged!\n`;
         } else {
