@@ -19,30 +19,30 @@ module.exports = {
                 return;
             }
 
-            let userRune = parseInt(args[0]);
+            const userRune = parseInt(args[0]);
             const embedColor = "#0099ff";
             // check for runes
             if (user.rune) {
                 user.rune = 1;
             }
             // sets rune if doesn't exist
-            if (user.rune == null) { console.log("it enters"); user.rune = 1 }
+            if (user.rune == null) { console.log("it enters"); user.rune = 1; }
             // checks if argument is keyed in properly
             if (isNaN(userRune)) {
-                let returnAll = await rune.find({}).exec();
-                let runeEmbed = new Discord.MessageEmbed()
+                const returnAll = await rune.find({}).exec();
+                const runeEmbed = new Discord.MessageEmbed()
                     .setColor(embedColor)
                     .setTitle(`Available runes`)
-                    .addField(`\u200b`, `Enter the rune number you would like to use eg. -rune 1 to equip ruin 1`)
+                    .addField(`\u200b`, `Enter the rune number you would like to use eg. -rune 1 to equip ruin 1`);
                 for (i in returnAll) {
-                    let runeInfo = returnAll[i];
+                    const runeInfo = returnAll[i];
                     runeEmbed
                         .addField(`Rune Name`, `${parseInt(i) + 1}. ${runeInfo.Title}`)
                         .addField(`Level Requirement`, runeInfo.Requirements, true)
-                        .addField(`Rune Description`, runeInfo.Description, true)
+                        .addField(`Rune Description`, runeInfo.Description, true);
                 }
                 message.channel.send({ embeds: [runeEmbed] });
-                return
+                return;
             }
 
 
@@ -59,10 +59,10 @@ module.exports = {
                     return;
                 }
                 user.rune = userRune;
-                console.log(user.rune)
+                console.log(user.rune);
 
                 user.save()
-                    .then(result => console.log("rune",))
+                    .then(result => console.log("rune"))
                     .catch(err => console.error(err));
 
                 const runeEmbed = new Discord.MessageEmbed()
@@ -70,7 +70,7 @@ module.exports = {
                     .setTitle(`You are now using ${runeInfo.Title} in battle `)
                     .setImage(runeInfo.Image)
                     .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                    .addField(`\u200b`, runeInfo.Description)
+                    .addField(`\u200b`, runeInfo.Description);
                 message.channel.send({ embeds: [runeEmbed] });
             });
         });

@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
 const botLevel = require('../../models/botLevel');
+const win = require('../../classes/battle/win.js');
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
 const ticketUtil = require('./utils/ticketUtil.js');
@@ -7,11 +7,11 @@ const battleUtil = require('./utils/battleUtil.js');
 const Battle = require('./test/battleInterface.js');
 
 module.exports = {
-    name: "new",
+    name: "newbattle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
     syntax: "",
     cooldown: 20,
-    aliases: ['new'],
+    aliases: ['refactor', 'new'],
     category: "Fun",
     async execute({ message }) {
         // Find user, if user not found, prompt user to create new user
@@ -25,38 +25,25 @@ module.exports = {
         // Get effects messages to display in embed later
         const { expMsg, goldMsg } = await ticketUtil.ticketEffects(message.author.id, user, message);
 
-        const locationInfo = await botLevel.findOne({ 'Location': user.location });
+        // Get locationInfo
+        let locationInfo;
+        await botLevel.findOne({ 'Location': user.location }, (err, result) => { locationInfo = result._doc; });
 
-        await message.reply(`${locationInfo}`);
+        // Create enemy
+        const enemy = await battleUtil.makeNewEnemy(user, locationInfo);
 
-        const enemy = battleUtil.makeNewEnemy(user, locationInfo);
+        // Initialize battle
+        const battle = new Battle(user, enemy, locationInfo);
 
-        // Retrieve player name and stats from discord user
-        const player = { name: user.player.name };
+        // Returns a boolean of whether player won
+        const playerWon = await battle.initBattle(message, expMsg, goldMsg);
 
-        for (const stat in user.player.baseStats) {
-            player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
+        if (playerWon) {
+            win.execute(message, user, enemy, locationInfo);
+        } else if (playerWon == false) {
+            message.channel.send(`${user.player.name} has been defeated by ${enemy.name}!`);
+        } else {
+            console.log("Battle inactive");
         }
-
-        // Store original hp to display in battle
-        const originalPlayerHP = player.hp;
-        const originalEnemyHP = enemy.hp;
-
-        // Makes battle embed
-        const battleEmbed = new Discord.MessageEmbed()
-            .setColor(currentColor)
-            .setTitle(user.player.name + '\'s ultimate charge: ' + ultimate + "/100")
-            .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-            .setDescription(displayUltimateString)
-            .addFields(
-                { name: 'Experience Ticket', value: expMsg, inline: true },
-                { name: 'Gold Ticket', value: goldMsg, inline: true },
-                { name: 'Player HP', value: `Lvl ${user.level} **${player.name}**'s **HP**: ${player.hp}/${originalPlayerHP}` },
-                { name: 'Enemy HP', value: `Lvl ${enemy.level} **${enemy.name}**'s **HP**: ${enemy.hp}/${originalEnemyHP}` },
-            )
-            .setImage(locationInfo.LocationImage)
-            .setFooter({ text: `${locationInfo.Description}` });
-
-        const battleMessage = await message.channel.send({ embeds: [battleEmbed], components: [row] });
     },
 };

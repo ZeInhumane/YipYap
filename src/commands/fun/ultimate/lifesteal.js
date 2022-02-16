@@ -1,4 +1,4 @@
-const ultimateBase = require('./ultimateBase');
+const ultimateBase = require('./ultimateBase.js');
 module.exports = class lifesteal extends ultimateBase {
     constructor(player, enemy, user) {
         super(player, enemy, user);
