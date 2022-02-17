@@ -9,7 +9,7 @@ module.exports = {
     syntax: "{Floor to access}",
     cooldown: 1,
     aliases: ['runes'],
-    category: "Economy",
+    category: "Fun",
     execute({ message, args }) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -21,12 +21,8 @@ module.exports = {
 
             const userRune = parseInt(args[0]);
             const embedColor = "#0099ff";
-            // check for runes
-            if (user.rune) {
-                user.rune = 1;
-            }
             // sets rune if doesn't exist
-            if (user.rune == null) { console.log("it enters"); user.rune = 1; }
+            if (user.rune == null) { user.rune = 1; }
             // checks if argument is keyed in properly
             if (isNaN(userRune)) {
                 const returnAll = await rune.find({}).exec();
@@ -34,7 +30,7 @@ module.exports = {
                     .setColor(embedColor)
                     .setTitle(`Available runes`)
                     .addField(`\u200b`, `Enter the rune number you would like to use eg. -rune 1 to equip ruin 1`);
-                for (i in returnAll) {
+                for (const i in returnAll) {
                     const runeInfo = returnAll[i];
                     runeEmbed
                         .addField(`Rune Name`, `${parseInt(i) + 1}. ${runeInfo.Title}`)
@@ -60,9 +56,8 @@ module.exports = {
                 }
                 user.rune = userRune;
                 console.log(user.rune);
-
                 user.save()
-                    .then(result => console.log("rune"))
+                    .then(() => console.log())
                     .catch(err => console.error(err));
 
                 const runeEmbed = new Discord.MessageEmbed()

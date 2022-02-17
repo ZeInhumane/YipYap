@@ -195,13 +195,14 @@ module.exports = class Battle {
                 // /////////
                 // Broken //
                 // /////////
-                if (this.ultimate == 100) {
+                if (this.player.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
                     this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user);
                     return;
                 } else {
                     await this.message.channel.send(`You only have ${this.player.ultimate} ultimate charge, you need 100 to use your ultimate.`);
+                    return;
                 }
             } else {
                 this.playerTurnAction = "Nothing happened";
@@ -245,8 +246,8 @@ module.exports = class Battle {
      * @param {User.player} player
      */
     resetUltimate(player) {
-        player.ultimateString = `${ultimateStart}${emptyUltimateEmote.repeat(10)}${ultimateEnd}`;
         player.ultimate = 0;
+        player.ultimateString = generateUltimateString(player.ultimate);
         row.components[2].setStyle('DANGER');
     }
 
