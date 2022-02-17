@@ -4,9 +4,11 @@ module.exports = class ultimate {
         this.enemy = enemy;
         this.user = user;
     }
+
     displayMessage() {
         return "";
     }
+
     calculateDamage(player, enemy) {
         const damage = player.attack;
         let attMulti = damage / enemy.defense;
@@ -19,6 +21,7 @@ module.exports = class ultimate {
         if (damageTaken < 1) { damageTaken = 1; }
         return damageTaken;
     }
+
     alterStats() {
         return;
     }

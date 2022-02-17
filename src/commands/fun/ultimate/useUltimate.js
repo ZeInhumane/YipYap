@@ -44,6 +44,5 @@ module.exports = async function (player, enemy, user) {
             message = newlifesteal.displayMessage(player, results[0], results[1]);
         }
     }
-    console.log(message);
     return message;
 };
