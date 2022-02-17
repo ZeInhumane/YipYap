@@ -10,16 +10,7 @@ module.exports = class bigbang extends ultimateBase {
     }
 
     bigbang(player, enemy) {
-        const damage = player.attack;
-        let attMulti = damage / enemy.defense;
-        if (attMulti < 0.4) {
-            attMulti = 0.4;
-        } else if (attMulti > 1.5) {
-            attMulti = 1.5;
-        }
-
-        let damageTaken = Math.floor((damage + Math.floor((damage - enemy.defense) / 4)) * attMulti);
-        if (damageTaken < 1) { damageTaken = 1; }
+        const damageTaken = super.calculateDamage(player, enemy);
         // change in accordance to user stats
         const additionalDamage = Math.floor(damageTaken * 1.5);
         enemy.hp -= additionalDamage;
