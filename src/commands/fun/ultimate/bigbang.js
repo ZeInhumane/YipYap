@@ -1,15 +1,15 @@
 const ultimateBase = require('./ultimateBase');
-module.exports = class lifesteal extends ultimateBase {
+module.exports = class bigbang extends ultimateBase {
     constructor(player, enemy, user) {
         super(player, enemy, user);
     }
 
-    displayMessage(player, damageTaken, calculateLifesteal) {
+    displayMessage(player, damageTaken, additionalDamage) {
         return player.name + '\'s turn!\n' + player.name + ' uses their **ULTIMATE** and does ' +
-            +damageTaken + ' **Damage** with lifesteal while **Healing** for ' + calculateLifesteal + ' **Health**!';
+            +damageTaken + ' damage but **BIG BANG** amplifies the damage to ' + additionalDamage + ' damage!';
     }
 
-    lifesteal(player, enemy) {
+    bigbang(player, enemy) {
         const damage = player.attack;
         let attMulti = damage / enemy.defense;
         if (attMulti < 0.4) {
@@ -20,10 +20,9 @@ module.exports = class lifesteal extends ultimateBase {
 
         let damageTaken = Math.floor((damage + Math.floor((damage - enemy.defense) / 4)) * attMulti);
         if (damageTaken < 1) { damageTaken = 1; }
-        enemy.hp -= damageTaken;
         // change in accordance to user stats
-        const calculateLifesteal = Math.floor(damageTaken / 2);
-        player.hp += calculateLifesteal;
-        return [damageTaken, calculateLifesteal];
+        const additionalDamage = Math.floor(damageTaken * 1.5);
+        enemy.hp -= additionalDamage;
+        return [damageTaken, additionalDamage];
     }
 };
