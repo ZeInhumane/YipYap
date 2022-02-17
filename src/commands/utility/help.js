@@ -52,7 +52,7 @@ module.exports = {
             const links = [
                 {
                     hypertext: "Invite Link",
-                    url: "https://discord.com/oauth2/authorize?client_id=745275291785494571&scope=bot&permissions=262208",
+                    url: "https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot",
                 },
                 {
                     hypertext: "Official Server",
