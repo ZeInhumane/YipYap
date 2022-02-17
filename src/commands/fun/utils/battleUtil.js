@@ -11,14 +11,13 @@ class Enemy {
     }
 }
 
-
 /**
  * Makes a new random enemy based on user stats and location info
  * @param {User} user
  * @param {*} locationInfo
  * @returns {Enemy}
  */
-exports.makeNewEnemy = async function (user, locationInfo) {
+exports.makeNewEnemy = function (user, locationInfo) {
     // Create enemy level based on user level
     let enemyLvl = Math.floor(Math.random() * 11) - 5 + user.level;
     if (enemyLvl < 1) enemyLvl = 1;
@@ -29,6 +28,7 @@ exports.makeNewEnemy = async function (user, locationInfo) {
 
     // Enemy name
     const enemyName = locationInfo.Enemy[Math.floor(Math.random() * locationInfo.Enemy.length)];
+
     // Takes the buff from the db and applies it to the enemies
     const { hp: hpMulti, attack: attackMulti, defense: defenseMulti, speed: speedMulti } = locationInfo.Buff;
     const enemyHP = Math.floor((Math.random() * (Math.exp(enemyLvl) ** (1 / 20)) + minStat * 5 + enemyLvl * 5) * hpMulti);

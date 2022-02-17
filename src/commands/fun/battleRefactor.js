@@ -20,7 +20,7 @@ module.exports = {
         await botLevel.findOne({ 'Location': user.location }, (err, result) => { locationInfo = result._doc; });
 
         // Create enemy
-        const enemy = await battleUtil.makeNewEnemy(user, locationInfo);
+        const enemy = battleUtil.makeNewEnemy(user, locationInfo);
 
         // Initialize battle
         const battle = new Battle(user, enemy, locationInfo);
