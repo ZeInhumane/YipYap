@@ -55,12 +55,12 @@ async function executeCommand(command, message, args, client) {
     try {
         // Find user, if user not found, prompt user to create new user
         const user = await User.findOne({ userID: message.author.id });
+        const prefix = await findPrefix(message.guild.id);
         if (!user && command.name != "start") {
-            const prefix = await findPrefix(message.guild.id);
             message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
             return;
         }
-        await command.execute({ message, args, client, user });
+        await command.execute({ message, args, client, user, prefix });
     } catch (error) {
         console.log('An error has occurred:', error);
     }
