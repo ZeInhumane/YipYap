@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
 const cooldowns = new Discord.Collection();
+const User = require('../models/user');
+const findPrefix = require('../functions/findPrefix');
+
 module.exports = function cooldownUpdate(command, message, args, client) {
     // Discord js api for cooldown
     if (!cooldowns.has(command.name)) {
@@ -50,7 +53,14 @@ function secondsToHms(d) {
 
 async function executeCommand(command, message, args, client) {
     try {
-        await command.execute({ message, args, client });
+        // Find user, if user not found, prompt user to create new user
+        const user = await User.findOne({ userID: message.author.id });
+        if (!user && command.name != "start") {
+            const prefix = await findPrefix(message.guild.id);
+            message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
+            return;
+        }
+        await command.execute({ message, args, client, user });
     } catch (error) {
         console.log('An error has occurred:', error);
     }

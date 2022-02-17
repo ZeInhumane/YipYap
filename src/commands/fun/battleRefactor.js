@@ -1,10 +1,8 @@
 const botLevel = require('../../models/botLevel');
 const win = require('../../classes/battle/win.js');
-const User = require('../../models/user');
-const findPrefix = require('../../functions/findPrefix');
 const ticketUtil = require('./utils/ticketUtil.js');
 const battleUtil = require('./utils/battleUtil.js');
-const Battle = require('./test/battleInterface.js');
+const Battle = require('./interface/battleInterface.js');
 
 module.exports = {
     name: "newbattle",
@@ -13,15 +11,7 @@ module.exports = {
     cooldown: 20,
     aliases: ['refactor', 'new'],
     category: "Fun",
-    async execute({ message }) {
-        // Find user, if user not found, prompt user to create new user
-        const user = await User.findOne({ userID: message.author.id });
-        if (!user) {
-            const prefix = await findPrefix(message.guild.id);
-            message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
-            return;
-        }
-
+    async execute({ message, user }) {
         // Get effects messages to display in embed later
         const { expMsg, goldMsg } = await ticketUtil.ticketEffects(message.author.id, user, message);
 
