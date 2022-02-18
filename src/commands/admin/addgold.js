@@ -1,5 +1,4 @@
 const User = require('../../models/user');
-const findPrefix = require('../../functions/findPrefix');
 var config = require('../../../config.json');
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    async execute({ message, args }) {
+    async execute({ message, args, prefix }) {
         // Transfer amount
         let transferAmount = 1;
         const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
@@ -24,8 +23,6 @@ module.exports = {
 
             User.findOne({ userID: transferTarget.id }, async (err, target) => {
                 if (target == null) {
-                    // Getting the prefix from db
-                    const prefix = await findPrefix(message.guild.id);
                     message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
                 } else {
                     // Check if user entered a vaild transfer amount (else use default)

@@ -27,14 +27,14 @@ module.exports = {
             const dropInfo = Object.values(lootboxInfo);
             const dropNames = Object.keys(lootboxInfo);
             let totalChance = 0;
-            for (i = 0; i < dropInfo.length; i++) {
+            for (let i = 0; i < dropInfo.length; i++) {
                 totalChance += dropInfo[i].dropChance;
             }
             while (drops.length == 0) {
-                for (i = 0; i < dropNames.length; i++) {
-                    rng = Math.random();
+                for (let i = 0; i < dropNames.length; i++) {
+                    const rng = Math.random();
                     if (rng <= dropInfo[i].dropChance / totalChance) {
-                        quantityDropped = Math.floor(Math.random() * dropInfo[i].maxQuantity + dropInfo[i].minQuantity);
+                        const quantityDropped = Math.floor(Math.random() * dropInfo[i].maxQuantity + dropInfo[i].minQuantity);
                         drops.push([dropNames[i], quantityDropped, dropInfo[i].emote]);
                     }
                 }
@@ -53,7 +53,7 @@ module.exports = {
                     `${winner.player.name} earned ${moneyEarned * goldMulti}<:cash_24:751784973488357457>\n${embedText}`);
 
                 if (drops.length != 0) {
-                    for (i = 0; i < drops.length; i++) {
+                    for (let i = 0; i < drops.length; i++) {
                         if (user.inv[drops[i][0]]) {
                             user.inv[drops[i][0]].quantity += drops[i][1];
                         } else {
