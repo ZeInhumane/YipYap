@@ -4,7 +4,7 @@ const User = require('../../models/user');
 const win = require('../../classes/battle/win.js');
 const userEffects = require('../../models/userEffects.js');
 const findPrefix = require('../../functions/findPrefix');
-const useUltimate = require('./ultimate/useUltimate.js');
+const useUltimate = require('./utils/useUltimate.js');
 
 module.exports = {
     name: "battle",

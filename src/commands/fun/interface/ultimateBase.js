@@ -1,3 +1,5 @@
+const requireDir = require('require-dir');
+
 module.exports = class ultimate {
     constructor(player, enemy, user) {
         this.player = player;
@@ -25,4 +27,16 @@ module.exports = class ultimate {
     alterStats() {
         return;
     }
+
+    static get getID() { return new this(null, null, null).id; }
+    static get getName() { return new this(null, null, null).name; }
+    static get ultimates() { return ultimates; }
+    static get ultimateDir() { return ultimateDir; }
 };
+
+const ultimateDir = requireDir('./../ultimate');
+const ultimates = {};
+for (const key in ultimateDir) {
+    const ultimate = ultimateDir[key];
+    ultimates[ultimate.getID] = ultimate;
+}

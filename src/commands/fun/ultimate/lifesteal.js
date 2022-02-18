@@ -1,7 +1,10 @@
-const ultimateBase = require('./ultimateBase');
+const ultimateBase = require('../interface/ultimateBase');
 module.exports = class lifesteal extends ultimateBase {
     constructor(player, enemy, user) {
         super(player, enemy, user);
+
+        this.name = 'Lifesteal';
+        this.id = 3;
     }
 
     displayMessage(player, damageTaken, calculateLifesteal) {
@@ -9,7 +12,7 @@ module.exports = class lifesteal extends ultimateBase {
             +damageTaken + ' **Damage** with lifesteal while **Healing** for ' + calculateLifesteal + ' **Health**!';
     }
 
-    lifesteal(player, enemy) {
+    ultimate(player, enemy) {
         const damageTaken = super.calculateDamage(player, enemy);
         enemy.hp -= damageTaken;
         // change in accordance to user stats

@@ -1,7 +1,10 @@
-const ultimateBase = require('./ultimateBase');
+const ultimateBase = require('../interface/ultimateBase');
 module.exports = class buffup extends ultimateBase {
     constructor(player, enemy, user) {
         super(player, enemy, user);
+
+        this.name = 'Buff Up';
+        this.id = 2;
     }
 
     displayMessage(player, buffedAttack, buffedSpeed) {
@@ -9,7 +12,7 @@ module.exports = class buffup extends ultimateBase {
             +buffedAttack + ' **Attack** And ' + buffedSpeed + ' **Speed**!';
     }
 
-    buffup(player) {
+    ultimate(player) {
         const buffedAttack = Math.floor(player.attack * 1.5);
         const buffedSpeed = Math.floor(player.speed * 1.5);
         player.attack = buffedAttack;
