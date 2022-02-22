@@ -8,13 +8,13 @@ module.exports = class debuff extends ultimateBase {
     }
 
     displayMessage(player, deBuffedAttack, deBuffedSpeed) {
-        return player.name + '\'s turn!\n' + player.name + ` uses their **ULTIMATE** and decreases their Enemy's Attack by 50% to ` +
+        return player.name + '\'s turn!\n' + player.name + ` uses their **ULTIMATE** to **Debuff** the Opponent and decreases their Enemy's Attack by 25% to ` +
             +deBuffedAttack + ' **Attack** And ' + deBuffedSpeed + ' **Speed**!';
     }
 
-    ultimate(enemy) {
-        const deBuffedAttack = Math.floor(enemy.attack * 0.5);
-        const deBuffedSpeed = Math.floor(enemy.speed * 0.5);
+    ultimate(player, enemy) {
+        const deBuffedAttack = Math.ceil(enemy.attack * 0.75);
+        const deBuffedSpeed = Math.ceil(enemy.speed * 0.75);
         enemy.attack = deBuffedAttack;
         enemy.speed = deBuffedSpeed;
         return [deBuffedAttack, deBuffedSpeed];
