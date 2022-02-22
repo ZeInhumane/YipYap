@@ -4,7 +4,7 @@ module.exports = class lifesteal extends ultimateBase {
         super(player, enemy, user);
 
         this.name = 'Lifesteal';
-        this.id = 3;
+        this.id = 4;
     }
 
     displayMessage(player, damageTaken, calculateLifesteal) {

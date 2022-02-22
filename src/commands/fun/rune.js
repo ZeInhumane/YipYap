@@ -55,7 +55,6 @@ module.exports = {
                     return;
                 }
                 user.rune = userRune;
-                console.log(user.rune);
                 user.save()
                     .then(() => console.log())
                     .catch(err => console.error(err));

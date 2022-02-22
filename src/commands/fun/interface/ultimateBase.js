@@ -33,9 +33,10 @@ module.exports = class ultimate {
     static get ultimates() { return ultimates; }
     static get ultimateDir() { return ultimateDir; }
 };
-
+// Requires all files in the directory
 const ultimateDir = requireDir('./../ultimate');
 const ultimates = {};
+// Key retrieves the file in said directory
 for (const key in ultimateDir) {
     const ultimate = ultimateDir[key];
     ultimates[ultimate.getID] = ultimate;
