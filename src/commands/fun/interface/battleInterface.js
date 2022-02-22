@@ -191,10 +191,6 @@ module.exports = class Battle {
                 this.playerTurnAction = "You shield yourself, it works.";
                 return;
             } else if (action == "ultimate") {
-
-                // /////////
-                // Broken //
-                // /////////
                 if (this.player.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
