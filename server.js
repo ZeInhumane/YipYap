@@ -10,13 +10,13 @@ const app = express();
 const webhook = new Topgg.Webhook(process.env.webhookAuth);
 
 app.post('/dblwebhook', webhook.listener(vote => {
-    console.log('User with id', vote.user.id, 'has voted!');
+    console.log('User with id', vote.user, 'has voted!');
     const value = JSON.stringify({
         embeds: [
             {
                 title: "Vote received!",
                 description: `${vote.user} just voted`,
-                color: "ffb347",
+                color: "16757575",
             },
         ],
     });
@@ -31,4 +31,3 @@ app.post('/dblwebhook', webhook.listener(vote => {
 
 app.listen(process.env.PORT || 80);
 console.log('App has restarted');
-// https://yipyapbot.herokuapp.com/
