@@ -18,7 +18,8 @@ const { apiToken } = require('./config.json');
 const DBL = require('dblapi.js');
 // The webhookPort can be whatever you want but make sure you open that port in the firewall settings (for linux for example you can use `sudo ufw allow 8000`)
 // The webhookAuth is set by you, make sure you keep it secure and don\'t leak it
-const dbl = new DBL(process.env.webhookAuth, { webhookPort: process.env.PORT || 3000, webhookAuth: process.env.apiToken });
+console.log(process.env.PORT);
+const dbl = new DBL(process.env.apiToken, { webhookPort: process.env.PORT || 3000, webhookAuth: process.env.webhookAuth });
 module.exports = (client) => {
     // When the webhook is ready log it to the console, this will log `Webhook up and running at http://0.0.0.0:8000/dblwebhook`
     dbl.webhook.on('ready', hook => {
