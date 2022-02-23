@@ -20,7 +20,7 @@ app.post('/dblwebhook', webhook.listener(vote => {
             },
         ],
     });
-    fetch("https://discord.com/api/webhooks/945965926937948171/hbL_F42XWFpD2bzvgkK5_FeYzrmtsV7AJparoVrIUl_cau0bRKA3_EGsMzpJT8DK6ADE", {
+    fetch("https://discord.com/api/webhooks/945970353002385418/gjiHIF2X6vBYniJyOEv5Z2-eitZMZ-IEgsi7yiLJpeXbpGpA_yQzNvGq6PdqaDT_BJ-A", {
         method: "POST",
         headers: {
             'Content-type': 'application/json',
