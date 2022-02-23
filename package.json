@@ -27,7 +27,7 @@
     "express": "^4.17.3",
     "mongoose": "^5.13.9",
     "node-fetch": "^2.6.7",
-    "sequelize": "^6.16.1"
+    "sequelize": "^6.16.2"
   },
   "engines": {
     "node": "16.x"
