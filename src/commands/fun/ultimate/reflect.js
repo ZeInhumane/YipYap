@@ -8,7 +8,7 @@ module.exports = class reflect extends ultimateBase {
     }
 
     displayMessage(player, reflectedAttack, damageTaken, reflectedAttackTaken) {
-        return `${player.name}'\'s turn!\n ${player.name} uses their **ULTIMATE** to **Reflect** to reflect
+        return `${player.name}'s turn!\n ${player.name} uses their **ULTIMATE** to **Reflect** to reflect
             ${reflectedAttack} **Attack** to their oppponent and instead of taking ${damageTaken} damage, they take ${reflectedAttackTaken} damage!`;
     }
 
