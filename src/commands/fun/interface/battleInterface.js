@@ -62,6 +62,9 @@ module.exports = class Battle {
         this.originalPlayerHP = this.player.hp;
         this.originalEnemyHP = this.enemy.hp;
 
+        // Copy original stats
+        this.originalPlayerStats = this.player;
+
         // Reset ultimate
         this.resetUltimate(this.enemy);
         this.resetUltimate(this.player);
@@ -194,7 +197,7 @@ module.exports = class Battle {
                 if (this.player.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
-                    this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user);
+                    this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user, this.originalPlayerStats);
                     return;
                 } else {
                     await this.message.channel.send(`You only have ${this.player.ultimate} ultimate charge, you need 100 to use your ultimate.`);

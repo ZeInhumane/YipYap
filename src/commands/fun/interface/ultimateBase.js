@@ -1,10 +1,11 @@
 const requireDir = require('require-dir');
 
 module.exports = class ultimate {
-    constructor(player, enemy, user) {
+    constructor(player, enemy, user, originalStats) {
         this.player = player;
         this.enemy = enemy;
         this.user = user;
+        this.originalStats = originalStats;
     }
 
     displayMessage() {
