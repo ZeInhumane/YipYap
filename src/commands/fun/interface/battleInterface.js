@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const useUltimate = require('../utils/useUltimate.js');
+const applyBuffs = require('../utils/buffUtil.js');
 
 const ultimateEmote = ":Ultimate:822042890955128872";
 const emptyUltimateEmote = "<:blank:829270386986319882>";
@@ -65,7 +66,7 @@ module.exports = class Battle {
         this.originalEnemyHP = this.enemy.hp;
 
         // Copy original stats
-        this.originalPlayerStats = this.player;
+        this.player.originalPlayerStats = this.player;
 
         // Reset ultimate
         this.resetUltimate(this.enemy);
@@ -124,13 +125,18 @@ module.exports = class Battle {
      * @returns {Boolean}
      */
     async gameLoop(battleMessage, filter) {
+        // Apply buffs
+        for(const buffID in this.player.buffs) { 
+            this.playerTurnAction = await applyBuffs(this.player, this.enemy, buffID);
+         }
+
+        
         while (this.player.hp > 0 && this.enemy.hp > 0 && !this.expired) {
             // awaits Player reaction
             await battleMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                 .then(async i => {
                     const playerAction = i.customId;
                     this.turnActions.player = playerAction;
-
                     // Checks for who has first turn
                     if (playerIsFirst(this.player, this.enemy)) {
                         await this.playerTurn(playerAction);
@@ -199,7 +205,7 @@ module.exports = class Battle {
                 if (this.player.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
-                    this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user, this.originalPlayerStats);
+                    this.playerTurnAction = await useUltimate(this.player, this.enemy, this.user);
                     return;
                 } else {
                     await this.message.channel.send(`You only have ${this.player.ultimate} ultimate charge, you need 100 to use your ultimate.`);
