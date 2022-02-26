@@ -47,6 +47,8 @@ module.exports = class Battle {
         this.expired;
         this.round = 1;
         this.turnActions = { player: null, enemy: null };
+        this.player.buffs = {};
+        this.enemy.buffs = {};
 
         // Inactive
         this.playerTurnAction = `You stared at ${this.enemy.name}`;
