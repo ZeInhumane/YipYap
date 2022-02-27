@@ -13,13 +13,13 @@ module.exports = class healing extends ultimateBase {
     }
 
     ultimate(player) {
-        const healingDone = Math.floor(player.originalStats.hp * 0.25);
+        const healingDone = Math.floor(player.hpMax * 0.25);
 
-        if (player.hp + healingDone >= player.originalStats.hp) {
-            player.hp = player.originalStats.hp;
+        if (player.hp + healingDone >= player.hpMax) {
+            player.hp = player.hpMax;
         } else {
             player.hp += healingDone;
         }
-        return [player.originalStats.hp, healingDone];
+        return [player.hpMax, healingDone];
     }
 };

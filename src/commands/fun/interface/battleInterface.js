@@ -57,6 +57,7 @@ module.exports = class Battle {
         this.player = { name: user.player.name };
         for (const stat in user.player.baseStats) {
             this.player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
+            this.player[`${stat}Max`] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
         }
         this.player.buffs = [];
 
