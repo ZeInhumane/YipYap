@@ -35,7 +35,6 @@ module.exports = {
                 if (Object.keys(effects.tickets).length > 0) {
                     for (let i = 0; i < ticketTypes.length; i++) {
                         const ticketName = Object.keys(effects.tickets).filter(key => key.includes(ticketTypes[i]));
-                        console.log(ticketName);
                         if (ticketName.length != 0) {
                             const ticket = effects.tickets[ticketName];
                             let today = new Date();
