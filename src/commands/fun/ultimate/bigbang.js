@@ -8,8 +8,8 @@ module.exports = class bigbang extends ultimateBase {
     }
 
     displayMessage(player, damageTaken, additionalDamage) {
-        return player.name + '\'s turn!\n' + player.name + ' uses their **ULTIMATE** and does ' +
-            +damageTaken + ' damage but **BIG BANG** amplifies the damage to ' + additionalDamage + ' damage!';
+        return `${player.name}'s turn!\n ${player.name} uses their **ULTIMATE** and does ${damageTaken}
+        but **BIG BANG** amplifies the damage to ${additionalDamage} additional damage!`;
     }
 
     ultimate(player, enemy) {

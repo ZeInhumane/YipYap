@@ -12,7 +12,7 @@ module.exports = async function (player, enemy, user) {
     const results = ultimate.ultimate(player, enemy, user);
 
     // Display message
-    const message = ultimate.displayMessage(player, results[0], results[1]);
+    const message = ultimate.displayMessage(player, results[0], results[1], results[2]);
 
     return message;
 };

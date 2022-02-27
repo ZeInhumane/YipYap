@@ -8,8 +8,8 @@ module.exports = class buffup extends ultimateBase {
     }
 
     displayMessage(player, buffedAttack, buffedSpeed) {
-        return player.name + '\'s turn!\n' + player.name + ' uses their **ULTIMATE** and increases their Attack and Speed by 50% to ' +
-            +buffedAttack + ' **Attack** And ' + buffedSpeed + ' **Speed**!';
+        return `${player.name}'s turn!\n ${player.name} uses their **ULTIMATE** to **Buff Up** their **Attack** and **Speed** by 
+        ${buffedAttack} and ${buffedSpeed}!`;
     }
 
     ultimate(player) {
