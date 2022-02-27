@@ -87,8 +87,8 @@ module.exports = class Battle {
                 { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
             )
-            .setImage(this.locationInfo.LocationImage)
-            .setFooter({ text: `${this.locationInfo.Description}` });
+            .setImage(this.locationInfo.imageURL)
+            .setFooter({ text: `${this.locationInfo.desc}` });
 
         // Create and send battle message with buttons
         const battleMessage = await message.channel.send({ embeds: [battleEmbed], components: [row] });
@@ -236,8 +236,8 @@ module.exports = class Battle {
                 { name: `Round ${this.round}`, value: this.playerTurnAction },
                 { name: '​', value: this.enemyTurnAction },
             )
-            .setImage(this.locationInfo.LocationImage)
-            .setFooter({ text: `${this.locationInfo.Description}` });
+            .setImage(this.locationInfo.imageURL)
+            .setFooter({ text: `${this.locationInfo.desc}` });
         return updatedBattleEmbed;
     }
 

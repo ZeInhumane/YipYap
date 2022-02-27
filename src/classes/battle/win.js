@@ -9,19 +9,26 @@ module.exports = {
         const winEmbed = new Discord.MessageEmbed()
             .setTitle(`You Won!`)
             .setColor('#000001');
+
+        const floorID = location.selectedFloor;
+        const floor = location.getFloor(floorID);
+
         // Lets the money earned be multiplied by gold
-        const moneyEarned = Math.floor(loser.level * location.Rewards.GoldMultiplier);
-        const lootboxInfo = location.Rewards.Lootbox;
+        const moneyEarned = Math.floor(loser.level * floor.multipliers.GoldMultiplier);
+        const lootboxInfo = floor.rewards.lootbox;
         let goldMulti = 1;
+
         // const chestName = ["Common Treasure Chest", "Uncommon Treasure Chest", "Rare Treasure Chest", "Epic Treasure Chest", "Legendary Treasure Chest", "Mythic Treasure Chest"];
         // const chestEmote = ["<:CommonChest:819856620572901387>", "<:UncommonChest:820272834348711976>", "<:RareChest:820273250629582858>", "<:EpicChest:820273750289023007>", "<:LegendaryChest:820274118817611777>", "<:MythicChest:820274344059994122>"]
 
-        // This takes the experience multiplier from the location
-        const experienceMultiplier = location.Rewards.ExpMultiplier;
-        // get embed text from lvl_edit
+        // Get experience multiplier from floor
+        const experienceMultiplier = floor.multipliers.ExpMultiplier;
+
+        // Get embed text from lvl_edit
         const embedText = await lvl_edit.execute(message, winner, loser, experienceMultiplier);
 
         const drops = [];
+
         // Math.floor(Math.random() * 1 + 1) == 1  //for 100% chance when testing
         if (Math.random() < 0.2) {
             const dropInfo = Object.values(lootboxInfo);
@@ -50,7 +57,7 @@ module.exports = {
                     }
                 }
                 winEmbed.addField(`${winner.player.name} defeated ${(loser.name || loser.player.name)}!`,
-                    `${winner.player.name} earned ${moneyEarned * goldMulti}<:cash_24:751784973488357457>\n${embedText}`);
+                    `${winner.player.name} earned ${moneyEarned * goldMulti} <:cash_24:751784973488357457>\n${embedText}`);
 
                 if (drops.length != 0) {
                     for (let i = 0; i < drops.length; i++) {
