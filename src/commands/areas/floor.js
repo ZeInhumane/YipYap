@@ -47,7 +47,7 @@ module.exports = {
             return message.channel.send({ embeds: [floorEmbed] });
         }
 
-        if (floorToAccess > area.getFloors.length) {
+        if (floorToAccess > Object.keys(area.getFloors).length) {
             return message.channel.send(`You need to specify a valid floor.\n` +
                 `Correct usage: \`${prefix}${this.name} ${this.syntax}\``);
         }
@@ -91,7 +91,7 @@ module.exports = {
                 url: area.getImageURL,
             },
             footer: {
-                text: `View all areas with \`${prefix}areas\``,
+                text: `View all areas with ${prefix}areas`,
             },
         };
 
