@@ -15,4 +15,4 @@
 
 // Floor classes or objects
 //
-// ..
+// Add buttons to areas and floors command

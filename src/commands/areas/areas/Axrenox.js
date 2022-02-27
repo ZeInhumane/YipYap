@@ -5,7 +5,7 @@ module.exports = class Axrenox extends AreaInterface {
         this.name = "Axrenox";
         this.desc = "Axrenox is a cyberpunk world that featured a copy of the Tyrell Building.";
         this.id = 1;
-        this.imageURL = "https://images-ext-2.discordapp.net/external/uzC3fqPrN_Lfxg_DHSLTwho444IsAedGjHZiInJL87E/%3Fcb%3D20210117095348/https/static.wikia.nocookie.net/readyplayerone/images/a/ad/Emmanuel-shiu-neonoir2.jpg/revision/latest/scale-to-width-down/250";
+        this.imageURL = "https://images-ext-1.discordapp.net/external/dZG0Pvv-tv2I9VaF5nvLObyNaHR93Wve18O2p1O6258/%3Fcb%3D20210117095348/https/static.wikia.nocookie.net/readyplayerone/images/a/ad/Emmanuel-shiu-neonoir2.jpg/revision/latest/scale-to-width-down/1000";
         this.floors = floors;
     }
 
