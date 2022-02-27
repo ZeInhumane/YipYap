@@ -1,18 +1,18 @@
 const buffInterface = require('../interface/buffInterface');
 
 module.exports = async function (player, enemy, buffID) {
-
-    // If no buff, noting
-    if (player.buffs) { return; }
-
+    console.log("it is entering the buff interface");
+    console.log("player" + player);
+    console.log(player.buffs);
+    console.log(player.buffs);
+    console.log("buffID: " + buffID);
     // Create new ultimate class
-    const ultimate = new buffInterface.ultimates[buffID](player, enemy);
+    const buff = new buffInterface.buffs[buffID](player, enemy, buffID);
 
     // Get results
-    const results = ultimate.ultimate(player, enemy);
+    const results = buff.buff(player, enemy);
 
     // Display message
-    const message = ultimate.displayMessage(player, results[0], results[1], results[2]);
-
+    const message = buff.displayMessage(player, results[0], results[1], results[2]);
     return message;
 };

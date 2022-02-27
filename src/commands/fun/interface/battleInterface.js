@@ -48,18 +48,17 @@ module.exports = class Battle {
         this.expired;
         this.round = 1;
         this.turnActions = { player: null, enemy: null };
-        this.player.buffs = {};
-        this.enemy.buffs = {};
 
         // Inactive
         this.playerTurnAction = `You stared at ${this.enemy.name}`;
         this.enemyTurnAction = `${this.enemy.name} stares back at you.`;
-
+        this.playerPreTurnAction = ``;
         // Retrieve player name and stats from discord user
         this.player = { name: user.player.name };
         for (const stat in user.player.baseStats) {
             this.player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
         }
+        this.player.buffs = [];
 
         // Copy original hp to display in battle
         this.originalPlayerHP = this.player.hp;
@@ -125,16 +124,18 @@ module.exports = class Battle {
      * @returns {Boolean}
      */
     async gameLoop(battleMessage, filter) {
-        // Apply buffs
-        for(const buffID in this.player.buffs) { 
-            this.playerTurnAction = await applyBuffs(this.player, this.enemy, buffID);
-         }
-
-        
         while (this.player.hp > 0 && this.enemy.hp > 0 && !this.expired) {
+            // Player pre turn action is set to null if no buffs are applied
+            if (this.player.buffs.length <= 0) { this.playerPreTurnAction = ''; }
+            // Apply buffs before first turn
+            for (const i in this.player.buffs) {
+                this.playerPreTurnAction = await applyBuffs(this.player, this.enemy, this.player.buffs[i].id);
+            }
+
             // awaits Player reaction
             await battleMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                 .then(async i => {
+                    // Get player action
                     const playerAction = i.customId;
                     this.turnActions.player = playerAction;
                     // Checks for who has first turn
@@ -240,7 +241,7 @@ module.exports = class Battle {
                 { name: 'Gold Ticket', value: this.goldMsg, inline: true },
                 { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
-                { name: `Round ${this.round}`, value: this.playerTurnAction },
+                { name: `Round ${this.round}`, value: `${this.playerPreTurnAction} \n ${this.playerTurnAction}` },
                 { name: '​', value: this.enemyTurnAction },
             )
             .setImage(this.locationInfo.LocationImage)

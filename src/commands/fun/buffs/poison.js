@@ -1,4 +1,4 @@
-const BuffInterface = require('../BuffInterface.js');
+const BuffInterface = require('../interface/buffInterface.js');
 
 module.exports = class Poison extends BuffInterface {
 
@@ -8,6 +8,11 @@ module.exports = class Poison extends BuffInterface {
         this.debuff = true;
         this.emoji = "";
         this.statDesc = "poison your enemies for a painful death";
+    }
+
+    displayMessage(player, poisonDamage, duration) {
+        return `Your enemy is **poisoned**! They took ${poisonDamage} in **DAMAGE** and the **poison** 
+        will wear off after ${duration} more round(s)!\n`;
     }
 
     // Override
@@ -22,11 +27,13 @@ module.exports = class Poison extends BuffInterface {
         super.bind(player, duration);
     }
 
-    postTurn(animal) {
-        if (!this.from) return;
-        if (animal.stats.hp[0] <= 0) return;
+    buff(player, enemy) {
+        // Sets poison damage to 20% of enemy's max hp
+        const poisonDamage = Math.floor(enemy.hp * 0.20);
+        enemy.hp -= (poisonDamage);
 
-        super.postTurn(animal);
+        const duration = super.postTurn(player, this.id);
+        return [poisonDamage, duration];
     }
 
 };

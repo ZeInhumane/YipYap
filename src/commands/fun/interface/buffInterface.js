@@ -1,12 +1,12 @@
 const requireDir = require('require-dir');
 
 module.exports = class BuffInterface {
-    constructor(player, enemy, user) {
+    constructor(player, enemy, buffID) {
 
         this.init();
         this.player = player;
         this.enemy = enemy;
-        this.user = user;
+        this.buffID = buffID;
     }
 
     displayMessage() {
@@ -14,23 +14,27 @@ module.exports = class BuffInterface {
     }
 
     /* Bind this buff to a user */
-    bind(user, duration) {
+    bind(player, duration) {
         if (duration) this.duration = duration;
-        user.buffs.push(this);
-        this.justCreated = true;
+        // Push buffs
+        player.buffs.push({ id: this.id, duration: duration });
     }
 
     /* End of turn. Descrease duration by one */
-    postTurn(animal) {
-        this.duration -= 1;
-        if (this.duration <= 0) {
-            for (let i = 0; i < animal.buffs.length; i++) {
-                if (animal.buffs[i].id == this.id) {
-                    animal.buffs[i].markedForDeath = true;
+    postTurn(player, id) {
+        let duration;
+        // Decreases duration, if duration is 0, remove buff
+        player.buffs.find((o, i) => {
+            if (o.id === id) {
+                duration = o.duration - 1;
+                player.buffs[i] = { id: id, duration: duration };
+                if (duration <= 0) {
+                    player.buffs.splice(i, 1);
                 }
+                return true;
             }
-        }
-        if (this.justCreated) this.justCreated = false;
+        });
+        return duration;
     }
 
     alterStats() {
@@ -45,7 +49,9 @@ module.exports = class BuffInterface {
 
 const buffDir = requireDir('./../buffs');
 const buffs = {};
+
 for (const key in buffDir) {
+    console.log(key);
     const buff = buffDir[key];
     buffs[buff.getID] = buff;
 }
