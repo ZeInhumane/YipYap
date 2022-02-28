@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const useUltimate = require('../utils/useUltimate.js');
+const applyBuffs = require('../utils/buffUtil.js');
 
 const ultimateEmote = ":Ultimate:822042890955128872";
 const emptyUltimateEmote = "<:blank:829270386986319882>";
@@ -42,7 +43,7 @@ module.exports = class Battle {
 
         // Set location info
         this.locationInfo = locationInfo;
-
+        console.log(locationInfo);
         // Game states
         this.expired;
         this.round = 1;
@@ -51,16 +52,21 @@ module.exports = class Battle {
         // Inactive
         this.playerTurnAction = `You stared at ${this.enemy.name}`;
         this.enemyTurnAction = `${this.enemy.name} stares back at you.`;
-
+        this.playerPreTurnAction = ``;
         // Retrieve player name and stats from discord user
         this.player = { name: user.player.name };
         for (const stat in user.player.baseStats) {
             this.player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
+            this.player[`${stat}Max`] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
         }
+        this.player.buffs = [];
 
         // Copy original hp to display in battle
         this.originalPlayerHP = this.player.hp;
         this.originalEnemyHP = this.enemy.hp;
+
+        // Copy original stats
+        this.player.originalPlayerStats = this.player;
 
         // Reset ultimate
         this.resetUltimate(this.enemy);
@@ -87,8 +93,9 @@ module.exports = class Battle {
                 { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
             )
-            .setImage(this.locationInfo.LocationImage)
-            .setFooter({ text: `${this.locationInfo.Description}` });
+            .setImage(this.locationInfo.imageURL)
+            .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` });
+
 
         // Create and send battle message with buttons
         const battleMessage = await message.channel.send({ embeds: [battleEmbed], components: [row] });
@@ -120,12 +127,19 @@ module.exports = class Battle {
      */
     async gameLoop(battleMessage, filter) {
         while (this.player.hp > 0 && this.enemy.hp > 0 && !this.expired) {
+            // Player pre turn action is set to null if no buffs are applied
+            if (this.player.buffs.length <= 0) { this.playerPreTurnAction = ''; }
+            // Apply buffs before first turn
+            for (const i in this.player.buffs) {
+                this.playerPreTurnAction = await applyBuffs(this.player, this.enemy, this.player.buffs[i].id);
+            }
+
             // awaits Player reaction
             await battleMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
                 .then(async i => {
+                    // Get player action
                     const playerAction = i.customId;
                     this.turnActions.player = playerAction;
-
                     // Checks for who has first turn
                     if (playerIsFirst(this.player, this.enemy)) {
                         await this.playerTurn(playerAction);
@@ -191,10 +205,6 @@ module.exports = class Battle {
                 this.playerTurnAction = "You shield yourself, it works.";
                 return;
             } else if (action == "ultimate") {
-
-                // /////////
-                // Broken //
-                // /////////
                 if (this.player.ultimate == 100) {
                     // Reset ultimate
                     this.resetUltimate(this.player);
@@ -233,12 +243,11 @@ module.exports = class Battle {
                 { name: 'Gold Ticket', value: this.goldMsg, inline: true },
                 { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
-                { name: `Round ${this.round}`, value: this.playerTurnAction },
+                { name: `Round ${this.round}`, value: `${this.playerPreTurnAction} \n ${this.playerTurnAction}` },
                 { name: '​', value: this.enemyTurnAction },
             )
-            .setImage(this.locationInfo.LocationImage)
-            .setFooter({ text: `${this.locationInfo.Description}` });
-        return updatedBattleEmbed;
+            .setImage(this.locationInfo.imageURL)
+            .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` }); return updatedBattleEmbed;
     }
 
     /**

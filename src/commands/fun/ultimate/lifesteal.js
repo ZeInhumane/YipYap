@@ -4,12 +4,13 @@ module.exports = class lifesteal extends ultimateBase {
         super(player, enemy, user);
 
         this.name = 'Lifesteal';
-        this.id = 3;
+        this.id = 4;
     }
 
     displayMessage(player, damageTaken, calculateLifesteal) {
-        return player.name + '\'s turn!\n' + player.name + ' uses their **ULTIMATE** and does ' +
-            +damageTaken + ' **Damage** with lifesteal while **Healing** for ' + calculateLifesteal + ' **Health**!';
+        return `${player.name}'s turn!\n ${player.name} uses their **ULTIMATE** and does ${damageTaken} 
+        **Damage** with lifesteal while **Healing** for ${calculateLifesteal} **Health**!`;
+
     }
 
     ultimate(player, enemy) {

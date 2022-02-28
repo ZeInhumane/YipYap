@@ -10,8 +10,6 @@ module.exports = async (client, guild) => {
     });
 
     guild.save()
-        .then(result => console.log(result))
+        .then(result => console.log(`Joined a new server: ${result._doc.guildName} (${result._doc.guildID})`))
         .catch(err => console.error(err));
-
-    console.log('I have joined a new server!');
 };
