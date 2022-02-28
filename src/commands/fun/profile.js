@@ -5,6 +5,7 @@ const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
 
+const AreaInterface = require('../areas/AreaInterface');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -18,7 +19,6 @@ module.exports = {
                 const prefix = await findPrefix(message.guild.id);
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
             } else {
-                const locationInfo = await botLevel.findOne({ 'Location': user.location });
                 // exp needed for each level
                 const next_lvl = Math.floor(user.level * (user.level / 10 * 15));
                 const to_upgrade = next_lvl - user.exp;
@@ -26,6 +26,10 @@ module.exports = {
                 let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
+
+                const Area = getArea(user.location.area);
+
+                console.log(Area.getName);
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
@@ -41,8 +45,8 @@ module.exports = {
                     .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
                     .addField('Experience to next level: ', ` ${to_upgrade}`, true)
                     .addField('Total Available Special Points: ', ` ${user.sp}`, true)
-                    .addField(`Location Name: \n${locationInfo._doc.LocationName}`, " \u200b", true)
-                    .setImage(locationInfo._doc.LocationImage);
+                    .addField(`Location Name: \n${Area.getName} | ${user.location.area} - ${user.location.floor}`, " \u200b", true)
+                    .setImage(Area.getImageURL);
 
                 // Finds all equipped items
                 const userItemsArr = Object.keys(user.inv);
@@ -72,3 +76,10 @@ module.exports = {
         }
     },
 };
+function getArea(id) {
+    for (const [, areaClass] of Object.entries(AreaInterface.areas)) {
+        if (areaClass.getID === id) {
+            return areaClass;
+        }
+    }
+}

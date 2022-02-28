@@ -2,7 +2,7 @@ module.exports = {
     execute(message, winner, loser) {
         // const Discord = require('../discord.js');
         const User = require('../../models/user');
-
+        let lvl_diff;
 
         // level diff to calculate exp multiplier
         if (winner.level > loser.level) {

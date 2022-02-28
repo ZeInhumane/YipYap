@@ -58,6 +58,7 @@ module.exports = {
         }
 
         user.location.floor = floorToAccess;
+        user.markModified('location');
         user.save()
             .then(result => console.log(`Set floor for ${result._doc.userID} to ${result._doc.location.floor}`))
             .catch(err => console.error(err));

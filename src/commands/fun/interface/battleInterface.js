@@ -43,7 +43,7 @@ module.exports = class Battle {
 
         // Set location info
         this.locationInfo = locationInfo;
-
+        console.log(locationInfo);
         // Game states
         this.expired;
         this.round = 1;
@@ -94,7 +94,8 @@ module.exports = class Battle {
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
             )
             .setImage(this.locationInfo.imageURL)
-            .setFooter({ text: `${this.locationInfo.desc}` });
+            .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` });
+
 
         // Create and send battle message with buttons
         const battleMessage = await message.channel.send({ embeds: [battleEmbed], components: [row] });
@@ -246,8 +247,7 @@ module.exports = class Battle {
                 { name: '​', value: this.enemyTurnAction },
             )
             .setImage(this.locationInfo.imageURL)
-            .setFooter({ text: `${this.locationInfo.desc}` });
-        return updatedBattleEmbed;
+            .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` }); return updatedBattleEmbed;
     }
 
     /**
