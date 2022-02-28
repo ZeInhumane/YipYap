@@ -6,7 +6,7 @@ module.exports = {
     syntax: "{floor to access}",
     cooldown: 10,
     aliases: ['fl'],
-    category: "Economy",
+    category: "areas",
     async execute({ message, args, user, prefix }) {
 
         const area = AreaInterface.areas[user.location['area']];
