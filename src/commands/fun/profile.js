@@ -1,6 +1,5 @@
 const User = require('../../models/user');
 const Discord = require('discord.js');
-const botLevel = require('../../models/botLevel');
 const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
