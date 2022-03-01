@@ -18,7 +18,6 @@ module.exports = async function (itemName, itemTypes = []) {
     reg += `\\b.*?$`;
     const items = await Items.find({ itemName: { '$regex': reg, $options: 'i' } }, { _id: 0 }).exec();
     let item;
-    console.log(items);
     if (items.length == 0) {
         return [];
     }

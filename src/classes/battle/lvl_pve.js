@@ -4,11 +4,11 @@ module.exports = {
         const User = require('../../models/user');
         const is_lvlup = require('./is_lvlup');
         // level diff to calculate exp multiplier
-
+        let lvl_diff;
         if (winner.level > loser.level) {
-            const lvl_diff = winner.level - loser.level;
+            lvl_diff = winner.level - loser.level;
         } else {
-            const lvl_diff = loser.level - winner.level;
+            lvl_diff = loser.level - winner.level;
         }
 
         // calculating actual exp characters get
