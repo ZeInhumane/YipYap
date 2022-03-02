@@ -11,8 +11,7 @@ module.exports = {
     aliases: ['b'],
     category: "Fun",
     async execute({ message, user }) {
-
-        const area = new AreaInterface.areas[user.location['area']];
+        const area = new AreaInterface.areas[user.location['area'] || 1];
         area.selectFloor(user.location['floor'] || 1);
 
         // Get effects messages to display in embed later

@@ -1,5 +1,5 @@
-const ultimateBase = require('../interface/ultimateBase');
-module.exports = class healing extends ultimateBase {
+const ultimateInterface = require('../interface/ultimateInterface');
+module.exports = class healing extends ultimateInterface {
     constructor(player, enemy, user, originalStats) {
         super(player, enemy, user, originalStats);
 

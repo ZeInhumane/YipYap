@@ -1,5 +1,5 @@
-const ultimateBase = require('../interface/ultimateBase');
-module.exports = class debuff extends ultimateBase {
+const ultimateInterface = require('../interface/ultimateInterface');
+module.exports = class debuff extends ultimateInterface {
     constructor(player, enemy, user) {
         super(player, enemy, user);
 

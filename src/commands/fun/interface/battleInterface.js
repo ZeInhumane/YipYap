@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const useUltimate = require('../utils/useUltimate.js');
+const useUltimate = require('../utils/ultimateUtil.js');
 const applyBuffs = require('../utils/buffUtil.js');
 
 const ultimateEmote = ":Ultimate:822042890955128872";
