@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "npx nodemon"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "express": "^4.17.3",
     "mongoose": "^5.13.9",
     "node-fetch": "^2.6.7",
+    "require-dir": "^1.2.0",
     "sequelize": "^6.16.1"
   },
   "engines": {
