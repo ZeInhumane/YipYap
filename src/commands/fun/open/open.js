@@ -61,7 +61,6 @@
 //         }
 //         return packType, boxType
 //     }
-    
 
 //     displayMessage() {
 //         return "";
