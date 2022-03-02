@@ -1,6 +1,7 @@
 const Listing = require('../../models/listing');
 const Discord = require('discord.js');
 const titleCase = require('../../functions/titleCase');
+const mongoose = require('mongoose');
 
 module.exports = {
   name: "mk",
@@ -20,8 +21,6 @@ module.exports = {
 
     const entriesPerPage = 10;
     let entriesOnCurrentPage = 0;
-
-    let currentColor = '#0099ff';
 
     const row = new Discord.MessageActionRow()
       .addComponents(
@@ -56,6 +55,7 @@ listingNotAvailable = {
 
 confirmation = {
   title: "Confirmation <:MarinHype:948598624156274738>",
+  color: '#0099ff'
 }
 
 confirmationFailed = {
@@ -63,12 +63,17 @@ confirmationFailed = {
   description: "Summoner, how unfortunate! This card has just been sold to another user!",
 }
 
+listingConfirmed = {
+  title: "Success! :white_check_mark:",
+  color: '#0099ff'
+}
+
 confirmationRow = new Discord.MessageActionRow()
   .addComponents(
     new Discord.MessageButton()
       .setCustomId('confirm')
       .setLabel('✅')
-      .setStyle('PRIMARY'),
+      .setStyle('SUCCESS'),
     new Discord.MessageButton()
       .setCustomId('decline')
       .setLabel('❌')
@@ -118,9 +123,9 @@ async function handleSell({ message, args, user }) {
   for (const [name, info] of items) {
     if (name != itemName) continue;
 
-    if (info.quantity < itemQuantity) return message.channel.send('You do not have enough of this item to sell.');
+    if (info.quantity - info.listed < itemQuantity) return message.channel.send('You do not have enough of this item to sell.');
 
-    await confirmationSell({ message, args, user, itemQuantity, itemName, itemPrice, info });
+    await confirmationSell({ message, user, itemQuantity, itemName, itemPrice, info });
 
     return;
   }
@@ -128,16 +133,66 @@ async function handleSell({ message, args, user }) {
   return message.channel.send('You do not have this item to sell.');
 }
 
-async function confirmationSell({ message, args, user, itemQuantity, itemName, itemPrice, info }) {
-  confirmation.description = `Summoner, are you sure you want to place ${itemQuantity === 1 ? '' : `${itemQuantity} of`} your **${info.rarity}** Level __${info.level}__ **${itemName}** [Ascension: ${info.ascension}] in the market for **${itemPrice}** Gold?`;
+async function confirmationSell({ message, user, itemQuantity, itemName, itemPrice, info }) {
 
-  console.log(info)
-  await message.channel.send({ embeds: [confirmation] });
-  // const listing = new Listing({
-  //   user: user.id,
-  //   item: itemName,
-  //   quantity: itemInfo.quantity,
-  //   price: itemInfo.price,
-  // });
-  // await listing.save();
+  if (info.type == 'fruit') {
+    confirmation.description = `Are you sure you want to place ${itemQuantity === 1 ? '' : `**${itemQuantity}** of`} your **${itemQuantity === 1 ? itemName : `${itemName}s`}** on the market for **${itemPrice}** Gold <:cash_24:751784973488357457>${itemQuantity === 1 ? '' : " **each** "}?`;
+  }
+
+  if (info.type == 'equipment') {
+    confirmation.description = `Are you sure you want to place ${itemQuantity === 1 ? '' : `**${itemQuantity}** of`} your **${info.rarity}** Level __${info.level}__ **${itemName}** [Ascension: ${info.ascension}] in the market for **${itemPrice}** Gold <:cash_24:751784973488357457>?`;
+  }
+
+  confirmationMessage = await message.channel.send({ embeds: [confirmation], components: [confirmationRow] });
+
+  const filter = btnInt => {
+    btnInt.deferUpdate();
+    return btnInt.user.id === message.author.id;
+  };
+
+  await confirmationMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+    .then(async int => {
+      const selection = int.customId;
+
+      if (selection === 'decline') {
+        await confirmationMessage.delete();
+        return;
+      }
+
+      if (selection === 'confirm') {
+        await confirmationMessage.delete();
+
+        user.inv[itemName].listed = itemQuantity;
+        user.markModified('inv');
+        await user.save();
+
+        const listing = new Listing({
+          _id: mongoose.Types.ObjectId(),
+          userID: message.author.id,
+          itemCost: itemPrice,
+          itemName,
+          quantity: itemQuantity,
+          item: info,
+          type: info.type
+        });
+
+        await listing.save()
+          .then(result => console.log(`A new listing was created by ${result._doc.userID}`))
+          .catch(err => console.error(err));
+
+        listingConfirmed.description = `You have successfully placed your **${info.rarity}** Level __${info.level}__ **${itemName}** [Ascension: ${info.ascension}] in the market for **${itemPrice}** Gold <:cash_24:751784973488357457>!`;
+
+        await message.channel.send({ embeds: [listingConfirmed] });
+
+        return;
+      }
+
+      return
+    })
+    .catch(async () => {
+      embed = confirmationMessage.embeds[0];
+      embed.color = '#FF0000';
+      confirmationMessage.edit({ embeds: [embed], components: [] });
+      return;
+    });
 }

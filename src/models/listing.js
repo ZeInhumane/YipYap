@@ -4,6 +4,7 @@ const listingSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     userID: String,
     itemCost: Number,
+    itemName: String,
     quantity: Number,
     item: Object,
     type: String,
