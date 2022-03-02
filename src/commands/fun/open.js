@@ -201,8 +201,6 @@ module.exports = {
                     let totalChance = 0;
                     const chestEmote = treasureChestEmotes[packType.toLowerCase()];
 
-
-                    console.log(packType);
                     // change 1 when quantityToOpen is implemented
                     if (user.inv[packType + " Treasure Chest"].quantity < packAmt) {
                         message.channel.send("You do not have a sufficient number of chests to open");
