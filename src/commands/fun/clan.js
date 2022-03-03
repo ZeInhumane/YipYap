@@ -210,10 +210,8 @@ module.exports = {
         // Create a clan command that will allow users to create a clan and join a clan
         if (!args[0]) {
             if (user.clanID) {
-                console.log(user.clanID);
+                let formattedMembers = '';
                 const clanData = await clanUtil(user.clanID);
-                console.log(clanData.clanName);
-                console.log(clanData.clanDescription);
                 const clanEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(`${clanData.clanName}`)
@@ -223,8 +221,16 @@ module.exports = {
                 clanEmbed.addField('Clan Vice Leader: ', `${clanData.clanViceLeader} `);
                 clanEmbed.addField('Clan ID', clanData.clanID);
                 for(const i in clanData.clanMembers) {
-                    clanEmbed.addField(`${i + 1}. ${clanData.clanMembers[i]}`, `a`);
+                    let memberName;
+                    try {
+                        const memberObject = await client.users.fetch(clanData.clanMembers[i]);
+                        memberName = memberObject.tag;
+                    } catch (error) {
+                        memberName = clanData.clanMembers[i];
+                    }
+                    formattedMembers += `${parseInt(i + 1)}. ${memberName}\n`;
                 }
+                clanEmbed.addField(`Clan Members`, `${formattedMembers}`);
                 // clanData.clanMembers.map(x => clanEmbed.addField(`${x}`, `a`));
                 message.channel.send({ embeds: [clanEmbed] });
             }
