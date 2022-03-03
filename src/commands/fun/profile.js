@@ -26,9 +26,8 @@ module.exports = {
                 name = name.split("#", name.length - 4);
                 name = name[0];
 
-                const Area = getArea(user.location.area);
+                const Area = getArea(user.location.area || 1);
 
-                console.log(Area.getName);
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
