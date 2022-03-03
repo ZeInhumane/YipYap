@@ -1,10 +1,13 @@
+// const Discord = require('../discord.js');
+const User = require('../../models/user');
+const Clan = require('../../models/clan');
+const userEffects = require('../../models/userEffects.js');
+// level diff to calculate exp multiplier
+const is_lvlup = require('./is_lvlup');
+const clanExp = require('./clanLvlup');
+
 module.exports = {
     async execute(message, winner, loser, experienceMultiplier) {
-        // const Discord = require('../discord.js');
-        const User = require('../../models/user');
-        const userEffects = require('../../models/userEffects.js');
-        // level diff to calculate exp multiplier
-        const is_lvlup = require('./is_lvlup');
         let lvl_diff = winner.level - loser.level;
         let winner_higher = true;
         if (lvl_diff <= 0) {
@@ -40,22 +43,49 @@ module.exports = {
         // message gain exp
         let embedText = `${winner.player.name} has gained ${exp_gain} exp!`;
 
-        // updating level, current exp and sp to database
-        const update_winner = new is_lvlup(winner_exp, winner.level, winner.player.name);
-        User.findOne({ userID: winner.userID }, (err, user) => {
-            user.exp = update_winner.new_exp();
-            user.level = update_winner.new_lvl();
-            user.sp += update_winner.new_sp();
+        // Updating level for users
+        const updateWinner = new is_lvlup(winner_exp, winner.level, winner.player.name);
+
+        // Clan levels up based on users
+        const updateClan = new clanExp(winner.player.clanID, exp_gain);
+
+        // Update user with new experience
+        await User.findOne({ userID: winner.userID }, (err, user) => {
+            user.exp = updateWinner.new_exp();
+            user.level = updateWinner.new_lvl();
+            user.sp += updateWinner.new_sp();
             user.save()
                 .then(result => console.log("lvl edit", result))
                 .catch(err => console.error(err));
         });
-
+        // Checks if player has a clan
+        if (winner.player.clanID) {
+            await Clan.findOne({ clanID: winner.player.clanID }, (err, clan) => {
+                // Update clan with new experience
+                clan.clanCurrentExp = updateClan.getCurrentExp();
+                clan.clanLevel = updateClan.getClanLevel();
+                clan.sp += updateClan.getClanSP();
+                clan.clanMaxMembers += updateClan.getMaxMembers();
+                // Checks if contribution list includes the user
+                if (`${winner.userID}` in clan.contribution){
+                    clan.contribition.winner.userID += exp_gain;
+                } else {
+                    clan.contribution[winner.userID] = {
+                        userID: winner.userID,
+                        exp: exp_gain,
+                    };
+                }
+                clan.clanTotalEXP += exp_gain;
+                clan.save()
+                    .then(result => console.log("lvl edit", result))
+                    .catch(err => console.error(err));
+            });
+        }
         // congratulate those who level up
-        if (update_winner.level_up()) {
-            embedText += `\n${update_winner.level_up()}`;
-            if (update_winner.new_lvl() % 10 == 0) {
-                embedText += `\n**Congratulations on reaching level ${update_winner.new_lvl()}, you can now move to the next floor using the floor command!**`;
+        if (updateWinner.level_up()) {
+            embedText += `\n${updateWinner.level_up()}`;
+            if (updateWinner.new_lvl() % 10 == 0) {
+                embedText += `\n**Congratulations on reaching level ${updateWinner.new_lvl()}, you can now move to the next floor using the floor command!**`;
             }
         }
         return embedText;

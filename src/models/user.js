@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema({
     location: Object,
     inv: Object,
     rune: Number,
+    clanID: String,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');

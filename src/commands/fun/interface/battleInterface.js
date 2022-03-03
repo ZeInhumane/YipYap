@@ -43,7 +43,7 @@ module.exports = class Battle {
 
         // Set location info
         this.locationInfo = locationInfo;
-        console.log(locationInfo);
+
         // Game states
         this.expired;
         this.round = 1;
