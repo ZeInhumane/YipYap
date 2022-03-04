@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
-
+// get calculate user stats function
+const calculateUserStats = require('../../functions/calculateUserStats');
 const AreaInterface = require('../areas/AreaInterface');
 module.exports = {
     name: "profile",
@@ -27,8 +28,8 @@ module.exports = {
                 name = name[0];
 
                 const Area = getArea(user.location.area);
-
-                console.log(Area.getName);
+                const calculatedStats = await calculateUserStats(user);
+                console.log(calculatedStats);
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
@@ -36,10 +37,10 @@ module.exports = {
                     .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                     .addField("<:cash_24:751784973488357457> Currency  " + user.currency, " \u200b", true)
                     .addField(":level_slider: Level:  " + user.level, " \u200b", true)
-                    .addField(":hearts: Health Point: " + calulateFinalStat("hp", user), " \u200b", true)
-                    .addField(":crossed_swords: Attack: " + calulateFinalStat("attack", user), " \u200b", true)
-                    .addField(":shield: Defense: " + calulateFinalStat("defense", user), " \u200b", true)
-                    .addField("💨 Speed: " + calulateFinalStat("speed", user), " \u200b", true)
+                    .addField(":hearts: Health Point: " + calculatedStats.hp, " \u200b", true)
+                    .addField(":crossed_swords: Attack: " + calculatedStats.attack, " \u200b", true)
+                    .addField(":shield: Defense: " + calculatedStats.defense, " \u200b", true)
+                    .addField("💨 Speed: " + calculatedStats.speed, " \u200b", true)
                     .addField('Level: ', ` ${user.level}`, true)
                     .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
                     .addField('Experience to next level: ', ` ${to_upgrade}`, true)
@@ -70,9 +71,6 @@ module.exports = {
             }
         });
 
-        function calulateFinalStat(statName, user) {
-            return Math.round(user.player.baseStats[statName] * (1 + user.player.additionalStats[statName].multi / 100) + user.player.additionalStats[statName].flat);
-        }
     },
 };
 function getArea(id) {
