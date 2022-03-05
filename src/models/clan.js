@@ -13,8 +13,8 @@ const clanSchema = mongoose.Schema({
     clanMaxMembers: Number,
     stats: Object,
     clanLevel: Number,
-    contribution: Array,
+    contribution: Object,
     sp: Number,
-});
+}, { minimize: false });
 
 module.exports = mongoose.model('clan', clanSchema, 'clans');

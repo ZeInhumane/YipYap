@@ -50,15 +50,12 @@ module.exports = {
                 clan.sp += updateClan.getClanSP();
                 clan.clanMaxMembers += updateClan.getMaxMembers();
                 // Checks if contribution list includes the user
-                if (winner.userID in clan.contribution) {
-                    clan.contribition[winner.userID].exp += expGain;
+                if (clan.contribution[winner.userID]) {
+                    clan.contribution[winner.userID].exp += expGain;
                 } else {
-                    console.log('Adding user to clan contribution list');
-                    console.log(winner.userID);
                     clan.contribution[winner.userID] = {
                         "exp": expGain,
                     };
-                    console.log(clan.contribution);
                 }
                 clan.clanTotalExp += expGain;
                 clan.markModified('contribution');

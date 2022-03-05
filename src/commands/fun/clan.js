@@ -126,7 +126,7 @@ module.exports = {
                                 speed: 1,
                             },
                             clanLevel: 1,
-                            contribution: [],
+                            contribution: {},
                             sp: 0,
                         });
                         if (createClan) {
