@@ -13,7 +13,7 @@ module.exports = {
         const costToCreateClan = 10000;
         const levelToCreateClan = 10;
         const clanName = args[1];
-        let currentColor = "#0099ff";
+        let currentColor = "#ffccff";
         // Buttons
         const row1 = new Discord.MessageActionRow()
             .addComponents(
@@ -46,7 +46,7 @@ module.exports = {
                         userSelection = btnInt.customId;
                         // Parse button pressed
                         parse(userSelection);
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
+                        botEmbedMessage.edit({ embeds: [await updateClanCreation(botEmbedMessage)], components: [] });
                     })
                     .catch(async (error) => {
                         currentColor = '#FF0000';
@@ -55,7 +55,7 @@ module.exports = {
                             userSelection = "cancel";
                             return;
                         }
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
+                        botEmbedMessage.edit({ embeds: [await updateClanCreation(botEmbedMessage)], components: [] });
                     });
             }
 
@@ -65,7 +65,7 @@ module.exports = {
                     case "confirm":
                         // Deactivates buttons and displays confirmation message
                         messageDisplayed = 'Awaiting confirmation...';
-                        await confirm(botEmbedMessage, sp);
+                        await confirmClanCreation(botEmbedMessage, sp);
                         break;
                     case "cancel":
                         // Cancel message
@@ -77,7 +77,7 @@ module.exports = {
         }
 
         // Updates embed message
-        async function createUpdatedMessage(embedMessage) {
+        async function updateClanCreation(embedMessage) {
             const receivedEmbed = embedMessage.embeds[0];
             const updatedBattleEmbed = new Discord.MessageEmbed(receivedEmbed)
                 .setColor(currentColor)
@@ -85,8 +85,8 @@ module.exports = {
             return updatedBattleEmbed;
         }
 
-        // Confirm reset
-        async function confirm(botEmbedMessage) {
+        // Confirm clan creation
+        async function confirmClanCreation(botEmbedMessage) {
             // Creates confirmation message
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
@@ -126,7 +126,7 @@ module.exports = {
                                 speed: 1,
                             },
                             clanLevel: 1,
-                            contribution: {},
+                            contribution: [],
                             sp: 0,
                         });
                         if (createClan) {
@@ -162,7 +162,7 @@ module.exports = {
                             // Delete confirmation message
                             await confirmation.delete();
                             // Remove awaiting confirmation field from original message
-                            const retryEmbed = await createUpdatedMessage(botEmbedMessage);
+                            const retryEmbed = await updateClanCreation(botEmbedMessage);
                             retryEmbed.fields.pop();
                             // Re-add buttons to original message
                             await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
@@ -185,7 +185,7 @@ module.exports = {
                     if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
                         try {
                             // Create retry embed
-                            const retryEmbed = await createUpdatedMessage(botEmbedMessage);
+                            const retryEmbed = await updateClanCreation(botEmbedMessage);
                             retryEmbed.fields.pop();
                             // Send message along with buttons
                             await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row1] });
@@ -212,15 +212,20 @@ module.exports = {
             if (user.clanID) {
                 let formattedMembers = '';
                 const clanData = await clanUtil(user.clanID);
+                const nextLevel = Math.floor(clanData.clanLevel * (clanData.clanLevel / 10 * 750));
                 const clanEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(`${clanData.clanName}`)
-                    .setDescription(`${clanData.clanDescription} a`);
+                    .setDescription(`Clan Description: \n ${clanData.clanDescription} `);
 
                 clanEmbed.addField('Clan Leader: ', `${clanData.clanLeader}`);
                 clanEmbed.addField('Clan Vice Leader: ', `${clanData.clanViceLeader} `);
-                clanEmbed.addField('Clan ID', clanData.clanID);
-                for(const i in clanData.clanMembers) {
+                clanEmbed.addField('Clan ID:', clanData.clanID);
+                clanEmbed.addField('Clan Level:', (clanData.clanLevel).toString());
+                clanEmbed.addField('Clan Current Experience:', `${clanData.clanCurrentExp} / ${nextLevel}`);
+                clanEmbed.addField('Clan Members', `${(clanData.clanMembers).length} / ${clanData.clanMaxMembers}`);
+
+                for (const i in clanData.clanMembers) {
                     let memberName;
                     try {
                         const memberObject = await client.users.fetch(clanData.clanMembers[i]);
@@ -231,6 +236,13 @@ module.exports = {
                     formattedMembers += `${parseInt(i + 1)}. ${memberName}\n`;
                 }
                 clanEmbed.addField(`Clan Members`, `${formattedMembers}`);
+                clanEmbed.addField(`Clan Additional Stats`, " These are stats you gain for being part of this clan. \n");
+                clanEmbed.addField(`<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold} %`, " \u200b  ", true);
+                clanEmbed.addField(`<:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp} %`, " \u200b  ", true);
+                clanEmbed.addField(`:hearts: Health Point: ${clanData.stats.hp} %   `, " \u200b  ", true);
+                clanEmbed.addField(`:crossed_swords: Attack: ${clanData.stats.attack} %   `, " \u200b  ", true);
+                clanEmbed.addField(`:shield: Defense: ${clanData.stats.defense} %   `, " \u200b  ", true);
+                clanEmbed.addField(`💨 Speed: ${clanData.stats.speed} %   `, " \u200b  ", true);
                 // clanData.clanMembers.map(x => clanEmbed.addField(`${x}`, `a`));
                 message.channel.send({ embeds: [clanEmbed] });
             }
@@ -265,7 +277,7 @@ module.exports = {
                         .then(botMessage => {
                             clanCreation(botMessage, clanName);
                         });
-                    }
+                }
                     break;
 
                 default:

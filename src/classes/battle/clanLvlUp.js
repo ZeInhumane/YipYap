@@ -1,25 +1,17 @@
 module.exports = class clanLvlUp {
-    constructor(currentExp, clanLevel, userName, clanName) {
+    constructor(currentExp, clanLevel) {
         let totalLevelGained = 0;
-        let nextLevel = Math.floor(clanLevel * (clanLevel / 10 * 150));
+        let nextLevel = Math.floor(clanLevel * (clanLevel / 10 * 750));
         while (currentExp >= nextLevel) {
             currentExp -= nextLevel;
             totalLevelGained++;
             clanLevel++;
-            nextLevel = Math.floor(clanLevel * (clanLevel / 10 * 150));
+            nextLevel = Math.floor(clanLevel * (clanLevel / 10 * 750));
         }
         this.totalLevelGained = totalLevelGained;
         this.currentExp = currentExp;
         this.nextLevel = nextLevel;
-        this.userName = userName;
         this.clanLevel = clanLevel;
-        this.clanName = clanName;
-    }
-    levelUp() {
-        if (this.totalLevelGained > 0) {
-            return `Congratulations! ${this.clanName} has gained ${this.totalLevelGained} levels!\n${this.clanName} is now at **level ${this.clanLevel}!**\n${this.userName} has gained **${5 * this.totalLevelGained} SP!**`;
-        }
-        return '';
     }
     getCurrentExp() {
         return this.currentExp;

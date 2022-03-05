@@ -2,7 +2,6 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
-const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
 var config = require('../../../config.json');
 
@@ -13,7 +12,7 @@ module.exports = {
     cooldown: 5,
     aliases: [''],
     category: "Admin",
-    async execute({ message, args }) {
+    async execute({ message, args, prefix }) {
         // regex to test for num with decimal (and a plus sign at the start for some reason?)
         //  /^[+]?\d+([.]\d+)?$/g.test(arg)
 
@@ -45,8 +44,6 @@ module.exports = {
         if (config.admins.includes(message.author.id)) {
             User.findOne({ userID: transferTarget.id }, async (err, target) => {
                 if (target == null) {
-                    // Getting the prefix from db
-                    const prefix = await findPrefix(message.guild.id);
                     message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
                     return;
                 }
@@ -64,13 +61,13 @@ module.exports = {
                         itemName = await giveWeaponID(itemName);
                         transferAmount = 1;
                     }
-
+                    console.log(addItem);
                     target.inv[itemName] = addItem;
                     target.inv[itemName].quantity = transferAmount;
                 }
                 target.markModified('inv');
                 target.save()
-                    .then(result => console.log(result))
+                    .then(() => console.log("added item"))
                     .catch(err => console.error(err));
                 message.channel.send(`Successfully added ${transferAmount} ${itemName} to ${transferTarget.tag}. Their current quantity of ${itemName} is ${target.inv[itemName].quantity}`);
             });

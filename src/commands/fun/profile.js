@@ -26,10 +26,10 @@ module.exports = {
                 let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
-
+                // Gets the user's current stats + area
                 const Area = getArea(user.location.area);
-                const calculatedStats = await calculateUserStats(user);
-                console.log(calculatedStats);
+                const calculatedStats = await calculateUserStats(user, false);
+
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)

@@ -9,11 +9,11 @@ const clanSchema = mongoose.Schema({
     clanViceLeader: String,
     clanMembers: Array,
     clanTotalExp: Number,
-    clanCurrentEXP: Number,
+    clanCurrentExp: Number,
     clanMaxMembers: Number,
     stats: Object,
     clanLevel: Number,
-    contribution: Object,
+    contribution: Array,
     sp: Number,
 });
 

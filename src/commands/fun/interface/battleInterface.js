@@ -1,8 +1,7 @@
 const Discord = require('discord.js');
 const useUltimate = require('../utils/ultimateUtil.js');
 const applyBuffs = require('../utils/buffUtil.js');
-// Import calculate user stats
-const calculateUserStats = require('../../../functions/calculateUserStats.js');
+
 const ultimateEmote = ":Ultimate:822042890955128872";
 const emptyUltimateEmote = "<:blank:829270386986319882>";
 const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>",
@@ -26,6 +25,7 @@ const row = new Discord.MessageActionRow()
             .setStyle('DANGER')
             .setEmoji(ultimateEmote),
     );
+
 
 module.exports = class Battle {
     /**
@@ -56,11 +56,7 @@ module.exports = class Battle {
         this.playerPreTurnAction = ``;
         // Retrieve player name and stats from discord user
         this.player = { name: user.player.name };
-        for (const stat in user.player.baseStats) {
-            this.player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
-            this.player[`${stat}Max`] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
-        }
-        console.log(this.player);
+        Object.assign(this.player, user.player);
         this.player.buffs = [];
 
         // Copy original hp to display in battle
