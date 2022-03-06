@@ -61,7 +61,6 @@ module.exports = {
                         itemName = await giveWeaponID(itemName);
                         transferAmount = 1;
                     }
-                    console.log(addItem);
                     target.inv[itemName] = addItem;
                     target.inv[itemName].quantity = transferAmount;
                 }
