@@ -52,16 +52,16 @@ module.exports = {
                     .setStyle('PRIMARY'),
                 new Discord.MessageButton()
                     .setCustomId('up')
-                    .setLabel('⬆️')
+                    .setLabel('⬆️ Up')
                     .setStyle('PRIMARY'),
                 new Discord.MessageButton()
                     .setCustomId('down')
-                    .setLabel('⬇️')
+                    .setLabel('⬇️ Down')
                     .setStyle('PRIMARY'),
                 new Discord.MessageButton()
                     .setCustomId('confirm')
                     .setLabel('Confirm')
-                    .setEmoji('✔️')
+                    .setEmoji('✅')
                     .setStyle('SUCCESS'),
                 new Discord.MessageButton()
                     .setCustomId('cancel')
