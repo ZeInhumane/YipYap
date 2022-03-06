@@ -125,8 +125,9 @@ async function handleBuy({ message, args, user }) {
 async function confirmationBuy(message, buyer, listing) {
 
     const channel = message.channel;
-    const sellerID = listing.userID
-    const listingID = listing.listingID
+    const buyerID = message.author.id;
+    const sellerID = listing.userID;
+    const listingID = listing.listingID;
     confirmation.description = marketUtils.returnMessage({ listing, type: listing.type, messageType: "confirmBuy" });
 
     confirmationMessage = await message.channel.send({ embeds: [confirmation], components: [confirmationRow] });
@@ -153,7 +154,6 @@ async function confirmationBuy(message, buyer, listing) {
                     // Delete listing
                     await Listing.deleteOne({ listingID })
                     console.log(`Deleted listing ${listingID}`);
-
 
                     // Update buyer currency
                     tx = listing.itemCost * listing.quantity;
@@ -220,9 +220,12 @@ async function handleSell({ message, args, user }) {
         itemPrice: parseInt(args[args.length - 1])
     } : {
         itemQuantity: 1,
-        itemName: args.slice(0, args.length - 1).join(' '),
+        itemName: args.slice(0, args.length > 1 ? args.length - 1 : 1).join(' '),
         itemPrice: parseInt(args[args.length - 1])
     };
+
+    console.log(args[0], args[1], args[2]);
+    console.log(itemQuantity, itemName, itemPrice);
 
     if (!itemName) return message.channel.send('Please enter a valid item name.');
     itemName = titleCase(itemName);
