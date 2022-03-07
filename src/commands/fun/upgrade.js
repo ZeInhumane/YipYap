@@ -120,7 +120,7 @@ module.exports = {
                     case "confirm":
                         // Deactivates buttons and displays confirmation message
                         messageDisplayed = 'Awaiting confirmation...';
-                        await confirm(user, botEmbedMessage);
+                        await confirm(user, botEmbedMessage, sp);
                         break;
                     case "cancel":
                         // Cancel message
@@ -208,7 +208,6 @@ module.exports = {
                     userSelection = btnInt.customId;
                     // If user selected confirm, reset stats, give sp
                     if (userSelection == 'confirm') {
-                        console.log(user);
                         user.markModified('player');
                         user.save()
                             .then(() => console.log("reset"))

@@ -370,8 +370,7 @@ module.exports = {
                 .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
                 .setDescription('Upgrade your clan with SP!')
                 .addFields(
-                    { name: `Current Clan Level :level_slider: ${clanData.clanLevel}`, value: "\u200b" },
-                    { name: `Remaining SP:  ${clanData.sp}`, value: "\u200b" },
+                    { name: `Current Clan Level :level_slider: ${clanData.clanLevel}`, value: `Special Points Remaining ${spSpent} / ${clanData.sp}` },
                     { name: `Current Statistics for ${clanData.clanName} clan!`, value: "\u200b" },
                     { name: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}%:`, value: `Assigned SP: ${goldSp}`, inline: true },
                     { name: `<:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%:`, value: `Assigned SP: ${expSp}`, inline: true },
@@ -381,7 +380,7 @@ module.exports = {
                     { name: `:dash: Speed ${clanData.stats.speed}%:`, value: `Assigned SP: ${speedSp}`, inline: true },
                     { name: `Update: `, value: `${messageDisplayed}`, inline: true },
                 )
-                .setFooter({ text: `Spent SP : ${spSpent}` });
+                // .setFooter({ text: `Spent SP : ${spSpent}` });
             return spEmbed;
         }
 
@@ -571,8 +570,7 @@ module.exports = {
                             .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
                             .setDescription('Upgrade your clan with SP!')
                             .addFields(
-                                { name: `Current Clan Level :level_slider: ${clanData.clanLevel}`, value: "\u200b" },
-                                { name: `Remaining SP:  ${clanData.sp}`, value: "\u200b" },
+                                { name: `Current Clan Level :level_slider: :${clanData.clanLevel}`, value: `Special Points Remaining :${spSpent} / ${clanData.sp}` },
                                 { name: `Current Statistics for ${clanData.clanName} clan!`, value: "\u200b" },
                                 { name: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}%:`, value: `Assigned SP: ${goldSp}`, inline: true },
                                 { name: `<:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%:`, value: `Assigned SP: ${expSp}`, inline: true },
@@ -580,8 +578,8 @@ module.exports = {
                                 { name: `:crossed_swords: Attack ${clanData.stats.attack}%:`, value: `Assigned SP: ${attackSp}`, inline: true },
                                 { name: `:shield: Defense ${clanData.stats.defense}%:`, value: `Assigned SP: ${defenseSp}`, inline: true },
                                 { name: `:dash: Speed ${clanData.stats.speed}%:`, value: `Assigned SP: ${speedSp}`, inline: true },
-                            )
-                            .setFooter({ text: `Spent SP : ${spSpent}` });
+                            );
+                            // .setFooter({ text: `Spent SP : ${spSpent}` });
 
                         message.channel.send({ embeds: [spEmbed], components: [row1, row2] })
                             .then(botMessage => {
