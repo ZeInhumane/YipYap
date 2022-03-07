@@ -493,7 +493,7 @@ module.exports = {
         }
 
         // Shows all invited users of clan
-        async function page(clanData, botEmbedMessage) {
+        async function invitePages(clanData, botEmbedMessage) {
             async function createUpdatedInvite() {
                 let i = 0;
                 let counter = 0;
@@ -559,7 +559,6 @@ module.exports = {
                 return;
             }
         }
-        // if (!user.clan) { return message.channel.send(`You do not have a clan, join one now!`); }
         // Create a clan command that will allow users to create a clan and join a clan
         if (!args[0]) {
             if (user.clanID) {
@@ -736,7 +735,7 @@ module.exports = {
 
                             message.channel.send({ embeds: [invitedEmbed], components: [row4] })
                                 .then(botMessage => {
-                                    page(clanData, botMessage);
+                                    invitePages(clanData, botMessage);
                                 });
                         }
                     });
@@ -779,7 +778,6 @@ module.exports = {
                     });
                 }
                     break;
-
 
                 default:
                     return message.channel.send(`You do not have a clan, join one now!`);
