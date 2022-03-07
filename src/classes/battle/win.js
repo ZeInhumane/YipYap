@@ -15,6 +15,7 @@ module.exports = {
 
         // Lets the money earned be multiplied by gold
         const moneyEarned = Math.floor(loser.level * floor.multipliers.GoldMultiplier);
+        const jerichoInfo = floor.rewards.jericho;
         const lootboxInfo = floor.rewards.lootbox;
         let goldMulti = 1;
 
@@ -28,6 +29,12 @@ module.exports = {
         const embedText = await lvl_edit.execute(message, winner, loser, experienceMultiplier);
 
         const drops = [];
+
+        // get jerichos from winning battles
+        if (Math.random() < jerichoInfo.dropChance) {
+            const quantityDropped = Math.floor(Math.random() * jerichoInfo.maxQuantity + jerichoInfo.minQuantity);
+            drops.push(['Jericho Jehammad', quantityDropped, jerichoInfo.emote]);
+        }
 
         // Math.floor(Math.random() * 1 + 1) == 1  //for 100% chance when testing
         if (Math.random() < 0.2) {
