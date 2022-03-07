@@ -13,4 +13,4 @@ const listingSchema = mongoose.Schema({
 });
 
 listingSchema.plugin(AutoIncrement, { id: 'order_seq', inc_field: 'listingID' });
-module.exports = mongoose.model('Listing', listingSchema, 'listing');
+module.exports = mongoose.model('Listing', listingSchema, 'listings');

@@ -3,7 +3,6 @@ const titleCase = require('../../functions/titleCase');
 const Discord = require('discord.js');
 const findPartialItem = require('../../functions/findPartialItem');
 const marketUtils = require('./utils/marketUtils');
-const mongoose = require('mongoose');
 
 module.exports = {
     name: "market",
@@ -14,9 +13,9 @@ module.exports = {
     cooldown: 5,
     async execute({ message, args }) {
 
-        let filters = await parseArguments(args);
+        const filters = await parseArguments(args);
 
-        let { names, rarities, types, ascensions } = await parseFilters(filters);
+        const { names, rarities, types, ascensions } = await parseFilters(filters);
 
         let listings = await Listing.find({}).sort({ itemCost: 1 });
         listings = listings.filter(listing => {
@@ -43,7 +42,7 @@ module.exports = {
             if (!ascensions.has(listing.item.ascension)) return false;
 
             return true;
-        })
+        });
 
         let currentPage = 1;
         const itemsPerPage = 10;
@@ -61,7 +60,7 @@ module.exports = {
 
         marketListing.color = '#0099ff';
 
-        listMessage = await message.channel.send({ embeds: [marketListing], components: [row] })
+        const listMessage = await message.channel.send({ embeds: [marketListing], components: [row] });
 
         const filter = btnInt => {
             btnInt.deferUpdate();
@@ -95,7 +94,7 @@ module.exports = {
                     })
                         .join('\n\n');
 
-                    let itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+                    itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
 
                     marketListing.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
@@ -130,15 +129,15 @@ const row = new Discord.MessageActionRow()
             .setStyle('DANGER'),
     );
 
-marketListing = {
+const marketListing = {
     title: "Global Market :shopping_cart:",
     description: "All the cards listed in the Global Market that matches your requirements are shown below!\n\n",
-    author: true
-}
+    author: true,
+};
 
 async function parseArguments(args) {
 
-    let filters = {};
+    const filters = {};
     let currentKey = "";
     // Rarity (r), Type (t), Name (n), Ascension (a)
     for (var i = 0, l = args.length; i < l; i++) {
@@ -160,10 +159,10 @@ async function parseArguments(args) {
 
 async function parseFilters(filters) {
 
-    let names = await parseNames(filters.n);
+    const names = await parseNames(filters.n);
 
     let rarities, types, ascensions = new Set();
-    for (let [key, value] of Object.entries(filters)) {
+    for (const [key, value] of Object.entries(filters)) {
         if (key === "r") {
             filters[key] = value.split(",").forEach(rarity => {
                 rarity = rarity.trim().toLowerCase();
@@ -185,7 +184,7 @@ async function parseFilters(filters) {
                     return;
                 }
                 rarity.add(rarity);
-            })
+            });
         } else if (key === "t") {
             filters[key] = value.split(",").forEach(type => {
                 type = type.trim().toLowerCase();
@@ -203,7 +202,7 @@ async function parseFilters(filters) {
                     return;
                 }
                 type.add(type);
-            })
+            });
         } else if (key === "a") {
             filters[key] = value.split(",").forEach(ascension => {
                 ascension = parseInt(ascension.trim());
@@ -220,17 +219,17 @@ async function parseFilters(filters) {
 }
 
 async function parseNames(nameFilterOptions) {
-    let names = new Set();
+    const names = new Set();
     if (nameFilterOptions) {
         nameFilterOptions = nameFilterOptions.toLowerCase().split(",");
         await Promise.all(nameFilterOptions.map(async (name) => {
-            let items = await findPartialItem(titleCase(name.trim()));
+            const items = await findPartialItem(titleCase(name.trim()));
             if (items.length == 1) {
                 names.add(items[0].itemName);
             } else if (items.length > 1) {
                 for (const item of items) {
-                    names.add(item)
-                };
+                    names.add(item);
+                }
             }
         }));
 

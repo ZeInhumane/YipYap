@@ -11,10 +11,15 @@ module.exports = {
     cooldown: 5,
     async execute({ client, message, args, user }) {
 
-        const listingsCollection = client.mongoose.db("YipYap").collection("listing");
+        console.log('lmao');
 
-        console.log(listingsCollection);
-        console.log(test.strings.map(string => string.toString()).join(""));
+        await client.mongoUtils.client.connect();
+
+        const usersCollection = await client.mongoUtils.getCollection("users");
+
+        console.log(await usersCollection.findOne({ userID: message.author.id }));
+
+        await client.mongoUtils.client.close();
     },
 };
 
