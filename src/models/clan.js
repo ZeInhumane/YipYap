@@ -8,6 +8,8 @@ const clanSchema = mongoose.Schema({
     clanLeader: String,
     clanViceLeader: String,
     clanMembers: Array,
+    clanInvite: Array,
+    clanBan: Array,
     clanTotalExp: Number,
     clanCurrentExp: Number,
     clanMaxMembers: Number,
