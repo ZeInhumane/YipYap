@@ -23,13 +23,13 @@ module.exports = {
                 message.channel.send("This starter pack is for newbies, dont take their stuff u pig!");
                 return;
             }
-            const uncommonWeapon = ['Long Sword', 'Heavy Sword', 'Axe', 'Bow', 'Staff']
-            let weaponName = uncommonWeapon[Math.floor(Math.random()*uncommonWeapon.length)]
+            const uncommonWeapon = ['Long Sword', 'Heavy Sword', 'Axe', 'Bow', 'Staff'];
+            let weaponName = uncommonWeapon[Math.floor(Math.random() * uncommonWeapon.length)];
             const newbie = user.player.name;
             user.currency += 20;
             user.inv["Common Treasure Chest"] = await findItem("Common Treasure Chest");
             user.inv["Common Treasure Chest"].quantity = 5;
-            let weapon = await makeEquipment(weaponName);
+            const weapon = await makeEquipment(weaponName);
             weaponName = await giveWeaponID(weaponName);
             user.inv[weaponName] = weapon;
             user.markModified('inv');
