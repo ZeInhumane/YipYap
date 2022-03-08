@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 const findItem = require('../../functions/findItem.js');
+const giveWeaponID = require('../../functions/giveWeaponID.js');
+const makeEquipment = require('../../functions/makeEquipment');
 module.exports = {
     async execute(message, winner, loser, location) {
         const User = require('../../models/user.js');
@@ -16,6 +18,7 @@ module.exports = {
         // Lets the money earned be multiplied by gold
         const moneyEarned = Math.floor(loser.level * floor.multipliers.GoldMultiplier);
         const jerichoInfo = floor.rewards.jericho;
+        const areaEquipmentInfo = floor.rewards.equipment;
         const lootboxInfo = floor.rewards.lootbox;
         let goldMulti = 1;
 
@@ -35,6 +38,7 @@ module.exports = {
             const quantityDropped = Math.floor(Math.random() * jerichoInfo.maxQuantity + jerichoInfo.minQuantity);
             drops.push(['Jericho Jehammad', quantityDropped, jerichoInfo.emote]);
         }
+
 
         // Math.floor(Math.random() * 1 + 1) == 1  //for 100% chance when testing
         if (Math.random() < 0.2) {
@@ -65,6 +69,31 @@ module.exports = {
                 }
                 winEmbed.addField(`${winner.player.name} defeated ${(loser.name || loser.player.name)}!`,
                     `${winner.player.name} earned ${moneyEarned * goldMulti} <:cash_24:751784973488357457>\n${embedText}`);
+
+                // get area specific equipment
+                if (Math.random() < areaEquipmentInfo.dropChance) {
+                    const dropInfo = Object.values(areaEquipmentInfo).slice(1);
+                    console.log(dropInfo);
+                    const dropNames = Object.keys(areaEquipmentInfo).slice(1);
+                    console.log(dropNames);
+                    let totalChance = 0;
+                    for (let i = 0; i < dropInfo.length; i++) {
+                        totalChance += dropInfo[i].dropChance;
+                    }
+                    while (drops.length == 0) {
+                        for (let i = 0; i < dropNames.length; i++) {
+                            const rng = Math.random();
+                            if (rng <= dropInfo[i].dropChance / totalChance) {
+                                const index = Math.floor(Math.random() * dropInfo.drops.length);
+                                let equipName = dropInfo.drops[index];
+                                const equipment = await makeEquipment(equipName);
+                                equipName = await giveWeaponID(equipName);
+                                user.inv[equipName] = equipment;
+                                winEmbed.addField(`${winner.player.name} found a ${equipment.emote} ${equipment.name}!`, "\u200b");
+                            }
+                        }
+                    }
+                }
 
                 if (drops.length != 0) {
                     for (let i = 0; i < drops.length; i++) {
