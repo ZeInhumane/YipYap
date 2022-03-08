@@ -1347,10 +1347,16 @@ module.exports = {
                         .setTitle(`Clan Help Embed`)
                         .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
                         .addFields(
-                            { name: `Create clan`, value: `**Correct usage:* ${prefix}clan create \`{clanName}\` \n Creates a new clan, requiring 10,000 currency and level 10, \n you are not allowed to be in more than 1 clan.` },
-                            { name: `Current Statistics for player`, value: "\u200b" },
+                            { name: `Create Clan`, value: `__Correct Usage__: ${prefix}clan create \`{clanName}\` \n Creates a new clan, requiring 10,000 currency and level 10, \n you are not allowed to be in more than 1 clan.` },
+                            { name: `Upgrade Clan`, value: `__Correct Usage__: ${prefix}clan upgrade \n Upgrades the clan, only Vice Leaders and Clan Leaders can use this command. Each upgrade increases the stats of the clan.` },
+                            { name: `Join Clan`, value: `__Correct Usage__: ${prefix}join \`{clanID}\` \n Requests to join a clan, the clan leaders can see the invitation by doing ${prefix}clan invite` },
+                            { name: `Invite User`, value: `__Correct Usage__: ${prefix}invite \`{userID}\` \n Accepts the invite from a user, if no arguments are provided, lists all the requests to join the clan` },
+                            { name: `Leave Clan`, value: `__Correct Usage__: ${prefix}leave \n Leaves your current clan, what else is there more to say? thenceforth thy shall not be passive aggressive when coding for 12 hours straight..` },
+                            { name: `Kick User`, value: `__Correct Usage__: ${prefix}kick \`{userID}\` \n Kicks the user from the clan. One must have the right permissions to use this command, and be a Vice Leader or Leader.` },
+                            { name: `Promote User`, value: `__Correct Usage__: ${prefix}promote \`{userID}\` \n Promotes said user to a higher rank, if the user is a Vice Leader, they would own the clan and be the leader. Only Leaders can use this command.` },
+                            { name: `Demote User`, value: `__Correct Usage__: ${prefix}demote \`{userID}\` \n Demotes a Vice Leader to a clam member. Only Leaders are allowed to use this command.` },
+                            { name: `Disband Clan`, value: `__Correct Usage__: ${prefix}disband \n Disbands the clan, only leaders can use this command.` },
                         );
-
                     return message.channel.send({ embeds: [clanHelpEmbed] });
                 }
             }
