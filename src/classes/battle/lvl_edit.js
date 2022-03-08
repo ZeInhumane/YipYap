@@ -42,7 +42,8 @@ module.exports = {
             await Clan.findOne({ clanID: winner.clanID }, (err, clan) => {
                 if (clan) {
                     expGain = Math.floor(expGain * ((100 + clan.stats.exp) / 100));
-                    const winnerExp = winner.exp + expGain * expMulti;
+                    console.log(expGain);
+                    const winnerExp = clan.clanCurrentExp + expGain * expMulti;
                     // Clan levels up based on users
                     const updateClan = new clanExp(winnerExp, clan.clanLevel);
                     // Update clan with new experience

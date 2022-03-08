@@ -1132,7 +1132,7 @@ module.exports = {
                 }
                     break;
                 case 'invite': {
-                    const requestID = args[1];
+                    const requestID = message.mentions.users.first()?.id || args[1];
                     if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
                     clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
                         if (clanData == null) { return message.channel.send(`You do not have a clan!`); }
@@ -1168,7 +1168,7 @@ module.exports = {
                             while (i < totalItems && counter < maxOnPage) {
                                 let memberName;
                                 try {
-                                    const memberObject = await client.users.fetch(clanData.clanMembers[i]);
+                                    const memberObject = await client.users.fetch(clanData.clanInvite[i]);
                                     memberName = memberObject.tag;
                                 } catch (error) {
                                     memberName = "Unable to find member";
