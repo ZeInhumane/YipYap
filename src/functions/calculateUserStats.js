@@ -8,10 +8,12 @@ module.exports = async function calculateUserStats(user, returnWholeUser) {
     if (user.clanID) {
         // Get clan data with Clan ID
         const clanData = await Clan.findOne({ clanID: user.clanID });
-        // Add clan stats to user stats
-        for (const [key, value] of Object.entries(clanData.stats)) {
-            if (calculatedUserStats[key]) {
-                calculatedUserStats[key] = Math.floor(calculatedUserStats[key] * ((value + 100) / 100));
+        if (clanData) {
+            // Add clan stats to user stats
+            for (const [key, value] of Object.entries(clanData.stats)) {
+                if (calculatedUserStats[key]) {
+                    calculatedUserStats[key] = Math.floor(calculatedUserStats[key] * ((value + 100) / 100));
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 // Import clan util
 const clanUtil = require('./utils/clanUtil.js');
 const Clan = require('../../models/clan');
+const User = require('../../models/user');
 const Discord = require('discord.js');
 const giveClanID = require('../../functions/giveClanID');
 const clan = require('../../models/clan');
@@ -112,7 +113,7 @@ module.exports = {
         let userSelection, messageDisplayed;
         // Create Clan
         // Clan prompt
-        async function clanCreation(botEmbedMessage, sp) {
+        async function clanCreation(botEmbedMessage) {
             while (userSelection != "cancel") {
                 // Awaits interaction
                 await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
@@ -140,7 +141,7 @@ module.exports = {
                     case "confirm":
                         // Deactivates buttons and displays confirmation message
                         messageDisplayed = 'Awaiting confirmation...';
-                        await confirmClanCreation(botEmbedMessage, sp);
+                        await confirmClanCreation(botEmbedMessage);
                         break;
                     case "cancel":
                         // Cancel message
@@ -218,7 +219,7 @@ module.exports = {
                         // Send success embed
                         const successEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
                             .setColor('#77DD66')
-                            .setTitle('Stats were reset!')
+                            .setTitle('Clan Created!')
                             .setDescription(`You have successfully created a clan called ${clanName}!`)
                             .setFooter({ text: 'Upgrade your clan now by leveling up!' });
                         successEmbed.fields = [];
@@ -559,12 +560,306 @@ module.exports = {
                 return;
             }
         }
+        // Create Clan
+        // Clan prompt
+        async function clanPromote(botEmbedMessage, clanData, userToPromote) {
+            while (userSelection != "cancel") {
+                // Awaits interaction
+                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                    .then(async btnInt => {
+                        currentColor = '#0099ff';
+                        userSelection = btnInt.customId;
+                        // Parse button pressed
+                        parseClanPromotion(userSelection);
+                        botEmbedMessage.edit({ embeds: [await updateClanPromotion(botEmbedMessage)], components: [] });
+                    })
+                    .catch(async (error) => {
+                        currentColor = '#FF0000';
+                        // If message was deleted, ignore
+                        if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                            userSelection = "cancel";
+                            return;
+                        }
+                        botEmbedMessage.edit({ embeds: [await updateClanPromotion(botEmbedMessage)], components: [] });
+                    });
+            }
+
+            // Parse button pressed
+            async function parseClanPromotion(action) {
+                switch (action) {
+                    case "confirm":
+                        // Deactivates buttons and displays confirmation message
+                        messageDisplayed = 'Awaiting confirmation...';
+                        await confirmClanPromotion(botEmbedMessage, clanData, userToPromote);
+                        break;
+                    case "cancel":
+                        // Cancel message
+                        messageDisplayed = "User was not promoted";
+                        currentColor = '#FF0000';
+                        break;
+                }
+            }
+        }
+
+        // Updates embed message
+        async function updateClanPromotion(embedMessage) {
+            const receivedEmbed = embedMessage.embeds[0];
+            const updatedBattleEmbed = new Discord.MessageEmbed(receivedEmbed)
+                .setColor(currentColor)
+                .addField('Update: ', messageDisplayed);
+            return updatedBattleEmbed;
+        }
+
+        // Confirm clan creation
+        async function confirmClanPromotion(botEmbedMessage, clanData, userToPromote) {
+            // Creates confirmation message
+            const confirmationEmbed = new Discord.MessageEmbed()
+                .setColor(currentColor)
+                .setTitle('Are you sure you would like to proceed?')
+                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setDescription(`Are you sure you want to promote ${clanName}?`)
+                .setFooter({ text: 'Note: This action is irreversible.' });
+
+            const confirmation = await botEmbedMessage.reply({ embeds: [confirmationEmbed], components: [row3], ephemeral: true });
+
+            // Confirmation interaction collector
+            await confirmation.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                .then(async btnInt => {
+                    currentColor = '#0099ff';
+                    userSelection = btnInt.customId;
+                    // If user confirms, create clan
+                    if (userSelection == 'confirm') {
+                        // Get Clan ID from giveClanID.js
+                        if (clanData.clanViceLeader == userToPromote) {
+                            const promotedLeadder = clanData.clanViceLeader;
+                            clanData.clanViceLeader = clanData.clanLeader;
+                            clanData.clanLeader = promotedLeadder;
+                        } else {
+                            clanData.clanViceLeader = userToPromote;
+                        }
+                        clanData.markModified('clanViceLeader');
+                        clanData.save();
+                        // Send success embed
+                        const successEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
+                            .setColor('#77DD66')
+                            .setTitle('Success!')
+                            .setDescription(`You have successfully promoted ${clanName}!`)
+                            .setFooter({ text: `Congratulations to ${clanName}` });
+                        successEmbed.fields = [];
+                        try {
+                            // Delete confirmation message to prevent multiple inputs
+                            await confirmation.delete();
+                            // Edit original message and remove buttons
+                            await botEmbedMessage.edit({ embeds: [successEmbed], components: [] });
+                        } catch (error) {
+                            // If either message was deleted, send success embed anyway since stats have been reset
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                await message.channel.send({ embeds: [successEmbed], components: [] });
+                            }
+                        }
+                        // If user selected cancel, send error embed
+                    } else {
+                        try {
+                            // Delete confirmation message
+                            await confirmation.delete();
+                            // Remove awaiting confirmation field from original message
+                            const retryEmbed = await updateClanDemotion(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Re-add buttons to original message
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row3] });
+                        } catch (error) {
+                            // If original message was deleted
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                const failureEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
+                                    .setColor('#FF0000')
+                                    .setTitle('Promotion failed!')
+                                    .setDescription(`User has not been promoted.`)
+                                    .setFooter({ text: 'Try again later.' });
+                                failureEmbed.fields = [];
+                                await message.channel.send({ embeds: [failureEmbed], components: [] });
+                            }
+                        }
+                    }
+                })
+                .catch(async (error) => {
+                    // If confirmation message was deleted without any inputs, add buttons back to original message
+                    if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                        try {
+                            // Create retry embed
+                            const retryEmbed = await updateClanPromotion(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Send message along with buttons
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row3] });
+                        } catch (err) {
+                            // If original message was deleted too, return
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                return;
+                            }
+                        }
+                        return;
+                    }
+                    // If message timed out
+                    currentColor = '#FF0000';
+                    messageDisplayed = "Confirmation expired";
+                    confirmationEmbed.color = currentColor;
+                    await confirmation.edit({ embeds: [confirmationEmbed], components: [] });
+                });
+        }
+        // Clan prompt
+        async function clanDemote(botEmbedMessage, clanData, userToDemote) {
+            while (userSelection != "cancel") {
+                // Awaits interaction
+                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                    .then(async btnInt => {
+                        currentColor = '#0099ff';
+                        userSelection = btnInt.customId;
+                        // Parse button pressed
+                        parseClanDemotion(userSelection);
+                        botEmbedMessage.edit({ embeds: [await updateClanDemotion(botEmbedMessage)], components: [] });
+                    })
+                    .catch(async (error) => {
+                        currentColor = '#FF0000';
+                        // If message was deleted, ignore
+                        if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                            userSelection = "cancel";
+                            return;
+                        }
+                        botEmbedMessage.edit({ embeds: [await updateClanDemotion(botEmbedMessage)], components: [] });
+                    });
+            }
+
+            // Parse button pressed
+            async function parseClanDemotion(action) {
+                switch (action) {
+                    case "confirm":
+                        // Deactivates buttons and displays confirmation message
+                        messageDisplayed = 'Awaiting confirmation...';
+                        await confirmClanDemotion(botEmbedMessage, clanData, userToDemote);
+                        break;
+                    case "cancel":
+                        // Cancel message
+                        messageDisplayed = "User was not promoted";
+                        currentColor = '#FF0000';
+                        break;
+                }
+            }
+        }
+
+        // Updates embed message
+        async function updateClanDemotion(embedMessage) {
+            const receivedEmbed = embedMessage.embeds[0];
+            const updatedBattleEmbed = new Discord.MessageEmbed(receivedEmbed)
+                .setColor(currentColor)
+                .addField('Update: ', messageDisplayed);
+            return updatedBattleEmbed;
+        }
+
+        // Confirm clan creation
+        async function confirmClanDemotion(botEmbedMessage, clanData, userToDemote) {
+            // Creates confirmation message
+            const confirmationEmbed = new Discord.MessageEmbed()
+                .setColor(currentColor)
+                .setTitle('Are you sure you would like to proceed?')
+                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setDescription(`Are you sure you want to demote ${clanName}?`)
+                .setFooter({ text: 'Note: This action is irreversible.' });
+
+            const confirmation = await botEmbedMessage.reply({ embeds: [confirmationEmbed], components: [row3], ephemeral: true });
+
+            // Confirmation interaction collector
+            await confirmation.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+                .then(async btnInt => {
+                    currentColor = '#0099ff';
+                    userSelection = btnInt.customId;
+                    // If user confirms, create clan
+                    if (userSelection == 'confirm') {
+                        // Get Clan ID from giveClanID.js
+                        if (clanData.clanViceLeader == userToDemote) {
+                            clanData.clanViceLeader = null;
+                        } else {
+                            return message.channel.send("User is not the vice leader of the clan.");
+                        }
+                        clanData.markModified('clanViceLeader');
+                        clanData.save();
+                        // Send success embed
+                        const successEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
+                            .setColor('#77DD66')
+                            .setTitle('Clan Created!')
+                            .setDescription(`You have successfully demoted ${clanName}!`)
+                            .setFooter({ text: `Potato potataaa ${clanName}` });
+                        successEmbed.fields = [];
+                        try {
+                            // Delete confirmation message to prevent multiple inputs
+                            await confirmation.delete();
+                            // Edit original message and remove buttons
+                            await botEmbedMessage.edit({ embeds: [successEmbed], components: [] });
+                        } catch (error) {
+                            // If either message was deleted, send success embed anyway since stats have been reset
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                await message.channel.send({ embeds: [successEmbed], components: [] });
+                            }
+                        }
+                        // If user selected cancel, send error embed
+                    } else {
+                        try {
+                            // Delete confirmation message
+                            await confirmation.delete();
+                            // Remove awaiting confirmation field from original message
+                            const retryEmbed = await updateClanDemotion(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Re-add buttons to original message
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row3] });
+                        } catch (error) {
+                            // If original message was deleted
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                const failureEmbed = new Discord.MessageEmbed(botEmbedMessage.embeds[0])
+                                    .setColor('#FF0000')
+                                    .setTitle('Promotion failed!')
+                                    .setDescription(`User has not been promoted.`)
+                                    .setFooter({ text: 'Try again later.' });
+                                failureEmbed.fields = [];
+                                await message.channel.send({ embeds: [failureEmbed], components: [] });
+                            }
+                        }
+                    }
+                })
+                .catch(async (error) => {
+                    // If confirmation message was deleted without any inputs, add buttons back to original message
+                    if (error.code == 'INTERACTION_COLLECTOR_ERROR') {
+                        try {
+                            // Create retry embed
+                            const retryEmbed = await updateClanDemotion(botEmbedMessage);
+                            retryEmbed.fields.pop();
+                            // Send message along with buttons
+                            await botEmbedMessage.edit({ embeds: [retryEmbed], components: [row3] });
+                        } catch (err) {
+                            // If original message was deleted too, return
+                            if (error.code == Discord.Constants.APIErrors.UNKNOWN_MESSAGE) {
+                                return;
+                            }
+                        }
+                        return;
+                    }
+                    // If message timed out
+                    currentColor = '#FF0000';
+                    messageDisplayed = "Confirmation expired";
+                    confirmationEmbed.color = currentColor;
+                    await confirmation.edit({ embeds: [confirmationEmbed], components: [] });
+                });
+        }
         // Create a clan command that will allow users to create a clan and join a clan
         if (!args[0]) {
             if (user.clanID) {
                 let formattedMembers = '';
                 const clanData = await clanUtil(user.clanID);
+                if (!clanData) { return message.channel.send('Error: Clan not found.'); }
                 const nextLevel = Math.floor(clanData.clanLevel * (clanData.clanLevel / 10 * 750));
+                const goldSp = clanData.stats.gold - 1;
+                const expSp = clanData.stats.exp - 1;
+                const hpSp = clanData.stats.hp - 1;
+                const attackSp = clanData.stats.attack - 1;
+                const defenseSp = clanData.stats.defense - 1;
+                const speedSp = clanData.stats.speed - 1;
                 const clanEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(`${clanData.clanName}`)
@@ -586,17 +881,18 @@ module.exports = {
                     } catch (error) {
                         memberName = clanData.clanMembers[i];
                     }
-                    formattedMembers += `${parseInt(i + 1)}. ${memberName}\n`;
+                    formattedMembers += `${parseInt(i) + 1}. ${memberName}\n`;
                 }
                 clanEmbed.addField(`Clan Members`, `${formattedMembers}`);
                 clanEmbed.addField(`Clan Additional Stats`, " These are stats you gain for being part of this clan. \n");
-                clanEmbed.addField(`<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold} %`, " \u200b  ", true);
-                clanEmbed.addField(`<:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp} %`, " \u200b  ", true);
-                clanEmbed.addField(`:hearts: Health Point: ${clanData.stats.hp} %   `, " \u200b  ", true);
-                clanEmbed.addField(`:crossed_swords: Attack: ${clanData.stats.attack} %   `, " \u200b  ", true);
-                clanEmbed.addField(`:shield: Defense: ${clanData.stats.defense} %   `, " \u200b  ", true);
-                clanEmbed.addField(`💨 Speed: ${clanData.stats.speed} %   `, " \u200b  ", true);
+                clanEmbed.addFields(
+                    {
+                        name: `Current Stats for __${clanData.clanName}__ clan!`, value: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}% **(+${goldSp})** \n <:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%: **(+${expSp})** \n :hearts: Health ${clanData.stats.hp}%: **(+${hpSp})** \n :crossed_swords: Attack ${clanData.stats.attack}%: **(+${attackSp})**  \n :shield: Defense ${clanData.stats.defense}%: **(+${defenseSp})**  \n :dash: Speed ${clanData.stats.speed}%: **(+${speedSp})**`,
+                    },
+                );
                 message.channel.send({ embeds: [clanEmbed] });
+            } else {
+                message.channel.send(`You are not in a clan!`);
             }
         } else {
             switch (args[0]) {
@@ -633,7 +929,7 @@ module.exports = {
                 case "upgrade": {
                     if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
                     clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
-                        if (user.userID == clanData.leader || user.userID == clanData.viceLeader) {
+                        if (user.userID !== clanData.clanLeader && user.userID !== clanData.clanViceLeader) {
                             return message.channel.send(`You do not have the necessary permissions to upgrade this clan's stats!`);
                         }
                         if (clanData.sp < 1) { return message.channel.send(`You do not have enough SP to upgrade your clan!`); }
@@ -652,7 +948,6 @@ module.exports = {
                             .setTitle(`Upgrade Embed`)
                             .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
                             .addFields(
-                                // { name: `Current Clan Level :level_slider: :${clanData.clanLevel}`, value: `Special Points Remaining :${spSpent} / ${clanData.sp}` },
                                 {
                                     name: `Current Stats for __${clanData.clanName}__ clan!`, value: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}% **(+${goldSp})** \n <:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%: **(+${expSp})** \n :hearts: Health ${clanData.stats.hp}%: **(+${hpSp})** \n :crossed_swords: Attack ${clanData.stats.attack}%: **(+${attackSp})**  \n :shield: Defense ${clanData.stats.defense}%: **(+${defenseSp})**  \n :dash: Speed ${clanData.stats.speed}%: **(+${speedSp})**`,
                                 },
@@ -669,7 +964,10 @@ module.exports = {
                 case 'join': {
                     const levelToJoinClan = 10;
                     const clanID = args[1];
-                    if (!user.clanID) {
+                    // Call clan util
+                    const checkClan = await clanUtil(user.userID);
+                    console.log(checkClan);
+                    if (checkClan == null) {
                         // Check if user has enough exp
                         if (user.level < levelToJoinClan) {
                             return message.channel.send(`You do not have enough exp to join a clan! You need to be level 10 to join a clan.`);
@@ -679,9 +977,6 @@ module.exports = {
                         clan.findOne({ clanID: clanID }, async (err, clanData) => {
                             if (!clanData) { return message.channel.send(`That clan does not exist!`); }
                             // Check if user is already in a clan
-                            if (user.clanID) {
-                                return message.channel.send(`You are already in a clan!`);
-                            }
                             // Check if clan is full
                             if (clanData.clanMembers.length >= clanData.maxMembers) {
                                 return message.channel.send(`That clan is full!`);
@@ -701,13 +996,23 @@ module.exports = {
                     const requestID = args[1];
                     if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
                     clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (user.userID !== clanData.clanLeader && user.userID !== clanData.clanViceLeader) {
+                            return message.channel.send(`You do not have the necessary permissions to invite people to your clan!`);
+                        }
                         if (clanData.clanInvite.includes(requestID)) {
                             clanData.clanMembers.push(requestID);
                             clanData.clanInvite.splice(clanData.clanInvite.indexOf(requestID), 1);
                             clanData.markModified('clanMembers');
                             clanData.markModified('clanInvite');
                             clanData.save();
-                            message.channel.send(`You have successfully accepted the clan invite!`);
+                            // Get user data
+                            await User.findOne({ userID: requestID }, async (err, userData) => {
+                                userData.clanID = user.clanID;
+                                userData.markModified('clanID');
+                                userData.save();
+                                message.channel.send(`You have successfully been invited to the clan!`);
+                            });
+                            message.channel.send(`You have successfully accepted **${requestID}** to your clan!`);
                         } else {
                             totalItems = clanData.clanInvite.length;
                             maxPage = Math.floor(totalItems / maxOnPage);
@@ -728,7 +1033,7 @@ module.exports = {
                                 } catch (error) {
                                     memberName = "Unable to find member";
                                 }
-                                invitedEmbed.addField(`Request ID: ${clanData.clanInvite[i]}`, `Tag: ${memberName}`);
+                                invitedEmbed.addField(`${i + 1}. Request ID: ${clanData.clanInvite[i]}`, `Tag: ${memberName}`);
                                 i++;
                                 counter++;
                             }
@@ -744,43 +1049,141 @@ module.exports = {
                 case 'leave': {
                     if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
                     clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
-                        if (user.userID == clanData.leader) {
+                        if (user.userID == clanData.clanLeader) {
                             return message.channel.send(`You cannot leave your clan because you are the leader!`);
                         }
-                        if (user.userID == clanData.viceLeader) {
-                            return message.channel.send(`You cannot leave your clan because you are the vice leader!`);
-                        }
-                    });
-                }
-                    break;
-                case 'kick': {
-                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
-                    if (!args[1]) { return message.channel.send(`Specify a user to kick!`); }
-                    if (!message.mentions.users.first()) { return message.channel.send(`Specify a user to kick!`); }
-                    if (message.mentions.users.first().id == user.userID) { return message.channel.send(`You cannot kick yourself!`); }
-                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
-                        if (user.userID == clanData.leader) {
-                            return message.channel.send(`You cannot kick a user because you are the leader!`);
-                        }
-                        if (message.mentions.users.first().id == clanData.leader) {
-                            return message.channel.send(`You cannot kick the leader!`);
-                        }
-                        if (message.mentions.users.first().id == clanData.viceLeader) {
-                            return message.channel.send(`You cannot kick the vice leader!`);
-                        }
-                        if (clanData.clanMembers.includes(message.mentions.users.first().id)) {
+                        if (clanData.clanMembers.includes(user.userID)) {
                             // Remove user from clan
-                            const index = clanData.clanMembers.indexOf(message.mentions.users.first().id);
+                            const index = clanData.clanMembers.indexOf(user.userID);
                             if (index > -1) {
                                 clanData.clanMembers.splice(index, 1);
+                                if (user.userID == clanData.clanViceLeader) {
+                                    clanData.clanViceLeader = null;
+                                }
+                                clanData.markModified('clanViceLeader');
+                                clanData.markModified('clanMembers');
+                                clanData.save();
+                                // Get user data
+                                await User.findOne({ userID: user.userID }, async (err, userData) => {
+                                    userData.clanID = '';
+                                    userData.markModified('clanID');
+                                    userData.save();
+                                    message.channel.send(`You have successfully been left your clan!`);
+                                });
                             }
                         }
                     });
                 }
                     break;
+                case 'kick': {
+                    const userToKick = message.mentions.users.first()?.id || args[1];
+                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
+                    if (!userToKick) { return message.channel.send(`Specify a user to kick!`); }
+                    if (userToKick == user.userID) { return message.channel.send(`You cannot kick yourself!`); }
 
-                default:
-                    return message.channel.send(`You do not have a clan, join one now!`);
+                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (user.userID !== clanData.clanLeader && user.userID !== clanData.clanViceLeader) {
+                            return message.channel.send(`You cannot kick someone because you are not the leader or vice leader!`);
+                        }
+                        if (userToKick == clanData.clanLeader) {
+                            return message.channel.send(`You cannot kick a user because you are the leader!`);
+                        }
+                        if (userToKick == clanData.clanLeader) {
+                            return message.channel.send(`You cannot kick the leader!`);
+                        }
+                        if (userToKick == clanData.clanViceLeader) {
+                            return message.channel.send(`You cannot kick the vice leader!`);
+                        }
+                        if (clanData.clanMembers.includes(userToKick)) {
+                            // Remove user from clan
+                            const index = clanData.clanMembers.indexOf(userToKick);
+                            if (index > -1) {
+                                clanData.clanMembers.splice(index, 1);
+                                clanData.markModified('clanMembers');
+                                clanData.save();
+                                message.channel.send(`You have successfully kicked **${userToKick}** from your clan!`);
+                                // Get user data
+                                await User.findOne({ userID: userToKick }, async (err, userData) => {
+                                    userData.clanID = '';
+                                    userData.markModified('clanID');
+                                    userData.save();
+                                    message.channel.send(`You have successfully been kicked from your clan!`);
+                                });
+                            }
+                        } else {
+                            message.channel.send(`That user is not in your clan!`);
+                        }
+                    });
+                }
+                    break;
+                case 'promote': {
+                    const userToPromote = message.mentions.users.first()?.id || args[1];
+                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
+                    if (!userToPromote) { return message.channel.send(`Specify a user to promote!`); }
+                    if (userToPromote == user.userID) { return message.channel.send(`You cannot promote yourself!`); }
+                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (user.userID !== clanData.clanLeader) {
+                            return message.channel.send(`You cannot promote someone because you are not the leader!`);
+                        }
+                        if (clanData.clanMembers.includes(userToPromote)) {
+                            // Make reset sp embed
+                            const promoteEmbed = new Discord.MessageEmbed()
+                                .setColor(currentColor)
+                                .setTitle('Promote a user')
+                                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                                .setDescription(`Are you sure you want to promote user ${userToPromote}?`)
+                                .addFields(
+                                    { name: `If you are promoting a vice leader, you would lose ownership of your clan!!`, value: "\u200b" },
+                                );
+                            message.channel.send({ embeds: [promoteEmbed], components: [row3] })
+                                .then(botMessage => {
+                                    clanPromote(botMessage, clanData, userToPromote);
+                                });
+                        }
+                    });
+
+                }
+                    break;
+                case 'demote': {
+                    const userToDemote = message.mentions.users.first()?.id || args[1];
+                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
+                    if (!userToDemote) { return message.channel.send(`Specify a user to demote!`); }
+                    if (userToDemote == user.userID) { return message.channel.send(`You cannot demote yourself!`); }
+                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (user.userID !== clanData.clanLeader) {
+                            return message.channel.send(`You cannot demote someone because you are not the leader!`);
+                        }
+                        if (clanData.clanViceLeader == userToDemote) {
+                            // Make reset sp embed
+                            const promoteEmbed = new Discord.MessageEmbed()
+                                .setColor(currentColor)
+                                .setTitle('Promote a user')
+                                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                                .setDescription(`Are you sure you want to demote user ${userToDemote}?`)
+                                .addFields(
+                                    { name: `If you are demoting a vice leader, they would lose permissions`, value: "\u200b" },
+                                );
+                            message.channel.send({ embeds: [promoteEmbed], components: [row3] })
+                                .then(botMessage => {
+                                    clanDemote(botMessage, clanData, userToDemote);
+                                });
+                        }
+                    });
+                }
+                    break;
+                default: {
+                    // Create sub help command for clans
+                    const clanHelpEmbed = new Discord.MessageEmbed()
+                        .setColor(currentColor)
+                        .setTitle(`Clan Help Embed`)
+                        .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                        .addFields(
+                            { name: `Create clan`, value: `**Correct usage:* ${prefix}clan create \`{clanName}\` \n Creates a new clan, requiring 10,000 currency and level 10, \n you are not allowed to be in more than 1 clan.` },
+                            { name: `Current Statistics for player`, value: "\u200b" },
+                        );
+
+                    return message.channel.send({ embeds: [clanHelpEmbed] });
+                }
             }
         }
     },

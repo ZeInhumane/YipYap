@@ -40,28 +40,30 @@ module.exports = {
         // Checks if player has a clan and add the exp to the clan, if they do not have a clan, it will not do anything
         if (winner.clanID) {
             await Clan.findOne({ clanID: winner.clanID }, (err, clan) => {
-                expGain = Math.floor(expGain * ((100 + clan.stats.exp) / 100));
-                const winnerExp = winner.exp + expGain * expMulti;
-                // Clan levels up based on users
-                const updateClan = new clanExp(winnerExp, clan.clanLevel);
-                // Update clan with new experience
-                clan.clanCurrentExp = updateClan.getCurrentExp();
-                clan.clanLevel = updateClan.getClanLevel();
-                clan.sp += updateClan.getClanSP();
-                clan.clanMaxMembers += updateClan.getMaxMembers();
-                // Checks if contribution list includes the user
-                if (clan.contribution[winner.userID]) {
-                    clan.contribution[winner.userID].exp += expGain;
-                } else {
-                    clan.contribution[winner.userID] = {
-                        "exp": expGain,
-                    };
+                if (clan) {
+                    expGain = Math.floor(expGain * ((100 + clan.stats.exp) / 100));
+                    const winnerExp = winner.exp + expGain * expMulti;
+                    // Clan levels up based on users
+                    const updateClan = new clanExp(winnerExp, clan.clanLevel);
+                    // Update clan with new experience
+                    clan.clanCurrentExp = updateClan.getCurrentExp();
+                    clan.clanLevel = updateClan.getClanLevel();
+                    clan.sp += updateClan.getClanSP();
+                    clan.clanMaxMembers += updateClan.getMaxMembers();
+                    // Checks if contribution list includes the user
+                    if (clan.contribution[winner.userID]) {
+                        clan.contribution[winner.userID].exp += expGain;
+                    } else {
+                        clan.contribution[winner.userID] = {
+                            "exp": expGain,
+                        };
+                    }
+                    clan.clanTotalExp += expGain;
+                    clan.markModified('contribution');
+                    clan.save()
+                        .then(() => console.log("clan lvl edit"))
+                        .catch(err => console.error(err));
                 }
-                clan.clanTotalExp += expGain;
-                clan.markModified('contribution');
-                clan.save()
-                    .then(() => console.log("clan lvl edit"))
-                    .catch(err => console.error(err));
             });
         }
         // adding exp
