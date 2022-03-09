@@ -167,7 +167,7 @@ module.exports = {
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle('Are you sure you would like to proceed?')
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Are you sure you would like to create a clan called ${clanName}?`)
                 .setFooter({ text: 'Note: This action is irreversible.' });
 
@@ -391,7 +391,7 @@ module.exports = {
             const spEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle(`Upgrade Embed`)
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .addFields(
                     {
                         name: `Current Stats for __${clanData.clanName}__ clan!`, value: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}% **(+${goldSp})** \n <:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%: **(+${expSp})** \n :hearts: Health ${clanData.stats.hp}%: **(+${hpSp})** \n :crossed_swords: Attack ${clanData.stats.attack}%: **(+${attackSp})**  \n :shield: Defense ${clanData.stats.defense}%: **(+${defenseSp})**  \n :dash: Speed ${clanData.stats.speed}%: **(+${speedSp})**`,
@@ -408,7 +408,7 @@ module.exports = {
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle('Are you sure you would like to proceed?')
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`This will use your clan's sp`)
                 .setFooter({ text: 'Note: This action is irreversible.' });
 
@@ -510,7 +510,7 @@ module.exports = {
                 const updatedInviteEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(`Clan Invite Embed`)
-                    .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                     .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
                 while (i < totalItems && counter < maxOnPage) {
                     let memberName;
@@ -616,7 +616,7 @@ module.exports = {
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle('Are you sure you would like to proceed?')
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Are you sure you want to promote ${clanName}?`)
                 .setFooter({ text: 'Note: This action is irreversible.' });
 
@@ -760,7 +760,7 @@ module.exports = {
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle('Are you sure you would like to proceed?')
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Are you sure you want to demote ${clanName}?`)
                 .setFooter({ text: 'Note: This action is irreversible.' });
 
@@ -902,7 +902,7 @@ module.exports = {
             const confirmationEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle('Are you sure you would like to proceed?')
-                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                 .setDescription(`Are you sure you want to delete ${clanData.clanName}?`)
                 .setFooter({ text: 'Note: This action is irreversible.' });
 
@@ -999,7 +999,7 @@ module.exports = {
                 const speedSp = clanData.stats.speed - 1;
                 const clanEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
-                    .setTitle(`${clanData.clanName}`)
+                    .setTitle(`Clan Name: __${clanData.clanName}__`)
                     .setDescription(`Clan Description: \n ${clanData.clanDescription} `);
 
                 clanEmbed.addField('Clan Leader: ', `${clanData.clanLeader}`);
@@ -1054,7 +1054,7 @@ module.exports = {
                     const clanEmbed = new Discord.MessageEmbed()
                         .setColor(currentColor)
                         .setTitle('Create a clan')
-                        .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                        .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`Are you sure you want to create a clan called ${clanName}?`)
                         .addFields(
                             { name: `You will be using 10,000 currency for this clan creation`, value: "\u200b" },
@@ -1086,7 +1086,7 @@ module.exports = {
                         const spEmbed = new Discord.MessageEmbed()
                             .setColor(currentColor)
                             .setTitle(`Upgrade Embed`)
-                            .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                            .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                             .addFields(
                                 {
                                     name: `Current Stats for __${clanData.clanName}__ clan!`, value: `<:x2Gold_Ticket1hr:898287203246047252> Gold: ${clanData.stats.gold}% **(+${goldSp})** \n <:x2ExpTicket1hr:898287128159592488> Exp: ${clanData.stats.exp}%: **(+${expSp})** \n :hearts: Health ${clanData.stats.hp}%: **(+${hpSp})** \n :crossed_swords: Attack ${clanData.stats.attack}%: **(+${attackSp})**  \n :shield: Defense ${clanData.stats.defense}%: **(+${defenseSp})**  \n :dash: Speed ${clanData.stats.speed}%: **(+${speedSp})**`,
@@ -1160,7 +1160,7 @@ module.exports = {
                             const invitedEmbed = new Discord.MessageEmbed()
                                 .setColor(currentColor)
                                 .setTitle(`Clan Invite Embed`)
-                                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                                 .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
 
                             let i = onPage * maxOnPage;
@@ -1273,7 +1273,7 @@ module.exports = {
                             const promoteEmbed = new Discord.MessageEmbed()
                                 .setColor(currentColor)
                                 .setTitle('Promote a user')
-                                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                                 .setDescription(`Are you sure you want to promote user ${userToPromote}?`)
                                 .addFields(
                                     { name: `If you are promoting a vice leader, you would lose ownership of your clan!!`, value: "\u200b" },
@@ -1302,7 +1302,7 @@ module.exports = {
                             const promoteEmbed = new Discord.MessageEmbed()
                                 .setColor(currentColor)
                                 .setTitle('Promote a user')
-                                .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                                 .setDescription(`Are you sure you want to demote user ${userToDemote}?`)
                                 .addFields(
                                     { name: `If you are demoting a vice leader, they would lose permissions`, value: "\u200b" },
@@ -1327,7 +1327,7 @@ module.exports = {
                         const deleteEmbed = new Discord.MessageEmbed()
                             .setColor(currentColor)
                             .setTitle('Disband your clan')
-                            .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                            .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`Are you sure you want disband this clan?`)
                             .addFields(
                                 { name: `If you choose to disband your clan, it can never be retrieved`, value: "\u200b" },
@@ -1339,13 +1339,63 @@ module.exports = {
                     });
                 }
                     break;
+                case 'description': {
+                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
+                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (clanData == null) { return message.channel.send(`You do not have a clan!`); }
+                        if (user.userID !== clanData.clanLeader && user.userID !== clanData.clanViceLeader) {
+                            return message.channel.send(`You do not have the permissions to change the description of this clan`);
+                        }
+                        const description = args.slice(1).join(' ');
+                        if (!description) { return message.channel.send(`Please specify a description!`); }
+                        if (description.length > 1000) { return message.channel.send(`Description cannot be longer than 1000 characters!`); }
+                        clanData.clanDescription = description;
+                        clanData.save();
+                        // Make delete embed
+                        const descriptionEmbed = new Discord.MessageEmbed()
+                            .setColor(currentColor)
+                            .setTitle('Description changed!')
+                            .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                            .addFields(
+                                { name: `New Description:`, value: `${description}` },
+                            );
+                        message.channel.send({ embeds: [descriptionEmbed] });
+                    });
+                }
+                    break;
+                case 'contribution': {
+                    if (!user.clanID) { return message.channel.send(`You do not have a clan!`); }
+                    clan.findOne({ clanID: user.clanID }, async (err, clanData) => {
+                        if (clanData == null) { return message.channel.send(`You do not have a clan!`); }
+                        let formattedContribution = ``;
+                        // Make delete embed
+                        const contributionEmbed = new Discord.MessageEmbed()
+                            .setColor(currentColor)
+                            .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) });
+                        // Display all contributions
+                        for (const contribution in clanData.contribution) {
+                            let memberName = ``;
+                            try {
+                                const memberObject = await client.users.fetch(contribution);
+                                memberName = memberObject.tag;
+                            } catch (error) {
+                                memberName = "Unable to find member";
+                            }
+                            formattedContribution += `${memberName}: **${clanData.contribution[contribution].exp}** __Experience__ \n`;
+
+                        }
+                        if (formattedContribution == ``) { formattedContribution = `No one has contributed to this clan yet!`; }
+                        contributionEmbed.addFields({ name: `Members who contributed to __${clanData.clanName}__ clan`, value: `${formattedContribution}` });
+                        message.channel.send({ embeds: [contributionEmbed] });
+                    });
+                }
+                    break;
 
                 default: {
                     // Create sub help command for clans
                     const clanHelpEmbed = new Discord.MessageEmbed()
                         .setColor(currentColor)
-                        .setTitle(`Clan Help Embed`)
-                        .setAuthor({ name: message.member.user.tag, icon_url: message.author.avatarURL() })
+                        .setAuthor({ name: message.member.user.tag, iconURL: message.author.avatarURL({ dynamic: true }) })
                         .addFields(
                             { name: `Create Clan`, value: `__Correct Usage__: ${prefix}clan create \`{clanName}\` \n Creates a new clan, requiring 10,000 currency and level 10, \n you are not allowed to be in more than 1 clan.` },
                             { name: `Upgrade Clan`, value: `__Correct Usage__: ${prefix}clan upgrade \n Upgrades the clan, only Vice Leaders and Clan Leaders can use this command. Each upgrade increases the stats of the clan.` },
@@ -1356,6 +1406,8 @@ module.exports = {
                             { name: `Promote User`, value: `__Correct Usage__: ${prefix}promote \`{userID}\` \n Promotes said user to a higher rank, if the user is a Vice Leader, they would own the clan and be the leader. Only Leaders can use this command.` },
                             { name: `Demote User`, value: `__Correct Usage__: ${prefix}demote \`{userID}\` \n Demotes a Vice Leader to a clam member. Only Leaders are allowed to use this command.` },
                             { name: `Disband Clan`, value: `__Correct Usage__: ${prefix}disband \n Disbands the clan, only leaders can use this command.` },
+                            { name: `Description`, value: `__Correct Usage__: ${prefix}description \`{newDescription}\` \n Gives a new description to the clan, though I think poggers is quite good as a description.` },
+                            { name: `Contribution`, value: `__Correct Usage__: ${prefix}contribution \n Displays all contributors to the clan, if there are none, display nothing.` },
                         );
                     return message.channel.send({ embeds: [clanHelpEmbed] });
                 }

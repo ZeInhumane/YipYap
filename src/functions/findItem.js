@@ -1,7 +1,5 @@
 const Items = require('../models/items');
 const Equipment = require('../models/equipment');
-const mongoose = require('mongoose');
-const Discord = require('discord.js');
 
 module.exports = async function (itemName, getWeaponStats = false, getDescription = false, getEmote = false) {
     // IDK why it needs _docs, but it breaks without it
