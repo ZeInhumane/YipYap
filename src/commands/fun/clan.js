@@ -421,7 +421,6 @@ module.exports = {
                     userSelection = btnInt.customId;
                     // If user selected confirm, reset stats, give sp
                     if (userSelection == 'confirm') {
-                        console.log(clanData);
                         clanData.markModified('stats');
                         clanData.save()
                             .then(() => console.log("reset"))
@@ -548,8 +547,7 @@ module.exports = {
                         }
                         botEmbedMessage.edit({ embeds: [await createUpdatedInvite()], components: [row4] });
                     })
-                    .catch(async err => {
-                        console.log(err);
+                    .catch(async () => {
                         currentColor = '#FF0000';
                         isExpired = true;
                     });
@@ -986,7 +984,6 @@ module.exports = {
         // Create a clan command that will allow users to create a clan and join a clan
         if (!args[0]) {
             const clanData = await clanUtil(user.clanID);
-            console.log(clanData);
             if (clanData != null) {
                 let formattedMembers = '';
                 if (!clanData) { return message.channel.send('Error: Clan not found.'); }
@@ -1035,7 +1032,6 @@ module.exports = {
             switch (args[0]) {
                 case "create": {
                     const clanData = await clanUtil(user.clanID);
-                    console.log(clanData);
                     // Check if user is already in a clan
                     if (clanData != null) {
                         return message.channel.send(`You are already in a clan!`);
