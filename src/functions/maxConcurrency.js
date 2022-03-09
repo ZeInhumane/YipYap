@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const activeCommands = new Discord.Collection();
+const usersInTrade = new Set();
 
-module.exports = async function checkChannel(command, channelId, details) {
+exports.checkChannel = async function (command, channelId, details) {
     if (!activeCommands.has(command.name)) {
         activeCommands.set(command.name, new Discord.Collection());
         activeCommands.get(command.name).set(channelId, []);
@@ -17,13 +18,24 @@ module.exports = async function checkChannel(command, channelId, details) {
 
     if (activeCommands.get(command.name).get(channelId).length < command.maxConcurrency) {
         activeCommands.get(command.name).get(channelId).push(details);
-        return false;
+        return { active: false };
     }
 
-    return true;
+    return { active: true };
 };
 
-
+exports.inTrade = function (type, userId) {
+    switch (type) {
+        case 'add':
+            usersInTrade.add(userId);
+            break;
+        case 'remove':
+            usersInTrade.delete(userId);
+            break;
+        case 'check':
+            return usersInTrade.has(userId);
+    }
+};
 // format
 /*
     {

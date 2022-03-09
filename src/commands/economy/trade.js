@@ -1,7 +1,10 @@
 const Discord = require('discord.js');
 const User = require('../../models/user');
-const checkChannel = require('../../functions/maxConcurrency');
+const maxConcurrency = require('../../functions/maxConcurrency');
 const titleCase = require('../../functions/titleCase');
+const mongoose = require('mongoose');
+require('dotenv').config();
+var assert = require('assert');
 
 module.exports = {
     name: "trade",
@@ -13,8 +16,8 @@ module.exports = {
     maxConcurrency: 1,
     async execute({ client, message, prefix }) {
 
-        const results = await checkChannel(this, message.channel.id, {});
-        if (!results.active) {
+        const results = await maxConcurrency.checkChannel(this, message.channel.id, {});
+        if (results.active) {
             return message.channel.send(`There is an ongoing trade in this channel.`);
         }
 
@@ -31,6 +34,13 @@ module.exports = {
         if (tradeTarget.id === message.author.id) {
             return message.channel.send("You can't trade with yourself lmao");
         }
+
+        if (maxConcurrency.inTrade("check", message.author.id) || maxConcurrency.inTrade("check", tradeTarget.id)) {
+            return message.channel.send("You or the user you are trying to trade with is already in a trade.");
+        }
+
+        maxConcurrency.inTrade("add", message.author.id);
+        maxConcurrency.inTrade("add", tradeTarget.id);
 
         const tradeTargetFilter = (interaction) => {
             interaction.deferUpdate();
@@ -112,42 +122,53 @@ const tradeRowWithLock = new Discord.MessageActionRow()
             .setStyle('PRIMARY'),
     );
 
+const tradeRowConfirmation = new Discord.MessageActionRow()
+    .addComponents(
+        new Discord.MessageButton()
+            .setCustomId('decline')
+            .setLabel('❌')
+            .setStyle('DANGER'),
+        new Discord.MessageButton()
+            .setCustomId('accept')
+            .setLabel('✅')
+            .setStyle('SUCCESS')
+            .setDisabled(false),
+        new Discord.MessageButton()
+            .setCustomId('lock')
+            .setLabel('🔒')
+            .setStyle('PRIMARY'),
+    );
+
 async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMessage) {
     let tradeIsActive = true, tradeIsCompleted = false;
     // Start 10 minute timer
     setTimeout(() => tradeIsActive = false, 60_000 * 10);
 
-    // Filter for interactions from trade initiator
-    const tradeInteractionFilter = (interaction) => {
-        interaction.deferUpdate();
-        interaction.user.id === tradeStarter.id || interaction.user.id === tradeTarget.id;
-    };
-
-    const tradeMessageFilter = (msg) => {
-        msg.author.id === tradeStarter.id || msg.author.id === tradeTarget.id;
-    };
-
-    const embed = tradeMessage.embeds[0];
+    let embed = tradeMessage.embeds[0];
 
     const trade = {
         [tradeStarter.id]: {
-            items: [],
+            items: {},
             locked: false,
             accepted: false,
         },
         [tradeTarget.id]: {
-            items: [],
+            items: {},
             locked: false,
             accepted: false,
         },
     };
+    // filter: tradeInteractionFilter,
+    const tradeInteractionCollector = tradeMessage.createMessageComponentCollector({ componentType: 'BUTTON', time: 60_000 * 10 });
 
-    const tradeInteractionCollector = tradeMessage.createMessageComponentCollector({ componentType: 'BUTTON', filter: tradeInteractionFilter, time: 60_000 * 10 });
-
-    const tradeMessageCollector = message.channel.createMessageCollector({ filter: tradeMessageFilter, time: 60_000 * 10 });
+    // filter: tradeMessageFilter,
+    const tradeMessageCollector = message.channel.createMessageCollector({ time: 60_000 * 10 });
 
     tradeInteractionCollector.on('collect', async (interaction) => {
 
+        if (![tradeStarter.id, tradeTarget.id].includes(interaction.user.id)) return;
+
+        embed = tradeMessage.embeds[0];
         if (interaction.customId === "decline") {
             // Update embed
             embed.color = 0xFF0000;
@@ -173,69 +194,156 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
             }
 
             // Update embed
-            embed.fields[tradeStarterLocked ? 0 : 1].value = `\`\`\`diff\n${trade[interaction.user.id].locked ? '+' : '-'} ${trade[interaction.user.id].locked ? "Ready" : "Not Ready"} ${trade[interaction.user.id].locked}\n\`\`\``;
-            tradeRowWithLock[1].disabled = trade[tradeStarter.id].locked && trade[tradeTarget.id].locked;
+            let temp = embed.fields[tradeStarterLocked ? 0 : 1].value.split("```");
+            temp[1] = `diff\n${trade[interaction.user.id].locked ? '+' : '-'} ${trade[interaction.user.id].locked ? "Ready" : "Not Ready"} ${trade[interaction.user.id].locked ? '+' : '-'}\n`;
+            embed.fields[tradeStarterLocked ? 0 : 1].value = temp.join("```");
+            if (trade[tradeTarget.id].locked && !trade[tradeTarget.id].accepted) {
+                temp = embed.fields[1].value.split("```");
+                temp[1] = "diff\n+ Ready +\n";
+                embed.fields[1].value = temp.join("```");
+            }
+            if (trade[tradeStarter.id].locked && !trade[tradeStarter.id].accepted) {
+                temp = embed.fields[0].value.split("```");
+                temp[1] = "diff\n+ Ready +\n";
+                embed.fields[0].value = temp.join("```");
+            }
 
-            await tradeMessage.edit({ embeds: [tradeMessage.embeds[0]], components: [tradeRowWithLock] });
+            const msgActionRow = (trade[tradeStarter.id].locked && trade[tradeTarget.id].locked) ? tradeRowConfirmation : tradeRowWithLock;
+            await tradeMessage.edit({ embeds: [embed], components: [msgActionRow] });
             return;
         }
 
         if (interaction.customId === "accept") {
+            // Check who accepted
+            const tradeStarterAccepted = interaction.user.id === tradeStarter.id;
+
             // Update status
             trade[interaction.user.id].accepted = !trade[interaction.user.id].accepted;
 
             // Update embed
-            embed.fields[trade[interaction.user.id].accepted ? 0 : 1].value = `\`\`\`diff\n${trade[interaction.user.id].accepted ? '+' : '-'} ${trade[interaction.user.id].accepted ? "Confirmed" : "Ready"} ${trade[interaction.user.id].accepted}\n\`\`\``;
+            const temp = embed.fields[tradeStarterAccepted ? 0 : 1].value.split("```");
+            temp[1] = `diff\n+ ${trade[interaction.user.id].accepted ? "Confirmed" : "Ready"} +\n`;
+            embed.fields[tradeStarterAccepted ? 0 : 1].value = temp.join("```");
 
             // Check if trade completed
             if (trade[tradeStarter.id].accepted && trade[tradeTarget.id].accepted) {
-                // //////////////////////////
-                // HANDLE TRADE COMPLETION //
-                // //////////////////////////
+                await tradeMessage.edit({ embeds: [embed], components: [] });
+
+                await tradeConfirmed(client, trade);
             }
 
-            await tradeMessage.edit({ embeds: [tradeMessage.embeds[0]], components: [tradeRowWithLock] });
+            await tradeMessage.edit({ embeds: [embed], components: [tradeRowConfirmation] });
             return;
         }
     });
 
     tradeMessageCollector.on('collect', async (msg) => {
 
+        if (![tradeStarter.id, tradeTarget.id].includes(msg.author.id)) return;
+
+        if (trade[msg.author.id].locked || trade[msg.author.id].accepted) return;
+
+        const user = await User.findOne({ userID: msg.author.id });
 
         const args = msg.content.split(',');
 
-        // ///////////////////////
-        // HANDLE ITEM ADDITION //
-        // ////////////////////////
-
         const items = await parseArguments(args);
+        if (!items) return;
 
+        const validItems = await parseItems(items, user, trade[msg.author.id].items);
+        if (!validItems) return;
+
+        for (const item of validItems) {
+            if (!trade[msg.author.id].items[item.name]) {
+                trade[msg.author.id].items[item.name] = item;
+                continue;
+            }
+
+            if (trade[msg.author.id].items[item.name].quantity == item.quantity) {
+                delete trade[msg.author.id].items[item.name];
+                continue;
+            }
+
+            trade[msg.author.id].items[item.name].quantity += item.quantity;
+        }
+
+        console.log(`${JSON.stringify(trade, null, 2)}`);
+
+        embed = tradeMessage.embeds[0];
+        const msgActionRow = tradeMessage.components[0];
+
+        let fieldValueToEdit = embed.fields[msg.author.id === tradeStarter.id ? 0 : 1].value;
+        fieldValueToEdit = fieldValueToEdit.split("** **");
+
+        const tradeItems = Object.entries(trade[msg.author.id].items);
+        fieldValueToEdit[1] = `\`\`\`${tradeItems.map(([itemName, itemInfo]) => `${itemInfo.quantity}x ${itemName}`).join("\n")}\`\`\``;
+        if (fieldValueToEdit[1] === "``````") fieldValueToEdit[1] = "";
+
+        embed.fields[msg.author.id === tradeStarter.id ? 0 : 1].value = fieldValueToEdit.join("** **");
+        await tradeMessage.edit({ embeds: [embed], components: [msgActionRow] });
+    });
+
+    tradeMessageCollector.on('end', async () => {
+        if (tradeIsCompleted) return;
+
+        // Update embed
+        embed = tradeMessage.embeds[0];
+        embed.color = 0xFF0000;
+        embed.description = "The trade request has expired";
+        await tradeMessage.edit({ embeds: [embed], components: [] });
     });
 }
 
 async function parseArguments(_arguments) {
     const items = [];
-    for (const arg of _arguments) {
+    for (let arg of _arguments) {
 
-        const item = await parseItem(titleCase(arg.trim()));
-        if (item) {
-            items.push(item);
+        arg = arg.trim();
+
+        let [quantity, ...itemName] = arg.split(' ');
+        quantity = parseInt(quantity), itemName = titleCase(itemName.join(' '));
+
+        if (!quantity || !itemName) {
+            return;
         }
+
+        items.push({
+            quantity,
+            name: itemName,
+        });
     }
+
+    return items;
 }
 
-async function parseItem(itemName) {
-    // hi
+async function parseItems(itemsArray, user, userItemsInTrade) {
+    itemsArray = itemsArray.filter(item => {
+
+        return item.quantity > 0;
+
+    }).filter(item => {
+
+        if (item.name === "Gold") return true;
+
+        return item.name in user.inv;
+
+    }).filter(item => {
+
+        if (item.quantity === userItemsInTrade[item.name]?.quantity) return true;
+
+        if (item.name === "Gold") return user.currency >= item.quantity;
+
+        return user.inv[item.name].quantity -
+            user.inv[item.name].listed -
+            (userItemsInTrade[item.name] ? userItemsInTrade[item.name].quantity : 0) >= item.quantity;
+    });
+
+    return itemsArray;
 }
 
-async function createTransaction(client, buyerID, sellerID, listingID) {
+async function tradeConfirmed(client, trade) {
 
-    await client.mongoUtils.client.connect();
-
-    const session = client.mongoUtils.client.startSession();
-
-    const usersCollection = await client.mongoUtils.getCollection('users');
-    const listingsCollection = await client.mongoUtils.getCollection('listings');
+    const session = await User.startSession();
 
     const transactionOptions = {
         readPreference: 'primary',
@@ -246,36 +354,32 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
     try {
         const transactionResults = await session.withTransaction(async () => {
 
-            const listing = await listingsCollection.findOne({ listingID }, { session });
-            const buyer = await usersCollection.findOne({ userID: buyerID }, { session });
-            const seller = await usersCollection.findOne({ userID: sellerID }, { session });
-            const txCost = listing.itemCost * listing.quantity;
+            let [tradeStarter, tradeTarget] = Object.keys(trade);
+            tradeStarter = await User.findOne({ userID: tradeStarter }).session(session);
+            tradeTarget = await User.findOne({ userID: tradeTarget }).session(session);
 
-            if (!listing) {
-                await session.abortTransaction();
-                console.error("Transaction aborted [listing not found].");
-                return { success: false, message: "Transaction aborted [listing not found].", code: 1 };
-            }
-
-            if (!buyer) {
+            if (!tradeStarter) {
                 await session.abortTransaction();
                 console.error("Transaction aborted [buyer not found].");
                 return { success: false, message: "Transaction aborted [buyer not found].", code: 2 };
             }
 
-            if (!seller) {
+            if (!tradeTarget) {
                 await session.abortTransaction();
                 console.error("Transaction aborted [seller not found].");
                 return { success: false, message: "Transaction aborted [seller not found].", code: 3 };
             }
 
-            if (buyer.currency < txCost) {
-                await session.abortTransaction();
-                console.error("Transaction aborted [buyer does not have enough currency].");
-                return { success: false, message: "Transaction aborted [buyer does not have enough currency].", code: 4 };
+            for (const user in trade) {
+                for (const item in trade[user].items) {
+                    if (item.name === "Gold") {
+                        assert.ok(user.currency >= item.quantity, "Not enough gold");
+                    } else {
+                        assert.ok(user.inv[item.name].quantity - user.inv[item.name].listed >= item.quantity, "Not enough items in inventory");
+                    }
+                }
             }
 
-            await listingsCollection.deleteOne({ listingID }, { session });
 
             await usersCollection.updateOne({ userID: buyerID },
                 { $inc: { currency: -txCost } },
@@ -329,7 +433,6 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
         console.log(e);
         console.log("The transaction was aborted.");
     } finally {
-        await session.endSession();
-        await client.mongoUtils.client.close();
+        session.endSession();
     }
 }
