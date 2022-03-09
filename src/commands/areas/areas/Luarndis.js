@@ -37,7 +37,7 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 1.1, "attack": 1.2, "defense": 1.1, "speed": 1 },
+        buffs: { "hp": 0.7, "attack": 0.7, "defense": 0.7, "speed": 1 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -46,8 +46,8 @@ const floors = {
                 "maxQuantity": 3,
                 "emote": "<:Jericho:823551572029603840>",
             },
+            equipDropChance : 0.15,
             equipment: {
-                equipDropChance : 0.1,
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
@@ -118,7 +118,7 @@ const floors = {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 1.3, "attack": 1.2, "defense": 1.2, "speed": 1.1 },
+        buffs: { "hp": 2.0, "attack": 1.8, "defense": 2.0, "speed": 1.8 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -127,8 +127,8 @@ const floors = {
                 "maxQuantity": 5,
                 "emote": "<:Jericho:823551572029603840>",
             },
+            equipDropChance: 0.1,
             equipment: {
-                equipDropChance : 0.15,
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
@@ -199,7 +199,7 @@ const floors = {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 1.3, "attack": 1.5, "defense": 1.2, "speed": 1 },
+        buffs: { "hp": 3.4, "attack": 3.6, "defense": 3.4, "speed": 3.3 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -208,8 +208,8 @@ const floors = {
                 "maxQuantity": 10,
                 "emote": "<:Jericho:823551572029603840>",
             },
+            equipDropChance: 0.2,
             equipment: {
-                equipDropChance : 0.2,
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
@@ -280,7 +280,7 @@ const floors = {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 1.4, "attack": 1.5, "defense": 1.4, "speed": 1.5 },
+        buffs: { "hp": 4.8, "attack": 5.5, "defense": 5.5, "speed": 4.9 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -289,8 +289,8 @@ const floors = {
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
+            equipDropChance: 0.2,
             equipment: {
-                equipDropChance : 0.25,
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
@@ -361,7 +361,7 @@ const floors = {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 1.6, "attack": 1.6, "defense": 1.5, "speed": 1.7 },
+        buffs: { "hp": 7.0, "attack": 7.5, "defense": 7.3, "speed": 7.0 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
@@ -370,8 +370,8 @@ const floors = {
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
+            equipDropChance : 0.2,
             equipment: {
-                equipDropChance : 0.25,
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
