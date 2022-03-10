@@ -32,7 +32,7 @@ module.exports = {
                     // can be formatted better
                     .setTitle(name + `'s profile`)
                     .setColor('#000000')
-                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displaAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
                     .addField("<:cash_24:751784973488357457> Currency  " + user.currency, " \u200b", true)
                     .addField(":level_slider: Level:  " + user.level, " \u200b", true)
                     .addField(":hearts: Health Point: " + calulateFinalStat("hp", user), " \u200b", true)
