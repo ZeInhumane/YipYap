@@ -50,9 +50,7 @@ module.exports = {
 };
 
 function getArea(input, message, prefix) {
-    console.log(input);
     if (input.type === 'name') {
-        console.log(Object.entries(AreaInterface.areas));
         for (const [, areaClass] of Object.entries(AreaInterface.areas)) {
             if (areaClass.getName.toLowerCase() === input.value.toLowerCase()) {
                 return areaClass;

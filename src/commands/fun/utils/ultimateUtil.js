@@ -1,12 +1,12 @@
-const ultimateBase = require('../interface/ultimateBase');
+const ultimateInterface = require('../interface/ultimateInterface');
 
 module.exports = async function (player, enemy, user) {
 
     // If out of range or user has no rune, default to rune 1
-    if (!user.rune || user.rune > ultimateBase.ultimates.length) { user.rune = 1; }
+    if (!user.rune || user.rune > ultimateInterface.ultimates.length) { user.rune = 1; }
 
     // Create new ultimate class
-    const ultimate = new ultimateBase.ultimates[user.rune](player, enemy, user);
+    const ultimate = new ultimateInterface.ultimates[user.rune](player, enemy, user);
 
     // Get results
     try {
