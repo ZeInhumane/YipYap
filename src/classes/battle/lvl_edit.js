@@ -4,7 +4,7 @@ const Clan = require('../../models/clan');
 const userEffects = require('../../models/userEffects.js');
 // level diff to calculate exp multiplier
 const is_lvlup = require('./is_lvlup');
-const clanExp = require('./clanLvlup');
+const clanLvlUp = require('./clanLvlUp');
 
 module.exports = {
     async execute(message, winner, loser, experienceMultiplier) {
@@ -45,7 +45,7 @@ module.exports = {
                     console.log(expGain);
                     const winnerExp = clan.clanCurrentExp + expGain * expMulti;
                     // Clan levels up based on users
-                    const updateClan = new clanExp(winnerExp, clan.clanLevel);
+                    const updateClan = new clanLvlUp(winnerExp, clan.clanLevel);
                     // Update clan with new experience
                     clan.clanCurrentExp = updateClan.getCurrentExp();
                     clan.clanLevel = updateClan.getClanLevel();
