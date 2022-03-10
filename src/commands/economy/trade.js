@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const User = require('../../models/user');
-const maxConcurrency = require('../../functions/maxConcurrency');
 const titleCase = require('../../functions/titleCase');
-const mongoose = require('mongoose');
 require('dotenv').config();
 var assert = require('assert');
 
@@ -16,11 +14,7 @@ module.exports = {
     maxConcurrency: 1,
     async execute({ client, message, prefix }) {
 
-        const results = await maxConcurrency.checkChannel(this, message.channel.id, {});
-        if (results.active) {
-            return message.channel.send(`There is an ongoing trade in this channel.`);
-        }
-
+        // A bunch of checks
         const tradeTarget = message.mentions.users.first();
         if (!tradeTarget) {
             return message.channel.send(`You need to mention a user to trade with.`);
@@ -34,13 +28,6 @@ module.exports = {
         if (tradeTarget.id === message.author.id) {
             return message.channel.send("You can't trade with yourself lmao");
         }
-
-        if (maxConcurrency.inTrade("check", message.author.id) || maxConcurrency.inTrade("check", tradeTarget.id)) {
-            return message.channel.send("You or the user you are trying to trade with is already in a trade.");
-        }
-
-        maxConcurrency.inTrade("add", message.author.id);
-        maxConcurrency.inTrade("add", tradeTarget.id);
 
         const tradeTargetFilter = (interaction) => {
             interaction.deferUpdate();
@@ -66,14 +53,15 @@ module.exports = {
         if (!interaction || interaction.customId === "decline" || interaction.customId !== "accept") {
             tradeInitationMessage.embeds[0].color = 0xFF0000;
             tradeInitationMessage.embeds[0].description = "The trade request has been declined";
+
             await tradeInitationMessage.edit({ embeds: [tradeInitationMessage.embeds[0]], components: [] });
             return;
         }
 
         // Generate new embed for trade start
         const embed = tradeInitationMessage.embeds[0];
-        embed.color = 0x00FF00;
-        embed.description = "Type `<#> item` to add to the trade.\nSeparate entries with `,` to add multiple items with a single message.\nThis trade session will expire in 10 minutes.";
+        embed.color = 0xe1e1e1;
+        embed.description = "Type `<#> item` to add to the trade.\nSeparate entries with `,` to add multiple items with a single message.\nThis trade session will expire in 5 minutes.";
         embed.fields = [
             {
                 value: "```diff\n- Not Ready -\n```** **",
@@ -89,7 +77,7 @@ module.exports = {
         embed.footer = "You both must lock your items before proceeding to the next step";
 
         const tradeInitiatedMessage = await tradeInitationMessage.edit({ embeds: [embed], components: [tradeRowWithLock] });
-        await handleTrade(client, message.author, tradeTarget, message, tradeInitiatedMessage);
+        const successMsg = await handleTrade(client, message.author, tradeTarget, message, tradeInitiatedMessage);
     },
 };
 
@@ -141,8 +129,10 @@ const tradeRowConfirmation = new Discord.MessageActionRow()
 
 async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMessage) {
     let tradeIsActive = true, tradeIsCompleted = false;
+    const time = 5 * 60 * 1000;
+
     // Start 10 minute timer
-    setTimeout(() => tradeIsActive = false, 60_000 * 10);
+    setTimeout(() => tradeIsActive = false, time);
 
     let embed = tradeMessage.embeds[0];
 
@@ -158,11 +148,10 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
             accepted: false,
         },
     };
-    // filter: tradeInteractionFilter,
-    const tradeInteractionCollector = tradeMessage.createMessageComponentCollector({ componentType: 'BUTTON', time: 60_000 * 10 });
 
-    // filter: tradeMessageFilter,
-    const tradeMessageCollector = message.channel.createMessageCollector({ time: 60_000 * 10 });
+    const tradeInteractionCollector = tradeMessage.createMessageComponentCollector({ componentType: 'BUTTON', time: time });
+
+    const tradeMessageCollector = message.channel.createMessageCollector({ time: time });
 
     tradeInteractionCollector.on('collect', async (interaction) => {
 
@@ -229,7 +218,21 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
             if (trade[tradeStarter.id].accepted && trade[tradeTarget.id].accepted) {
                 await tradeMessage.edit({ embeds: [embed], components: [] });
 
-                await tradeConfirmed(client, trade);
+                tradeIsActive = false;
+                const tradeResults = await tradeConfirmed(client, trade);
+                if (tradeResults == 0) {
+                    embed.description = `The trade has been completed.`;
+                    embed.color = 0x00FF00;
+                    await tradeMessage.edit({ embeds: [embed] });
+                } else {
+                    embed.description = "An error has occurred, please try again.";
+                    embed.color = 0xFF0000;
+                    await tradeMessage.edit({ embeds: [embed] });
+                }
+
+                tradeInteractionCollector.stop();
+                tradeMessageCollector.stop();
+                return;
             }
 
             await tradeMessage.edit({ embeds: [embed], components: [tradeRowConfirmation] });
@@ -267,8 +270,6 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
             trade[msg.author.id].items[item.name].quantity += item.quantity;
         }
 
-        console.log(`${JSON.stringify(trade, null, 2)}`);
-
         embed = tradeMessage.embeds[0];
         const msgActionRow = tradeMessage.components[0];
 
@@ -287,9 +288,25 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
         if (tradeIsCompleted) return;
 
         // Update embed
-        embed = tradeMessage.embeds[0];
-        embed.color = 0xFF0000;
-        embed.description = "The trade request has expired";
+        if (tradeIsActive) {
+            embed = tradeMessage.embeds[0];
+            embed.color = 0xFF0000;
+            embed.description = "The trade request has expired";
+        }
+
+        await tradeMessage.edit({ embeds: [embed], components: [] });
+    });
+
+    tradeInteractionCollector.on('end', async () => {
+        if (tradeIsCompleted) return;
+
+        // Update embed
+        if (tradeIsActive) {
+            embed = tradeMessage.embeds[0];
+            embed.color = 0xFF0000;
+            embed.description = "The trade request has expired";
+        }
+
         await tradeMessage.edit({ embeds: [embed], components: [] });
     });
 }
@@ -334,7 +351,7 @@ async function parseItems(itemsArray, user, userItemsInTrade) {
         if (item.name === "Gold") return user.currency >= item.quantity;
 
         return user.inv[item.name].quantity -
-            user.inv[item.name].listed -
+            (user.inv[item.name].listed ? user.inv[item.name].listed : 0) -
             (userItemsInTrade[item.name] ? userItemsInTrade[item.name].quantity : 0) >= item.quantity;
     });
 
@@ -357,6 +374,10 @@ async function tradeConfirmed(client, trade) {
             let [tradeStarter, tradeTarget] = Object.keys(trade);
             tradeStarter = await User.findOne({ userID: tradeStarter }).session(session);
             tradeTarget = await User.findOne({ userID: tradeTarget }).session(session);
+            const users = {
+                [tradeStarter.userID]: tradeStarter,
+                [tradeTarget.userID]: tradeTarget,
+            };
 
             if (!tradeStarter) {
                 await session.abortTransaction();
@@ -373,51 +394,92 @@ async function tradeConfirmed(client, trade) {
             for (const user in trade) {
                 for (const item in trade[user].items) {
                     if (item.name === "Gold") {
-                        assert.ok(user.currency >= item.quantity, "Not enough gold");
+                        assert.ok(users[user].currency >= item.quantity, "Not enough gold");
                     } else {
-                        assert.ok(user.inv[item.name].quantity - user.inv[item.name].listed >= item.quantity, "Not enough items in inventory");
+                        if (!users[user].inv[item.name]) continue;
+
+                        assert.ok(users[user].inv[item.name].quantity - (users[user].inv[item.name].listed ? users[user].inv[item.name] : 0) >= item.quantity, "Not enough items in inventory");
                     }
                 }
             }
 
+            for (const [itemName, itemInfo] of Object.entries(trade[tradeStarter.userID].items)) {
+                // Special case for gold since it isn't an 'item'
+                if (itemName === "Gold") {
+                    tradeStarter.currency -= itemInfo.quantity;
+                    tradeTarget.currency += itemInfo.quantity;
 
-            await usersCollection.updateOne({ userID: buyerID },
-                { $inc: { currency: -txCost } },
-                { session },
-            );
+                    assert.ok(tradeStarter.currency >= 0, "Negative gold");
 
-            await usersCollection.updateOne({ userID: sellerID },
-                { $inc: { currency: txCost } },
-                { session },
-            );
+                    await tradeStarter.save({ session });
+                    await tradeTarget.save({ session });
+                    continue;
+                }
 
-            listing.item.quantity = listing.quantity;
-            listing.item.listed = 0;
+                // Remove items from starter
+                tradeStarter.inv[itemName].quantity -= itemInfo.quantity;
+                assert.ok(tradeStarter.inv[itemName].quantity >= 0, "Negative item quantity");
+                if (!tradeTarget.inv[itemName]) {
+                    // Copy item to target
+                    tradeTarget.inv[itemName] = tradeStarter.inv[itemName];
 
-            seller.inv[listing.itemName].listed -= listing.quantity;
-            seller.inv[listing.itemName].quantity += listing.quantity;
+                    // Delete if 0 quantity so doesn't take up redundant space, especially for unique items
+                    if (tradeStarter.inv[itemName].quantity === 0) {
+                        delete tradeStarter.inv[itemName];
+                    }
 
-            if (!buyer.inv[listing.itemName]) {
-                await usersCollection.updateOne({ userID: buyerID },
-                    { $set: { [`inv.${listing.itemName}`]: listing.item } },
-                    { session },
-                );
-            } else {
-                await usersCollection.updateOne({ userID: buyerID },
-                    { $inc: { [`inv.${listing.itemName}.quantity`]: listing.quantity } },
-                    { session },
-                );
+                    // Set listed to 0, quantity to transaction amount
+                    tradeTarget.inv[itemName].listed = 0;
+                    tradeTarget.inv[itemName].quantity = 0;
+                }
+
+                tradeTarget.inv[itemName].quantity += itemInfo.quantity;
+
+                tradeTarget.markModified("inv");
+                tradeStarter.markModified("inv");
+
+                await tradeStarter.save({ session });
+                await tradeTarget.save({ session });
             }
 
-            await usersCollection.updateOne({ userID: sellerID },
-                {
-                    $inc: {
-                        [`inv.${listing.itemName}.quantity`]: -listing.quantity,
-                        [`inv.${listing.itemName}.listed`]: -listing.quantity,
-                    },
-                },
-                { session },
-            );
+            for (const [itemName, itemInfo] of Object.entries(trade[tradeTarget.userID].items)) {
+                // Special case for gold since it isn't an 'item'
+                if (itemName === "Gold") {
+                    tradeStarter.currency += itemInfo.quantity;
+                    tradeTarget.currency -= itemInfo.quantity;
+
+                    assert.ok(tradeTarget.currency >= 0, "Negative gold");
+
+                    await tradeStarter.save({ session });
+                    await tradeTarget.save({ session });
+                    continue;
+                }
+
+                // Remove items from target
+                tradeTarget.inv[itemName].quantity -= itemInfo.quantity;
+                assert.ok(tradeTarget.inv[itemName].quantity >= 0, "Negative item quantity");
+                if (!tradeStarter.inv[itemName]) {
+                    // Copy item to starter
+                    tradeStarter.inv[itemName] = tradeTarget.inv[itemName];
+
+                    // Delete if 0 quantity so doesn't take up redundant space, especially for unique items
+                    if (tradeTarget.inv[itemName].quantity === 0) {
+                        delete tradeTarget.inv[itemName];
+                    }
+
+                    // Set listed to 0, quantity to transaction amount
+                    tradeStarter.inv[itemName].listed = 0;
+                    tradeStarter.inv[itemName].quantity = 0;
+                }
+
+                tradeStarter.inv[itemName].quantity += itemInfo.quantity;
+
+                tradeTarget.markModified("inv");
+                tradeStarter.markModified("inv");
+
+                await tradeStarter.save({ session });
+                await tradeTarget.save({ session });
+            }
 
         }, transactionOptions);
 
