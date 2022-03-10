@@ -15,15 +15,10 @@ module.exports = {
         const costToCreateClan = 10000;
         const levelToCreateClan = 10;
         const clanName = args[1];
-        const maxOnPage = 20;
         let originalSP = 0;
         let multi = 1;
         let spSpent = 0;
         let currentColor = "#ffccff";
-        let onPage = 0;
-        let totalItems = 0;
-        let maxPage = 0;
-        let playerAction = "";
         // Buttons
         const row1 = new Discord.MessageActionRow()
             .addComponents(
@@ -89,21 +84,6 @@ module.exports = {
                     .setEmoji('❌')
                     .setStyle('DANGER'),
             );
-        const row4 = new Discord.MessageActionRow()
-            .addComponents(
-                new Discord.MessageButton()
-                    .setCustomId('back')
-                    .setLabel('◀️')
-                    .setStyle('PRIMARY'),
-                new Discord.MessageButton()
-                    .setCustomId('forward')
-                    .setLabel('▶️')
-                    .setStyle('PRIMARY'),
-                new Discord.MessageButton()
-                    .setCustomId('delete')
-                    .setLabel('🗑️')
-                    .setStyle('DANGER'),
-            );
         // Filter so only user can interact with the buttons
         const filter = (btnInt) => {
             btnInt.deferUpdate();
@@ -157,7 +137,7 @@ module.exports = {
             const receivedEmbed = embedMessage.embeds[0];
             const updatedBattleEmbed = new Discord.MessageEmbed(receivedEmbed)
                 .setColor(currentColor)
-                .addField('Update: ', messageDisplayed);
+                .setFooter({ text: `Update: ${messageDisplayed}` });
             return updatedBattleEmbed;
         }
 
@@ -387,7 +367,6 @@ module.exports = {
             const defenseSp = clanData.stats.defense - 1;
             const speedSp = clanData.stats.speed - 1;
             // Make reset sp embed
-            // Make reset sp embed
             const spEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
                 .setTitle(`Upgrade Embed`)
@@ -492,72 +471,6 @@ module.exports = {
                 });
         }
 
-        // Shows all invited users of clan
-        async function invitePages(clanData, botEmbedMessage) {
-            async function createUpdatedInvite() {
-                let i = 0;
-                let counter = 0;
-                if (onPage < 0) {
-                    onPage = maxPage;
-                }
-                if (onPage > maxPage) {
-                    onPage = 0;
-                }
-                // i = item i am on
-                i = onPage * maxOnPage;
-
-                const updatedInviteEmbed = new Discord.MessageEmbed()
-                    .setColor(currentColor)
-                    .setTitle(`Clan Invite Embed`)
-                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-                    .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
-                while (i < totalItems && counter < maxOnPage) {
-                    let memberName;
-                    try {
-                        const memberObject = await client.users.fetch(clanData.clanMembers[i]);
-                        memberName = memberObject.tag;
-                    } catch (error) {
-                        memberName = "Unable to find member";
-                    }
-                    updatedInviteEmbed.addField(`Request ID: ${clanData.clanInvite[i]}`, `Tag: ${memberName}`);
-                    i++;
-                    counter++;
-                }
-                return updatedInviteEmbed;
-            }
-            let isExpired = false;
-
-            while (!isExpired) {
-                // awaits Player interaction
-                await botEmbedMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
-                    .then(async i => {
-                        currentColor = '#0099ff';
-                        playerAction = i.customId;
-                        switch (playerAction) {
-                            case "forward":
-                                onPage++;
-                                break;
-                            case "back":
-                                onPage--;
-                                break;
-                            case "delete":
-                                currentColor = '#FF0000';
-                                isExpired = true;
-                                return;
-                        }
-                        botEmbedMessage.edit({ embeds: [await createUpdatedInvite()], components: [row4] });
-                    })
-                    .catch(async () => {
-                        currentColor = '#FF0000';
-                        isExpired = true;
-                    });
-            }
-            // Check if interaction expired
-            if (isExpired) {
-                botEmbedMessage.edit({ embeds: [await createUpdatedInvite()], components: [] });
-                return;
-            }
-        }
         // Create Clan
         // Clan prompt
         async function clanPromote(botEmbedMessage, clanData, userToPromote) {
@@ -1029,6 +942,7 @@ module.exports = {
                 message.channel.send(`You are not in a clan!`);
             }
         } else {
+            args[0] = args[0].toLowerCase();
             switch (args[0]) {
                 case "create": {
                     const clanData = await clanUtil(user.clanID);
@@ -1150,34 +1064,9 @@ module.exports = {
                             });
                             message.channel.send(`You have successfully accepted **${requestID}** to your clan!`);
                         } else {
-                            totalItems = clanData.clanInvite.length;
-                            maxPage = Math.floor(totalItems / maxOnPage);
-                            // Make reset sp embed
-                            const invitedEmbed = new Discord.MessageEmbed()
-                                .setColor(currentColor)
-                                .setTitle(`Clan Invite Embed`)
-                                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-                                .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
-
-                            let i = onPage * maxOnPage;
-                            let counter = 0;
-                            while (i < totalItems && counter < maxOnPage) {
-                                let memberName;
-                                try {
-                                    const memberObject = await client.users.fetch(clanData.clanInvite[i]);
-                                    memberName = memberObject.tag;
-                                } catch (error) {
-                                    memberName = "Unable to find member";
-                                }
-                                invitedEmbed.addField(`${i + 1}. Request ID: ${clanData.clanInvite[i]}`, `Tag: ${memberName}`);
-                                i++;
-                                counter++;
-                            }
-
-                            message.channel.send({ embeds: [invitedEmbed], components: [row4] })
-                                .then(botMessage => {
-                                    invitePages(clanData, botMessage);
-                                });
+                            const clanInvites = clanData.clanInvite;
+                            // Display list of invites
+                            displayList({ clanInvites, message, client, clanData });
                         }
                     });
                 }
@@ -1411,3 +1300,106 @@ module.exports = {
         }
     },
 };
+const row = new Discord.MessageActionRow()
+    .addComponents(
+        new Discord.MessageButton()
+            .setCustomId('back')
+            .setLabel('◀️')
+            .setStyle('PRIMARY'),
+        new Discord.MessageButton()
+            .setCustomId('forward')
+            .setLabel('▶️')
+            .setStyle('PRIMARY'),
+        new Discord.MessageButton()
+            .setCustomId('delete')
+            .setLabel('🗑️')
+            .setStyle('DANGER'),
+    );
+
+const inviteEmbed = {
+    title: "Invite Listing :scroll:",
+    description: "Invite listings are shown below\n\n",
+    color: '#0099ff',
+};
+// Display list of invites
+async function displayList({ message, clanInvites, client, clanData }) {
+    let currentPage = 1;
+    const clanName = clanData.clanName;
+    const itemsPerPage = 10;
+    const totalListings = clanInvites.length;
+    const totalPages = Math.ceil(totalListings / itemsPerPage) || 1;
+    let itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+
+    inviteEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
+    inviteEmbed.description = `__${clanName}__ Invite listings are shown below\n\n`;
+
+    inviteEmbed.color = '#0099ff';
+
+    let currentArray = clanInvites.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    for (const item in currentArray) {
+        let memberName;
+        try {
+            const memberObject = await client.users.fetch(currentArray[item]);
+            memberName = memberObject.tag;
+        } catch (error) {
+            memberName = "Unable to find member";
+        }
+        inviteEmbed.description += `${parseInt(item) + 1}. Request ID: ${currentArray[item]}\n Tag: ${memberName} \n `;
+    }
+    const listMessage = await message.channel.send({ embeds: [inviteEmbed], components: [row] });
+
+    const filter = btnInt => {
+        btnInt.deferUpdate();
+        return btnInt.user.id === message.author.id;
+    };
+
+    let isExpired, messageDeleted;
+    while (!isExpired && !messageDeleted) {
+        await listMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
+            .then(async int => {
+                if (int.customId === 'delete') {
+                    messageDeleted = true;
+                    return listMessage.delete();
+                }
+
+                if (int.customId === 'back') {
+                    currentPage--;
+                }
+
+                if (int.customId === 'forward') {
+                    currentPage++;
+                }
+
+                inviteEmbed.description = inviteEmbed.description.split('\n\n')[0] + '\n\n';
+                if (currentPage > totalPages || currentPage < 1) {
+                    currentPage = 1;
+                }
+                currentArray = clanInvites.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+                for (const item in currentArray) {
+                    let memberName;
+                    try {
+                        const memberObject = await client.users.fetch(currentArray[item]);
+                        memberName = memberObject.tag;
+                    } catch (error) {
+                        memberName = "Unable to find member";
+                    }
+                    inviteEmbed.description += `${parseInt(item) + 1}. Request ID: ${currentArray[item]}\n Tag: ${memberName} \n `;
+                }
+                itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+
+                inviteEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
+
+                listMessage.edit({ embeds: [inviteEmbed], components: [row] });
+            })
+            .catch(async (err) => {
+                inviteEmbed.color = '#FF0000';
+                if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
+                    return;
+                }
+                listMessage.edit({ embeds: [inviteEmbed] });
+
+                isExpired = true;
+            });
+    }
+}
