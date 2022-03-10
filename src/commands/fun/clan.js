@@ -10,7 +10,7 @@ module.exports = {
     aliases: [''],
     category: "fun",
     description: "Anything related to clans",
-    syntax: "[area's id or name]",
+    syntax: "help __for additonal help__",
     async execute({ client, prefix, args, message, user }) {
         const costToCreateClan = 10000;
         const levelToCreateClan = 10;
@@ -19,6 +19,7 @@ module.exports = {
         let multi = 1;
         let spSpent = 0;
         let currentColor = "#ffccff";
+        let updatedClanData;
         // Buttons
         const row1 = new Discord.MessageActionRow()
             .addComponents(
@@ -287,7 +288,6 @@ module.exports = {
             }
 
         }
-        let updatedClanData;
         // Parse button pressed
         async function parseUpgradeClan(clanData, botEmbedMessage, action) {
             switch (action) {
@@ -803,7 +803,7 @@ module.exports = {
             const receivedEmbed = embedMessage.embeds[0];
             const updatedBattleEmbed = new Discord.MessageEmbed(receivedEmbed)
                 .setColor(currentColor)
-                .addField('Update: ', messageDisplayed);
+                .setFooter({ text: `Update: ${messageDisplayed}` });
             return updatedBattleEmbed;
         }
 
