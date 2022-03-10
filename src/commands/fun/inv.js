@@ -110,7 +110,11 @@ module.exports = {
                     // Check if interaction expired
                     if (isExpired) {
                         currentColor = '#FF0000';
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
+                        try {
+                            await botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
+                        } catch (err) {
+                            console.log("An error has occurred while trying to update inventory page.");
+                        }
                         return;
                     }
                 }
