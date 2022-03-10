@@ -58,9 +58,9 @@ module.exports = {
                         const updatedShopEmbed = new Discord.MessageEmbed()
                             .setColor(currentColor)
                             .setTitle(`${name}'s Inventory`)
-                            .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                            .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }), URL: 'https://discord.gg/h4enMADuCN' })
                             .setDescription('This is your inventory')
-                            .setFooter(`Current page is ${onPage + 1}/${maxPage + 1}`);
+                            .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
 
                         // Adds items to embed till user does not have any more items to show or it hits max page limit
                         while (itemCount < totalItems && itemsOnCurrentPage < maxOnPage) {
@@ -110,7 +110,11 @@ module.exports = {
                     // Check if interaction expired
                     if (isExpired) {
                         currentColor = '#FF0000';
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
+                        try {
+                            await botEmbedMessage.edit({ embeds: [await createUpdatedMessage()], components: [] });
+                        } catch (err) {
+                            console.log("An error has occurred while trying to update inventory page.");
+                        }
                         return;
                     }
                 }
@@ -131,9 +135,9 @@ module.exports = {
                 const shopEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(`${name}'s Inventory`)
-                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }), URL: 'https://discord.gg/h4enMADuCN' })
                     .setDescription('This is your inventory')
-                    .setFooter(`Current page is ${onPage + 1}/${maxPage + 1}`);
+                    .setFooter({ text: `Current page is ${onPage + 1}/${maxPage + 1}` });
 
                 while (itemCount < totalItems && itemsOnCurrentPage < maxOnPage) {
                     const itemName = items[itemCount][0];

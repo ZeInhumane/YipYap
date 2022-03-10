@@ -3,9 +3,8 @@ const Discord = require('discord.js');
 const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
-// get calculate user stats function
-const calculateUserStats = require('../../functions/calculateUserStats');
-const AreaInterface = require('../areas/AreaInterface');
+const areaUtil = require('../areas/utils/areaUtil');
+
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -26,15 +25,14 @@ module.exports = {
                 let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
-                // Gets the user's current stats + area
-                const Area = getArea(user.location.area);
-                const calculatedStats = await calculateUserStats(user, false);
+
+                const Area = areaUtil.getArea(user.location.area);
 
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
                     .setColor('#000000')
-                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
                     .addField("<:cash_24:751784973488357457> Currency  " + user.currency, " \u200b", true)
                     .addField(":level_slider: Level:  " + user.level, " \u200b", true)
                     .addField(":hearts: Health Point: " + calculatedStats.hp, " \u200b", true)
@@ -73,10 +71,3 @@ module.exports = {
 
     },
 };
-function getArea(id) {
-    for (const [, areaClass] of Object.entries(AreaInterface.areas)) {
-        if (areaClass.getID === id) {
-            return areaClass;
-        }
-    }
-}
