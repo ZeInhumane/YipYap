@@ -8,8 +8,10 @@ const userSchema = mongoose.Schema({
     level: Number,
     exp: Number,
     sp: Number,
-    location: Number,
+    location: Object,
     inv: Object,
+    rune: Number,
+    clanID: String,
 });
 
 module.exports = mongoose.model('User', userSchema, 'users');

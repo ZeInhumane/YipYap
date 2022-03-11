@@ -1,7 +1,5 @@
 const Items = require('../models/items');
 const Equipment = require('../models/equipment');
-const mongoose = require('mongoose');
-const Discord = require('discord.js');
 const titleCase = require('./titleCase.js');
 
 module.exports = async function (itemName, itemTypes = []) {
@@ -11,14 +9,13 @@ module.exports = async function (itemName, itemTypes = []) {
     // First part of regex
     let reg = `^.*?\\b${itemNameArr[0]}`;
     // Appends middle part of regex to each new key search term
-    for (i = 1; i < itemNameArr.length; i++) {
+    for (let i = 1; i < itemNameArr.length; i++) {
         reg += `\\b.*?\\b${itemNameArr[i]}`;
     }
     // Closes the regex
     reg += `\\b.*?$`;
     const items = await Items.find({ itemName: { '$regex': reg, $options: 'i' } }, { _id: 0 }).exec();
     let item;
-    console.log(items);
     if (items.length == 0) {
         return [];
     }
@@ -27,7 +24,7 @@ module.exports = async function (itemName, itemTypes = []) {
     } else {
         const itemNames = [];
 
-        for (i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i++) {
             itemNames.push(items[i].itemName);
             if (items[i].itemName == titleCase(itemName)) {
                 item = items[i];
@@ -38,8 +35,8 @@ module.exports = async function (itemName, itemTypes = []) {
         }
     }
     if (item.type == "equipment") {
-        itemAddOn = await Equipment.findOne({ itemName: item.itemName }, { itemName: 0, _id: 0 }).exec();
-        props = Object.entries(itemAddOn._doc);
+        const itemAddOn = await Equipment.findOne({ itemName: item.itemName }, { itemName: 0, _id: 0 }).exec();
+        const props = Object.entries(itemAddOn._doc);
         for (let i = 0; i < props.length; i++) {
             item._doc[props[i][0]] = props[i][1];
         }

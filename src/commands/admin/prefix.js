@@ -7,7 +7,7 @@ module.exports = {
     aliases: [],
     cooldown: 5,
     category: "Admin",
-    async execute(message, args) {
+    async execute({ message, args }) {
         const data = await prefixModel.findOne({
             GuildID: message.guild.id,
         });

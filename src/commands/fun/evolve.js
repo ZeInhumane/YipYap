@@ -10,7 +10,7 @@ module.exports = {
     cooldown: 5,
     syntax: "{evolution type}",
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         if (args.length < 1) {
             message.channel.send('Enter the rarity of treasure chest that you want to evolve.');
             return;

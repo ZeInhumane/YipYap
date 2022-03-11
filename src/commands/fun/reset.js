@@ -8,7 +8,7 @@ module.exports = {
     syntax: "",
     aliases: ['r', 'resetsp'],
     category: "Fun",
-    execute(message) {
+    execute({ message }) {
         let currentColor = "#0099ff";
         // Buttons
         const row1 = new Discord.MessageActionRow()
@@ -42,6 +42,7 @@ module.exports = {
                         userSelection = btnInt.customId;
                         // Parse button pressed
                         parse(userSelection);
+                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
                     })
                     .catch(async (error) => {
                         currentColor = '#FF0000';
@@ -60,14 +61,12 @@ module.exports = {
                     case "confirm":
                         // Deactivates buttons and displays confirmation message
                         messageDisplayed = 'Awaiting confirmation...';
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
                         await confirm(user, botEmbedMessage, sp);
                         break;
                     case "cancel":
                         // Cancel message
                         messageDisplayed = "Stats were not reset";
                         currentColor = '#FF0000';
-                        botEmbedMessage.edit({ embeds: [await createUpdatedMessage(botEmbedMessage)], components: [] });
                         break;
                 }
             }
@@ -102,10 +101,7 @@ module.exports = {
                     // If user selected confirm, reset stats, give sp
                     if (userSelection == 'confirm') {
                         // Reset stats
-                        user.player.baseStats.hp = 50;
-                        user.player.baseStats.attack = 5;
-                        user.player.baseStats.defense = 5;
-                        user.player.baseStats.speed = 5;
+                        user.player.baseStats = { hp: 50, attack: 5, defense: 5, speed: 5 };
                         // Add sp
                         user.sp += sp;
                         // Log
@@ -195,10 +191,8 @@ module.exports = {
 
             // SP to be gained from reset
             const hpSp = (user.player.baseStats.hp - 50) / 5;
-            const attackSp = user.player.baseStats.attack - 5;
-            const defenseSp = user.player.baseStats.defense - 5;
-            const speedSp = user.player.baseStats.speed - 5;
-            const spGain = hpSp + attackSp + defenseSp + speedSp;
+            // SP to be gained from reset (loops through remainder values, yes I am aware this was a complete was of time future matthew)
+            const spGain = Object.values(user.player.baseStats).slice(1).reduce((total, n) => total + n - 5, 0) + hpSp;
 
             if (spGain == 0) {
                 message.channel.send(`You do not have any sp to reset!`);
@@ -212,12 +206,12 @@ module.exports = {
                 .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
                 .setDescription('Current stats')
                 .addFields(
-                    { name: `:level_slider: ${user.level}`, value: "\u200b" },
-                    { name: `Current stats`, value: "\u200b" },
-                    { name: `:hearts: ${user.player.baseStats.hp}`, value: `${hpSp}`, inline: true },
-                    { name: `:crossed_swords: ${user.player.baseStats.attack}`, value: `${attackSp}`, inline: true },
-                    { name: `:shield: ${user.player.baseStats.defense}`, value: `${defenseSp}`, inline: true },
-                    { name: `:dash: ${user.player.baseStats.speed}`, value: `${speedSp}`, inline: true },
+                    { name: `Current Level :level_slider: ${user.level}`, value: "\u200b" },
+                    { name: `Current Statistics for player`, value: "\u200b" },
+                    { name: `Current Health (:hearts:): ${user.player.baseStats.hp}`, value: `Assigned SP: ${hpSp}`, inline: true },
+                    { name: `Current Attack (:crossed_swords:): ${user.player.baseStats.attack}`, value: `Assigned SP: ${user.player.baseStats.attack - 5}`, inline: true },
+                    { name: `Current Defense (:shield:): ${user.player.baseStats.defense}`, value: `Assigned SP: ${user.player.baseStats.defense - 5}`, inline: true },
+                    { name: `Current Speed (:dash:): ${user.player.baseStats.speed}`, value: `Assigned SP: ${user.player.baseStats.speed - 5}`, inline: true },
                 )
                 .setFooter(`SP to be gained: ${spGain}`);
 

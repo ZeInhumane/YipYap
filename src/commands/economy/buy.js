@@ -11,7 +11,7 @@ module.exports = {
     aliases: ['purchase'],
     category: "Economy",
     cooldown: 5,
-    execute(message, args) {
+    execute({ message, args }) {
         let itemQuantity = 1;
         // Finds arguments no matter the position
         const itemQuantityIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg) || arg.toLowerCase() == 'all');

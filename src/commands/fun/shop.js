@@ -10,7 +10,7 @@ module.exports = {
     syntax: "",
     cooldown: 5,
     category: "Fun",
-    async execute(message) {
+    async execute({ message }) {
         let onPage = 0;
         let currentColor = '#0099ff';
         // Sets how many items are displayed on a single shop page

@@ -6,7 +6,7 @@ module.exports = {
     description: "Sets up a new player. Maybe consider getting the starter pack",
     syntax: "",
     category: "Fun",
-    execute(message) {
+    execute({ message }) {
         // Creates hero class
         class Hero {
             constructor(name, hp, attack, defense, speed) {

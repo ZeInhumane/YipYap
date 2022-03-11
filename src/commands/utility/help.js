@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
 const commonTags = require("common-tags");
+var config = require('../../../config.json');
 const fs = require("fs");
 
 module.exports = {
@@ -9,7 +10,7 @@ module.exports = {
     syntax: "{Command to check} / none",
     cooldown: 5,
     category: "Utility",
-    async execute(message, args, client) {
+    async execute({ message, args, client }) {
         // Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);
         message.channel.send(`type ${prefix}help + {command name for specific help on that command}`);
@@ -26,7 +27,7 @@ module.exports = {
                 .setTitle(`Commands`);
 
             let admin = false;
-            if (message.author.id in ["752724534028795955", "344431410360090625", "272202473827991557", "223583120325083137"]) {
+            if (config.admins.includes(message.author.id)) {
                 admin = true;
             }
 
@@ -51,7 +52,7 @@ module.exports = {
             const links = [
                 {
                     hypertext: "Invite Link",
-                    url: "https://discord.com/oauth2/authorize?client_id=745275291785494571&scope=bot&permissions=262208",
+                    url: "https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot",
                 },
                 {
                     hypertext: "Official Server",

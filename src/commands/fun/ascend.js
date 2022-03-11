@@ -8,9 +8,10 @@ module.exports = {
     name: "ascend",
     description: "Ascend your stats equipment to boost its stats and allow further enhancement of that particular equipment. Only certain weapons can be ascended.",
     syntax: "{item name}",
+    aliases: ['asc'],
     cooldown: 10,
     category: "Fun",
-    async execute(message, args) {
+    async execute({ message, args }) {
         let currentColor = "#0099ff";
         let itemName = args.join(" ");
         itemName = titleCase(itemName);

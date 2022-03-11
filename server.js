@@ -1,6 +1,7 @@
 const express = require('express');
 const Topgg = require('@top-gg/sdk');
 const fetch = require('node-fetch');
+const handleVote = require('./src/handlers/vote.js');
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -27,6 +28,8 @@ app.post('/dblwebhook', webhook.listener(vote => {
         },
         body: value,
     }).catch(e => console.log('Error occurred: ', e));
+
+    handleVote(vote.user);
 }));
 
 app.listen(process.env.PORT || 80);

@@ -12,7 +12,7 @@ module.exports = {
     syntax: "",
     cooldown: 5,
     category: "Fun",
-    execute(message, args) {
+    execute({ message, args }) {
         const itemName = titleCase(args.join(" "));
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
