@@ -41,6 +41,11 @@ module.exports = {
                 return;
             }
 
+            if (user.inv[itemName].listed > 0) {
+                message.channel.send(`You cannot equip a listed item.`);
+                return;
+            }
+
             // Checks if player has an equipment in that equipment slot
             const userItemsArr = Object.keys(user.inv);
             var currentEquippedItem = userItemsArr.find(item => {
@@ -77,7 +82,7 @@ module.exports = {
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log(`${result._doc.userID} equipped ${itemName}`))
                 .catch(err => console.error(err));
             message.channel.send(`You've equipped: ${itemName}.`);
         });

@@ -58,6 +58,8 @@ module.exports = {
             return;
         }
 
+        if (interaction.user.id !== tradeTarget.id) return;
+
         // Generate new embed for trade start
         const embed = tradeInitationMessage.embeds[0];
         embed.color = 0xe1e1e1;
@@ -249,7 +251,6 @@ async function handleTrade(client, tradeStarter, tradeTarget, message, tradeMess
         const user = await User.findOne({ userID: msg.author.id });
 
         const args = msg.content.split(',');
-
         const items = await parseArguments(args);
         if (!items) return;
 
@@ -352,7 +353,8 @@ async function parseItems(itemsArray, user, userItemsInTrade) {
 
         return user.inv[item.name].quantity -
             (user.inv[item.name].listed ? user.inv[item.name].listed : 0) -
-            (userItemsInTrade[item.name] ? userItemsInTrade[item.name].quantity : 0) >= item.quantity;
+            (userItemsInTrade[item.name] ? userItemsInTrade[item.name].quantity : 0) -
+            (user.inv[item.name]?.equipped ? 1 : 0) >= item.quantity;
     });
 
     return itemsArray;
@@ -391,14 +393,24 @@ async function tradeConfirmed(client, trade) {
                 return { success: false, message: "Transaction aborted [seller not found].", code: 3 };
             }
 
-            for (const user in trade) {
-                for (const item in trade[user].items) {
-                    if (item.name === "Gold") {
-                        assert.ok(users[user].currency >= item.quantity, "Not enough gold");
-                    } else {
-                        if (!users[user].inv[item.name]) continue;
+            console.log(trade);
 
-                        assert.ok(users[user].inv[item.name].quantity - (users[user].inv[item.name].listed ? users[user].inv[item.name] : 0) >= item.quantity, "Not enough items in inventory");
+            for (const user in trade) {
+                for (const [itemName, itemInfo] of Object.entries(trade[user].items)) {
+                    if (itemName === "Gold") {
+                        assert.ok(users[user].currency >= itemInfo.quantity, "Not enough gold");
+                    } else {
+                        if (!users[user].inv[itemName]) continue;
+
+                        console.log(users[user].inv[itemName].quantity,
+                            users[user].inv[itemName].listed,
+                            users[user].inv[itemName].equipped,
+                            itemInfo.quantity);
+
+                        assert.ok(users[user].inv[itemName].quantity -
+                            (users[user].inv[itemName].listed ? users[user].inv[itemName] : 0) -
+                            (users[user].inv[itemName].equipped ? 1 : 0) >=
+                            itemInfo.quantity, "Not enough items in inventory");
                     }
                 }
             }
