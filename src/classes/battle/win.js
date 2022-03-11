@@ -74,33 +74,35 @@ module.exports = {
 
                 let dropStr = '';
                 // get area specific equipment
-                if (Math.random() < equipDropChance) {
-                    const dropInfo = Object.values(areaEquipmentInfo);
-                    const dropNames = Object.keys(areaEquipmentInfo);
-                    let totalChance = 0;
-                    for (let i = 0; i < dropInfo.length; i++) {
-                        totalChance += dropInfo[i].dropChance;
-                    }
-                    let equipDroppped = false;
-                    while (!equipDroppped) {
-                        for (let i = 0; i < dropNames.length; i++) {
-                            const rng = Math.random();
-                            if (rng <= dropInfo[i].dropChance / totalChance) {
-                                const index = Math.floor(Math.random() * dropInfo[i].drops.length);
-                                let equipName = dropInfo[i].drops[index];
-                                const equipment = await makeEquipment(equipName);
-                                equipName = await giveWeaponID(equipName);
-                                user.inv[equipName] = equipment;
-                                if (dropStr.length != 0) {
-                                    dropStr += '\n';
+                if (equipDropChance > 0){
+                    if (Math.random() < equipDropChance) {
+                        const dropInfo = Object.values(areaEquipmentInfo);
+                        const dropNames = Object.keys(areaEquipmentInfo);
+                        let totalChance = 0;
+                        for (let i = 0; i < dropInfo.length; i++) {
+                            totalChance += dropInfo[i].dropChance;
+                        }
+                        let equipDroppped = false;
+                        while (!equipDroppped) {
+                            for (let i = 0; i < dropNames.length; i++) {
+                                const rng = Math.random();
+                                if (rng <= dropInfo[i].dropChance / totalChance) {
+                                    const index = Math.floor(Math.random() * dropInfo[i].drops.length);
+                                    let equipName = dropInfo[i].drops[index];
+                                    const equipment = await makeEquipment(equipName);
+                                    equipName = await giveWeaponID(equipName);
+                                    user.inv[equipName] = equipment;
+                                    if (dropStr.length != 0) {
+                                        dropStr += '\n';
+                                    }
+                                    dropStr += `${equipName}!`;
+                                    equipDroppped = true;
+                                    break;
                                 }
-                                dropStr += `${equipName}!`;
-                                equipDroppped = true;
-                                break;
                             }
                         }
+                        user.markModified('inv');
                     }
-                    user.markModified('inv');
                 }
 
                 // get lootboxes
