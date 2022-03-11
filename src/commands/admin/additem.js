@@ -66,7 +66,7 @@ module.exports = {
                 }
                 target.markModified('inv');
                 target.save()
-                    .then(() => console.log("added item"))
+                    .then((result) => console.log(`${transferAmount} ${itemName} was added to ${result._doc.userID} by ${message.author.id}`))
                     .catch(err => console.error(err));
                 message.channel.send(`Successfully added ${transferAmount} ${itemName} to ${transferTarget.tag}. Their current quantity of ${itemName} is ${target.inv[itemName].quantity}`);
             });
