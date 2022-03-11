@@ -73,7 +73,6 @@ module.exports = {
                 name: `${message.author.username}'s travel`,
                 icon_url: message.author.displayAvatarURL({ dynamic: true }),
             },
-            description: `[PLACEHOLDER] enemy desc etc drops`,
             fields: [
                 {
                     name: `Applied enemy buffs`,
