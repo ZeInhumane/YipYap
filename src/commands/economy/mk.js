@@ -3,6 +3,9 @@ const Discord = require('discord.js');
 const titleCase = require('../../functions/titleCase');
 const mongoose = require('mongoose');
 const marketUtils = require('./utils/marketUtils');
+var assert = require('assert');
+const User = require('../../models/user');
+require('dotenv').config();
 
 module.exports = {
     name: "mk",
@@ -104,7 +107,7 @@ async function handleOption({ client, message, args, user, option }) {
             handleBuy({ client, message, args, user });
             break;
         case 'sell':
-            handleSell({ message, args, user });
+            handleSell({ client, message, args, user });
             break;
         case 'list':
             handleList({ message });
@@ -207,7 +210,7 @@ async function confirmationBuy(client, message, buyer, listing) {
         });
 }
 
-async function handleSell({ message, args, user }) {
+async function handleSell({ client, message, args, user }) {
     let { itemQuantity, itemName, itemPrice } = parseInt(args[0]) ? {
         itemQuantity: parseInt(args.shift()),
         itemPrice: parseInt(args[args.length - 1]) ? parseInt(args.pop()) : null,
@@ -228,7 +231,9 @@ async function handleSell({ message, args, user }) {
 
         if (info.quantity - info.listed < itemQuantity) return message.channel.send('You do not have enough of this item to sell.');
 
-        await confirmationSell({ message, user, itemQuantity, itemName, itemPrice, info });
+        if (info.equipped) return message.channel.send('You cannot sell an equipped item.');
+
+        await confirmationSell({ client, message, user, itemQuantity, itemName, itemPrice, info });
 
         return;
     }
@@ -236,8 +241,9 @@ async function handleSell({ message, args, user }) {
     return message.channel.send('You do not have this item to sell.');
 }
 
-async function confirmationSell({ message, user, itemQuantity, itemName, itemPrice, info }) {
+async function confirmationSell({ client, message, user, itemQuantity, itemName, itemPrice, info }) {
 
+    const channel = message.channel;
     confirmation.description = marketUtils.returnMessage({ info, itemQuantity, itemName, itemPrice, type: info.type, messageType: "sell" });
 
     const confirmationMessage = await message.channel.send({ embeds: [confirmation], components: [confirmationRow] });
@@ -257,30 +263,21 @@ async function confirmationSell({ message, user, itemQuantity, itemName, itemPri
             }
 
             if (selection === 'confirm') {
+
                 await confirmationMessage.delete();
+                const userID = user.userID;
 
-                user.inv[itemName].listed ? user.inv[itemName].listed += itemQuantity : user.inv[itemName].listed = itemQuantity;
-                user.markModified('inv');
-                await user.save();
+                const results = await createMarketListing(client, userID, { quantity: itemQuantity, name: itemName, price: itemPrice, info });
 
-                const listing = new Listing({
-                    _id: mongoose.Types.ObjectId(),
-                    userID: message.author.id,
-                    itemCost: itemPrice,
-                    itemName,
-                    quantity: itemQuantity,
-                    item: info,
-                    type: info.type,
-                });
+                if (!results || !results.success) {
+                    return channel.send('There was an error creating your listing.');
+                }
 
-                await listing.save()
-                    .then(result => console.log(`A new listing was created by ${result._doc.userID}`))
-                    .catch(err => console.error(err));
+                const listing = results.transactionResults.listing;
 
                 listingConfirmed.description = marketUtils.returnMessage({ listing, type: listing.type, info: listing.item, messageType: 'listingConfirmed' });
 
-                await message.channel.send({ embeds: [listingConfirmed] });
-
+                await channel.send({ embeds: [listingConfirmed] });
                 return;
             }
 
@@ -293,7 +290,12 @@ async function confirmationSell({ message, user, itemQuantity, itemName, itemPri
 
             const embed = confirmationMessage.embeds[0];
             embed.color = '#FF0000';
-            confirmationMessage.edit({ embeds: [embed], components: [] });
+            try {
+                confirmationMessage.edit({ embeds: [embed], components: [] });
+            } catch (e) {
+                return;
+            }
+
             return;
         });
 }
@@ -531,6 +533,75 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
 
         console.log("Transaction was successfully created.");
         return 0;
+
+    } catch (e) {
+        console.log(e);
+        console.log("The transaction was aborted.");
+    } finally {
+        await session.endSession();
+        await client.mongoUtils.client.close();
+    }
+}
+
+async function createMarketListing(client, listerID, item) {
+
+    const db = mongoose.createConnection(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const session = await db.startSession();
+
+    const transactionOptions = {
+        readPreference: 'primary',
+        readConcern: { level: 'local' },
+        writeConcern: { w: 'majority' },
+    };
+
+
+    try {
+        let listing;
+
+        const transactionResults = await session.withTransaction(async () => {
+
+            const lister = await User.findOne({ userID: listerID }).session(session);
+
+            lister.inv[item.name].listed ? (
+
+                lister.inv[item.name].listed += item.quantity
+
+            ) : (
+
+                lister.inv[item.name].listed = item.quantity
+
+            );
+
+            lister.markModified('inv');
+            await lister.save();
+
+            assert.ok(!lister.inv[item.name].equipped, "You cannot list an item that is equipped.");
+
+            listing = new Listing({
+                _id: mongoose.Types.ObjectId(),
+                userID: listerID,
+                itemCost: item.price,
+                itemName: item.name,
+                quantity: item.quantity,
+                item: item.info,
+                type: item.info.type,
+            });
+
+            await listing.save();
+
+        }, transactionOptions);
+
+        if (!transactionResults) {
+            console.log("Transaction failed [unknown reason].");
+            return { success: false, message: "Transaction failed [unknown reason].", code: 5 };
+        }
+
+        transactionResults.listing = listing;
+        console.log(`${JSON.stringify(transactionResults, null, 2)}`);
+
+
+        console.log("Transaction was successfully created.");
+        return { success: true, message: "Transaction was successfully created.", transactionResults };
 
     } catch (e) {
         console.log(e);
