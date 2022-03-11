@@ -9,7 +9,7 @@ module.exports = {
     category: "areas",
     async execute({ message, args, user, prefix }) {
 
-        const area = AreaInterface.areas[user.location['area']];
+        const area = AreaInterface.areas[user.location['area'] || 1];
         const floorToAccess = parseInt(args[0]);
 
         if (!area) {
