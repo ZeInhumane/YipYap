@@ -3,8 +3,8 @@ const Discord = require('discord.js');
 const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
+const areaUtil = require('../areas/utils/areaUtil');
 
-const AreaInterface = require('../areas/AreaInterface');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -26,20 +26,19 @@ module.exports = {
                 name = name.split("#", name.length - 4);
                 name = name[0];
 
-                const Area = getArea(user.location.area);
+                const Area = areaUtil.getArea(user.location.area);
 
-                console.log(Area.getName);
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
                     .setColor('#000000')
-                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
                     .addField("<:cash_24:751784973488357457> Currency  " + user.currency, " \u200b", true)
                     .addField(":level_slider: Level:  " + user.level, " \u200b", true)
-                    .addField(":hearts: Health Point: " + calulateFinalStat("hp", user), " \u200b", true)
-                    .addField(":crossed_swords: Attack: " + calulateFinalStat("attack", user), " \u200b", true)
-                    .addField(":shield: Defense: " + calulateFinalStat("defense", user), " \u200b", true)
-                    .addField("💨 Speed: " + calulateFinalStat("speed", user), " \u200b", true)
+                    .addField(":hearts: Health Point: " + calculatedStats.hp, " \u200b", true)
+                    .addField(":crossed_swords: Attack: " + calculatedStats.attack, " \u200b", true)
+                    .addField(":shield: Defense: " + calculatedStats.defense, " \u200b", true)
+                    .addField("💨 Speed: " + calculatedStats.speed, " \u200b", true)
                     .addField('Level: ', ` ${user.level}`, true)
                     .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
                     .addField('Experience to next level: ', ` ${to_upgrade}`, true)
@@ -70,15 +69,5 @@ module.exports = {
             }
         });
 
-        function calulateFinalStat(statName, user) {
-            return Math.round(user.player.baseStats[statName] * (1 + user.player.additionalStats[statName].multi / 100) + user.player.additionalStats[statName].flat);
-        }
     },
 };
-function getArea(id) {
-    for (const [, areaClass] of Object.entries(AreaInterface.areas)) {
-        if (areaClass.getID === id) {
-            return areaClass;
-        }
-    }
-}

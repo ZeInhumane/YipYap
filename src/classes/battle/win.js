@@ -2,11 +2,11 @@ const Discord = require('discord.js');
 const findItem = require('../../functions/findItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
+const User = require('../../models/user.js');
+const userEffects = require('../../models/userEffects.js');
+const lvl_edit = require('./lvl_edit.js');
 module.exports = {
     async execute(message, winner, loser, location) {
-        const User = require('../../models/user.js');
-        const userEffects = require('../../models/userEffects.js');
-        const lvl_edit = require('./lvl_edit.js');
 
         const winEmbed = new Discord.MessageEmbed()
             .setTitle(`You Won!`)
@@ -129,7 +129,6 @@ module.exports = {
                 user.currency += moneyEarned * goldMulti;
                 user.save()
                     .catch(err => console.error(err));
-
 
                 message.channel.send({ embeds: [winEmbed] });
             });

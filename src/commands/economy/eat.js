@@ -49,7 +49,7 @@ module.exports = {
 
             let consumable = await findPartialItem(itemName);
             consumable = consumable[0];
-            if (consumable?.type != "consumable") {
+            if (!consumable || consumable.type != "consumable") {
                 message.channel.send("That item cannot be consumed");
                 return;
             }

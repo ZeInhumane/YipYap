@@ -9,4 +9,4 @@ const PrefixSchema = new mongoose.Schema({
     GuildOwner:Number,
 });
 
-const MessageModel = module.exports = mongoose.model('prefixes', PrefixSchema);
+module.exports = mongoose.model('prefixes', PrefixSchema);
