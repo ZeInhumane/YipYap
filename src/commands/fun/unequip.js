@@ -59,7 +59,7 @@ module.exports = {
                 user.markModified('inv');
                 user.markModified('player');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(result => console.log(`${result._doc.userID} unequipped ${currentEquippedItem}`))
                     .catch(err => console.error(err));
                 message.channel.send(`You've unequipped: ${itemName}.`);
             }
