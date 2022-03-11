@@ -4,7 +4,7 @@ const findItem = require('../../functions/findItem.js');
 const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
 const areaUtil = require('../areas/utils/areaUtil');
-
+const calculateUserStats = require('../../functions/calculateUserStats');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -27,7 +27,7 @@ module.exports = {
                 name = name[0];
 
                 const Area = areaUtil.getArea(user.location.area);
-
+                const calculatedStats = await calculateUserStats(user, false);
                 const embed = new Discord.MessageEmbed()
                     // can be formatted better
                     .setTitle(name + `'s profile`)
