@@ -31,7 +31,7 @@
     "mongoose-sequence": "^5.3.1",
     "node-fetch": "^2.6.7",
     "require-dir": "^1.2.0",
-    "sequelize": "^6.16.1"
+    "sequelize": "^6.17.0"
   },
   "engines": {
     "node": "16.x"
