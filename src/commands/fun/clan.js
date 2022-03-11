@@ -1015,13 +1015,14 @@ module.exports = {
                     const levelToJoinClan = 10;
                     const clanID = args[1];
                     // Call clan util
-                    const checkClan = await clanUtil(user.userID);
+                    const checkClan = await clanUtil(user.clanID);
                     if (checkClan == null) {
                         // Check if user has enough exp
                         if (user.level < levelToJoinClan) {
                             return message.channel.send(`You do not have enough exp to join a clan! You need to be level 10 to join a clan.`);
                         }
                         if (!clanID) { return message.channel.send(`Please specify a valid Clan ID to join.`); }
+
                         // Check if clan exists
                         clan.findOne({ clanID: clanID }, async (err, clanData) => {
                             if (!clanData) { return message.channel.send(`That clan does not exist!`); }
