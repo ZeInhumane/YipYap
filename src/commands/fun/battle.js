@@ -1,7 +1,8 @@
 const win = require('../../classes/battle/win.js');
 const ticketUtil = require('./utils/ticketUtil.js');
 const Battle = require('./interface/battleInterface.js');
-const AreaInterface = require('../areas/AreaInterface.js');
+const areaUtil = require('../areas/utils/areaUtil');
+
 // Import calculate user stats
 const calculateUserStats = require('../../functions/calculateUserStats.js');
 module.exports = {
@@ -15,8 +16,9 @@ module.exports = {
         // Calculate user stats
         user = await calculateUserStats(user, true);
         // Get Area
-        const area = new AreaInterface.areas[user.location['area'] || 1];
-        area.selectFloor(user.location['floor'] || 1);
+        const Area = areaUtil.getArea(user.location.area);
+        const area = new Area();
+        area.selectFloor(user.location['floor']);
 
         // Get clan
         const clanID = user.clanID;
@@ -24,7 +26,7 @@ module.exports = {
         const { expMsg, goldMsg } = await ticketUtil.ticketEffects(message.author.id, user, message);
 
         // Create enemy
-        const enemy = area.getRandomEnemy(user.location['floor']);
+        const enemy = area.getRandomEnemy();
 
         // Initialize battle
         const battle = new Battle(user, enemy, area);
