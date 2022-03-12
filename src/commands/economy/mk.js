@@ -166,7 +166,7 @@ async function confirmationBuy(client, message, buyer, listing) {
                     await confirmationMessage.delete();
 
                     const results = await createTransaction(client, buyerID, sellerID, listingID);
-                    if (results != 0) {
+                    if (!results.success) {
                         switch (results.code) {
                             case 1:
                                 confirmationFailed.author = { name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) };
@@ -437,14 +437,11 @@ async function confirmationRemove({ message, listing, user }) {
         });
 }
 
+/*  Purchase transaction */
 async function createTransaction(client, buyerID, sellerID, listingID) {
 
-    await client.mongoUtils.client.connect();
-
-    const session = client.mongoUtils.client.startSession();
-
-    const usersCollection = await client.mongoUtils.getCollection('users');
-    const listingsCollection = await client.mongoUtils.getCollection('listings');
+    const db = mongoose.createConnection(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const session = await db.startSession();
 
     const transactionOptions = {
         readPreference: 'primary',
@@ -453,11 +450,13 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
     };
 
     try {
+        let listing;
+
         const transactionResults = await session.withTransaction(async () => {
 
-            const listing = await listingsCollection.findOne({ listingID }, { session });
-            const buyer = await usersCollection.findOne({ userID: buyerID }, { session });
-            const seller = await usersCollection.findOne({ userID: sellerID }, { session });
+            listing = await Listing.findOne({ listingID }).session(session);
+            const buyer = await User.findOne({ userID: buyerID }).session(session);
+            const seller = await User.findOne({ userID: sellerID }).session(session);
             const txCost = listing.itemCost * listing.quantity;
 
             if (!listing) {
@@ -484,45 +483,43 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
                 return { success: false, message: "Transaction aborted [buyer does not have enough currency].", code: 4 };
             }
 
-            await listingsCollection.deleteOne({ listingID }, { session });
+            await Listing.deleteOne({ listingID }).session(session);
 
-            await usersCollection.updateOne({ userID: buyerID },
-                { $inc: { currency: -txCost } },
-                { session },
-            );
+            // Update currency
+            buyer.currency -= txCost;
+            assert.ok(buyer.currency >= 0, "Negative buyer currency");
+            seller.currency += txCost;
 
-            await usersCollection.updateOne({ userID: sellerID },
-                { $inc: { currency: txCost } },
-                { session },
-            );
+            await buyer.save({ session });
+            await seller.save({ session });
 
+            // Reset item in listing.
             listing.item.quantity = listing.quantity;
             listing.item.listed = 0;
 
+            // Update seller inventory.
             seller.inv[listing.itemName].listed -= listing.quantity;
-            seller.inv[listing.itemName].quantity += listing.quantity;
+            assert.ok(seller.inv[listing.itemName].listed >= 0, "Negative listing quantity.");
+            seller.inv[listing.itemName].quantity -= listing.quantity;
+            assert.ok(seller.inv[listing.itemName].quantity >= 0, "Negative quantity.");
 
-            if (!buyer.inv[listing.itemName]) {
-                await usersCollection.updateOne({ userID: buyerID },
-                    { $set: { [`inv.${listing.itemName}`]: listing.item } },
-                    { session },
-                );
-            } else {
-                await usersCollection.updateOne({ userID: buyerID },
-                    { $inc: { [`inv.${listing.itemName}.quantity`]: listing.quantity } },
-                    { session },
-                );
+            // Delete if 0 to save space.
+            if (seller.inv[listing.itemName].quantity === 0) {
+                delete seller.inv[listing.itemName];
             }
 
-            await usersCollection.updateOne({ userID: sellerID },
-                {
-                    $inc: {
-                        [`inv.${listing.itemName}.quantity`]: -listing.quantity,
-                        [`inv.${listing.itemName}.listed`]: -listing.quantity,
-                    },
-                },
-                { session },
+            seller.markModified('inv');
+            await seller.save({ session });
+
+            // Update buyer inventory.
+            buyer.inv[listing.itemName] ? (
+                buyer.inv[listing.itemName].quantity += listing.quantity
+            ) : (
+                buyer.inv[listing.itemName] = listing.item
             );
+
+            buyer.markModified('inv');
+            await buyer.save({ session });
 
         }, transactionOptions);
 
@@ -531,8 +528,10 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             return { success: false, message: "Transaction failed [unknown reason].", code: 5 };
         }
 
+        transactionResults.listing = listing;
         console.log("Transaction was successfully created.");
-        return 0;
+
+        return { success: true, message: "Transaction was successfully created.", transactionResults };
 
     } catch (e) {
         console.log(e);
@@ -597,10 +596,8 @@ async function createMarketListing(client, listerID, item) {
         }
 
         transactionResults.listing = listing;
-        console.log(`${JSON.stringify(transactionResults, null, 2)}`);
-
-
         console.log("Transaction was successfully created.");
+
         return { success: true, message: "Transaction was successfully created.", transactionResults };
 
     } catch (e) {
@@ -608,6 +605,5 @@ async function createMarketListing(client, listerID, item) {
         console.log("The transaction was aborted.");
     } finally {
         await session.endSession();
-        await client.mongoUtils.client.close();
     }
 }
