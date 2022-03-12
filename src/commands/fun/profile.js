@@ -43,7 +43,7 @@ module.exports = {
                     .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
                     .addField('Experience to next level: ', ` ${to_upgrade}`, true)
                     .addField('Total Available Special Points: ', ` ${user.sp}`, true)
-                    .addField(`Location Name: \n${Area.getName} | ${user.location.area} - ${user.location.floor}`, " \u200b", true)
+                    .addField(`Location Name: \n${Area.getName} | ${user.location.area || 1} - ${user.location.floor || 1}`, " \u200b", true)
                     .setImage(Area.getImageURL);
 
                 // Finds all equipped items
