@@ -48,6 +48,7 @@ module.exports = class Battle {
         this.expired;
         this.round = 1;
         this.turnActions = { player: null, enemy: null };
+        this.playerShielding = false;
 
         // Inactive
         this.playerTurnAction = `You stared at ${this.enemy.name}`;
@@ -186,7 +187,7 @@ module.exports = class Battle {
 
     /**
      * Handle player action
-     * @param {String} action
+     * @param {String} action - attack/defend/ultimate
      */
     async playerTurn(action) {
         const invalidInput = true;
@@ -202,7 +203,13 @@ module.exports = class Battle {
                     return;
                 }
             } else if (action == "defend") {
-                this.playerTurnAction = "You shield yourself, it works.";
+                if (this.playerShielding) {
+                    this.playerTurnAction = "You shield yourself again, increasing your charge by a further 10!";
+                    this.chargeUltimate(this.player, 10);
+                    return;
+                }
+                this.playerTurnAction = "You shield yourself, bracing for the next attack.";
+                this.playerShielding = true;
                 return;
             } else if (action == "ultimate") {
                 if (this.player.ultimate == 100) {
@@ -225,9 +232,14 @@ module.exports = class Battle {
         if (this.dodgeAttack(this.enemy, this.player)) {
             this.enemyTurnAction = `${this.enemy.name}'s turn!\n${this.enemy.name} attacked but ${this.player.name} dodged!\n`;
         } else {
-            const damageTaken = this.calculateDamage(this.enemy, this.player, this.turnActions.player == 'defend');
-            this.takeDamage(this.player, damageTaken);
+            const damageTaken = this.calculateDamage(this.enemy, this.player, this.playerShielding);
             this.enemyTurnAction = `${this.enemy.name}'s turn!\n${this.enemy.name} does ${damageTaken} damage!\n`;
+            if (this.playerShielding) {
+                const fullDamageTaken = this.calculateDamage(this.enemy, this.player);
+                this.enemyTurnAction += `${this.player.name}'s shield absorbed ${fullDamageTaken - damageTaken} damage!\n`;
+                this.playerShielding = false;
+            }
+            this.takeDamage(this.player, damageTaken);
         }
     }
 
@@ -252,7 +264,7 @@ module.exports = class Battle {
 
     /**
      * Reset ultimate charge
-     * @param {User.player} player
+     * @param {User.player} player - Object
      */
     resetUltimate(player) {
         player.ultimate = 0;
@@ -262,8 +274,8 @@ module.exports = class Battle {
 
     /**
      * Returns dodge success
-     * @param {User.player|Enemy} attacker
-     * @param {User.player|Enemy} defender
+     * @param {User.player|Enemy} attacker - Object
+     * @param {User.player|Enemy} defender - Object
      * @returns {Boolean}
      */
     dodgeAttack(attacker, defender) {
@@ -281,9 +293,9 @@ module.exports = class Battle {
 
     /**
      * Check for damage taken
-     * @param {User.player|Enemy} attacker
-     * @param {User.player|Enemy} defender
-     * @param {Boolean} shield
+     * @param {User.player|Enemy} attacker - Object
+     * @param {User.player|Enemy} defender - Object
+     * @param {Boolean} shield - true/false
      * @returns {Number}
      */
     calculateDamage(attacker, defender, shield = false) {
@@ -306,10 +318,11 @@ module.exports = class Battle {
 
         // If user shielded (probably will change logic sometime later)
         if (shield) {
+            damageTaken -= defender.defense / 2;
             // Change it later so higher level reduces damagetaken too
             if (defender.defense > 99) {
                 damageTaken *= 1 / 100;
-                this.chargeUltimate(defender, 24);
+                this.chargeUltimate(defender, 25);
             } else {
                 damageTaken *= (100 - defender.defense) / 100;
                 this.chargeUltimate(defender, 20);
@@ -322,15 +335,20 @@ module.exports = class Battle {
         // Floor to int
         damageTaken = Math.floor(damageTaken);
 
+        // Ensures damage taken is not negative
+        if (damageTaken < 0) {
+            damageTaken = 0;
+        }
+
         // Return damage for use
         return damageTaken;
     }
 
     /**
      * Deducts hp from target
-     * @param {User.player|Enemy} user
-     * @param {Number} amount
-     * @returns {Number}
+     * @param {User.player|Enemy} user - Object
+     * @param {Number} amount - Damage taken
+     * @returns {Number} Current HP - After taking damage
      */
     takeDamage(user, amount) {
         user.hp -= amount;
@@ -343,8 +361,8 @@ module.exports = class Battle {
 
     /**
      * Charge ultimate and update display string
-     * @param {User.player|Enemy} user
-     * @param {Number} amount
+     * @param {User.player|Enemy} user - Object
+     * @param {Number} amount - Amount to charge
      * @returns {Number}
      */
     chargeUltimate(user, amount) {
@@ -357,7 +375,7 @@ module.exports = class Battle {
 
 /**
  * Generate ultimate string to display
- * @param {Number} ultimate
+ * @param {Number} ultimate - Current ultimate charge
  * @returns {String}
  */
 function generateUltimateString(ultimate) {
@@ -366,8 +384,8 @@ function generateUltimateString(ultimate) {
 
 /**
  * Returns a boolean of whether player goes first
- * @param {*} player
- * @param {Enemy} enemy
+ * @param {*} player - Object
+ * @param {Enemy} enemy - Object
  * @returns {boolean}
  */
 function playerIsFirst(player, enemy) {
