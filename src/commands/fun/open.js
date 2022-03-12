@@ -123,7 +123,7 @@ module.exports = {
                         case 'Jericho': {
                             let jericho = 0;
                             for (let i = 0; i < packAmt; i++) {
-                                const jroll = Math.floor(Math.random() * 6);
+                                const jroll = Math.floor(Math.random() * (50 - 20 + 1) + 20);
                                 if (jroll == 0) {
                                     jericho += 1;
                                 } else {

@@ -61,12 +61,12 @@ module.exports = {
                             return;
                         }
                         const eqClass = {
-                            'Common': 2,
-                            'Uncommon': 4,
-                            'Rare': 6,
-                            'Epic': 10,
-                            'Legendary': 15,
-                            'Mythic': 30,
+                            'Common': 20,
+                            'Uncommon': 40,
+                            'Rare': 60,
+                            'Epic': 120,
+                            'Legendary': 300,
+                            'Mythic': 600,
                         };
                         let totalJericho = eqClass[user.inv[fullName].rarity];
                         if (user.inv[fullName].level != 1) {
