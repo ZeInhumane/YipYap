@@ -403,22 +403,16 @@ async function confirmationRemove({ message, listing, user }) {
             }
 
             if (selection === 'confirm') {
+
                 await confirmationMessage.delete();
 
-                try {
-                    await Listing.find({ _id: listing._id })
-                        .remove()
-                        .exec();
+                const results = await createRemoveTransaction(user.userID, listing.listingID);
 
-                    user.inv[listing.itemName].listed -= listing.quantity;
-                    user.markModified('inv');
-                    await user.save();
-
-                    await message.channel.send({ embeds: [listingRemoved] });
-
-                } catch (err) {
+                if (!results || !results.success) {
                     return message.channel.send('An error occurred while trying to remove this listing.');
                 }
+
+                await message.channel.send({ embeds: [listingRemoved] });
 
                 return;
             }
@@ -432,7 +426,11 @@ async function confirmationRemove({ message, listing, user }) {
 
             const embed = confirmationMessage.embeds[0];
             embed.color = '#FF0000';
-            confirmationMessage.edit({ embeds: [embed], components: [] });
+            try {
+                confirmationMessage.edit({ embeds: [embed], components: [] });
+            } catch (e) {
+                // do nothing
+            }
             return;
         });
 }
@@ -605,5 +603,66 @@ async function createMarketListing(client, listerID, item) {
         console.log("The transaction was aborted.");
     } finally {
         await session.endSession();
+    }
+}
+
+async function createRemoveTransaction(listerID, listingID) {
+
+    const db = mongoose.createConnection(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const session = await db.startSession();
+
+    const transactionOptions = {
+        readPreference: 'primary',
+        readConcern: { level: 'local' },
+        writeConcern: { w: 'majority' },
+    };
+
+    try {
+        let listing;
+
+        const transactionResults = await session.withTransaction(async () => {
+
+            listing = await Listing.findOne({ listingID }).session(session);
+            const lister = await User.findOne({ userID: listerID }).session(session);
+
+            if (!listing) {
+                await session.abortTransaction();
+                console.error("Transaction aborted [listing not found].");
+                return { success: false, message: "Transaction aborted [listing not found].", code: 1 };
+            }
+
+            if (!lister) {
+                await session.abortTransaction();
+                console.error("Transaction aborted [lister not found].");
+                return { success: false, message: "Transaction aborted [lister not found].", code: 2 };
+            }
+
+            // Update lister inventory
+            lister.inv[listing.itemName].listed -= listing.quantity;
+            assert.ok(lister.inv[listing.itemName].listed >= 0, "Negative listing quantity.");
+            lister.markModified('inv');
+            await lister.save({ session });
+
+            // Delete listing
+            await Listing.deleteOne({ listingID }).session(session);
+
+
+        }, transactionOptions);
+
+        if (!transactionResults) {
+            console.log("Transaction failed [unknown reason].");
+            return { success: false, message: "Transaction failed [unknown reason].", code: 5 };
+        }
+
+        transactionResults.listing = listing;
+        console.log("Transaction was successfully created.");
+
+        return { success: true, message: "Transaction was successfully created.", transactionResults };
+
+    } catch (e) {
+        console.log(e);
+        console.log("The transaction was aborted.");
+    } finally {
+        session.endSession();
     }
 }
