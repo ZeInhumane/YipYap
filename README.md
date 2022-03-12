@@ -16,3 +16,9 @@ https://github.com/Jerick5555
 https://github.com/QuickLittleWolf
 
 https://github.com/0xfinder
+
+Credits to the following people for the art they provided.
+
+https://github.com/L-Rojean
+
+https://github.com/Jaslynnn
