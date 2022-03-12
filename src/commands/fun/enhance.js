@@ -8,6 +8,7 @@ module.exports = {
     name: "enhance",
     description: "Enhance your equipment using materials to increase its stats. Enhancing equipment requires Jericho Jehammads",
     syntax: "{item name} {number of materials}",
+    aliases: ['enh'],
     category: "Fun",
     async execute({ message, args }) {
         const currentColor = "#0099ff";

@@ -28,8 +28,7 @@ module.exports = {
                 .then(result => console.log(result))
                 .catch(err => console.error(err));
         });
-        // apply a check to check for level up
-        // congratulate those who level up
+        // Message for level up
         if (update_winner.level_up()) {
             message.channel.send(update_winner.level_up());
         }

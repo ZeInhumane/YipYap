@@ -11,7 +11,8 @@ module.exports = class AreaInterface {
         }
     }
 
-    getRandomEnemy(floor) {
+    getRandomEnemy() {
+        const floor = this.floors[this.selectedFloor];
         return makeNewEnemy(floor);
     }
 
@@ -20,6 +21,11 @@ module.exports = class AreaInterface {
     }
 
     selectFloor(floor) {
+        if (!floor) {
+            this.selectedFloor = 1;
+            return this.selectedFloor;
+        }
+
         this.selectedFloor = floor;
         return this.selectedFloor;
     }

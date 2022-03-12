@@ -7,6 +7,7 @@ dotenv.config();
 // Create client
 const client = new Discord.Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MESSAGE_REACTIONS'] });
 client.mongoose = require('./src/utils/mongoose');
+client.mongoUtils = require('./src/utils/mongoUtils');
 client.commands = new Discord.Collection();
 
 // Load handlers

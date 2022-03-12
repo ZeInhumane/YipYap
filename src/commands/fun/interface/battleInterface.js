@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const useUltimate = require('../utils/useUltimate.js');
+const useUltimate = require('../utils/ultimateUtil.js');
 const applyBuffs = require('../utils/buffUtil.js');
 
 const ultimateEmote = ":Ultimate:822042890955128872";
@@ -26,6 +26,7 @@ const row = new Discord.MessageActionRow()
             .setEmoji(ultimateEmote),
     );
 
+
 module.exports = class Battle {
     /**
      * Creates a new battle between 2 players
@@ -43,7 +44,7 @@ module.exports = class Battle {
 
         // Set location info
         this.locationInfo = locationInfo;
-        console.log(locationInfo);
+
         // Game states
         this.expired;
         this.round = 1;
@@ -56,10 +57,7 @@ module.exports = class Battle {
         this.playerPreTurnAction = ``;
         // Retrieve player name and stats from discord user
         this.player = { name: user.player.name };
-        for (const stat in user.player.baseStats) {
-            this.player[stat] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
-            this.player[`${stat}Max`] = Math.round(user.player.baseStats[stat] * (1 + user.player.additionalStats[stat].multi / 100) + user.player.additionalStats[stat].flat);
-        }
+        Object.assign(this.player, user.player);
         this.player.buffs = [];
 
         // Copy original hp to display in battle

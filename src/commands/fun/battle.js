@@ -1,8 +1,10 @@
 const win = require('../../classes/battle/win.js');
 const ticketUtil = require('./utils/ticketUtil.js');
 const Battle = require('./interface/battleInterface.js');
-const AreaInterface = require('../areas/AreaInterface.js');
+const areaUtil = require('../areas/utils/areaUtil');
 
+// Import calculate user stats
+const calculateUserStats = require('../../functions/calculateUserStats.js');
 module.exports = {
     name: "battle",
     description: "Battling is the primary means of war. 'The war of war is very pog' -Sun Tzu",
@@ -11,15 +13,20 @@ module.exports = {
     aliases: ['b'],
     category: "Fun",
     async execute({ message, user }) {
+        // Calculate user stats
+        user = await calculateUserStats(user, true);
+        // Get Area
+        const Area = areaUtil.getArea(user.location.area);
+        const area = new Area();
+        area.selectFloor(user.location['floor']);
 
-        const area = new AreaInterface.areas[user.location['area']];
-        area.selectFloor(user.location['floor'] || 1);
-
+        // Get clan
+        const clanID = user.clanID;
         // Get effects messages to display in embed later
         const { expMsg, goldMsg } = await ticketUtil.ticketEffects(message.author.id, user, message);
 
         // Create enemy
-        const enemy = area.getRandomEnemy(user.location['floor']);
+        const enemy = area.getRandomEnemy();
 
         // Initialize battle
         const battle = new Battle(user, enemy, area);
@@ -28,7 +35,7 @@ module.exports = {
         const playerWon = await battle.initBattle(message, expMsg, goldMsg);
 
         if (playerWon) {
-            win.execute(message, user, enemy, area);
+            win.execute(message, user, enemy, area, clanID);
         } else if (playerWon == false) {
             message.channel.send(`${user.player.name} has been defeated by ${enemy.name}!`);
         } else {

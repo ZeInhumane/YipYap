@@ -9,7 +9,7 @@ module.exports = {
     category: "areas",
     async execute({ message, args, user, prefix }) {
 
-        const area = AreaInterface.areas[user.location['area']];
+        const area = AreaInterface.areas[user.location['area'] || 1];
         const floorToAccess = parseInt(args[0]);
 
         if (!area) {
@@ -73,7 +73,6 @@ module.exports = {
                 name: `${message.author.username}'s travel`,
                 icon_url: message.author.displayAvatarURL({ dynamic: true }),
             },
-            description: `[PLACEHOLDER] enemy desc etc drops`,
             fields: [
                 {
                     name: `Applied enemy buffs`,

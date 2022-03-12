@@ -1,7 +1,5 @@
 const Items = require('../models/items');
 const Equipment = require('../models/equipment');
-const mongoose = require('mongoose');
-const Discord = require('discord.js');
 
 module.exports = async function (itemName, getWeaponStats = false, getDescription = false, getEmote = false) {
     // IDK why it needs _docs, but it breaks without it
@@ -27,8 +25,8 @@ module.exports = async function (itemName, getWeaponStats = false, getDescriptio
             exclusion["emote"] = 0;
         }
 
-        itemAddOn = await Equipment.findOne({ itemName: itemName }, exclusion).exec();
-        props = Object.entries(itemAddOn._doc);
+        const itemAddOn = await Equipment.findOne({ itemName: itemName }, exclusion).exec();
+        const props = Object.entries(itemAddOn._doc);
         for (let i = 0; i < props.length; i++) {
             item._doc[props[i][0]] = props[i][1];
         }

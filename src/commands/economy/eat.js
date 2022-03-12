@@ -10,7 +10,7 @@ module.exports = {
     description: "Eats a consumable to gain experience",
     syntax: "{Item to eat} {quantity}",
     cooldown: 5,
-    aliases: ['e'],
+    aliases: [''],
     category: "Economy",
     async execute({ message, args }) {
         let toBeConsumed = 1;
@@ -49,7 +49,7 @@ module.exports = {
 
             let consumable = await findPartialItem(itemName);
             consumable = consumable[0];
-            if (consumable.type != "consumable") {
+            if (!consumable || consumable.type != "consumable") {
                 message.channel.send("That item cannot be consumed");
                 return;
             }

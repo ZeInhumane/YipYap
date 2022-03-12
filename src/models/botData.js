@@ -7,6 +7,7 @@ const dataSchema = mongoose.Schema({
         of: Map,
     },
     equipmentID: Number,
+    clanID: Number,
 });
 
 module.exports = mongoose.model('BotData', dataSchema, 'botDatas');
