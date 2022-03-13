@@ -77,6 +77,13 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+            if ((packType == 'Weapons' || packType == 'Swords') && boxType == 'Pack'){
+                if (user.inv[`Swords Pack`]){
+                    packType = 'Swords';
+                }else{
+                    packType = 'Weapons';
+                }
+            }
 
             if (!user.inv[`${packType} ${boxType}`] || user.inv[`${packType} ${boxType}`].quantity < packAmt) {
                 message.channel.send(`You do not own enough ${packType} ${boxType} to open yet.`);
@@ -141,7 +148,7 @@ module.exports = {
 
                             break;
                         }
-                        case 'Swords' || 'Boots': {
+                        case 'Swords' || 'Weapons' || 'Boots': {
                             let equipment;
                             // but why
                             if (packAmt > 5) {
@@ -150,8 +157,8 @@ module.exports = {
                             }
 
                             // Chance table
-                            if (packType == 'Swords') {
-                                equipment = swordsLootTable;
+                            if (packType == 'Swords' || packType == 'Weapons') {
+                                equipment = weaponsLootTable;
                             } else if (packType == 'Boots') {
                                 equipment = bootsLootTable;
                             }
@@ -313,6 +320,13 @@ const boxLootTable = {
         "Rag Hood": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Cloth Hood": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Leather Hood": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Rags": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        // "Shirt": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        // "Leather Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Rag Shorts": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        // "Cloth Pants": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        // "Leather Pants": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 5, maxQuantity: 15 },
     },
     "uncommon": {
         "Apple": { dropChance: 60, minQuantity: 1, maxQuantity: 5 },
@@ -329,7 +343,16 @@ const boxLootTable = {
         "Rubber Boots": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Hiking Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Leather Hood": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        "Jericho Jehammad": { dropChance: 1, minQuantity: 3, maxQuantity: 3 },
+        // "Wooden Chestplate": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        // "Stone Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        // "Iron Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Skirts": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        // "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        // "Hiking Pants": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Steel Bucket": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        // "Iron Helmet": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        // "Top Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 10, maxQuantity: 30 },
     },
     "rare": {
         "Apple": { dropChance: 60, minQuantity: 5, maxQuantity: 20 },
@@ -340,27 +363,42 @@ const boxLootTable = {
         "Staff": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Ice Rapier": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Cursed Cutlass": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        "Hiking Boots": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Hiking Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Magic Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Clown Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Elven Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        "Jericho Jehammad": { dropChance: 5, minQuantity: 5, maxQuantity: 10 },
+        // "Clown Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Clown Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Clown Wig": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Juggling Pins": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Magic Robe Hood": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Magic Robe": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Magic Braies": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Pirate Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Pirate Vest": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Pirate Breeches": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Pirat Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Elven Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Elven Tunic": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Elven Breeches": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Elven Bow": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 20, maxQuantity: 40 },
     },
     "epic": {
         "Watermelon": { dropChance: 10, minQuantity: 2, maxQuantity: 5 },
         "Banana": { dropChance: 60, minQuantity: 10, maxQuantity: 30 },
         "Orange": { dropChance: 40, minQuantity: 5, maxQuantity: 10 },
-        "Jericho Jehammad": { dropChance: 5, minQuantity: 15, maxQuantity: 50 },
         "Dusk Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Spiked Cowboy Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        "Shadow Step Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Shadow Step Boots": { dropChance: 40, minQuantity: 25, maxQuantity: 50 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 40, maxQuantity: 80 },
     },
     "legendary": {
         "Watermelon": { dropChance: 39, minQuantity: 5, maxQuantity: 10 },
-        "Falafel": { dropChance: 50, minQuantity: 1, maxQuantity: 1 },
-        "Spaghetti": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        "Jericho Jehammad": { dropChance: 1, minQuantity: 100, maxQuantity: 100 },
+        "Falafel": { dropChance: 50, minQuantity: 5, maxQuantity: 15 },
+        "Spaghetti": { dropChance: 10, minQuantity: 15, maxQuantity: 15 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 80, maxQuantity: 120 },
         // "Quick Wolf Kunais": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "The Broccoli Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Inhumane Nightbringer": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -368,13 +406,13 @@ const boxLootTable = {
     },
     "mythic": {
         "Watermelon": { dropChance: 1, minQuantity: 100, maxQuantity: 100 },
-        "Falafel": { dropChance: 29, minQuantity: 2, maxQuantity: 10 },
-        "Spaghetti": { dropChance: 70, minQuantity: 2, maxQuantity: 10 },
-        "Jericho Jehammad": { dropChance: 1, minQuantity: 100, maxQuantity: 1000 },
+        "Falafel": { dropChance: 29, minQuantity: 20, maxQuantity: 35 },
+        "Spaghetti": { dropChance: 70, minQuantity: 20, maxQuantity: 35 },
+        "Jericho Jehammad": { dropChance: 40, minQuantity: 100, maxQuantity: 200 },
     },
 };
 // Sword pack drop rates
-const swordsLootTable = {
+const weaponsLootTable = {
     'Long Sword': 20,
     'Heavy Sword': 20,
     'Staff': 20,
@@ -382,6 +420,8 @@ const swordsLootTable = {
     'Bow': 20,
     'Ice Rapier': 5,
     'Cursed Cutlass': 5,
+    // 'Juggling Pins': 5,
+    // 'Elven Bow': 5,
     'Dusk Blade': 1,
     'Eclipse Blade': 1,
 };
@@ -393,6 +433,7 @@ const bootsLootTable = {
     'Magic Shoes': 5,
     'Clown Shoes': 5,
     'Elven Boots': 5,
+    // 'Pirate Boots': 5,
     'Spiked Cowboy Boots': 1,
     'Shadow Step Boots': 1,
 };
