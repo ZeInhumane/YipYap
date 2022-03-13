@@ -1,13 +1,24 @@
-Discord bot written in JavaScript using discord.js api and mongodb as the database.
+# YipYap Discord Bot
+![Discord Bots](https://discordbots.org/api/widget/servers/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/status/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/lib/745275291785494571.svg)
 
-An rpg bot, with different commands to battle, upgrade your character and different things to buy from the shop. More features will be added as we go along.
+## Features
+We implemented various features into the bot, aside from being another rpg bot that people can play, we push frequent updates as well as new equipment. 
 
-Purpose of this bot was for practice and some parts of the code will not make sense solely because we are amateur programmers.
+### Bot Invite
+https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot
+### Support Server Invite
+https://discord.gg/cJgAG3W
+### Credits
+Credits to the following people for contributing to this repository.
 
-Any merge/pull request is welcome.
+https://github.com/Jerick5555
 
-Bot invite: https://discord.com/oauth2/authorize?client_id=745275291785494571&permissions=43072&scope=bot
+https://github.com/QuickLittleWolf
 
-Support server invite: https://discord.gg/cJgAG3W
+https://github.com/0xfinder
 
-If you would like to help with the bot, message me at matthew#2596.
+Credits to the following people for the art they provided.
+
+https://github.com/L-Rojean
+
+https://github.com/Jaslynnn
