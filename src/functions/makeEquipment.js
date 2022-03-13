@@ -5,9 +5,9 @@ module.exports = async function (equipmentName) {
         "Common": 1000,
         "Uncommon": 3000,
         "Rare": 9000,
-        "Epic": 40000,
-        "Legendary": 100000,
-        "Mythic": 500000,
+        "Epic": 20000,
+        "Legendary": 80000,
+        "Mythic": 300000,
     };
     const equipment = await findItem(equipmentName);
     equipment.level = 1;
