@@ -33,7 +33,7 @@ module.exports = {
                 for (const i in returnAll) {
                     const runeInfo = returnAll[i];
                     runeEmbed
-                        .addField(`Rune Name`, `${parseInt(i) + 1}. ${runeInfo.Title}`)
+                        .addField(`Rune Name`, `${runeInfo.Rune}. ${runeInfo.Title}`)
                         .addField(`Level Requirement`, runeInfo.Requirements, true)
                         .addField(`Rune Description`, runeInfo.Description, true);
                 }

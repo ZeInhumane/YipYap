@@ -5,6 +5,7 @@ const getFinalStats = require('../../functions/getFinalStats');
 const findPrefix = require('../../functions/findPrefix');
 const areaUtil = require('../areas/utils/areaUtil');
 const calculateUserStats = require('../../functions/calculateUserStats');
+const clanUtil = require('./utils/clanUtil');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -20,12 +21,17 @@ module.exports = {
             } else {
                 // exp needed for each level
                 const next_lvl = Math.floor(user.level * (user.level / 10 * 15));
-                const to_upgrade = next_lvl - user.exp;
-
+                let clanName;
                 let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
-
+                // Get clan name
+                const clanData = await clanUtil(user.clanID);
+                if (clanData) {
+                    clanName = clanData.clanName;
+                } else {
+                    clanName = "None";
+                }
                 const Area = areaUtil.getArea(user.location.area);
                 const calculatedStats = await calculateUserStats(user, false);
                 const embed = new Discord.MessageEmbed()
@@ -33,25 +39,19 @@ module.exports = {
                     .setTitle(name + `'s profile`)
                     .setColor('#000000')
                     .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
-                    .addField("<:cash_24:751784973488357457> Currency  " + user.currency, " \u200b", true)
-                    .addField(":level_slider: Level:  " + user.level, " \u200b", true)
-                    .addField(":hearts: Health Point: " + calculatedStats.hp, " \u200b", true)
-                    .addField(":crossed_swords: Attack: " + calculatedStats.attack, " \u200b", true)
-                    .addField(":shield: Defense: " + calculatedStats.defense, " \u200b", true)
-                    .addField("💨 Speed: " + calculatedStats.speed, " \u200b", true)
-                    .addField('Level: ', ` ${user.level}`, true)
-                    .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
-                    .addField('Experience to next level: ', ` ${to_upgrade}`, true)
-                    .addField('Total Available Special Points: ', ` ${user.sp}`, true)
-                    .addField(`Location Name: \n${Area.getName} | ${user.location.area} - ${user.location.floor}`, " \u200b", true)
+                    .addField("Currency  ", `${user.currency} <:cash_24:751784973488357457>`, true)
+                    .addField("Level", `${user.level} :level_slider:`, true)
+                    .addField('EXP', `${user.exp} / ${next_lvl}`, true)
+                    .addField('Available SP', ` ${user.sp}`, true)
+                    .addField(`Location`, `${Area.getName} | ${user.location.area || 1} - ${user.location.floor || 1}`, true)
+                    .addField('Clan', ` ${clanName}`, true)
                     .setImage(Area.getImageURL);
-
                 // Finds all equipped items
                 const userItemsArr = Object.keys(user.inv);
                 const equipment = userItemsArr.filter(item => {
                     return user.inv[item].equipped === true;
                 });
-                embed.addField("⚔️Equipped Equipment⚔️", ` \u200b`);
+                let insertLine = '';
                 for (let i = 0; i < equipment.length; i++) {
                     // gets item name, then gets said item name stats
                     const itemName = equipment[i].split("#")[0];
@@ -60,11 +60,17 @@ module.exports = {
                     let statsmsg = '';
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         let statname = Object.keys(stats)[j];
-                        statname = statname.replace("attack", " Attack ⚔️ \n").replace("defense", " Defense 🛡️ \n").replace("speed", " Speed 💨 \n").replace("hp", " Health Point :hearts: \n");
-                        statsmsg += `${(Object.values(stats)[j].flat != 0) ? '+' + Object.values(stats)[j].flat + statname : ''} ${(Object.values(stats)[j].multi != 0) ? '+' + Object.values(stats)[j].multi + '%' + statname : ''} `;
+                        statname = statname.replace("attack", " ATK  \n").replace("defense", " 🛡️ DEF  \n").replace("speed", " 💨 SPD  \n").replace("hp", ":hearts: HP  \n");
+                        statsmsg += `${(Object.values(stats)[j].flat != 0) ? '\u2009 \u2009 \u2009 +' + `__${Object.values(stats)[j].flat}__` + statname : ''} ${(Object.values(stats)[j].multi != 0) ? '\u2009 \u2009 \u2009 +' + `__${Object.values(stats)[j].multi}__` + '%' + statname : ''} `;
                     }
-                    embed.addField(`${dbEquipmentStats.emote} ${equipment[i]} `, ` ${statsmsg}`, true);
+                    // Remove # from item name
+                    insertLine += `**${equipment[i].split("#")[0]}** \n ${statsmsg}`;
                 }
+                if (insertLine === '') {
+                    insertLine = 'None';
+                }
+                embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.speed} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
+                embed.addField("**EQUIPMENT**", ` ${insertLine}`, true);
                 message.channel.send({ embeds: [embed] });
             }
         });
