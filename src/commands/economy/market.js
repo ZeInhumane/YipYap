@@ -103,13 +103,13 @@ module.exports = {
                 .catch(async () => {
                     isExpired = true;
                 });
-            if (isExpired) {
-                try {
-                    marketListing.color = '#FF0000';
-                    await listMessage.edit({ embeds: [marketListing] });
-                } catch (e) {
-                    return;
-                }
+        }
+        if (isExpired) {
+            try {
+                marketListing.color = '#FF0000';
+                await listMessage.edit({ embeds: [marketListing] });
+            } catch (e) {
+                return;
             }
         }
     },
