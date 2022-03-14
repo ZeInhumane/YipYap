@@ -361,17 +361,19 @@ async function handleList({ message }) {
 
                 listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
-                listMessage.edit({ embeds: [listingEmbed], components: [row] });
+                await listMessage.edit({ embeds: [listingEmbed], components: [row] });
             })
-            .catch(async (err) => {
-                listingEmbed.color = '#FF0000';
-                if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
-                    return;
-                }
-                listMessage.edit({ embeds: [listingEmbed] });
-
+            .catch(async () => {
                 isExpired = true;
             });
+    }
+    if (isExpired) {
+        try {
+            listingEmbed.color = '#FF0000';
+            await listMessage.edit({ embeds: [listingEmbed] });
+        } catch (e) {
+            return;
+        }
     }
 }
 
