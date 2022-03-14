@@ -225,6 +225,10 @@ async function handleSell({ client, message, args, user }) {
 
     if (!itemPrice) return message.channel.send('Please enter a valid item price.');
 
+    if (itemPrice < 1) return message.channel.send('Please enter a valid item price.');
+
+    if (itemQuantity < 1) return message.channel.send('Please enter a valid item quantity.');
+
     const items = Object.entries(user.inv);
     for (const [name, info] of items) {
         if (name != itemName) continue;
@@ -487,6 +491,7 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             buyer.currency -= txCost;
             assert.ok(buyer.currency >= 0, "Negative buyer currency");
             seller.currency += txCost;
+            assert.ok(buyer.currency >= 0, "Negative seller currency");
 
             await buyer.save({ session });
             await seller.save({ session });
@@ -558,6 +563,8 @@ async function createMarketListing(client, listerID, item) {
         const transactionResults = await session.withTransaction(async () => {
 
             const lister = await User.findOne({ userID: listerID }).session(session);
+            assert.ok(item.quantity > 0, "Invalid quantity.");
+            assert.ok(item.price > 0, "Invalid price.");
 
             lister.inv[item.name].listed ? (
 
