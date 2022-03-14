@@ -363,15 +363,17 @@ async function handleList({ message }) {
 
                 listMessage.edit({ embeds: [listingEmbed], components: [row] });
             })
-            .catch(async (err) => {
-                listingEmbed.color = '#FF0000';
-                if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
-                    return;
-                }
-                listMessage.edit({ embeds: [listingEmbed] });
-
+            .catch(async () => {
                 isExpired = true;
             });
+    }
+    if (isExpired) {
+        try {
+            listingEmbed.color = '#FF0000';
+            listMessage.edit({ embeds: [listingEmbed] });
+        } catch (e) {
+            return;
+        }
     }
 }
 
