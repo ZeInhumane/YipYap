@@ -130,7 +130,7 @@ async function handleBuy({ client, message, args, user }) {
     }
 
     const listing = listings[0];
-    // if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
+    if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
 
     if (listing.itemCost * listing.itemQuantity > user.currency) return message.channel.send('You do not have enough gold to buy this listing.');
 
@@ -491,7 +491,7 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             buyer.currency -= txCost;
             assert.ok(buyer.currency >= 0, "Negative buyer currency");
             seller.currency += txCost;
-            assert.ok(buyer.currency >= 0, "Negative seller currency");
+            assert.ok(seller.currency >= 0, "Negative seller currency");
 
             await buyer.save({ session });
             await seller.save({ session });
