@@ -98,17 +98,19 @@ module.exports = {
 
                     marketListing.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
-                    listMessage.edit({ embeds: [marketListing], components: [row] });
+                    await listMessage.edit({ embeds: [marketListing], components: [row] });
                 })
-                .catch(async (err) => {
-                    marketListing.color = '#FF0000';
-                    if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
-                        return;
-                    }
-                    listMessage.edit({ embeds: [listingEmbed] });
-
+                .catch(async () => {
                     isExpired = true;
                 });
+            if (isExpired) {
+                try {
+                    marketListing.color = '#FF0000';
+                    await listMessage.edit({ embeds: [marketListing] });
+                } catch (e) {
+                    return;
+                }
+            }
         }
     },
 };
