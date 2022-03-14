@@ -361,7 +361,7 @@ async function handleList({ message }) {
 
                 listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
-                listMessage.edit({ embeds: [listingEmbed], components: [row] });
+                await listMessage.edit({ embeds: [listingEmbed], components: [row] });
             })
             .catch(async () => {
                 isExpired = true;
@@ -370,7 +370,7 @@ async function handleList({ message }) {
     if (isExpired) {
         try {
             listingEmbed.color = '#FF0000';
-            listMessage.edit({ embeds: [listingEmbed] });
+            await listMessage.edit({ embeds: [listingEmbed] });
         } catch (e) {
             return;
         }
