@@ -121,5 +121,29 @@ exports.returnMessage = ({ listing, type, info, messageType, itemName, itemQuant
                     return "";
             }
         }
+
+        case "special":
+            switch (messageType) {
+                case "confirmRemove":
+                    return `Are you sure you want to remove ${listing?.quantity === 1 ? '' : `**${listing?.quantity}** of`} your **${listing?.quantity === 1 ? listing?.itemName : `${listing?.itemName}s`}** that you listed on the market for **${listing?.itemCost} Gold** <:cash_24:751784973488357457>${listing?.quantity === 1 ? '' : " **each** "}? (ID: ${listing?.listingID})`;
+
+                case "confirmBuy":
+                    return `Are you sure you wish to buy __${listing.quantity}__ **${listing.quantity === 1 ? listing.itemName : `${listing.itemName}s`}** from the market for **${listing.itemCost} Gold** <:cash_24:751784973488357457>${listing.quantity === 1 ? '' : " **each** "}?`;
+
+                case "listing":
+                    return `**${listing?.itemCost * listing?.quantity} Gold** <:cash_24:751784973488357457>** | ${listing?.quantity === 1 ? listing?.itemName : listing?.itemName + 's'}** ${listing?.item.emote}\n${listing?.item.type.charAt(0).toUpperCase() + listing?.item.type.slice(1)} | x${listing?.quantity} | ID: ${listing?.listingID}`;
+
+                case "listingConfirmed":
+                    return `You have successfully placed ${listing?.quantity === 1 ? '' : `**${listing.quantity}** of `}your **${listing.itemName}** in the market for **${listing?.itemCost} Gold** <:cash_24:751784973488357457>${listing?.quantity === 1 ? '' : " **each** "}`;
+
+                case "purchase":
+                    return `You have successfully bought **${listing.quantity}** **${listing.quantity === 1 ? listing.itemName : `${listing.itemName}s`}** from the market for **${listing.itemCost} Gold** <:cash_24:751784973488357457>${listing.quantity === 1 ? '' : " **each** "}`;
+
+                case "sell":
+                    return `Are you sure you want to place ${itemQuantity === 1 ? '' : `**${itemQuantity}** of`} your **${itemQuantity === 1 ? itemName : `${itemName}s`}** on the market for **${itemPrice} Gold** <:cash_24:751784973488357457>${itemQuantity === 1 ? '' : " **each** "}?`;
+
+                default:
+                    return "";
+            }
     }
 };
