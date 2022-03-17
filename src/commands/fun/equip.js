@@ -2,7 +2,6 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
-const getFinalStats = require('../../functions/getFinalStats');
 module.exports = {
     name: "equip",
     description: "Equips a weapon or armor on your character. Equip another item of the same type to unequip that weapon. Equipping a particular weapon means that you are unable to info/enhance/ascend that weapon.",
@@ -53,30 +52,12 @@ module.exports = {
             });
 
             if (currentEquippedItem) {
-                const currentEquippedItemName = currentEquippedItem.split("#")[0];
-                // Should be stats for current equipped item
-                const stats = getFinalStats(user.inv[currentEquippedItem], await findItem(currentEquippedItemName, true));
-                // Removes stats given by equipped item
-                for (const statName in stats) {
-                    user.player.additionalStats[statName].flat -= stats[statName].flat;
-                    user.player.additionalStats[statName].multi -= stats[statName].multi;
-                }
                 // Unequips item
                 user.inv[currentEquippedItem].equipped = false;
             }
 
             // Equip item setup
             const itemToEquip = user.inv[itemName];
-
-            // Setting stat buffs
-            const stats = getFinalStats(itemToEquip, dbEquipment);
-            for (const statName in stats) {
-                user.player.additionalStats[statName].flat += stats[statName].flat;
-                user.player.additionalStats[statName].multi += stats[statName].multi;
-                // To calulate stats
-                // Math.round(user.player[statName] * (1 + stats[statName].multi / 100) + stats[statName].flat)
-            }
-
             // Equips item
             itemToEquip.equipped = true;
             user.markModified('inv');

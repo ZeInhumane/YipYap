@@ -4,7 +4,6 @@ const Equipment = require('../../models/equipment');
 const findItem = require('../../functions/findItem.js');
 const titleCase = require('../../functions/titleCase');
 const findPrefix = require('../../functions/findPrefix');
-const getFinalStats = require('../../functions/getFinalStats');
 
 module.exports = {
     name: "sell",
@@ -80,17 +79,6 @@ module.exports = {
                             user.inv['Jericho Jehammad'].quantity = totalJericho;
                         }
 
-
-                        // Removes stats from equipment if it is equipped
-                        if (user.inv[fullName].equipped) {
-                            // Should be stats for current equipped item
-                            const stats = getFinalStats(user.inv[fullName], await findItem(eqName, true));
-                            // Removes stats given by equipped item
-                            for (const statName in stats) {
-                                user.player.additionalStats[statName].flat -= stats[statName].flat;
-                                user.player.additionalStats[statName].multi -= stats[statName].multi;
-                            }
-                        }
                         message.channel.send(`You have sold ${fullName} and gained ${totalJericho} Jericho Jehammads.`);
                         message.channel.send(`Your currently have ${user.inv['Jericho Jehammad'].quantity} Jericho Jehammads.`);
                         // Removes equipment from inv

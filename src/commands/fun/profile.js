@@ -69,7 +69,7 @@ module.exports = {
                 if (insertLine === '') {
                     insertLine = 'None';
                 }
-                embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.speed} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
+                embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.defense} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
                 embed.addField("**EQUIPMENT**", ` ${insertLine}`, true);
                 message.channel.send({ embeds: [embed] });
             }

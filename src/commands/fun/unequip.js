@@ -2,7 +2,6 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
-const getFinalStats = require('../../functions/getFinalStats');
 
 module.exports = {
     name: "unequip",
@@ -45,14 +44,6 @@ module.exports = {
             });
 
             if (currentEquippedItem) {
-                const currentEquippedItemName = currentEquippedItem.split("#")[0];
-                // Should be stats for current equipped item
-                const stats = getFinalStats(user.inv[currentEquippedItem], await findItem(currentEquippedItemName, true));
-                // Removes stats given by equipped item
-                for (const statName in stats) {
-                    user.player.additionalStats[statName].flat -= stats[statName].flat;
-                    user.player.additionalStats[statName].multi -= stats[statName].multi;
-                }
                 // Unequips item
                 user.inv[currentEquippedItem].equipped = false;
 
