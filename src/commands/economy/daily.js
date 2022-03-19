@@ -19,7 +19,7 @@ module.exports = {
             // For event(chance for getting a ticket or sth :))
 
             const d = Math.random();
-            if (d < 0.5) {
+            if (d < 0.1) {
                 if (user.inv["X2 Experience Ticket (1 Hour)"]) {
                     user.inv["X2 Experience Ticket (1 Hour)"].quantity += 1;
                     message.channel.send("Congratulations on playing during a major update, you have gotten a small token of appreciation from us :)");
