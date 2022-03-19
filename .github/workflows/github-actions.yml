@@ -2,6 +2,7 @@ name: GitHub Actions Demo
 on: [push]
 jobs:
   Explore-GitHub-Actions:
+    
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -15,3 +16,11 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Discord Commits
+        uses: Sniddl/discord-commits@v1.3
+        with:
+          # discord webhook url without /github
+          webhook: https://discord.com/api/webhooks/945970353002385418/gjiHIF2X6vBYniJyOEv5Z2-eitZMZ-IEgsi7yiLJpeXbpGpA_yQzNvGq6PdqaDT_BJ-A
+          # A general message that is displayed for all commits.
+          message: Commit
+ 
