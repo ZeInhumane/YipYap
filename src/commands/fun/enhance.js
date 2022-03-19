@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
-const findItem = require('../../functions/findItem.js');
 
 module.exports = {
     name: "enhance",
@@ -117,14 +116,6 @@ module.exports = {
             // Removes upgrade material from inv if it reaches 0
             if (user.inv[upgradeMaterial].quantity == 0) {
                 delete user.inv[upgradeMaterial];
-            }
-
-            // Checks if any equipped item leveled up
-            if (userEquipment.equipped && levelsGained > 0) {
-                const dbEquipment = await findItem(itemName.split("#")[0], true);
-                for (const statName in dbEquipment.statsUpPerLvl) {
-                    user.player.additionalStats[statName].flat += dbEquipment.statsUpPerLvl[statName] * levelsGained;
-                }
             }
 
             user.markModified('inv');

@@ -130,7 +130,7 @@ async function handleBuy({ client, message, args, user }) {
     }
 
     const listing = listings[0];
-    // if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
+    if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
 
     if (listing.itemCost * listing.itemQuantity > user.currency) return message.channel.send('You do not have enough gold to buy this listing.');
 
@@ -224,6 +224,10 @@ async function handleSell({ client, message, args, user }) {
     itemName = titleCase(itemName);
 
     if (!itemPrice) return message.channel.send('Please enter a valid item price.');
+
+    if (itemPrice < 1) return message.channel.send('Please enter a valid item price.');
+
+    if (itemQuantity < 1) return message.channel.send('Please enter a valid item quantity.');
 
     const items = Object.entries(user.inv);
     for (const [name, info] of items) {
@@ -357,17 +361,19 @@ async function handleList({ message }) {
 
                 listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
-                listMessage.edit({ embeds: [listingEmbed], components: [row] });
+                await listMessage.edit({ embeds: [listingEmbed], components: [row] });
             })
-            .catch(async (err) => {
-                listingEmbed.color = '#FF0000';
-                if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
-                    return;
-                }
-                listMessage.edit({ embeds: [listingEmbed] });
-
+            .catch(async () => {
                 isExpired = true;
             });
+    }
+    if (isExpired) {
+        try {
+            listingEmbed.color = '#FF0000';
+            await listMessage.edit({ embeds: [listingEmbed] });
+        } catch (e) {
+            return;
+        }
     }
 }
 
@@ -487,6 +493,7 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             buyer.currency -= txCost;
             assert.ok(buyer.currency >= 0, "Negative buyer currency");
             seller.currency += txCost;
+            assert.ok(seller.currency >= 0, "Negative seller currency");
 
             await buyer.save({ session });
             await seller.save({ session });
@@ -558,6 +565,8 @@ async function createMarketListing(client, listerID, item) {
         const transactionResults = await session.withTransaction(async () => {
 
             const lister = await User.findOne({ userID: listerID }).session(session);
+            assert.ok(item.quantity > 0, "Invalid quantity.");
+            assert.ok(item.price > 0, "Invalid price.");
 
             lister.inv[item.name].listed ? (
 
