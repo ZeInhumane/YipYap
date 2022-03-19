@@ -88,7 +88,7 @@ module.exports = {
                 .setTitle(`${boxType} opened!`)
                 .setDescription(`The following items have been added to your inventory:`)
                 .setColor('#000001')
-                .setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
+                .Vnail(client.user.displayAvatarURL({ dynamic: true }));
 
             switch (boxType) {
                 case 'Pack':
