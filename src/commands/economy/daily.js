@@ -36,7 +36,7 @@ module.exports = {
             user.currency += currencyReward;
             user.markModified('inv');
             user.save()
-                .then(result => console.log(result))
+                .then(result => console.log(`${result._doc.userID} claimed daily reward`))
                 .catch(err => console.error(err));
             message.channel.send(`You have successfully claimed your daily of ${currencyReward} <:cash_24:751784973488357457>`);
             message.channel.send("Claim everyday for a chance to get experience tickets!");
