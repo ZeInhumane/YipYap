@@ -121,25 +121,21 @@ module.exports = {
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log('inv saved at enhance', result))
+                .then(result => console.log(`Equipment enhanced ${result.userID}`))
                 .catch(err => console.error(err));
 
             const enhanceEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
-                .setTitle(itemName)
-                .setURL('https://discord.gg/CTMTtQV')
-                .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                .setDescription('Upgrade your equipment till it reaches the ascension mark!')
+                .setTitle(`✅ ${itemName} enhanced `)
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`Level: ${userEquipment.level}/${(rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20} `)
                 .addFields(
-                    { name: `<:Jericho:823551572029603840> Used: ${materialUseCount}`, value: "\u200b", inline: true },
-                    { name: `EXP gained: ${expGivenPerMaterial * materialUseCount}`, value: "\u200b", inline: true },
-                    { name: `EXP till level up: ${(userEquipment.level == (rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20) ? 'MAX' : userEquipment.expToLevelUp}`, value: "\u200b", inline: true },
-                    { name: `Equipment Level: ${userEquipment.level}/${(rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20}`, value: "\u200b", inline: true },
-
+                    { name: `x${materialUseCount} Jericho Jehammad`, value: `+${expGivenPerMaterial * materialUseCount} EXP 📈`, inline: true },
+                    { name: `EXP: `, value: `${(userEquipment.level == (rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20) ? 'MAX' : userEquipment.exp} / ${userEquipment.expToLevelUp + userEquipment.exp}`, inline: true },
                 );
 
             if (levelsGained > 0) {
-                enhanceEmbed.addField(`Levels gained: ${levelsGained}`, "\u200b", true);
+                enhanceEmbed.addField(`Levels gained: `, `${levelsGained}`, true);
             }
 
             message.channel.send({ embeds: [enhanceEmbed] });
