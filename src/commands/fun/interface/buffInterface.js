@@ -51,7 +51,6 @@ const buffDir = requireDir('./../buffs');
 const buffs = {};
 
 for (const key in buffDir) {
-    console.log(key);
     const buff = buffDir[key];
     buffs[buff.getID] = buff;
 }

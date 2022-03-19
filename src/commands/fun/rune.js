@@ -10,7 +10,7 @@ module.exports = {
     cooldown: 1,
     aliases: ['runes'],
     category: "Fun",
-    execute({ message, args }) {
+    execute({ message, args, client }) {
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
                 // Getting the prefix from db
@@ -25,17 +25,18 @@ module.exports = {
             if (user.rune == null) { user.rune = 1; }
             // checks if argument is keyed in properly
             if (isNaN(userRune)) {
-                const returnAll = await rune.find({}).exec();
+                const returnAll = await rune.find({}).sort(`-Rune`).exec();
                 const runeEmbed = new Discord.MessageEmbed()
+                    .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
                     .setColor(embedColor)
-                    .setTitle(`Available runes`)
+                    .setTitle(`All available runes`)
                     .addField(`\u200b`, `Enter the rune number you would like to use eg. -rune 1 to equip ruin 1`);
                 for (const i in returnAll) {
                     const runeInfo = returnAll[i];
                     runeEmbed
-                        .addField(`Rune Name`, `${runeInfo.Rune}. ${runeInfo.Title}`)
-                        .addField(`Level Requirement`, runeInfo.Requirements, true)
-                        .addField(`Rune Description`, runeInfo.Description, true);
+                        .addField(`> ID: ${runeInfo.Rune}`, `Name: __${runeInfo.Title}__`)
+                        .addField(`Requirement`, runeInfo.Requirements, true)
+                        .addField(`Description`, runeInfo.Description, true);
                 }
                 message.channel.send({ embeds: [runeEmbed] });
                 return;

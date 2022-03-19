@@ -68,7 +68,7 @@ exports.ticketEffects = async function (userID, user, message) {
         }
         effects.markModified('tickets');
         effects.save()
-            .then(result => console.log('Effects', result))
+            .then(result => console.log(`Edited ticket effects for ${result._doc.userID}`))
             .catch(err => console.error(err));
     });
 

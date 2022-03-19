@@ -13,7 +13,7 @@ module.exports = {
     aliases: ['chest', 'chests', 'pack', 'lootbox', 'lb'],
     cooldown: 5,
     category: "Fun",
-    async execute({ message, args, prefix }) {
+    async execute({ message, args, prefix, client }) {
         // Lowercase all args
         args.map(item => item.toLowerCase());
 
@@ -86,7 +86,9 @@ module.exports = {
             const guest = user.player.name;
             const openEmbed = new Discord.MessageEmbed()
                 .setTitle(`${boxType} opened!`)
-                .setColor('#000001');
+                .setDescription(`The following items have been added to your inventory:`)
+                .setColor('#000001')
+                .Vnail(client.user.displayAvatarURL({ dynamic: true }));
 
             switch (boxType) {
                 case 'Pack':
