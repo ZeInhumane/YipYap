@@ -51,17 +51,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
                 },
             },
             lootbox: {
@@ -132,17 +132,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 20,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
                 },
             },
             lootbox: {
@@ -213,17 +213,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 35,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
                 },
             },
             lootbox: {
@@ -294,17 +294,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 40,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
                 },
             },
             lootbox: {
@@ -375,17 +375,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 45,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
                 },
             },
             lootbox: {

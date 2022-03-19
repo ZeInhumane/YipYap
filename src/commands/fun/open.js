@@ -402,7 +402,8 @@ const boxLootTable = {
         // "Quick Wolf Kunais": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "The Broccoli Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Inhumane Nightbringer": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 }
+        // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Hermes Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 }
     },
     "mythic": {
         "Watermelon": { dropChance: 1, minQuantity: 100, maxQuantity: 100 },
