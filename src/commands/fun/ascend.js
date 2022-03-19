@@ -51,7 +51,7 @@ module.exports = {
                 user.inv[itemName].ascension = 0;
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(() => console.log(`Saved ${itemName}`))
                     .catch(err => console.error(err));
                 message.channel.send(`This equipment does not have enough levels to ascend.`);
                 return;
