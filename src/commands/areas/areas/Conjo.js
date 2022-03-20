@@ -53,7 +53,7 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Goat Leather Hat', 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
+                    "drops" : ["Goat Leather Hat", 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
