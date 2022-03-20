@@ -379,7 +379,7 @@ const boxLootTable = {
         // "Pirate Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Pirate Vest": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Pirate Breeches": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Pirat Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        // "Pirate Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Elven Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Elven Tunic": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Elven Breeches": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
