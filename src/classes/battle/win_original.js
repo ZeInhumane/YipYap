@@ -16,8 +16,6 @@ module.exports = {
         const chestName = ["Common Treasure Chest"];
         // const packNames = ['Swords', 'Boots'];
         const itemQuantity = 1;
-
-        // this line useless for now.... reminder to chance emotes when there are different ones
         // const commonTreasureChestEmote = "<:CommonChest:819856620572901387>"
         // This takes the experience multiplier from the location
         const experienceMultiplier = location.Rewards.ExpMultiplier;
