@@ -8,7 +8,7 @@ We implemented various features into the bot, aside from being another rpg bot t
 https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot
 ### Support Server Invite
 https://discord.gg/cJgAG3W
-### Credits
+### Credits(In no particular order)
 Credits to the following people for contributing to this repository.
 
 https://github.com/Jerick5555

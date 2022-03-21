@@ -269,7 +269,7 @@ const floors = {
     "4": {
         enemies: [
             "Moving Ghost Oak",
-            "Bewiching Fireflies",
+            "Bewitching Fireflies",
             "Fiendish Owl",
             "Giant Maggot",
             "Swift Tiger",
