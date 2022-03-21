@@ -36,7 +36,6 @@ module.exports = {
             const embed = new Discord.MessageEmbed()
                 .setColor('#000000');
 
-
             if (user.inv[itemName].type == "equipment") {
                 // Get name without tag
                 const weaponName = itemName.split("#")[0];

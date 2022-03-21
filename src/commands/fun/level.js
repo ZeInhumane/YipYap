@@ -18,7 +18,6 @@ module.exports = {
             }
             // exp needed for each level
             const next_lvl = Math.floor(user.level * (user.level / 10 * 15));
-            const to_upgrade = next_lvl - user.exp;
 
             // put into discord
             let name = message.member.user.tag.toString();
@@ -26,12 +25,15 @@ module.exports = {
             name = name.split("#", name.length - 4)[0];
 
             const embed = new Discord.MessageEmbed()
-                .setTitle(name + "'s level information")
+                // can be formatted better
+                .setTitle(name + `'s profile`)
                 .setColor('#000000')
-                .addField('Level: ', ` ${user.level}`, true)
-                .addField('Current Experience: ', `${user.exp}/${next_lvl}`, true)
-                .addField('Experience to next level: ', ` ${to_upgrade}`, true)
-                .addField('Total Available Special Points: ', ` ${user.sp}`, true);
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL(), url: 'https://discord.gg/h4enMADuCN' })
+                .addField("Currency  ", `${user.currency} <:cash_24:751784973488357457>`, true)
+                .addField("Level", `${user.level} :level_slider:`, true)
+                .addField('EXP', `${user.exp} / ${next_lvl}`, true)
+                .addField('Available SP', ` ${user.sp}`, true);
+
             message.channel.send({ embeds: [embed] });
         });
     },
