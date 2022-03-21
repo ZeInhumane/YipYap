@@ -45,7 +45,7 @@ module.exports = {
                 const stats = await getFinalStats(user.inv[itemName], dbEquipment);
                 embed.setTitle(`${dbEquipment.emote} ${weaponName}`);
                 embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity : "No rarity");
-                embed.addField("Type", dbEquipment.type ? dbEquipment.type : "No rarity");
+                embed.addField("Type", dbEquipment.type ? dbEquipment.type.charAt(0).toUpperCase() + dbEquipment.type.slice(1) : "No rarity");
                 embed.addField("Description", dbEquipment.description ? dbEquipment.description : "No description");
                 embed.setImage(dbEquipment.image ? dbEquipment.image : "https://cdn.discordapp.com/attachments/819860035281879040/886188751435472916/no-image-found-360x250.png");
 
@@ -66,7 +66,7 @@ module.exports = {
                 findItem = await items.findOne({ itemName: itemName }).exec();
                 findItem = findItem._doc;
                 embed.setTitle(`${findItem.emote} ${itemName}`);
-                embed.addField("Rarity", findItem.rarity ? findItem.rarity : "No rarity");
+                embed.addField("Rarity", findItem.rarity ? findItem.rarity.charAt(0).toUpperCase() + findItem.rarity.slice(1) : "No rarity");
                 embed.addField("Type", findItem.type ? findItem.type : "No type");
                 if (findItem.type == "consumable") {
                     embed.addField("Experience Gain", findItem.experience.toString() ? findItem.experience.toString() : "No description");
