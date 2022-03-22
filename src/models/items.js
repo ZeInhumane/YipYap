@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
     rarity: String,
     type: String,
     image: String,
+    credits: String,
 });
 
 module.exports = mongoose.model('items', userSchema, 'items');
