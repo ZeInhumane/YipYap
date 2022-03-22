@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
 const getFinalStats = require('../../functions/getFinalStats');
-let findItem = require('../../functions/findItem');
+const findItem = require('../../functions/findItem');
 
 module.exports = {
     name: "info",
@@ -37,10 +37,16 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
-                // Get name without tag
+ 
                 const weaponName = itemName.split("#")[0];
                 // findItem = await items.findOne({ itemName: weaponName }).exec();
                 const dbEquipment = await findItem(weaponName, true);
+               // Finds item information from db
+                let pog = await items.findOne({ itemName: weaponName }).exec();
+                pog = pog._doc;
+                if (pog.credits) {
+                    embed.setFooter({ text: `Credits: ${pog.credits} ` });
+                }
                 const stats = await getFinalStats(user.inv[itemName], dbEquipment);
                 embed.setTitle(`${dbEquipment.emote} ${weaponName}`);
                 embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity : "No rarity");
@@ -62,16 +68,19 @@ module.exports = {
                 embed.addField(`Equipment Experience`, user.inv[itemName].exp + "/" + (user.inv[itemName].exp + user.inv[itemName].expToLevelUp), true);
             } else {
 
-                findItem = await items.findOne({ itemName: itemName }).exec();
-                findItem = findItem._doc;
-                embed.setTitle(`${findItem.emote} ${itemName}`);
-                embed.addField("Rarity", findItem.rarity ? findItem.rarity.charAt(0).toUpperCase() + findItem.rarity.slice(1) : "No rarity");
-                embed.addField("Type", findItem.type ? findItem.type : "No type");
-                if (findItem.type == "consumable") {
-                    embed.addField("Experience Gain", findItem.experience.toString() ? findItem.experience.toString() : "No description");
+                let nonEquipment = await items.findOne({ itemName: itemName }).exec();
+                nonEquipment = nonEquipment._doc;
+                if (nonEquipment.credits) {
+                    embed.setFooter({ text: `Credits: ${nonEquipment.credits} ` });
                 }
-                embed.addField("Description", findItem.description ? findItem.description : "No description");
-                embed.setImage(findItem.image ? findItem.image : "https://cdn.discordapp.com/attachments/819860035281879040/886188751435472916/no-image-found-360x250.png");
+                embed.setTitle(`${nonEquipment.emote} ${itemName}`);
+                embed.addField("Rarity", nonEquipment.rarity ? nonEquipment.rarity.charAt(0).toUpperCase() + nonEquipment.rarity.slice(1) : "No rarity");
+                embed.addField("Type", nonEquipment.type ? nonEquipment.type : "No type");
+                if (nonEquipment.type == "consumable") {
+                    embed.addField("Experience Gain", nonEquipment.experience.toString() ? nonEquipment.experience.toString() : "No description");
+                }
+                embed.addField("Description", nonEquipment.description ? nonEquipment.description : "No description");
+                embed.setImage(nonEquipment.image ? nonEquipment.image : "https://cdn.discordapp.com/attachments/819860035281879040/886188751435472916/no-image-found-360x250.png");
 
             }
             message.channel.send({ embeds: [embed] });
