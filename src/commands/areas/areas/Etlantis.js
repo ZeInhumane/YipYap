@@ -37,7 +37,7 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1, "speed": 0.7 },
+        buffs: { "hp": 0.8, "attack": 1.0, "defense": 1.0, "speed": 1.2 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -51,17 +51,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
@@ -118,7 +118,7 @@ const floors = {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 2.0, "attack": 1.8, "defense": 2.0, "speed": 1.8 },
+        buffs: { "hp": 2.0, "attack": 2.0, "defense": 1.8, "speed": 2.2 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -132,17 +132,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 20,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
@@ -199,7 +199,7 @@ const floors = {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.3, "attack": 2.2, "defense": 2.2, "speed": 2.2 },
+        buffs: { "hp": 2.3, "attack": 2.3, "defense": 2.0, "speed": 2.6 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -213,17 +213,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 35,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
@@ -280,7 +280,7 @@ const floors = {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.8, "attack": 2.3, "defense": 2.3, "speed": 2.2 },
+        buffs: { "hp": 2.8, "attack": 2.8, "defense": 2.5, "speed": 3.1 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -294,17 +294,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 40,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
@@ -349,19 +349,19 @@ const floors = {
     },
     "5": {
         enemies: [
-            "T-T",
-            "Dr. Octolegs",
-            "Robo Corp",
-            "Zeus",
-            "Buddy",
-            "IFone Pro Max Ultra Extreme",
+            "Fishman Guard Patrol",
+            "Merman Guard",
+            "Mermaid Priestess",
+            "Dolphin Rider",
+            "Seal Dancer",
+            "Grey Whale",
         ],
         requirement: 40,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 3.2, "attack": 2.3, "defense": 2.7, "speed": 2.3 },
+        buffs: { "hp": 3.0, "attack": 3.0, "defense": 2.6, "speed": 3.4 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
@@ -375,17 +375,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 45,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
