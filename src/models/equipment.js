@@ -8,6 +8,7 @@ const userSchema = mongoose.Schema({
     ascensionRequirements: Array,
     ascensionStatsUp: Object,
     statsUpPerLvl: Object,
+    setId: String,
 });
 
 module.exports = mongoose.model('equipment', userSchema, 'equipment');
