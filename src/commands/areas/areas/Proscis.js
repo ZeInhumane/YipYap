@@ -1,11 +1,11 @@
 const AreaInterface = require('../AreaInterface.js');
 
-module.exports = class Avoarox extends AreaInterface {
+module.exports = class Proscis extends AreaInterface {
     init() {
-        this.name = "Avoarox";
-        this.desc = "Avoarox, also known as the city of the future. Powered by jericho jehammads, the people of Avoarox have built a civilization far beyond normal understanding.";
-        this.id = 1;
-        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950320189696770079/Avoarox.jpg";
+        this.name = "Proscis";
+        this.desc = "An unusual beach, with no visitors during summer. Rumours of a cursed beach wont scare you away! Summer is best enjoyed on the beach, soaking under the sun's golden rays!";
+        this.id = 6;
+        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956179921074552842/Proscis.jpg";
         this.floors = floors;
     }
 
@@ -25,19 +25,19 @@ module.exports = class Avoarox extends AreaInterface {
 const floors = {
     "1": {
         enemies: [
-            "EA-107",
-            "Jericho Jehammad",
-            "Pedestrian",
-            "RoBot",
-            "BOB",
-            "IFone",
+            "UV",
+            "Sun Burn",
+            "Coconut",
+            "Beach Umbrella",
+            "Volley Ball",
+            "Rusty Nail",
         ],
         requirement: 0,
         multipliers: {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1, "speed": 0.7 },
+        buffs: { "hp": 1.0, "attack": 1.3, "defense": 0.7, "speed": 1.0 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -51,17 +51,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Floppy Hat', 'Flip Flops', 'Flowery Shirt', 'Flowery Shorts', 'Smoothie Cup'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
                 },
             },
             lootbox: {
@@ -106,19 +106,19 @@ const floors = {
     },
     "2": {
         enemies: [
-            "UR-33",
-            "Many Jericho Jehammads",
-            "Gangster",
-            "Upgraded RoBot",
-            "Sophia",
-            "IFone Pro",
+            "Crab",
+            "Stingray",
+            "Stonefish",
+            "Reef Shark",
+            "Turtle",
+            "Sandfly",
         ],
         requirement: 10,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 2.0, "attack": 1.8, "defense": 2.0, "speed": 1.8 },
+        buffs: { "hp": 2.0, "attack": 2.5, "defense": 1.5, "speed": 2.0 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -132,17 +132,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Floppy Hat', 'Flip Flops', 'Flowery Shirt', 'Flowery Shorts', 'Smoothie Cup'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 20,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
                 },
             },
             lootbox: {
@@ -187,19 +187,19 @@ const floors = {
     },
     "3": {
         enemies: [
-            "FAT",
-            "Every Jericho Jehammad",
-            "Gangster Boss",
-            "Task Manager",
-            "Siri",
-            "IFone Pro Max",
+            "UnderTow",
+            "Sand Pit",
+            "Sea Urchin",
+            "Glass Shard",
+            "E.Coli",
+            "Algae",
         ],
         requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.3, "attack": 2.2, "defense": 2.2, "speed": 2.2 },
+        buffs: { "hp": 2.5, "attack": 2.9, "defense": 2.1, "speed": 2.5 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -213,17 +213,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Floppy Hat', 'Flip Flops', 'Flowery Shirt', 'Flowery Shorts', 'Smoothie Cup'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 35,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
                 },
             },
             lootbox: {
@@ -268,19 +268,19 @@ const floors = {
     },
     "4": {
         enemies: [
-            "Hacker",
-            "UR-MOM",
-            "Robo Dog",
-            "Trojan",
-            "Alexa",
-            "IFone Pro Max Ultra",
+            "Sea Eagle",
+            "Seagull",
+            "Coconut Crab",
+            "Albatross",
+            "Jellyfish",
+            "Killer Whale",
         ],
         requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.8, "attack": 2.3, "defense": 2.3, "speed": 2.2 },
+        buffs: { "hp": 2.8, "attack": 3.3, "defense": 2.3, "speed": 2.8 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -294,17 +294,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Floppy Hat', 'Flip Flops', 'Flowery Shirt', 'Flowery Shorts', 'Smoothie Cup'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 40,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
                 },
             },
             lootbox: {
@@ -349,19 +349,19 @@ const floors = {
     },
     "5": {
         enemies: [
-            "T-T",
-            "Dr. Octolegs",
-            "Robo Corp",
-            "Zeus",
-            "Buddy",
-            "IFone Pro Max Ultra Extreme",
+            "Mysterious Song",
+            "Mysterious Figure 1",
+            "Mysterious Figure 2",
+            "Mysterious Figure 3",
+            "Mysterious Figure 4",
+            "Mysterious Figure 5",
         ],
         requirement: 40,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 3.2, "attack": 2.3, "defense": 2.7, "speed": 2.3 },
+        buffs: { "hp": 3.0, "attack": 3.5, "defense": 2.5, "speed": 3.0 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
@@ -375,17 +375,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Floppy Hat', 'Flip Flops', 'Flowery Shirt', 'Flowery Shorts', 'Smoothie Cup'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 45,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
                 },
             },
             lootbox: {

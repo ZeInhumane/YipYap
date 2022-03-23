@@ -37,7 +37,7 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1, "speed": 0.7 },
+        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1.0, "speed": 0.7 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
