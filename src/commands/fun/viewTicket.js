@@ -31,7 +31,7 @@ module.exports = {
                     .setTitle(name + `'s tickets in use`)
                     .setColor('#000000');
                 const ticketTypes = ['Experience', 'Gold'];
-
+                const ticketEmotes = ['<:x2ExpTicket1hr:898287128159592488>', ''];
                 if (Object.keys(effects.tickets).length > 0) {
                     for (let i = 0; i < ticketTypes.length; i++) {
                         const ticketName = Object.keys(effects.tickets).filter(key => key.includes(ticketTypes[i]));
@@ -51,25 +51,25 @@ module.exports = {
                                         const end = endDate.getFullYear() + '/' + (endDate.getMonth() + 1) + '/' + endDate.getDate() + '/  ' + endDate.getHours() + ':' + endDate.getMinutes();
                                         ticket.startTime = today;
                                         ticket.endTime = endDate;
+                                        console.log(ticketName);
                                         embed.addFields(
-                                            { name: `${ticketTypes[i]} Ticket: `, value: `Your ${ticketTypes[i]} ticket has been used up. Another ${ticketName} has been used. To stop automatically using tickets, use the changeauto command.` },
-                                            { name: 'Muliplier: ', value: `x ${ticket.multiplier}` },
-                                            { name: 'Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
-                                            { name: 'Start time: ', value: `${start} UTC` },
-                                            { name: 'End time: ', value: `${end} UTC` },
-                                            { name: 'Auto: ', value: `${ticket.auto}` },
-                                            { name: '\u200B', value: '\u200B' },
+                                            { name: `${ticketEmotes[i]} ${ticketTypes[i]} Ticket `, value: `Your ${ticketEmotes[i]} ${ticketTypes[i]} ticket has been used up. Another ${ticketName} has been used. To stop automatically using tickets, use the changeauto command.` },
+                                            { name: '📈 Muliplier: ', value: `x ${ticket.multiplier}` },
+                                            { name: '⏲️ Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
+                                            { name: '⏳ Start time: ', value: `${start} UTC` },
+                                            { name: '⌛ End time: ', value: `${end} UTC` },
+                                            { name: '🔁 Auto: ', value: `${ticket.auto}` },
                                         );
                                         user.inv[ticket].quantity -= 1;
                                         if (user.inv[ticket].quantity == 0) {
                                             delete user.inv[ticket];
                                         }
                                     } else {
-                                        embed.addField(`${ticketTypes[i]} Ticket:`, `Your ${ticketTypes[i]} ticket has been used up, but you do not have any more ${ticketName}s in your inventory. Auto will be deactivated`);
+                                        embed.addField(`${ticketEmotes[i]} ${ticketTypes[i]} Ticket`, `Your ${ticketEmotes[i]} ${ticketTypes[i]} ticket has been used up, but you do not have any more ${ticketName}s in your inventory. Auto will be deactivated`);
                                         delete effects.tickets[ticketName];
                                     }
                                 } else {
-                                    embed.addField(`${ticketTypes[i]} Ticket:`, `Your ${ticketTypes[i]} ticket has been used up. Activate auto when using tickets to automatically use another after cooldown.`);
+                                    embed.addField(`${ticketEmotes[i]} ${ticketTypes[i]} Ticket`, `Your ${ticketEmotes[i]} ${ticketTypes[i]} ticket has been used up. Activate auto when using tickets to automatically use another after cooldown.`);
                                     delete effects.tickets[ticketName];
                                 }
                             } else {
@@ -79,17 +79,16 @@ module.exports = {
                                 const end = endTime.getFullYear() + '/' + (endTime.getMonth() + 1) + '/' + endTime.getDate() + '/  ' + endTime.getHours() + ':' + endTime.getMinutes();
 
                                 embed.addFields(
-                                    { name: `${ticketTypes[i]} Ticket: `, value: '\u200B' },
-                                    { name: 'Muliplier: ', value: `x ${ticket.multiplier}` },
-                                    { name: 'Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
-                                    { name: 'Start time: ', value: `${start} UTC` },
-                                    { name: 'End time: ', value: `${end} UTC` },
-                                    { name: 'Auto: ', value: `${ticket.auto}` },
-                                    { name: '\u200B', value: '\u200B' },
+                                    { name: `${ticketEmotes[i]} ${ticketTypes[i]} Ticket `, value: '\u200B' },
+                                    { name: '📈 Muliplier: ', value: `x ${ticket.multiplier}` },
+                                    { name: '⏲️ Duration: ', value: `${ticket.duration} hour${(ticket.duration) > 1 ? "s" : ""}` },
+                                    { name: '⏳ Start time: ', value: `${start} UTC` },
+                                    { name: '⌛ End time: ', value: `${end} UTC` },
+                                    { name: '🔁 Auto: ', value: `${ticket.auto}` },
                                 );
                             }
                         } else {
-                            embed.addField(`${ticketTypes[i]} Ticket:`, `No active ${ticketTypes[i]} tickets`);
+                            embed.addField(`${ticketEmotes[i]} ${ticketTypes[i]} Ticket`, `No active ${ticketEmotes[i]} ${ticketTypes[i]} tickets`);
                         }
                     }
                     effects.markModified('tickets');
