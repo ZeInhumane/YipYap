@@ -4,7 +4,7 @@ module.exports = class Conjo extends AreaInterface {
     init() {
         this.name = "Conjo";
         this.id = 2;
-        this.desc = "Conjo, a place famed for its reflective lakes and beautiful night skies. It is a place of great beauty and wonder, and *death* .";
+        this.desc = "Conjo, a place famed for its reflective lakes and beautiful night skies. It is a place of great beauty and wonder, and **death** .";
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950316822731833394/Chthonia.jpg";
         // "https://c.tenor.com/3wqv5CpCPbQAAAAC/bisque-doll-bisque.gif"
         this.floors = floors;
