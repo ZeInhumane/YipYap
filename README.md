@@ -1,5 +1,5 @@
 # YipYap Discord Bot
-![Discord Bots](https://discordbots.org/api/widget/servers/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/status/745275291785494571.svg)![![Discord Bots](https://top.gg/api/widget/owner/745275291785494571.svg)
+![Discord Bots](https://discordbots.org/api/widget/servers/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/status/745275291785494571.svg)![Discord Bots](https://top.gg/api/widget/owner/745275291785494571.svg)
 
 ## Features
 We implemented various features into the bot, aside from being another rpg bot that people can play, we push frequent updates as well as new equipment. 
