@@ -13,7 +13,7 @@ module.exports = {
             const area = AreaInterface.areas[id];
             areaArray.push({
                 name: `${area.getID}. ${area.getName}`,
-                value: `${area.getDesc}`,
+                value: `${area.getDesc} [Credits](${area.getCredits})`,
             });
         }
 
