@@ -7,6 +7,7 @@ module.exports = class Etlantis extends AreaInterface {
         this.id = 5;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956045789023600650/Etlantis.jpg";
         this.floors = floors;
+        this.credits = "https://www.artstation.com/artwork/mvPwa";
     }
 
     getRandomEnemy(floor) {

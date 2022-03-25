@@ -1,12 +1,13 @@
 const AreaInterface = require('../AreaInterface.js');
 
-module.exports = class Avoarox extends AreaInterface {
+module.exports = class Raising extends AreaInterface {
     init() {
-        this.name = "Avoarox";
+        this.name = "Raising";
         this.desc = "Avoarox, also known as the city of the future. Powered by jericho jehammads, the people of Avoarox have built a civilization far beyond normal understanding.";
-        this.id = 1;
-        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950320189696770079/Avoarox.jpg";
+        this.id = 7;
+        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956914611339268146/Raising.jpg";
         this.floors = floors;
+        this.credits = "https://www.wallpaperbetter.com/en/hd-wallpaper-zrrul";
     }
 
     getRandomEnemy(floor) {

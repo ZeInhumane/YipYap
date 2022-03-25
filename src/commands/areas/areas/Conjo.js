@@ -5,9 +5,9 @@ module.exports = class Conjo extends AreaInterface {
         this.name = "Conjo";
         this.id = 2;
         this.desc = "Conjo, a place famed for its reflective lakes and beautiful night skies. It is a place of great beauty and wonder, and **death** .";
-        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950316822731833394/Chthonia.jpg";
+        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956930404999389234/Conjo.jpg";
         this.floors = floors;
-        this.credits = "PLACEHOLDER_FOR_CREDITS_LINK";
+        this.credits = "https://www.wallpaperflare.com/night-twin-moons-fantasy-landscape-artwork-sky-earth-outer-space-wallpaper-ophn";
     }
 
     getRandomEnemy(floor) {

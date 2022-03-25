@@ -7,6 +7,7 @@ module.exports = class Xeminos extends AreaInterface {
         this.id = 4;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/955817839422480414/Xeminos.jpg";
         this.floors = floors;
+        this.credits = "https://unsplash.com/s/photos/steel-factory";
     }
 
     getRandomEnemy(floor) {

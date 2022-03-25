@@ -7,6 +7,7 @@ module.exports = class Proscis extends AreaInterface {
         this.id = 6;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956179921074552842/Proscis.jpg";
         this.floors = floors;
+        this.credits = "https://pixabay.com/photos/beach-sea-sunset-sun-sunlight-1751455";
     }
 
     getRandomEnemy(floor) {
