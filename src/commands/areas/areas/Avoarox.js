@@ -7,6 +7,7 @@ module.exports = class Avoarox extends AreaInterface {
         this.id = 1;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950320189696770079/Avoarox.jpg";
         this.floors = floors;
+        this.credits = "PLACEHOLDER_FOR_CREDITS_LINK";
     }
 
     getRandomEnemy(floor) {
