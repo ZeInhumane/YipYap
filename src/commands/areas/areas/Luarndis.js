@@ -7,6 +7,7 @@ module.exports = class Luarndis extends AreaInterface {
         this.desc = "The forest of Luarndis is said to hold many secrets. An old tale tells of the magical land of fairies deep within the forest leading many explorers to venture into the forest, where they either returned disappointed... or were never seen again.";
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950324030517420042/Luarndis.jpg";
         this.floors = floors;
+        this.credits = "PLACEHOLDER_FOR_CREDITS_LINK";
     }
 
     getRandomEnemy(floor) {
