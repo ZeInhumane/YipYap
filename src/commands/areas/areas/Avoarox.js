@@ -42,7 +42,7 @@ const floors = {
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
@@ -123,7 +123,7 @@ const floors = {
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
@@ -204,7 +204,7 @@ const floors = {
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
@@ -285,7 +285,7 @@ const floors = {
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
@@ -366,7 +366,7 @@ const floors = {
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",

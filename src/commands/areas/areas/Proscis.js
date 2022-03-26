@@ -3,8 +3,8 @@ const AreaInterface = require('../AreaInterface.js');
 module.exports = class Proscis extends AreaInterface {
     init() {
         this.name = "Proscis";
-        this.desc = "An unusual beach, with no visitors during summer. Rumours of a cursed beach wont scare you away! Summer is best enjoyed on the beach, soaking under the sun's golden rays!";
-        this.id = 6;
+        this.desc = "An unusual beach, with no visitors during summer. Rumours of a cursed beach wont scare me away! Summer is best enjoyed on the beach, soaking under the sun's golden rays!";
+        this.id = 5;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956179921074552842/Proscis.jpg";
         this.floors = floors;
         this.credits = "https://pixabay.com/photos/beach-sea-sunset-sun-sunlight-1751455";
@@ -42,7 +42,7 @@ const floors = {
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
@@ -57,7 +57,7 @@ const floors = {
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Snorkle', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
+                    "drops" : ['Snorkel', 'Small Flippers', 'Life Vest', 'Swimming Trunks', 'Waterproof Camera'],
                 },
                 // rare equipment set
                 "Rare": {
@@ -123,7 +123,7 @@ const floors = {
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
@@ -204,7 +204,7 @@ const floors = {
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
@@ -285,7 +285,7 @@ const floors = {
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
@@ -366,7 +366,7 @@ const floors = {
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",

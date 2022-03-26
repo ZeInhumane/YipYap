@@ -4,7 +4,7 @@ module.exports = class Luarndis extends AreaInterface {
     init() {
         this.name = "Luarndis";
         this.id = 3;
-        this.desc = "The forest of Luarndis is said to hold many secrets. An old tale tells of the magical land of fairies deep within the forest leading many explorers to venture into the forest, where they either returned disappointed... or were never seen again.";
+        this.desc = "The forest of Luarndis is said to hold many secrets. An old tale tells of the magical land of fairies deep within the forest leading many explorers to venture into the forest, where they either returned disappointed... or were never seen again. Scary!";
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950324030517420042/Luarndis.jpg";
         this.floors = floors;
         this.credits = "https://www.peakpx.com/en/hd-wallpaper-desktop-oensb";
@@ -42,7 +42,7 @@ const floors = {
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
@@ -123,7 +123,7 @@ const floors = {
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
@@ -204,7 +204,7 @@ const floors = {
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
@@ -285,7 +285,7 @@ const floors = {
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
@@ -366,7 +366,7 @@ const floors = {
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",

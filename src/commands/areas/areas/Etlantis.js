@@ -3,8 +3,8 @@ const AreaInterface = require('../AreaInterface.js');
 module.exports = class Etlantis extends AreaInterface {
     init() {
         this.name = "Etlantis";
-        this.desc = "The lost city of Etlantis. Who knew relaxing on the beach would get you kidnaped to the legendary lost city? Nows not the time to marvel at the beauty of the city, you must find a way out before _THEY_  find you!";
-        this.id = 5;
+        this.desc = "The lost city of Etlantis. Who knew relaxing on the beach would get you kidnaped to the legendary lost city? Nows not the time to marvel at the beauty of the city, I must find a way out before _THEY_  find me!";
+        this.id = 6;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956045789023600650/Etlantis.jpg";
         this.floors = floors;
         this.credits = "https://www.artstation.com/artwork/mvPwa";
@@ -42,7 +42,7 @@ const floors = {
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
@@ -123,7 +123,7 @@ const floors = {
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
@@ -204,7 +204,7 @@ const floors = {
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
@@ -285,7 +285,7 @@ const floors = {
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
@@ -366,7 +366,7 @@ const floors = {
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.32,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",

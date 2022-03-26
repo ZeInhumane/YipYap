@@ -3,11 +3,11 @@ const AreaInterface = require('../AreaInterface.js');
 module.exports = class Grimrad extends AreaInterface {
     init() {
         this.name = "Grimrad";
-        this.desc = "Avoarox, also known as the city of the future. Powered by jericho jehammads, the people of Avoarox have built a civilization far beyond normal understanding.";
+        this.desc = "Taking 'THE FLOOR IS LAVAAAAA' to a whole new meaning. The smoldering heat rising from the ground is almost unbearable. Everything is on fire, and the floor is littered with bones and ash. The lava glow lights up floor, flame sparks light up the night skies. If the old man in the previous city didn't insist on the existence of a powerful ancient treasure here, there's no way I would have come here!";
         this.id = 8;
-        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950320189696770079/Avoarox.jpg";
+        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/957227332278550578/Grimrad.jpg";
         this.floors = floors;
-        this.credits = "PLACEHOLDER_FOR_CREDITS_LINK";
+        this.credits = "https://www.deviantart.com/artdesk/art/Forbidden-City-of-the-Frozen-Lava-Version-606827970";
     }
 
     getRandomEnemy(floor) {
@@ -26,19 +26,19 @@ module.exports = class Grimrad extends AreaInterface {
 const floors = {
     "1": {
         enemies: [
-            "EA-107",
-            "Jericho Jehammad",
-            "Pedestrian",
-            "RoBot",
-            "BOB",
-            "IFone",
+            "Lava Ball",
+            "Magma Boulder",
+            "Lava Slime",
+            "Fire Salamander",
+            "Magma Snail",
+            "Flame Serpent",
         ],
-        requirement: 0,
+        requirement: 20,
         multipliers: {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1, "speed": 0.7 },
+        buffs: { "hp": 3.0, "attack": 3.0, "defense": 3.0, "speed": 3.0 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -52,17 +52,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Flame Gas Mask', 'Flame Boots', 'Flame Chestplate', 'Flame Pants', 'Flame Whip'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Magma Gas Mask', 'Magma Boots', 'Magma Chestplate', 'Magma Pants', 'Magma Whip'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['GLHF Helmet', 'GLHF Boots', 'GLHF Chestplate', 'GLHF Pants', 'GLHF Whip'],
                 },
             },
             lootbox: {
@@ -107,19 +107,19 @@ const floors = {
     },
     "2": {
         enemies: [
-            "UR-33",
-            "Many Jericho Jehammads",
-            "Gangster",
-            "Upgraded RoBot",
-            "Sophia",
-            "IFone Pro",
+            "Flame Horse",
+            "Fire Bird",
+            "XXL Magma Boulder",
+            "Large Fire Slime",
+            "Huge Fire Salamnder",
+            "XL Magma Snail",
         ],
-        requirement: 10,
+        requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 2.0, "attack": 1.8, "defense": 2.0, "speed": 1.8 },
+        buffs: { "hp": 3.5, "attack": 3.5, "defense": 3.5, "speed": 3.5 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -133,17 +133,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Flame Gas Mask', 'Flame Boots', 'Flame Chestplate', 'Flame Pants', 'Flame Whip'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 20,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Magma Gas Mask', 'Magma Boots', 'Magma Chestplate', 'Magma Pants', 'Magma Whip'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['GLHF Helmet', 'GLHF Boots', 'GLHF Chestplate', 'GLHF Pants', 'GLHF Whip'],
                 },
             },
             lootbox: {
@@ -188,19 +188,19 @@ const floors = {
     },
     "3": {
         enemies: [
-            "FAT",
-            "Every Jericho Jehammad",
-            "Gangster Boss",
-            "Task Manager",
-            "Siri",
-            "IFone Pro Max",
+            "Flame Serpent King",
+            "King Fire Slime",
+            "Flame Horse herd",
+            "Fire Bird Empress",
+            "Magma Golem",
+            "Cherufe",
         ],
-        requirement: 20,
+        requirement: 40,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.3, "attack": 2.2, "defense": 2.2, "speed": 2.2 },
+        buffs: { "hp": 4.0, "attack": 4.0, "defense": 4.0, "speed": 4.0 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -214,17 +214,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Flame Gas Mask', 'Flame Boots', 'Flame Chestplate', 'Flame Pants', 'Flame Whip'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 35,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Magma Gas Mask', 'Magma Boots', 'Magma Chestplate', 'Magma Pants', 'Magma Whip'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['GLHF Helmet', 'GLHF Boots', 'GLHF Chestplate', 'GLHF Pants', 'GLHF Whip'],
                 },
             },
             lootbox: {
@@ -269,19 +269,19 @@ const floors = {
     },
     "4": {
         enemies: [
-            "Hacker",
-            "UR-MOM",
-            "Robo Dog",
-            "Trojan",
-            "Alexa",
-            "IFone Pro Max Ultra",
+            "Group of Magma Golems",
+            "Grimrad Lower House Forge Dwarfs",
+            "Grimrad Lower House Forge Fire Giants",
+            "Grimrad Lower House Forge Flame Trolls",
+            "Grimrad Lower House Forge Flare Gomes",
+            "Hellhound",
         ],
-        requirement: 30,
+        requirement: 50,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.8, "attack": 2.3, "defense": 2.3, "speed": 2.2 },
+        buffs: { "hp": 5.0, "attack": 5.0, "defense": 5.0, "speed": 5.0 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -295,17 +295,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Flame Gas Mask', 'Flame Boots', 'Flame Chestplate', 'Flame Pants', 'Flame Whip'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 40,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Magma Gas Mask', 'Magma Boots', 'Magma Chestplate', 'Magma Pants', 'Magma Whip'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['GLHF Helmet', 'GLHF Boots', 'GLHF Chestplate', 'GLHF Pants', 'GLHF Whip'],
                 },
             },
             lootbox: {
@@ -350,19 +350,19 @@ const floors = {
     },
     "5": {
         enemies: [
-            "T-T",
-            "Dr. Octolegs",
-            "Robo Corp",
-            "Zeus",
-            "Buddy",
-            "IFone Pro Max Ultra Extreme",
+            "Cimera",
+            "Phoenix",
+            "Magma Dragon",
+            "Hellhound Pack",
+            "Jinn",
+            "Grimrad Lower House Forge Chief",
         ],
-        requirement: 40,
+        requirement: 60,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 3.2, "attack": 2.3, "defense": 2.7, "speed": 2.3 },
+        buffs: { "hp": 6.0, "attack": 6.0, "defense": 6.0, "speed": 6.0 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
@@ -376,17 +376,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Flame Gas Mask', 'Flame Boots', 'Flame Chestplate', 'Flame Pants', 'Flame Whip'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 45,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Magma Gas Mask', 'Magma Boots', 'Magma Chestplate', 'Magma Pants', 'Magma Whip'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['GLHF Helmet', 'GLHF Boots', 'GLHF Chestplate', 'GLHF Pants', 'GLHF Whip'],
                 },
             },
             lootbox: {

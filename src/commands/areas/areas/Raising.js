@@ -3,7 +3,7 @@ const AreaInterface = require('../AreaInterface.js');
 module.exports = class Raising extends AreaInterface {
     init() {
         this.name = "Raising";
-        this.desc = "Avoarox, also known as the city of the future. Powered by jericho jehammads, the people of Avoarox have built a civilization far beyond normal understanding.";
+        this.desc = "After crossing the mountains of Conjo, a strange mist surrounds the area, turning the sky into a regal amber. A large river falls into a ravine creating a magestic waterfall of gold. I marvel at the sight as I walk deeper into the mist.";
         this.id = 7;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956914611339268146/Raising.jpg";
         this.floors = floors;
@@ -26,19 +26,19 @@ module.exports = class Raising extends AreaInterface {
 const floors = {
     "1": {
         enemies: [
-            "EA-107",
-            "Jericho Jehammad",
-            "Pedestrian",
-            "RoBot",
-            "BOB",
-            "IFone",
+            "Buck",
+            "Owl",
+            "Wild Horse",
+            "Elk",
+            "Tahr",
+            "Vicuna",
         ],
         requirement: 0,
         multipliers: {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.8, "attack": 0.7, "defense": 1, "speed": 0.7 },
+        buffs: { "hp": 1.2, "attack": 1.2, "defense": 0.9, "speed": 1.5 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -52,17 +52,17 @@ const floors = {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Old Napkin', 'Plastic Bags', 'Cardboard Box', 'Ragged Bath Towel', 'Bent Pole'],
+                    "drops" : ['Deer Mask', 'Deer Leather Boots', 'Deer Cloak', 'Deer Fur Pants', 'Broken Antler'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Backwards Cap', 'Sandals', 'Crewneck T-shirt', 'Bermudas', 'Pepper Spray'],
+                    "drops" : ['Lynx Fur Mufflers', 'Lynx Fur Boots', 'Lynx Cloak', 'Lynx Fur Pants', 'Lynx Kunckles'],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Jericho Wig', 'Jericho Fan Pants', 'Jericho Fan Shirt', 'Jericho Sneakers', 'Jericho Signboard'],
+                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
                 },
             },
             lootbox: {
@@ -107,19 +107,19 @@ const floors = {
     },
     "2": {
         enemies: [
-            "UR-33",
-            "Many Jericho Jehammads",
-            "Gangster",
-            "Upgraded RoBot",
-            "Sophia",
-            "IFone Pro",
+            "Deer Herd",
+            "Eagle Owl",
+            "Wild Horse Herd",
+            "Elk Herd",
+            "Tahr Herd",
+            "Vicuna Herd",
         ],
         requirement: 10,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 2.0, "attack": 1.8, "defense": 2.0, "speed": 1.8 },
+        buffs: { "hp": 2.2, "attack": 2.2, "defense": 1.8, "speed": 2.6 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -188,19 +188,19 @@ const floors = {
     },
     "3": {
         enemies: [
-            "FAT",
-            "Every Jericho Jehammad",
-            "Gangster Boss",
-            "Task Manager",
-            "Siri",
-            "IFone Pro Max",
+            "Lynx",
+            "Crane",
+            "Wolf",
+            "Macaque",
+            "Bear",
+            "Rainbow Trout",
         ],
         requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.3, "attack": 2.2, "defense": 2.2, "speed": 2.2 },
+        buffs: { "hp": 2.8, "attack": 2.8, "defense": 2.4, "speed": 3.2 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -269,19 +269,19 @@ const floors = {
     },
     "4": {
         enemies: [
-            "Hacker",
-            "UR-MOM",
-            "Robo Dog",
-            "Trojan",
-            "Alexa",
-            "IFone Pro Max Ultra",
+            "Lynx Pair",
+            "Crane Flock",
+            "Wolf Pack",
+            "Macaque Group",
+            "Bear Family",
+            "Rainbow Trout Shoal",
         ],
         requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.8, "attack": 2.3, "defense": 2.3, "speed": 2.2 },
+        buffs: { "hp": 2.8, "attack": 3.2, "defense": 2.6, "speed": 3.4 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -350,19 +350,22 @@ const floors = {
     },
     "5": {
         enemies: [
-            "T-T",
-            "Dr. Octolegs",
-            "Robo Corp",
-            "Zeus",
-            "Buddy",
-            "IFone Pro Max Ultra Extreme",
+            "Amber Crane",
+            "Amber Deer",
+            "Amber Lynx",
+            "Amber Wolf",
+            "Amber Eagle Owl",
+            "Amber Wild Horse",
+            "Amber Bear",
+            "Amber Trout",
+            "Amber Macaque",
         ],
         requirement: 40,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 3.2, "attack": 2.3, "defense": 2.7, "speed": 2.3 },
+        buffs: { "hp": 2.8, "attack": 3.9, "defense": 2.8, "speed": 3.7 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
