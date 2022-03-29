@@ -33,196 +33,34 @@ const floors = {
             "Stripped Bass",
             "Blue Fish",
         ],
-        requirement: 0,
+        requirement: 20,
         multipliers: {
-            "ExpMultiplier": 1,
-            "GoldMultiplier": 1,
+            "ExpMultiplier": 1.3,
+            "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 0.8, "attack": 1.0, "defense": 1.0, "speed": 1.2 },
-        rewardDescription: "0% more gold           0% more player experience",
+        buffs: { "hp": 2.2, "attack": 3.5, "defense": 2.8, "speed": 3.5 },
+        rewardDescription: "30% more gold           30% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.35,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance : 0,
             equipment: {
-                // common equipment set
-                "Common": {
+                // uncommon equipment set
+                "Uncommon": {
                     "dropChance": 80,
                     "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
-                // uncommon equipment set
-                "Uncommon": {
+                // rare equipment set
+                "Rare": {
                     "dropChance": 15,
                     "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
-                // rare equipment set
-                "Rare": {
-                    "dropChance": 5,
-                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
-                },
-            },
-            lootbox: {
-                "Common Treasure Chest": {
-                    "dropChance": 50,
-                    "minQuantity": 1,
-                    "maxQuantity": 1,
-                    "emote": "<:CommonChest:819856620572901387>",
-                },
-                "Uncommon Treasure Chest": {
-                    "dropChance": 1,
-                    "minQuantity": 1,
-                    "maxQuantity": 1,
-                    "emote": "<:UncommonChest:820272834348711976>",
-                },
-                "Rare Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:RareChest:820273250629582858>",
-                },
-                "Epic Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:EpicChest:820273750289023007>",
-                },
-                "Legendary Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:LegendaryChest:820274118817611777>",
-                },
-                "Mythic Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:MythicChest:820274344059994122>",
-                },
-            },
-        },
-    },
-    "2": {
-        enemies: [
-            "Grouper",
-            "Tuna",
-            "Pacific Halibut",
-            "King Salmon",
-            "Bristlemouth",
-            "Reef Shark",
-        ],
-        requirement: 10,
-        multipliers: {
-            "ExpMultiplier": 1.2,
-            "GoldMultiplier": 1.2,
-        },
-        buffs: { "hp": 2.0, "attack": 2.0, "defense": 1.8, "speed": 2.2 },
-        rewardDescription: "**20% more gold          20% more player experience**",
-        rewards: {
-            jericho: {
-                "dropChance": 0.32,
-                "minQuantity": 10,
-                "maxQuantity": 25,
-                "emote": "<:Jericho:823551572029603840>",
-            },
-            equipDropChance: 0,
-            equipment: {
-                // common equipment set
-                "Common": {
-                    "dropChance": 75,
-                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
-                },
-                // uncommon equipment set
-                "Uncommon": {
-                    "dropChance": 20,
-                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
-                },
-                // rare equipment set
-                "Rare": {
-                    "dropChance": 5,
-                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
-                },
-            },
-            lootbox: {
-                "Common Treasure Chest": {
-                    "dropChance": 55,
-                    "minQuantity": 1,
-                    "maxQuantity": 2,
-                    "emote": "<:CommonChest:819856620572901387>",
-                },
-                "Uncommon Treasure Chest": {
-                    "dropChance": 10,
-                    "minQuantity": 1,
-                    "maxQuantity": 1,
-                    "emote": "<:UncommonChest:820272834348711976>",
-                },
-                "Rare Treasure Chest": {
-                    "dropChance": 1,
-                    "minQuantity": 1,
-                    "maxQuantity": 1,
-                    "emote": "<:RareChest:820273250629582858>",
-                },
-                "Epic Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:EpicChest:820273750289023007>",
-                },
-                "Legendary Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:LegendaryChest:820274118817611777>",
-                },
-                "Mythic Treasure Chest": {
-                    "dropChance": 0,
-                    "minQuantity": 0,
-                    "maxQuantity": 0,
-                    "emote": "<:MythicChest:820274344059994122>",
-                },
-            },
-        },
-    },
-    "3": {
-        enemies: [
-            "Great White Shark",
-            "Lion Fish",
-            "Killer Whale",
-            "Pufferfish",
-            "Jellyfish",
-            "Hammerhead Shark",
-        ],
-        requirement: 20,
-        multipliers: {
-            "ExpMultiplier": 1.3,
-            "GoldMultiplier": 1.3,
-        },
-        buffs: { "hp": 2.3, "attack": 2.3, "defense": 2.0, "speed": 2.6 },
-        rewardDescription: "**30% more gold          30% more player experience**",
-        rewards: {
-            jericho: {
-                "dropChance": 0.32,
-                "minQuantity": 15,
-                "maxQuantity": 40,
-                "emote": "<:Jericho:823551572029603840>",
-            },
-            equipDropChance: 0,
-            equipment: {
-                // common equipment set
-                "Common": {
-                    "dropChance": 60,
-                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
-                },
-                // uncommon equipment set
-                "Uncommon": {
-                    "dropChance": 35,
-                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
-                },
-                // rare equipment set
-                "Rare": {
+                // epic equipment set
+                "Epic": {
                     "dropChance": 5,
                     "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
@@ -267,44 +105,44 @@ const floors = {
             },
         },
     },
-    "4": {
+    "2": {
         enemies: [
-            "Merman",
-            "Mermaid",
-            "Fishman Guard",
-            "Seal",
-            "Dolphin",
-            "Blue Whale",
+            "Grouper",
+            "Tuna",
+            "Pacific Halibut",
+            "King Salmon",
+            "Bristlemouth",
+            "Reef Shark",
         ],
         requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.8, "attack": 2.8, "defense": 2.5, "speed": 3.1 },
+        buffs: { "hp": 2.7, "attack": 4.0, "defense": 3.3, "speed": 4.0 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
-                "minQuantity": 30,
-                "maxQuantity": 50,
+                "dropChance": 0.35,
+                "minQuantity": 10,
+                "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance: 0,
             equipment: {
-                // common equipment set
-                "Common": {
-                    "dropChance": 50,
-                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
-                },
                 // uncommon equipment set
                 "Uncommon": {
-                    "dropChance": 40,
-                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
+                    "dropChance": 75,
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
                 // rare equipment set
                 "Rare": {
-                    "dropChance": 10,
+                    "dropChance": 20,
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
+                },
+                // epic equipment set
+                "Epic": {
+                    "dropChance": 5,
                     "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
@@ -348,6 +186,168 @@ const floors = {
             },
         },
     },
+    "3": {
+        enemies: [
+            "Great White Shark",
+            "Lion Fish",
+            "Killer Whale",
+            "Pufferfish",
+            "Jellyfish",
+            "Hammerhead Shark",
+        ],
+        requirement: 40,
+        multipliers: {
+            "ExpMultiplier": 1.4,
+            "GoldMultiplier": 1.4,
+        },
+        buffs: { "hp": 3.2, "attack": 4.5, "defense": 3.8, "speed": 4.5 },
+        rewardDescription: "**40% more gold          40% more player experience**",
+        rewards: {
+            jericho: {
+                "dropChance": 0.35,
+                "minQuantity": 15,
+                "maxQuantity": 40,
+                "emote": "<:Jericho:823551572029603840>",
+            },
+            equipDropChance: 0,
+            equipment: {
+                // uncommon equipment set
+                "Uncommon": {
+                    "dropChance": 60,
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
+                },
+                // rare equipment set
+                "Rare": {
+                    "dropChance": 35,
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
+                },
+                // epic equipment set
+                "Epic": {
+                    "dropChance": 5,
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
+                },
+            },
+            lootbox: {
+                "Common Treasure Chest": {
+                    "dropChance": 70,
+                    "minQuantity": 2,
+                    "maxQuantity": 5,
+                    "emote": "<:CommonChest:819856620572901387>",
+                },
+                "Uncommon Treasure Chest": {
+                    "dropChance": 30,
+                    "minQuantity": 1,
+                    "maxQuantity": 3,
+                    "emote": "<:UncommonChest:820272834348711976>",
+                },
+                "Rare Treasure Chest": {
+                    "dropChance": 20,
+                    "minQuantity": 1,
+                    "maxQuantity": 2,
+                    "emote": "<:RareChest:820273250629582858>",
+                },
+                "Epic Treasure Chest": {
+                    "dropChance": 5,
+                    "minQuantity": 1,
+                    "maxQuantity": 1,
+                    "emote": "<:EpicChest:820273750289023007>",
+                },
+                "Legendary Treasure Chest": {
+                    "dropChance": 1,
+                    "minQuantity": 1,
+                    "maxQuantity": 1,
+                    "emote": "<:LegendaryChest:820274118817611777>",
+                },
+                "Mythic Treasure Chest": {
+                    "dropChance": 0,
+                    "minQuantity": 0,
+                    "maxQuantity": 0,
+                    "emote": "<:MythicChest:820274344059994122>",
+                },
+            },
+        },
+    },
+    "4": {
+        enemies: [
+            "Merman",
+            "Mermaid",
+            "Fishman Guard",
+            "Seal",
+            "Dolphin",
+            "Blue Whale",
+        ],
+        requirement: 50,
+        multipliers: {
+            "ExpMultiplier": 1.45,
+            "GoldMultiplier": 1.45,
+        },
+        buffs: { "hp": 4.2, "attack": 5.5, "defense": 4.8, "speed": 5.5 },
+        rewardDescription: "**45% more gold          45% more player experience**",
+        rewards: {
+            jericho: {
+                "dropChance": 0.35,
+                "minQuantity": 30,
+                "maxQuantity": 50,
+                "emote": "<:Jericho:823551572029603840>",
+            },
+            equipDropChance: 0,
+            equipment: {
+                // uncommon equipment set
+                "Uncommon": {
+                    "dropChance": 50,
+                    "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
+                },
+                // rare equipment set
+                "Rare": {
+                    "dropChance": 40,
+                    "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
+                },
+                // epic equipment set
+                "Epic": {
+                    "dropChance": 10,
+                    "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
+                },
+            },
+            lootbox: {
+                "Common Treasure Chest": {
+                    "dropChance": 65,
+                    "minQuantity": 2,
+                    "maxQuantity": 5,
+                    "emote": "<:CommonChest:819856620572901387>",
+                },
+                "Uncommon Treasure Chest": {
+                    "dropChance": 35,
+                    "minQuantity": 1,
+                    "maxQuantity": 3,
+                    "emote": "<:UncommonChest:820272834348711976>",
+                },
+                "Rare Treasure Chest": {
+                    "dropChance": 20,
+                    "minQuantity": 1,
+                    "maxQuantity": 2,
+                    "emote": "<:RareChest:820273250629582858>",
+                },
+                "Epic Treasure Chest": {
+                    "dropChance": 5,
+                    "minQuantity": 1,
+                    "maxQuantity": 1,
+                    "emote": "<:EpicChest:820273750289023007>",
+                },
+                "Legendary Treasure Chest": {
+                    "dropChance": 1,
+                    "minQuantity": 1,
+                    "maxQuantity": 1,
+                    "emote": "<:LegendaryChest:820274118817611777>",
+                },
+                "Mythic Treasure Chest": {
+                    "dropChance": 0,
+                    "minQuantity": 0,
+                    "maxQuantity": 0,
+                    "emote": "<:MythicChest:820274344059994122>",
+                },
+            },
+        },
+    },
     "5": {
         enemies: [
             "Fishman Guard Patrol",
@@ -357,53 +357,53 @@ const floors = {
             "Seal Dancer",
             "Grey Whale",
         ],
-        requirement: 40,
+        requirement: 60,
         multipliers: {
-            "ExpMultiplier": 1.4,
-            "GoldMultiplier": 1.4,
+            "ExpMultiplier": 1.5,
+            "GoldMultiplier": 1.5,
         },
-        buffs: { "hp": 3.0, "attack": 3.0, "defense": 2.6, "speed": 3.4 },
-        rewardDescription: "**40% more gold          40% more player experience**",
+        buffs: { "hp": 5.2, "attack": 6.5, "defense": 5.8, "speed": 6.5 },
+        rewardDescription: "**50% more gold          50% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.35,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance : 0,
             equipment: {
-                // common equipment set
-                "Common": {
+                // uncommon equipment set
+                "Uncommon": {
                     "dropChance": 40,
                     "drops" : ['Watermelon Rind', 'Sandy Slippers', 'Sleeveless T-shirt', 'Surf Pants', 'Surf Board'],
                 },
-                // uncommon equipment set
-                "Uncommon": {
+                // rare equipment set
+                "Rare": {
                     "dropChance": 45,
                     "drops" : ['Seaweed', 'Woven Seaweed', 'Seaweed Dress', 'Seaweed Dress Skirt', 'Hard Coral'],
                 },
-                // rare equipment set
-                "Rare": {
+                // epic equipment set
+                "Epic": {
                     "dropChance": 15,
                     "drops" : ['Mermaid Wig', 'Mermaid Tail', 'Shell Bra', 'Mermaid Tail Fins', 'Mermaid Staff'],
                 },
             },
             lootbox: {
                 "Common Treasure Chest": {
-                    "dropChance": 70,
-                    "minQuantity": 1,
-                    "maxQuantity": 3,
+                    "dropChance": 65,
+                    "minQuantity": 2,
+                    "maxQuantity": 5,
                     "emote": "<:CommonChest:819856620572901387>",
                 },
                 "Uncommon Treasure Chest": {
-                    "dropChance": 30,
+                    "dropChance": 40,
                     "minQuantity": 1,
-                    "maxQuantity": 2,
+                    "maxQuantity": 3,
                     "emote": "<:UncommonChest:820272834348711976>",
                 },
                 "Rare Treasure Chest": {
-                    "dropChance": 20,
+                    "dropChance": 25,
                     "minQuantity": 1,
                     "maxQuantity": 2,
                     "emote": "<:RareChest:820273250629582858>",
