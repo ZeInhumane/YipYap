@@ -350,7 +350,7 @@ const floors = {
     },
     "5": {
         enemies: [
-            "Cimera",
+            "Chimera",
             "Phoenix",
             "Magma Dragon",
             "Hellhound Pack",
