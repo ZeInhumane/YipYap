@@ -1,144 +1,76 @@
-const Listing = require('../../models/listing');
-const titleCase = require('../../functions/titleCase');
-const Discord = require('discord.js');
-const findPartialItem = require('../../functions/findPartialItem');
-const marketUtils = require('./utils/marketUtils');
+const Listing = require("../../models/listing");
+const titleCase = require("../../functions/titleCase");
+const { MessageEmbed } = require("discord.js");
+const findPartialItem = require("../../functions/findPartialItem");
+const marketUtils = require("./utils/marketUtils");
+const {
+    PaginateContent,
+    splitArrayIntoChunksOfLen,
+} = require("../../functions/pagination/Pagination");
 
 module.exports = {
     name: "market",
     description: "Stuff.",
     syntax: `{filters}`,
-    aliases: [''],
+    aliases: [""],
     category: "Economy",
     cooldown: 5,
-    async execute({ message, args }) {
-
+    async execute({ client, message, args }) {
         const filters = await parseArguments(args);
 
-        const { names, rarities, types, ascensions } = await parseFilters(filters);
+        const listingFilters = await parseFilters(filters);
 
         let listings = await Listing.find({}).sort({ itemCost: 1 });
-        listings = listings.filter(listing => {
-            if (!names || !names.size) return true;
 
-            if (!names.has(listing.itemName)) return false;
+        listings = await filterListings(listings, listingFilters);
 
-            return true;
-        }).filter(listing => {
-            if (!rarities) return true;
+        const itemsPerPage = 10;
+        const chunks = splitArrayIntoChunksOfLen(listings, itemsPerPage);
+        const listingEmbeds = [];
 
-            if (!rarities.has(listing.item.rarity)) return false;
+        chunks.forEach((chunk, index) => {
+            const embed = new MessageEmbed()
+                .setAuthor({
+                    name: message.author.username,
+                    iconURL: message.author.displayAvatarURL({
+                        dynamic: true,
+                    }),
+                })
+                .setColor(client.config.colors.primary)
+                .setTitle(embedStuff.title)
+                .setDescription(embedStuff.descHeader)
+                .setFooter({
+                    text: `Page ${index + 1} | Items: ${
+                        chunk.length + index * itemsPerPage
+                    }/${listings.length}`,
+                });
 
-            return true;
-        }).filter(listing => {
-            if (!types) return true;
+            embed.description += chunk
+                .map((listing) => {
+                    return marketUtils.returnMessage({
+                        listing,
+                        type: listing.type,
+                        messageType: "listing",
+                    });
+                })
+                .join("\n\n");
 
-            if (!types.has(listing.itemType)) return false;
-
-            return true;
-        }).filter(listing => {
-            if (!ascensions || !ascensions.size) return true;
-
-            if (!ascensions.has(listing.item.ascension)) return false;
-
-            return true;
+            listingEmbeds.push(embed);
         });
 
-        let currentPage = 1;
-        const itemsPerPage = 10;
-        const totalListings = listings.length;
-        const totalPages = Math.ceil(totalListings / itemsPerPage) || 1;
-        let itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
-
-        marketListing.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
-        marketListing.description = "All the items that you listed in the Global Market are shown below!\n\n";
-
-        marketListing.description += listings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(listing => {
-            return marketUtils.returnMessage({ listing, type: listing.type, messageType: "listing" });
-        })
-            .join('\n\n');
-
-        marketListing.color = '#0099ff';
-
-        const listMessage = await message.channel.send({ embeds: [marketListing], components: [row] });
-
-        const filter = btnInt => {
-            btnInt.deferUpdate();
-            return btnInt.user.id === message.author.id;
-        };
-
-        let isExpired, messageDeleted;
-        while (!isExpired && !messageDeleted) {
-            await listMessage.awaitMessageComponent({ filter, componentType: 'BUTTON', time: 60000 })
-                .then(async int => {
-                    if (int.customId === 'delete') {
-                        messageDeleted = true;
-                        return listMessage.delete();
-                    }
-
-                    if (int.customId === 'back') {
-                        currentPage--;
-                    }
-
-                    if (int.customId === 'forward') {
-                        currentPage++;
-                    }
-
-                    marketListing.description = marketListing.description.split('\n\n')[0] + '\n\n';
-                    if (currentPage > totalPages || currentPage < 1) {
-                        currentPage = 1;
-                    }
-
-                    marketListing.description += listings.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map(listing => {
-                        return marketUtils.returnMessage({ listing, type: listing.type, messageType: "listing" });
-                    })
-                        .join('\n\n');
-
-                    itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
-
-                    marketListing.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
-
-                    await listMessage.edit({ embeds: [marketListing], components: [row] });
-                })
-                .catch(async () => {
-                    isExpired = true;
-                });
+        if (!listingEmbeds.length) {
+            await message.channel.send({
+                embeds: [getDefaultEmbed(client, message)],
+            });
+            return;
         }
-        if (isExpired) {
-            try {
-                marketListing.color = '#FF0000';
-                await listMessage.edit({ embeds: [marketListing] });
-            } catch (e) {
-                return;
-            }
-        }
+
+        const paginated = new PaginateContent(client, message, listingEmbeds);
+        paginated.init();
     },
 };
 
-const row = new Discord.MessageActionRow()
-    .addComponents(
-        new Discord.MessageButton()
-            .setCustomId('back')
-            .setLabel('◀️')
-            .setStyle('PRIMARY'),
-        new Discord.MessageButton()
-            .setCustomId('forward')
-            .setLabel('▶️')
-            .setStyle('PRIMARY'),
-        new Discord.MessageButton()
-            .setCustomId('delete')
-            .setLabel('🗑️')
-            .setStyle('DANGER'),
-    );
-
-const marketListing = {
-    title: "Global Market :shopping_cart:",
-    description: "All the cards listed in the Global Market that matches your requirements are shown below!\n\n",
-    author: true,
-};
-
 async function parseArguments(args) {
-
     const filters = {};
     let currentKey = "";
     // Rarity (r), Type (t), Name (n), Ascension (a)
@@ -152,7 +84,9 @@ async function parseArguments(args) {
             continue;
         }
 
-        filters[currentKey] ? filters[currentKey] += " " + args[0] : filters[currentKey] = args[0];
+        filters[currentKey]
+            ? (filters[currentKey] += " " + args[0])
+            : (filters[currentKey] = args[0]);
         args.shift();
     }
 
@@ -160,13 +94,14 @@ async function parseArguments(args) {
 }
 
 async function parseFilters(filters) {
-
     const names = await parseNames(filters.n);
 
-    let rarities, types, ascensions = new Set();
+    const rarities = new Set();
+    const types = new Set();
+    const ascensions = new Set();
     for (const [key, value] of Object.entries(filters)) {
         if (key === "r") {
-            filters[key] = value.split(",").forEach(rarity => {
+            filters[key] = value.split(",").forEach((rarity) => {
                 rarity = rarity.trim().toLowerCase();
                 if (["common", "c"].includes(rarity)) {
                     rarity = "Common";
@@ -185,32 +120,32 @@ async function parseFilters(filters) {
                 } else {
                     return;
                 }
-                rarity.add(rarity);
+                rarities.add(rarity);
             });
         } else if (key === "t") {
-            filters[key] = value.split(",").forEach(type => {
+            filters[key] = value.split(",").forEach((type) => {
                 type = type.trim().toLowerCase();
-                if (['consumable'].includes(type)) {
+                if (["consumable"].includes(type)) {
                     type = "consumable";
-                } else if (['equipment', 'e'].includes(type)) {
+                } else if (["equipment", "e"].includes(type)) {
                     type = "equipment";
-                } else if (['fruit', 'f'].includes(type)) {
+                } else if (["fruit", "f"].includes(type)) {
                     type = "fruit";
-                } else if (['chest'].includes(type)) {
+                } else if (["chest"].includes(type)) {
                     type = "chest";
-                } else if (['pack', 'p'].includes(type)) {
+                } else if (["pack", "p"].includes(type)) {
                     type = "pack";
                 } else {
                     return;
                 }
-                type.add(type);
+                types.add(type);
             });
         } else if (key === "a") {
-            filters[key] = value.split(",").forEach(ascension => {
+            filters[key] = value.split(",").forEach((ascension) => {
                 ascension = parseInt(ascension.trim());
                 if (!ascension) return;
 
-                ascension.add(ascension);
+                ascensions.add(ascension);
             });
         } else {
             continue;
@@ -224,19 +159,80 @@ async function parseNames(nameFilterOptions) {
     const names = new Set();
     if (nameFilterOptions) {
         nameFilterOptions = nameFilterOptions.toLowerCase().split(",");
-        await Promise.all(nameFilterOptions.map(async (name) => {
-            const items = await findPartialItem(titleCase(name.trim()));
-            if (items.length == 1) {
-                names.add(items[0].itemName);
-            } else if (items.length > 1) {
-                for (const item of items) {
-                    names.add(item);
+        await Promise.all(
+            nameFilterOptions.map(async (name) => {
+                const items = await findPartialItem(titleCase(name.trim()));
+                if (items.length == 1) {
+                    names.add(items[0].itemName);
+                } else if (items.length > 1) {
+                    for (const item of items) {
+                        names.add(item);
+                    }
                 }
-            }
-        }));
+            }),
+        );
 
         return names;
     }
 
     return names;
+}
+
+async function filterListings(listings, filters) {
+    const { names, rarities, types, ascensions } = filters;
+
+    const filteredListings = listings
+        .filter((listing) => {
+            if (names.size == 0) return true;
+
+            if (!names.has(listing.itemName)) return false;
+
+            return true;
+        })
+        .filter((listing) => {
+            if (rarities.size == 0) return true;
+
+            if (!rarities.has(listing.item.rarity)) return false;
+
+            return true;
+        })
+        .filter((listing) => {
+            if (types.size == 0) return true;
+
+            if (!types.has(listing.itemType)) return false;
+
+            return true;
+        })
+        .filter((listing) => {
+            if (ascensions.size == 0) return true;
+
+            if (!ascensions.has(listing.item.ascension)) return false;
+
+            return true;
+        });
+    return filteredListings;
+}
+
+const embedStuff = {
+    title: "Global market :shopping_cart: ",
+    descHeader:
+        "All the items listed in the Global Market that matches your requirements are shown below!\n\n",
+};
+
+function getDefaultEmbed(client, message) {
+    const embed = new MessageEmbed()
+        .setAuthor({
+            name: message.author.username,
+            iconURL: message.author.displayAvatarURL({
+                dynamic: true,
+            }),
+        })
+        .setColor(client.config.colors.primary)
+        .setTitle(embedStuff.title)
+        .setDescription(embedStuff.descHeader)
+        .setFooter({
+            text: `Page 1 | Items: 0/0`,
+        });
+
+    return embed;
 }
