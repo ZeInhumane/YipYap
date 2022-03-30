@@ -395,7 +395,7 @@ const boxLootTable = {
         "Dusk Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Spiked Cowboy Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        "Shadow Step Boots": { dropChance: 40, minQuantity: 25, maxQuantity: 50 },
+        "Shadow Step Boots": { dropChance: 1, minQuantity: 25, maxQuantity: 50 },
         "Jericho Jehammad": { dropChance: 40, minQuantity: 40, maxQuantity: 80 },
     },
     "legendary": {
