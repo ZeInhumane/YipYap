@@ -26,7 +26,7 @@ module.exports = {
                 title: "Floors :map:",
                 author: {
                     name: `${message.author.username}`,
-                    icon_url: message.author.displayAvatarURL({ dynamic: true }),
+                    iconURL: message.author.displayAvatarURL({ dynamic: true }),
                 },
                 description: `All the floors that you have unlocked in **${area.getName}** are listed down below.\n\n`,
                 image: {
@@ -36,12 +36,14 @@ module.exports = {
 
             let floorCount = 0;
             for (const [floorID, floor] of Object.entries(area.getFloors)) {
+                if (floor.requirement > user.level) continue;
+
                 floorEmbed.description += `Area | ${area.getID} - ${floorID}\n` + `Enemies: ${floor.enemies.join(", ")}\n\n`;
                 floorCount += 1;
             }
 
             floorEmbed.footer = {
-                text: `Page 1 | ${floorCount} / ${floorCount}`,
+                text: `Page 1 | Floors ${floorCount} / ${floorCount}`,
             };
 
             return message.channel.send({ embeds: [floorEmbed] });
@@ -71,7 +73,7 @@ module.exports = {
             title: `You have successfully travelled to Area [${area.getID} - ${floorToAccess}]`,
             author: {
                 name: `${message.author.username}'s travel`,
-                icon_url: message.author.displayAvatarURL({ dynamic: true }),
+                iconURL: message.author.displayAvatarURL({ dynamic: true }),
             },
             fields: [
                 {

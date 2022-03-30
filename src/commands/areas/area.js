@@ -29,7 +29,7 @@ module.exports = {
             title: `Successfully travelled to ${area.getName} [Area ${area.getID}]`,
             author: {
                 name: `${message.author.username}'s travel`,
-                icon_url: message.author.displayAvatarURL({ dynamic: true }),
+                iconURL: message.author.displayAvatarURL({ dynamic: true }),
             },
             description: `${area.getDesc}`,
             image: {
