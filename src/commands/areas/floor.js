@@ -26,7 +26,7 @@ module.exports = {
                 title: "Floors :map:",
                 author: {
                     name: `${message.author.username}`,
-                    icon_url: message.author.displayAvatarURL({ dynamic: true }),
+                    iconURL: message.author.displayAvatarURL({ dynamic: true }),
                 },
                 description: `All the floors that you have unlocked in **${area.getName}** are listed down below.\n\n`,
                 image: {
@@ -71,7 +71,7 @@ module.exports = {
             title: `You have successfully travelled to Area [${area.getID} - ${floorToAccess}]`,
             author: {
                 name: `${message.author.username}'s travel`,
-                icon_url: message.author.displayAvatarURL({ dynamic: true }),
+                iconURL: message.author.displayAvatarURL({ dynamic: true }),
             },
             fields: [
                 {

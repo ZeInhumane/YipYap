@@ -26,7 +26,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setAuthor({
                     name: message.author.username,
-                    icon_url: message.author.displayAvatarURL({
+                    iconURL: message.author.displayAvatarURL({
                         dynamic: true,
                     }),
                 })
