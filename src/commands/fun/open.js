@@ -435,7 +435,6 @@ const boxLootTable = {
         // "Eclipse Sabaton": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Spiked Cowboy Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Shadow Step Boots": { dropChance: 1, minQuantity: 25, maxQuantity: 50 },
-
         // fatten pool with 2 rare sets
         // "Clown Shoes": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Clown Top": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
