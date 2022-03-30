@@ -36,12 +36,14 @@ module.exports = {
 
             let floorCount = 0;
             for (const [floorID, floor] of Object.entries(area.getFloors)) {
+                if (floor.requirement > user.level) continue;
+
                 floorEmbed.description += `Area | ${area.getID} - ${floorID}\n` + `Enemies: ${floor.enemies.join(", ")}\n\n`;
                 floorCount += 1;
             }
 
             floorEmbed.footer = {
-                text: `Page 1 | ${floorCount} / ${floorCount}`,
+                text: `Page 1 | Floors ${floorCount} / ${floorCount}`,
             };
 
             return message.channel.send({ embeds: [floorEmbed] });
