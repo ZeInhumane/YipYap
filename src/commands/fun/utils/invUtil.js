@@ -27,5 +27,7 @@ exports.invMessage = ({ property, name, type, emote }) => {
             return `**${property.quantity}x** | **${name}** ${emote}\n${
                 property.type.charAt(0).toUpperCase() + property.type.slice(1)
             }`;
+        default:
+            return `**${property.quantity}x** | **${name}** ${emote}\nUnknown`;
     }
 };

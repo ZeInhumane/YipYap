@@ -150,7 +150,9 @@ module.exports = {
 
                             break;
                         }
-                        case 'Swords' || 'Weapons' || 'Boots': {
+                        case 'Swords':
+                        case 'Boots':
+                        case 'Weapons': {
                             let equipment;
                             // but why
                             if (packAmt > 5) {
@@ -192,6 +194,7 @@ module.exports = {
                             break;
                         }
                         default:
+                            console.log(packType);
                             message.channel.send(`This pack does not exist.`);
                             return;
                     }
@@ -204,7 +207,7 @@ module.exports = {
 
                     break;
 
-                case 'Treasure Chest' || 'Chest' || 'Treasure': {
+                case 'Treasure Chest': {
                     // Contains drop rates for items in the boxes
                     const totalDrops = [];
                     let totalChance = 0;
