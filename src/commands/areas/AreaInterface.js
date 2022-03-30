@@ -36,6 +36,7 @@ module.exports = class AreaInterface {
     static get getName() { return new this(true).name; }
     static get getDesc() { return new this(true).desc; }
     static get getImageURL() { return new this(true).imageURL; }
+    static get getCredits() {return new this(true).credits; }
     static get area() { return new this(true); }
     static get getFloors() { return new this(true).floors; }
 };

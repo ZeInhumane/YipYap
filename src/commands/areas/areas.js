@@ -1,6 +1,9 @@
 const AreaInterface = require("./AreaInterface.js");
 const { MessageEmbed } = require("discord.js");
-const { PaginateContent } = require("../../functions/pagination/Pagination");
+const {
+    PaginateContent,
+    splitArrayIntoChunksOfLen,
+} = require("../../functions/pagination/Pagination");
 
 module.exports = {
     name: "areas",
@@ -13,7 +16,7 @@ module.exports = {
             const area = AreaInterface.areas[id];
             areaArray.push({
                 name: `${area.getID}. ${area.getName}`,
-                value: `${area.getDesc}`,
+                value: `${area.getDesc} [Credits](${area.getCredits})`,
             });
         }
 
@@ -49,14 +52,3 @@ module.exports = {
         paginated.init();
     },
 };
-
-function splitArrayIntoChunksOfLen(arr, len) {
-    const chunks = [];
-    const n = arr.length;
-    let i = 0;
-
-    while (i < n) {
-        chunks.push(arr.slice(i, (i += len)));
-    }
-    return chunks;
-}
