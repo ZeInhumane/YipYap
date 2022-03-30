@@ -62,7 +62,7 @@ const floors = {
                 // epic equipment set
                 "Epic": {
                     "dropChance": 5,
-                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
+                    "drops" : ['Amber Ski Mask', 'Amber Leggings', 'Amber Jacket', 'Amber Ice Skates', 'Amber Knuckles'],
                 },
             },
             lootbox: {
@@ -143,7 +143,7 @@ const floors = {
                 // epic equipment set
                 "Epic": {
                     "dropChance": 5,
-                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
+                    "drops" : ['Amber Ski Mask', 'Amber Kilt', 'Amber Jacket', 'Amber Ice Skates', 'Amber Knuckles'],
                 },
             },
             lootbox: {
@@ -224,7 +224,7 @@ const floors = {
                 // epic equipment set
                 "Epic": {
                     "dropChance": 5,
-                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
+                    "drops" : ['Amber Ski Mask', 'Amber Kilt', 'Amber Jacket', 'Amber Ice Skates', 'Amber Knuckles'],
                 },
             },
             lootbox: {
@@ -305,7 +305,7 @@ const floors = {
                 // epic equipment set
                 "Epic": {
                     "dropChance": 10,
-                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
+                    "drops" : ['Amber Ski Mask', 'Amber Kilt', 'Amber Jacket', 'Amber Ice Skates', 'Amber Knuckles'],
                 },
             },
             lootbox: {
@@ -389,7 +389,7 @@ const floors = {
                 // epic equipment set
                 "Epic": {
                     "dropChance": 15,
-                    "drops" : ['Amber Feather Bonnet', 'Amber Kilt', 'Amber Jacket', 'Amber Snow Boots', 'Amber Knuckles'],
+                    "drops" : ['Amber Ski Mask', 'Amber Kilt', 'Amber Jacket', 'Amber Ice Skates', 'Amber Knuckles'],
                 },
             },
             lootbox: {
