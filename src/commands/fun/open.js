@@ -488,10 +488,10 @@ const boxLootTable = {
         // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
     },
     "mythic": {
-        "Watermelon": { dropChance: 29, minQuantity: 20, maxQuantity: 70 },
-        "Falafel": { dropChance: 29, minQuantity: 20, maxQuantity: 35 },
+        "Watermelon": { dropChance: 40, minQuantity: 20, maxQuantity: 70 },
+        "Falafel": { dropChance: 40, minQuantity: 20, maxQuantity: 35 },
         "Spaghetti": { dropChance: 70, minQuantity: 20, maxQuantity: 35 },
-        "Jericho Jehammad": { dropChance: 40, minQuantity: 80, maxQuantity: 200 },
+        "Jericho Jehammad": { dropChance: 50, minQuantity: 80, maxQuantity: 200 },
         // "Hermes Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -512,6 +512,7 @@ const weaponsLootTable = {
     // 'Elven Bow': 5,
     'Dusk Blade': 1,
     'Eclipse Blade': 1,
+    // 'Caduceus': 0.3,
 };
 // Helmet pack drop rates
 const helmetLootTable = {
@@ -524,6 +525,7 @@ const helmetLootTable = {
     // 'Pirate Hat': 5,
     // 'Eclipse Headgear': 1,
     // 'Dusk Headgear': 1,
+    // 'Winged Hat': 0.3,
 };
 
 // Chestplate pack drop rates
@@ -537,12 +539,13 @@ const chestplateLootTable = {
     // 'Pirate Vest': 5,
     // 'Eclipse Cuirass': 1,
     // 'Dusk Cuirass': 1,
+    // 'Hermes Top': 0.3,
 };
 
 // Leggings pack drop rates
 const leggingsLootTable = {
     'Skirt': 35,
-    'jeans': 35,
+    'Jeans': 35,
     'Hiking Pants': 35,
     // 'Magic Braises': 5,
     // 'Clown Bottom': 5,
@@ -550,6 +553,7 @@ const leggingsLootTable = {
     // 'Pirate Breeches': 5,
     // 'Eclipse Chausses': 1,
     // 'Dusk Chausses': 1,
+    // 'Hermes Bottom': 0.3,
 };
 
 // Boots pack drop rates
@@ -565,6 +569,7 @@ const bootsLootTable = {
     'Shadow Step Boots': 1,
     // 'Eclipse Sabaton': 1,
     // 'Dusk Sabaton': 1,
+    // 'Hermes Boots': 0.3,
 };
 
 // Treasure chest emotes
