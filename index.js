@@ -12,6 +12,7 @@ const client = new Discord.Client({
 client.mongoose = require("./src/utils/mongoose");
 client.mongoUtils = require("./src/utils/mongoUtils");
 client.commands = new Discord.Collection();
+client.slashCommands = new Discord.Collection();
 client.config = config;
 
 // Load handlers
