@@ -1,9 +1,7 @@
 {
     "prefix": "-",
-    "bot-age": 1,
-    "word_array": ["I", "am", "gay"],
     "bot_info": {
-        "name": "Jerick",
+        "name": "YipYap",
         "version": 1.0
     },
     "admins": [
@@ -17,5 +15,9 @@
         "secondary": "#1c1241",
         "error": "#ff0000",
         "success": "#00ff00"
-    }
+    },
+    "testGuildIds": [
+        "149256256110985219",
+        "752142827873632307"
+    ]
 }
