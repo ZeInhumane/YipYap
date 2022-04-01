@@ -1,4 +1,4 @@
-# YipYap Discord Bot
+# YipYap 
 ![Discord Bots](https://discordbots.org/api/widget/servers/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/status/745275291785494571.svg)![Discord Bots](https://top.gg/api/widget/owner/745275291785494571.svg)
 
 ## Features
