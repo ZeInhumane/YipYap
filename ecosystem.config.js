@@ -1,6 +1,6 @@
 module.exports = {
   apps: [{
-    script: "index.js",
+    script: "./index.js",
     instances: "max",
     exec_mode: "cluster",
   }],
@@ -9,5 +9,5 @@ module.exports = {
   },
   env_production: {
     NODE_ENV: "production",
-  }
+  },
 };
