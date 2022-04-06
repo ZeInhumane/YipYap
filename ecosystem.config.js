@@ -5,7 +5,7 @@ module.exports = {
     exec_mode: "cluster",
   }],
   "scripts": {
-    "start": "pm2-runtime start index.js -i 0",
+    "start": "pm2-runtime start ecosystem.config.js --env production",
   },
   env_production: {
     NODE_ENV: "production",
