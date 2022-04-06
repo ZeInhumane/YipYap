@@ -14,7 +14,11 @@ module.exports = {
     category: "Fun",
     async execute({ message, user }) {
         // Calculate user stats
-        user = await calculateUserStats(user, true);
+        try {
+            user = await calculateUserStats(user, true);
+        } catch {
+            console.log(Error);
+        }
         // Get Area
         const Area = areaUtil.getArea(user.location.area);
         const area = new Area();
