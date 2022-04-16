@@ -3,6 +3,7 @@
 
 ## Features
 We implemented various features into the bot, aside from being another rpg bot that people can play, we push frequent updates as well as new equipment. 
+Test
 
 ### Bot Invite
 https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot
