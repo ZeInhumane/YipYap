@@ -181,6 +181,7 @@ async function confirmationBuy(client, message, buyer, listing) {
                             default:
                                 unknownError.author = { name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) };
                                 await channel.send({ embeds: [unknownError] });
+                                console.log(results.debug);
                                 return;
                         }
                     }
@@ -211,6 +212,7 @@ async function confirmationBuy(client, message, buyer, listing) {
 }
 
 async function handleSell({ client, message, args, user }) {
+    // eslint-disable-next-line prefer-const
     let { itemQuantity, itemName, itemPrice } = parseInt(args[0]) ? {
         itemQuantity: parseInt(args.shift()),
         itemPrice: parseInt(args[args.length - 1]) ? parseInt(args.pop()) : null,
@@ -311,7 +313,7 @@ async function handleList({ message }) {
     const itemsPerPage = 10;
     const totalListings = listings.length;
     const totalPages = Math.ceil(totalListings / itemsPerPage) || 1;
-    const itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+    let itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
 
     listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
     listingEmbed.description = "All the items that you listed in the Global Market are shown below!\n\n";
@@ -357,7 +359,7 @@ async function handleList({ message }) {
                 })
                     .join('\n\n');
 
-                const itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+                itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
 
                 listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
@@ -462,6 +464,11 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             const buyer = await User.findOne({ userID: buyerID }).session(session);
             const seller = await User.findOne({ userID: sellerID }).session(session);
             const txCost = listing.itemCost * listing.quantity;
+            const details = {
+                listingID: listingID,
+                buyerID: buyerID,
+                sellerID: sellerID,
+            };
 
             if (!listing) {
                 await session.abortTransaction();
@@ -485,6 +492,12 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
                 await session.abortTransaction();
                 console.error("Transaction aborted [buyer does not have enough currency].");
                 return { success: false, message: "Transaction aborted [buyer does not have enough currency].", code: 4 };
+            }
+
+            if (!seller.inv[listing.itemName]) {
+                await session.abortTransaction();
+                console.error("Transaction aborted [seller does not have item].");
+                return { success: false, message: "Transaction aborted [seller does not have item].", code: 5, debug: details };
             }
 
             await Listing.deleteOne({ listingID }).session(session);
