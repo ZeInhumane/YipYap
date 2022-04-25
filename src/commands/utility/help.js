@@ -10,7 +10,7 @@ module.exports = {
     syntax: "{Command to check} / none",
     cooldown: 5,
     category: "Utility",
-    async execute({ message, args, client }) {
+    async execute({ client, message, args, client }) {
         // Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);
         message.channel.send(`type ${prefix}help + {command name for specific help on that command}`);
@@ -22,7 +22,7 @@ module.exports = {
 
             const helpEmbed = new Discord.MessageEmbed()
                 .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-                .setColor("#FF69B4")
+                .setColor(client.config.colors.primary)
                 .setFooter({ text: `For more info: ${prefix}help {command name}` })
                 .setTitle(`Commands`);
 
@@ -72,7 +72,7 @@ module.exports = {
         } else {
             // Specific help
             const helpEmbed = new Discord.MessageEmbed()
-                .setColor('#FF69B4')
+                .setColor(client.config.colors.primary)
                 .setTitle(`${command.name.charAt(0).toUpperCase() + command.name.slice(1)} help`)
                 .addFields(
                     { name: command.description, value: `Syntax: ${prefix}${command.name} ${command.syntax}` },
