@@ -47,7 +47,7 @@ const floors = {
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0.15,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -128,7 +128,7 @@ const floors = {
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0.1,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {

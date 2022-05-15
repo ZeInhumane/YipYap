@@ -334,20 +334,20 @@ const boxLootTable = {
         "Rag Hood": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
         "Cloth Hood": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
         "Leather Hood": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
-        // "Rags": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
-        // "Shirt": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
-        // "Leather Chestplate": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
-        // "Rag Shorts": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
-        // "Cloth Pants": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
-        // "Leather Pants": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Rags": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
+        "Shirt": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
+        "Leather Chestplate": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Rag Shorts": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
+        "Cloth Pants": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
+        "Leather Pants": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
 
         // add some uncommon equipment here to make the drops longer
-        // "Long Sword": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Heavy Sword": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Steel Bucket": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Rubber Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Wooden Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Skirt": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        "Long Sword": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Heavy Sword": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Steel Bucket": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Rubber Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Wooden Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Skirt": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Jericho Jehammad": { dropChance: 40, minQuantity: 5, maxQuantity: 15 },
     },
     "uncommon": {
@@ -362,22 +362,22 @@ const boxLootTable = {
         "Sneakers": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Rubber Boots": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Hiking Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Steel Bucket": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Iron Helmet": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Top Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Wooden Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Stone Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Iron Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Skirt": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Hiking Pants": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Steel Bucket": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Iron Helmet": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Top Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Wooden Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Stone Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Iron Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Skirt": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Hiking Pants": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
 
         // common equips to make ppl furious
         "Iron Sword": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Leather Boots": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Leather Hood": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        // "Leather Chestplate": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        // "Leather Pants": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        "Leather Chestplate": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
+        "Leather Pants": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Jericho Jehammad": { dropChance: 40, minQuantity: 10, maxQuantity: 30 },
     },
     "rare": {
@@ -411,12 +411,12 @@ const boxLootTable = {
         "Staff": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Hiking Boots": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Sneakers": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Iron Helmet": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Top Hat": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Stone Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Iron Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        // "Hiking Pants": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Iron Helmet": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Top Hat": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Stone Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Iron Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
+        "Hiking Pants": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Jericho Jehammad": { dropChance: 40, minQuantity: 20, maxQuantity: 40 },
     },
     "epic": {
@@ -487,10 +487,10 @@ const boxLootTable = {
         // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
     },
     "mythic": {
-        "Watermelon": { dropChance: 29, minQuantity: 20, maxQuantity: 70 },
-        "Falafel": { dropChance: 29, minQuantity: 20, maxQuantity: 35 },
+        "Watermelon": { dropChance: 40, minQuantity: 20, maxQuantity: 70 },
+        "Falafel": { dropChance: 40, minQuantity: 20, maxQuantity: 35 },
         "Spaghetti": { dropChance: 70, minQuantity: 20, maxQuantity: 35 },
-        "Jericho Jehammad": { dropChance: 40, minQuantity: 80, maxQuantity: 200 },
+        "Jericho Jehammad": { dropChance: 50, minQuantity: 80, maxQuantity: 200 },
         // "Hermes Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -511,6 +511,7 @@ const weaponsLootTable = {
     // 'Elven Bow': 5,
     'Dusk Blade': 1,
     'Eclipse Blade': 1,
+    // 'Caduceus': 0.3,
 };
 // Helmet pack drop rates
 const helmetLootTable = {
@@ -523,6 +524,7 @@ const helmetLootTable = {
     // 'Pirate Hat': 5,
     // 'Eclipse Headgear': 1,
     // 'Dusk Headgear': 1,
+    // 'Winged Hat': 0.3,
 };
 
 // Chestplate pack drop rates
@@ -536,12 +538,13 @@ const chestplateLootTable = {
     // 'Pirate Vest': 5,
     // 'Eclipse Cuirass': 1,
     // 'Dusk Cuirass': 1,
+    // 'Hermes Top': 0.3,
 };
 
 // Leggings pack drop rates
 const leggingsLootTable = {
     'Skirt': 35,
-    'jeans': 35,
+    'Jeans': 35,
     'Hiking Pants': 35,
     // 'Magic Braises': 5,
     // 'Clown Bottom': 5,
@@ -549,6 +552,7 @@ const leggingsLootTable = {
     // 'Pirate Breeches': 5,
     // 'Eclipse Chausses': 1,
     // 'Dusk Chausses': 1,
+    // 'Hermes Bottom': 0.3,
 };
 
 // Boots pack drop rates
@@ -564,6 +568,7 @@ const bootsLootTable = {
     'Shadow Step Boots': 1,
     // 'Eclipse Sabaton': 1,
     // 'Dusk Sabaton': 1,
+    // 'Hermes Boots': 0.3,
 };
 
 // Treasure chest emotes
