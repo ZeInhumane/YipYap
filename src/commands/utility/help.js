@@ -10,7 +10,7 @@ module.exports = {
     syntax: "{Command to check} / none",
     cooldown: 5,
     category: "Utility",
-    async execute({ client, message, args, client }) {
+    async execute({ client, message, args }) {
         // Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);
         message.channel.send(`type ${prefix}help + {command name for specific help on that command}`);
