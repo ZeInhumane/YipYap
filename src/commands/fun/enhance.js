@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
+const errorMessage = require('../../constants/errorMessage.js');
 
 module.exports = {
     name: "enhance",
@@ -56,6 +57,12 @@ module.exports = {
             }
             if (user.inv[upgradeMaterial].quantity < materialUseCount) {
                 message.channel.send(`You do not have that much ${upgradeMaterial}s!`);
+                return;
+            }
+            if (materialUseCount >
+                user.inv[upgradeMaterial].quantity -
+                (user.inv[upgradeMaterial].listed ? user.inv[upgradeMaterial].listed : 0)) {
+                message.channel.send(errorMessage.marketErrorMessage.unableToEnhance);
                 return;
             }
             // Check if at max level for weapon

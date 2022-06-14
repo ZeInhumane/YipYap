@@ -4,7 +4,7 @@ const is_lvlup = require('../../classes/battle/is_lvlup.js');
 const findPartialItem = require('../../functions/findPartialItem');
 const titleCase = require('../../functions/titleCase.js');
 const findPrefix = require('../../functions/findPrefix');
-
+const errorMessage = require('../../constants/errorMessage.js');
 module.exports = {
     name: "eat",
     description: "Eats a consumable to gain experience",
@@ -47,6 +47,13 @@ module.exports = {
                 return;
             }
 
+            if (toBeConsumed >
+                user.inv[itemName].quantity -
+                (user.inv[itemName].listed ? user.inv[itemName].listed : 0)) {
+                message.channel.send(errorMessage.marketErrorMessage.unableToUse);
+                return;
+            }
+            // Consume the item
             let consumable = await findPartialItem(itemName);
             consumable = consumable[0];
             if (!consumable || consumable.type != "consumable") {

@@ -57,7 +57,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Lynx Fur Mufflers', 'Lynx Fur Boots', 'Lynx Fur Cloak', 'Lynx Fur Pants', 'Lynx Kunckles'],
+                    "drops" : ['Lynx Fur Mufflers', 'Lynx Fur Boots', 'Lynx Fur Cloak', 'Lynx Fur Pants', 'Lynx Knuckles'],
                 },
                 // epic equipment set
                 "Epic": {
