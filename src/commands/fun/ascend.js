@@ -3,6 +3,7 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
+const { marketErrorMessage } = require('../../constants/errorMessage');
 
 module.exports = {
     name: "ascend",
@@ -111,7 +112,7 @@ module.exports = {
                 // Finds if user has the items required for ascension
                 for (let i = 0; i < ascensionRequirements.length; i++) {
                     // 0 is material name, 1 is num of materials needed
-                    if (user.inv[ascensionRequirements[i][0]].quantity < ascensionRequirements[i][1]) {
+                    if (user.inv[ascensionRequirements[i][0]].quantity - (user.inv[ascensionRequirements[i][0]].listed ? user.inv[ascensionRequirements[i][0]].listed : 0) < ascensionRequirements[i][1]) {
                         playerHasMaterials = false;
                     }
                 }
@@ -119,7 +120,7 @@ module.exports = {
                 // Check if user has enough materials to ascend
                 if (!playerHasMaterials) {
                     // Not enough materials message
-                    ascendEmbed.addField("Not enough materials", "\u200b");
+                    ascendEmbed.addField("Not enough materials", marketErrorMessage.unableToAscend);
                     botEmbedMessage.edit({ embeds: [ascendEmbed], components: [] });
                     return;
                 }
