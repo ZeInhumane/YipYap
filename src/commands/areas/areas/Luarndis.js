@@ -38,7 +38,7 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.7, "attack": 0.7, "defense": 0.7, "speed": 1.0 },
+        buffs: { "hp": 0.7, "attack": 0.9, "defense": 0.9, "speed": 1.0 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
@@ -119,7 +119,7 @@ const floors = {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 1.8, "attack": 2.0, "defense": 1.8, "speed": 2.0 },
+        buffs: { "hp": 1.8, "attack": 2.4, "defense": 2.0, "speed": 2.0 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
@@ -200,7 +200,7 @@ const floors = {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.1, "attack": 2.5, "defense": 2.1, "speed": 2.4 },
+        buffs: { "hp": 2.1, "attack": 2.7, "defense": 2.3, "speed": 2.4 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
@@ -281,7 +281,7 @@ const floors = {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.2, "attack": 2.8, "defense": 2.2, "speed": 2.9 },
+        buffs: { "hp": 2.2, "attack": 3.0, "defense": 2.4, "speed": 2.9 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
@@ -357,12 +357,12 @@ const floors = {
             "Wild Wind Tiger",
             "Poison Flaming Dart Frog",
         ],
-        requirement: 40,
+        requirement: 35,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 2.5, "attack": 3.2, "defense": 2.5, "speed": 3.1 },
+        buffs: { "hp": 2.5, "attack": 3.4, "defense": 2.7, "speed": 3.1 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {

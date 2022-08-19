@@ -33,21 +33,21 @@ const floors = {
             "BOB",
             "IFone",
         ],
-        requirement: 10,
+        requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 2.2, "attack": 2.2, "defense": 2.2, "speed": 2.2 },
+        buffs: { "hp": 2.5, "attack": 2.5, "defense": 2.5, "speed": 2.5 },
         rewardDescription: "20% more gold           20% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.30,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -114,21 +114,21 @@ const floors = {
             "Sophia",
             "IFone Pro",
         ],
-        requirement: 20,
+        requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.7, "attack": 2.7, "defense": 2.7, "speed": 2.7 },
+        buffs: { "hp": 2.8, "attack": 2.8, "defense": 2.8, "speed": 2.8 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.30,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -195,21 +195,21 @@ const floors = {
             "Siri",
             "IFone Pro Max",
         ],
-        requirement: 30,
+        requirement: 35,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 3.0, "attack": 3.0, "defense": 3.0, "speed": 3.0 },
+        buffs: { "hp": 3.2, "attack": 3.2, "defense": 3.2, "speed": 3.2 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.30,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -281,16 +281,16 @@ const floors = {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 3.2, "attack": 3.2, "defense": 3.2, "speed": 3.2 },
+        buffs: { "hp": 3.5, "attack": 3.5, "defense": 3.5, "speed": 3.5 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.30,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -357,21 +357,21 @@ const floors = {
             "Robo Corp",
             "IFone Pro Max Ultra Extreme",
         ],
-        requirement: 50,
+        requirement: 45,
         multipliers: {
             "ExpMultiplier": 1.45,
             "GoldMultiplier": 1.45,
         },
-        buffs: { "hp": 3.8, "attack": 3.8, "defense": 3.8, "speed": 3.8 },
+        buffs: { "hp": 4.0, "attack": 4.0, "defense": 4.0, "speed": 4.0 },
         rewardDescription: "**45% more gold          45% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.32,
+                "dropChance": 0.30,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {

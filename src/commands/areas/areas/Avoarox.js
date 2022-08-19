@@ -357,7 +357,7 @@ const floors = {
             "Buddy",
             "IFone Pro Max Ultra Extreme",
         ],
-        requirement: 40,
+        requirement: 35,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,

@@ -360,7 +360,7 @@ const floors = {
             "Carnivorous Gorilla",
             "CondorSaurus",
          ],
-        requirement: 40,
+        requirement: 35,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
