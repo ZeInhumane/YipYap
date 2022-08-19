@@ -43,8 +43,8 @@ const floors = {
         rewards: {
             jericho: {
                 "dropChance": 0.30,
-                "minQuantity": 1,
-                "maxQuantity": 20,
+                "minQuantity": 15,
+                "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance : 0.2,
@@ -124,8 +124,8 @@ const floors = {
         rewards: {
             jericho: {
                 "dropChance": 0.30,
-                "minQuantity": 10,
-                "maxQuantity": 25,
+                "minQuantity": 30,
+                "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance: 0.2,
@@ -205,8 +205,8 @@ const floors = {
         rewards: {
             jericho: {
                 "dropChance": 0.30,
-                "minQuantity": 15,
-                "maxQuantity": 40,
+                "minQuantity": 40,
+                "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance: 0.2,
@@ -286,8 +286,8 @@ const floors = {
         rewards: {
             jericho: {
                 "dropChance": 0.30,
-                "minQuantity": 30,
-                "maxQuantity": 50,
+                "minQuantity": 50,
+                "maxQuantity": 90,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance: 0.2,
@@ -367,8 +367,8 @@ const floors = {
         rewards: {
             jericho: {
                 "dropChance": 0.30,
-                "minQuantity": 40,
-                "maxQuantity": 80,
+                "minQuantity": 60,
+                "maxQuantity": 100,
                 "emote": "<:Jericho:823551572029603840>",
             },
             equipDropChance : 0.2,
