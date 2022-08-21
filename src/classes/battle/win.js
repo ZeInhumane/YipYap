@@ -4,11 +4,12 @@ const giveWeaponID = require("../../functions/giveWeaponID.js");
 const makeEquipment = require("../../functions/makeEquipment");
 const userEffects = require("../../models/userEffects.js");
 const lvl_edit = require("./lvl_edit.js");
+const { emote } = require("../../constants/emojis");
 
 module.exports = {
     async execute(message, winner, loser, location) {
         // Putting emotes up here so it'll be easier to edit.
-        const goldEmote = "<:cash_24:751784973488357457>";
+        const goldEmote = emote.Gold;
 
         const winEmbed = new Discord.MessageEmbed()
             .setTitle(`> ${loser.name || loser.player.name} was slain... `)
@@ -162,15 +163,6 @@ module.exports = {
                             } Gold ${goldEmote}\n` + `${dropStr}`,
                 );
 
-                // winEmbed.addField(
-                //     "\u200b",
-                //     `**Rewards**\n• ${
-                //         moneyEarned * goldMulti
-                //     } Gold ${goldEmote}\n` + `${dropStr}`,
-                // );
-                // if (dropStr != "") {
-                //     winEmbed.addField("Items Obtained", dropStr);
-                // }
 
                 winner.currency += moneyEarned * goldMulti;
                 winner.save().catch((err) => console.error(err));
