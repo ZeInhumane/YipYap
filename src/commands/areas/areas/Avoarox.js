@@ -114,7 +114,7 @@ const floors = {
             "Sophia",
             "IFone Pro",
         ],
-        requirement: 10,
+        requirement: 5,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
@@ -195,7 +195,7 @@ const floors = {
             "Siri",
             "IFone Pro Max",
         ],
-        requirement: 20,
+        requirement: 10,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
@@ -276,7 +276,7 @@ const floors = {
             "Alexa",
             "IFone Pro Max Ultra",
         ],
-        requirement: 30,
+        requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
@@ -357,7 +357,7 @@ const floors = {
             "Buddy",
             "IFone Pro Max Ultra Extreme",
         ],
-        requirement: 35,
+        requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
