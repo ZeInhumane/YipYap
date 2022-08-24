@@ -1,29 +1,24 @@
 const Discord = require('discord.js');
 const useUltimate = require('../utils/ultimateUtil.js');
 const applyBuffs = require('../utils/buffUtil.js');
-
-const ultimateEmote = ":Ultimate:822042890955128872";
-const emptyUltimateEmote = "<:blank:829270386986319882>";
-const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>",
-    "<:6:829271966161567774>", "<:7:829271980397166612>", "<:8:829271994205208597>", "<:9:829272014946697246>", "<:10:829272027604713523>"];
-const ultimateStart = "<:Yeet:829267937784627200>";
-const ultimateEnd = "<:Yeet2:829270362516488212>";
+const { emote } = require("../../../constants/emojis");
+const { color } = require("../../../constants/colors");
 
 const row = new Discord.MessageActionRow()
     .addComponents(
         new Discord.MessageButton()
             .setCustomId('attack')
-            .setLabel('⚔️')
+            .setLabel(emote.Sword)
             .setStyle('PRIMARY'),
         new Discord.MessageButton()
             .setCustomId('defend')
-            .setLabel('🛡️')
+            .setLabel(emote.Shield)
             .setStyle('PRIMARY'),
         new Discord.MessageButton()
             .setCustomId('ultimate')
             .setLabel('')
             .setStyle('DANGER')
-            .setEmoji(ultimateEmote),
+            .setEmoji(emote.UltimateIcon),
     );
 
 
@@ -40,7 +35,7 @@ module.exports = class Battle {
         this.enemy = enemy;
 
         // Set starting embed colour
-        this.currentColor = '#0099ff';
+        this.currentColor = color.Active;
 
         // Set location info
         this.locationInfo = locationInfo;
@@ -167,7 +162,7 @@ module.exports = class Battle {
                 })
                 // Battle expired
                 .catch(async () => {
-                    this.currentColor = '#FF0000';
+                    this.currentColor = color.Expired;
                     battleMessage.edit({ embeds: [await this.createUpdatedMessage()], components: [] });
                     battleMessage.channel.send('Battle expired. Your fatass took too long');
                     this.expired = true;
@@ -257,7 +252,7 @@ module.exports = class Battle {
             .addFields(
                 { name: 'Experience Ticket', value: this.expMsg, inline: true },
                 { name: 'Gold Ticket', value: this.goldMsg, inline: true },
-                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP} ${this.playerShielding ? "🛡️" : ""}` },
+                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP} ${this.playerShielding ? emote.Shield : ""}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
                 { name: `Round ${this.round}`, value: turns[0] },
                 { name: '​', value: turns[1] },
@@ -359,7 +354,7 @@ module.exports = class Battle {
         user.hp -= amount;
         user.hp < 0 ? user.hp = 0 : user.hp;
         if (user.hp == 0) {
-            this.currentColor = '#FF0000';
+            this.currentColor = color.Expired;
         }
         return user.hp;
     }
@@ -384,7 +379,7 @@ module.exports = class Battle {
  * @returns {String}
  */
 function generateUltimateString(ultimate) {
-    return `${ultimateStart}${ultimateEmoteArray.slice(0, Math.floor((ultimate) / 10)).join("")}${emptyUltimateEmote.repeat(Math.ceil((100 - ultimate) / 10))}${ultimateEnd}`;
+    return `${emote.UltimateStart}${emote.UltimateBar.slice(0, Math.floor((ultimate) / 10)).join("")}${emote.EmptyUltimate.repeat(Math.ceil((100 - ultimate) / 10))}${emote.UltimateEnd}`;
 }
 
 /**
