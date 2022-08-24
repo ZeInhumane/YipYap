@@ -243,6 +243,12 @@ module.exports = class Battle {
 
     // Updates battle embed to display ongoing input
     async createUpdatedMessage() {
+        // Order turns correctly for player and enemy
+        const turns = [`${this.playerPreTurnAction} \n ${this.playerTurnAction}`, this.enemyTurnAction];
+        if (!playerIsFirst(this.player, this.enemy)) {
+            [turns[0], turns[1]] = [turns[1], turns[0]];
+        }
+
         const updatedBattleEmbed = new Discord.MessageEmbed()
             .setColor(this.currentColor)
             .setTitle(this.player.name + '\'s ultimate charge: ' + this.player.ultimate + "/100")
@@ -251,10 +257,10 @@ module.exports = class Battle {
             .addFields(
                 { name: 'Experience Ticket', value: this.expMsg, inline: true },
                 { name: 'Gold Ticket', value: this.goldMsg, inline: true },
-                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
+                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP} ${this.playerShielding ? "🛡️" : ""}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
-                { name: `Round ${this.round}`, value: `${this.playerPreTurnAction} \n ${this.playerTurnAction}` },
-                { name: '​', value: this.enemyTurnAction },
+                { name: `Round ${this.round}`, value: turns[0] },
+                { name: '​', value: turns[1] },
             )
             .setImage(this.locationInfo.imageURL)
             .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` }); return updatedBattleEmbed;
@@ -316,14 +322,15 @@ module.exports = class Battle {
 
         // If user shielded (probably will change logic sometime later)
         if (shield) {
-            damageTaken -= defender.defense / 2;
+            damageTaken -= defender.defense;
             // Change it later so higher level reduces damagetaken too
             if (defender.defense > 99) {
                 damageTaken *= 1 / 100;
-                this.chargeUltimate(defender, 25);
+                this.chargeUltimate(defender, 40);
             } else {
                 damageTaken *= (100 - defender.defense) / 100;
-                this.chargeUltimate(defender, 20);
+                console.log(defender);
+                this.chargeUltimate(defender, 30);
             }
         }
 
