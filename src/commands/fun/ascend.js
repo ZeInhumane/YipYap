@@ -3,6 +3,7 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
+const { marketErrorMessage } = require('../../constants/errorMessage');
 
 module.exports = {
     name: "ascend",
@@ -51,7 +52,7 @@ module.exports = {
                 user.inv[itemName].ascension = 0;
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(() => console.log(`Saved ${itemName}`))
                     .catch(err => console.error(err));
                 message.channel.send(`This equipment does not have enough levels to ascend.`);
                 return;
@@ -101,8 +102,7 @@ module.exports = {
                     botEmbedMessage.edit(new Discord.MessageEmbed()
                         .setColor(currentColor)
                         .setTitle(itemName)
-                        .setURL('https://discord.gg/CTMTtQV')
-                        .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
+                        .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`Ascension cancelled`),
                     );
                     return;
@@ -112,7 +112,7 @@ module.exports = {
                 // Finds if user has the items required for ascension
                 for (let i = 0; i < ascensionRequirements.length; i++) {
                     // 0 is material name, 1 is num of materials needed
-                    if (user.inv[ascensionRequirements[i][0]].quantity < ascensionRequirements[i][1]) {
+                    if (user.inv[ascensionRequirements[i][0]].quantity - (user.inv[ascensionRequirements[i][0]].listed ? user.inv[ascensionRequirements[i][0]].listed : 0) < ascensionRequirements[i][1]) {
                         playerHasMaterials = false;
                     }
                 }
@@ -120,7 +120,7 @@ module.exports = {
                 // Check if user has enough materials to ascend
                 if (!playerHasMaterials) {
                     // Not enough materials message
-                    ascendEmbed.addField("Not enough materials", "\u200b");
+                    ascendEmbed.addField("Not enough materials", marketErrorMessage.unableToAscend);
                     botEmbedMessage.edit({ embeds: [ascendEmbed], components: [] });
                     return;
                 }
@@ -142,16 +142,15 @@ module.exports = {
 
                 user.markModified('inv');
                 user.save()
-                    .then(result => console.log(result))
+                    .then(() => console.log(`User ascended ${itemName}`))
                     .catch(err => console.error(err));
 
                 // Ascended message
                 const updatedAscendEmbed = new Discord.MessageEmbed()
                     .setColor(currentColor)
                     .setTitle(itemName)
-                    .setURL('https://discord.gg/CTMTtQV')
-                    .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                    .setDescription(`Ascended to Level ${userEquipment.ascension}`);
+                    .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`✅ Ascended to Level **${userEquipment.ascension + 1}**!`);
 
                 // Adds stats up text to embed
                 for (const statName in dbEquipment.ascensionStatsUp) {
@@ -159,22 +158,19 @@ module.exports = {
                     if (dbEquipment.ascensionStatsUp[statName].multi) {
                         multiText = `, Multi: ${dbEquipment.ascensionStatsUp[statName].multi}`;
                     }
-                    updatedAscendEmbed.addField(`${statName} Up`, `Flat: ${dbEquipment.ascensionStatsUp[statName].flat}${multiText}`);
+                    updatedAscendEmbed.addField(`${statName} Increased!`, `Flat: ${dbEquipment.ascensionStatsUp[statName].flat}${multiText}`);
                 }
 
                 await botEmbedMessage.edit({ embeds: [updatedAscendEmbed], components: [] });
             }
 
+            const ascensionRequirements = Object.entries(dbEquipment.ascensionRequirements[userEquipment.ascension]);
             const ascendEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
-                .setTitle(itemName)
-                .setURL('https://discord.gg/CTMTtQV')
-                .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                .setDescription(`Ascend ${user.inv[itemName].ascension} --> ${user.inv[itemName].ascension + 1}`)
-                .addFields(
-                    { name: `Materials needed: `, value: "\u200b", inline: true },
-                );
-
+                .setTitle(`Ascending ${itemName}`)
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`** ${user.inv[itemName].ascension} → ${user.inv[itemName].ascension + 1}**`)
+                .addField("Materials: ", ascensionRequirements.map(i => `${i[0]} x${i[1]}`).join("\n"));
             const row = new Discord.MessageActionRow()
                 .addComponents(
                     new Discord.MessageButton()
@@ -186,16 +182,6 @@ module.exports = {
                         .setLabel('✖️')
                         .setStyle('DANGER'),
                 );
-
-            const ascendEmotes = [];
-            const ascensionRequirements = Object.entries(dbEquipment.ascensionRequirements[userEquipment.ascension]);
-            for (let i = 0; i < ascensionRequirements.length; i++) {
-                const materialDBInfo = await findItem(ascensionRequirements[i][0]);
-                ascendEmotes.push(materialDBInfo.emote);
-                // 0 is material name, 1 is num of materials needed
-                ascendEmbed.addField(`${materialDBInfo.emote} ${ascensionRequirements[i][0]}`, `${ascensionRequirements[i][1]}`);
-
-            }
             message.channel.send({ embeds: [ascendEmbed], components: [row] })
                 .then(botMessage => {
                     ascend(botMessage);

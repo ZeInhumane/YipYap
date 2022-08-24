@@ -130,7 +130,7 @@ async function handleBuy({ client, message, args, user }) {
     }
 
     const listing = listings[0];
-    // if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
+    if (listing.userID === message.author.id) return message.channel.send('You cannot buy your own listing. Use `mk remove {listing ID}` instead.');
 
     if (listing.itemCost * listing.itemQuantity > user.currency) return message.channel.send('You do not have enough gold to buy this listing.');
 
@@ -181,6 +181,7 @@ async function confirmationBuy(client, message, buyer, listing) {
                             default:
                                 unknownError.author = { name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) };
                                 await channel.send({ embeds: [unknownError] });
+                                console.log(results.debug);
                                 return;
                         }
                     }
@@ -211,6 +212,7 @@ async function confirmationBuy(client, message, buyer, listing) {
 }
 
 async function handleSell({ client, message, args, user }) {
+    // eslint-disable-next-line prefer-const
     let { itemQuantity, itemName, itemPrice } = parseInt(args[0]) ? {
         itemQuantity: parseInt(args.shift()),
         itemPrice: parseInt(args[args.length - 1]) ? parseInt(args.pop()) : null,
@@ -224,6 +226,10 @@ async function handleSell({ client, message, args, user }) {
     itemName = titleCase(itemName);
 
     if (!itemPrice) return message.channel.send('Please enter a valid item price.');
+
+    if (itemPrice < 1) return message.channel.send('Please enter a valid item price.');
+
+    if (itemQuantity < 1) return message.channel.send('Please enter a valid item quantity.');
 
     const items = Object.entries(user.inv);
     for (const [name, info] of items) {
@@ -307,7 +313,7 @@ async function handleList({ message }) {
     const itemsPerPage = 10;
     const totalListings = listings.length;
     const totalPages = Math.ceil(totalListings / itemsPerPage) || 1;
-    const itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+    let itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
 
     listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
     listingEmbed.description = "All the items that you listed in the Global Market are shown below!\n\n";
@@ -353,21 +359,23 @@ async function handleList({ message }) {
                 })
                     .join('\n\n');
 
-                const itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
+                itemsOnCurrentPage = currentPage == totalPages ? totalListings - ((currentPage - 1) * itemsPerPage) : itemsPerPage;
 
                 listingEmbed.footer = { text: `Page ${currentPage} | Items: ${itemsOnCurrentPage} / ${totalListings}.` };
 
-                listMessage.edit({ embeds: [listingEmbed], components: [row] });
+                await listMessage.edit({ embeds: [listingEmbed], components: [row] });
             })
-            .catch(async (err) => {
-                listingEmbed.color = '#FF0000';
-                if (err.code == 'INTERACTION_COLLECTOR_ERROR') {
-                    return;
-                }
-                listMessage.edit({ embeds: [listingEmbed] });
-
+            .catch(async () => {
                 isExpired = true;
             });
+    }
+    if (isExpired) {
+        try {
+            listingEmbed.color = '#FF0000';
+            await listMessage.edit({ embeds: [listingEmbed] });
+        } catch (e) {
+            return;
+        }
     }
 }
 
@@ -456,6 +464,11 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
             const buyer = await User.findOne({ userID: buyerID }).session(session);
             const seller = await User.findOne({ userID: sellerID }).session(session);
             const txCost = listing.itemCost * listing.quantity;
+            const details = {
+                listingID: listingID,
+                buyerID: buyerID,
+                sellerID: sellerID,
+            };
 
             if (!listing) {
                 await session.abortTransaction();
@@ -481,12 +494,19 @@ async function createTransaction(client, buyerID, sellerID, listingID) {
                 return { success: false, message: "Transaction aborted [buyer does not have enough currency].", code: 4 };
             }
 
+            if (!seller.inv[listing.itemName]) {
+                await session.abortTransaction();
+                console.error("Transaction aborted [seller does not have item].");
+                return { success: false, message: "Transaction aborted [seller does not have item].", code: 5, debug: details };
+            }
+
             await Listing.deleteOne({ listingID }).session(session);
 
             // Update currency
             buyer.currency -= txCost;
             assert.ok(buyer.currency >= 0, "Negative buyer currency");
             seller.currency += txCost;
+            assert.ok(seller.currency >= 0, "Negative seller currency");
 
             await buyer.save({ session });
             await seller.save({ session });
@@ -558,6 +578,8 @@ async function createMarketListing(client, listerID, item) {
         const transactionResults = await session.withTransaction(async () => {
 
             const lister = await User.findOne({ userID: listerID }).session(session);
+            assert.ok(item.quantity > 0, "Invalid quantity.");
+            assert.ok(item.price > 0, "Invalid price.");
 
             lister.inv[item.name].listed ? (
 

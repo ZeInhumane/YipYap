@@ -1,11 +1,7 @@
 {
     "prefix": "-",
     "bot-age": 1,
-    "word_array": [
-        "I",
-        "am",
-        "gay"
-    ],
+    "word_array": ["I", "am", "gay"],
     "bot_info": {
         "name": "Jerick",
         "version": 1.0
@@ -15,5 +11,11 @@
         "344431410360090625",
         "272202473827991557",
         "223583120325083137"
-    ]
+    ],
+    "colors": {
+        "primary": "#629dc9",
+        "secondary": "#1c1241",
+        "error": "#ff0000",
+        "success": "#00ff00"
+    }
 }

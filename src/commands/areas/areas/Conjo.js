@@ -4,10 +4,10 @@ module.exports = class Conjo extends AreaInterface {
     init() {
         this.name = "Conjo";
         this.id = 2;
-        this.desc = "Conjo, a place famed for its reflective lakes and beautiful night skies. It is a place of great beauty and wonder, and *death*.";
-        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950316822731833394/Chthonia.jpg";
-        // "https://c.tenor.com/3wqv5CpCPbQAAAAC/bisque-doll-bisque.gif"
+        this.desc = "Conjo, a place famed for its reflective lakes and beautiful night skies. It is a place of great beauty and wonder, but, who knew taking a vacation would be so dangerous?";
+        this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956930404999389234/Conjo.jpg";
         this.floors = floors;
+        this.credits = "https://www.wallpaperflare.com/night-twin-moons-fantasy-landscape-artwork-sky-earth-outer-space-wallpaper-ophn";
     }
 
     getRandomEnemy(floor) {
@@ -39,31 +39,31 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 1, "attack": 0.5, "defense": 0.7, "speed": 1.2 },
+        buffs: { "hp": 1.0, "attack": 0.5, "defense": 0.7, "speed": 1.2 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
                     "dropChance": 80,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ["Goat Leather Hat", 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 15,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ["Troll's Hat", "Troll's Boots", "Troll's Smock", "Troll's Loincloth", "Troll's Axe"],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Scale Helmet', 'Scale Faulds', 'Scale Chestplate', 'Lizard Leather Boots', 'Lizardman Spear'],
                 },
             },
             lootbox: {
@@ -116,7 +116,7 @@ const floors = {
             "Strong Ibex",
             "Giant Chamois",
          ],
-        requirement: 10,
+        requirement: 5,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
@@ -125,27 +125,27 @@ const floors = {
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
                     "dropChance": 75,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Goat Leather Hat', 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 20,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ["Troll's Hat", "Troll's Boots", "Troll's Smock", "Troll's Loincloth", "Troll's Axe"],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Scale Helmet', 'Scale Faulds', 'Scale Chestplate', 'Lizard Leather Boots', 'Lizardman Spear'],
                 },
             },
             lootbox: {
@@ -198,7 +198,7 @@ const floors = {
             "Rampaging Ibex",
             "Killer Chamois",
          ],
-        requirement: 20,
+        requirement: 10,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
@@ -207,27 +207,27 @@ const floors = {
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
                     "dropChance": 60,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Goat Leather Hat', 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 35,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ["Troll's Hat", "Troll's Boots", "Troll's Smock", "Troll's Loincloth", "Troll's Axe"],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Scale Helmet', 'Scale Faulds', 'Scale Chestplate', 'Lizard Leather Boots', 'Lizardman Spear'],
                 },
             },
             lootbox: {
@@ -279,7 +279,7 @@ const floors = {
             "Gorilla",
             "Condor",
          ],
-        requirement: 30,
+        requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
@@ -288,27 +288,27 @@ const floors = {
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
                     "dropChance": 50,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Goat Leather Hat', 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 40,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ["Troll's Hat", "Troll's Boots", "Troll's Smock", "Troll's Loincloth", "Troll's Axe"],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Scale Helmet', 'Scale Faulds', 'Scale Chestplate', 'Lizard Leather Boots', 'Lizardman Spear'],
                 },
             },
             lootbox: {
@@ -360,7 +360,7 @@ const floors = {
             "Carnivorous Gorilla",
             "CondorSaurus",
          ],
-        requirement: 40,
+        requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
@@ -369,27 +369,27 @@ const floors = {
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
                     "dropChance": 40,
-                    "drops" : ['Leaf Helmet', 'Leaf Sandals', 'Leaf Shirt', 'Leaf Shorts', 'Razor Leaf'],
+                    "drops" : ['Goat Leather Hat', 'Goat Leather Boots', 'Goat Leather Jacket', 'Goat Leather Pants', 'Sharpened Goat Horn'],
                 },
                 // uncommon equipment set
                 "Uncommon": {
                     "dropChance": 45,
-                    "drops" : ['Camo Helmet', 'Camo Boots', 'Camo Vest', 'Camo Pants', 'Camo Gun'],
+                    "drops" : ["Troll's Hat", "Troll's Boots", "Troll's Smock", "Troll's Loincloth", "Troll's Axe"],
                 },
                 // rare equipment set
                 "Rare": {
                     "dropChance": 15,
-                    "drops" : ['Sanke Scale Helmet', 'Squrriel Fur Leggings', 'Spooder Husk', 'Sknuk Fur Shoes', 'Baor Fang'],
+                    "drops" : ['Scale Helmet', 'Scale Faulds', 'Scale Chestplate', 'Lizard Leather Boots', 'Lizardman Spear'],
                 },
             },
             lootbox: {

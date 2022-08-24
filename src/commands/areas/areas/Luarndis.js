@@ -4,9 +4,10 @@ module.exports = class Luarndis extends AreaInterface {
     init() {
         this.name = "Luarndis";
         this.id = 3;
-        this.desc = "The forest of Luarndis is said to hold many secrets. An old tale tells of the magical land of fairies deep within the forest leading many explorers to venture into the forest, where they either returned disappointed... or were never seen again.";
+        this.desc = "The forest of Luarndis is said to hold many secrets. An old tale tells of the magical land of fairies deep within the forest leading many explorers to venture into the forest, where they either returned disappointed... or were never seen again. Scary!";
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/950324030517420042/Luarndis.jpg";
         this.floors = floors;
+        this.credits = "https://www.peakpx.com/en/hd-wallpaper-desktop-oensb";
     }
 
     getRandomEnemy(floor) {
@@ -37,16 +38,16 @@ const floors = {
             "ExpMultiplier": 1,
             "GoldMultiplier": 1,
         },
-        buffs: { "hp": 0.7, "attack": 0.7, "defense": 0.7, "speed": 1 },
+        buffs: { "hp": 0.7, "attack": 0.9, "defense": 0.9, "speed": 1.0 },
         rewardDescription: "0% more gold           0% more player experience",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 1,
                 "maxQuantity": 20,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance : 0.15,
+            equipDropChance : 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -113,21 +114,21 @@ const floors = {
             "Poison Sknuk",
             "Enraged Spooder",
         ],
-        requirement: 10,
+        requirement: 5,
         multipliers: {
             "ExpMultiplier": 1.2,
             "GoldMultiplier": 1.2,
         },
-        buffs: { "hp": 1.8, "attack": 2.0, "defense": 1.8, "speed": 2.0 },
+        buffs: { "hp": 1.8, "attack": 2.4, "defense": 2.0, "speed": 2.0 },
         rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 10,
                 "maxQuantity": 25,
                 "emote": "<:Jericho:823551572029603840>",
             },
-            equipDropChance: 0.1,
+            equipDropChance: 0.2,
             equipment: {
                 // common equipment set
                 "Common": {
@@ -194,16 +195,16 @@ const floors = {
             "Poison Sknuk King",
             "Spooder Queen",
         ],
-        requirement: 20,
+        requirement: 10,
         multipliers: {
             "ExpMultiplier": 1.3,
             "GoldMultiplier": 1.3,
         },
-        buffs: { "hp": 2.1, "attack": 2.5, "defense": 2.1, "speed": 2.4 },
+        buffs: { "hp": 2.1, "attack": 2.7, "defense": 2.3, "speed": 2.4 },
         rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 15,
                 "maxQuantity": 40,
                 "emote": "<:Jericho:823551572029603840>",
@@ -269,22 +270,22 @@ const floors = {
     "4": {
         enemies: [
             "Moving Ghost Oak",
-            "Bewiching Fireflies",
+            "Bewitching Fireflies",
             "Fiendish Owl",
             "Giant Maggot",
             "Swift Tiger",
             "Poison Dart Frog",
         ],
-        requirement: 30,
+        requirement: 20,
         multipliers: {
             "ExpMultiplier": 1.35,
             "GoldMultiplier": 1.35,
         },
-        buffs: { "hp": 2.2, "attack": 2.8, "defense": 2.2, "speed": 2.9 },
+        buffs: { "hp": 2.2, "attack": 3.0, "defense": 2.4, "speed": 2.9 },
         rewardDescription: "**35% more gold          35% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 30,
                 "maxQuantity": 50,
                 "emote": "<:Jericho:823551572029603840>",
@@ -356,16 +357,16 @@ const floors = {
             "Wild Wind Tiger",
             "Poison Flaming Dart Frog",
         ],
-        requirement: 40,
+        requirement: 30,
         multipliers: {
             "ExpMultiplier": 1.4,
             "GoldMultiplier": 1.4,
         },
-        buffs: { "hp": 2.5, "attack": 3.2, "defense": 2.5, "speed": 3.1 },
+        buffs: { "hp": 2.5, "attack": 3.4, "defense": 2.7, "speed": 3.1 },
         rewardDescription: "**40% more gold          40% more player experience**",
         rewards: {
             jericho: {
-                "dropChance": 0.35,
+                "dropChance": 0.30,
                 "minQuantity": 40,
                 "maxQuantity": 80,
                 "emote": "<:Jericho:823551572029603840>",

@@ -30,8 +30,8 @@ module.exports = {
             args.splice(leaderboardSizeIndex, 1);
         }
 
-        if (leaderboardSize > 10) {
-            leaderboardSize = 10;
+        if (leaderboardSize > 15) {
+            leaderboardSize = 15;
         }
 
         // Filter so only user can interact with the buttons

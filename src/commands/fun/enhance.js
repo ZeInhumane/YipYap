@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
-const findItem = require('../../functions/findItem.js');
+const errorMessage = require('../../constants/errorMessage.js');
 
 module.exports = {
     name: "enhance",
@@ -57,6 +57,12 @@ module.exports = {
             }
             if (user.inv[upgradeMaterial].quantity < materialUseCount) {
                 message.channel.send(`You do not have that much ${upgradeMaterial}s!`);
+                return;
+            }
+            if (materialUseCount >
+                user.inv[upgradeMaterial].quantity -
+                (user.inv[upgradeMaterial].listed ? user.inv[upgradeMaterial].listed : 0)) {
+                message.channel.send(errorMessage.marketErrorMessage.unableToEnhance);
                 return;
             }
             // Check if at max level for weapon
@@ -119,36 +125,24 @@ module.exports = {
                 delete user.inv[upgradeMaterial];
             }
 
-            // Checks if any equipped item leveled up
-            if (userEquipment.equipped && levelsGained > 0) {
-                const dbEquipment = await findItem(itemName.split("#")[0], true);
-                for (const statName in dbEquipment.statsUpPerLvl) {
-                    user.player.additionalStats[statName].flat += dbEquipment.statsUpPerLvl[statName] * levelsGained;
-                }
-            }
-
             user.markModified('inv');
             user.markModified('player');
             user.save()
-                .then(result => console.log('inv saved at enhance', result))
+                .then(result => console.log(`Equipment enhanced ${result.userID}`))
                 .catch(err => console.error(err));
 
             const enhanceEmbed = new Discord.MessageEmbed()
                 .setColor(currentColor)
-                .setTitle(itemName)
-                .setURL('https://discord.gg/CTMTtQV')
-                .setAuthor(message.member.user.tag, message.author.avatarURL(), 'https://discord.gg/h4enMADuCN')
-                .setDescription('Upgrade your equipment till it reaches the ascension mark!')
+                .setTitle(`✅ ${itemName} enhanced `)
+                .setAuthor({ name: message.member.user.tag, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                .setDescription(`Level: ${userEquipment.level}/${(rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20} `)
                 .addFields(
-                    { name: `<:Jericho:823551572029603840> Used: ${materialUseCount}`, value: "\u200b", inline: true },
-                    { name: `EXP gained: ${expGivenPerMaterial * materialUseCount}`, value: "\u200b", inline: true },
-                    { name: `EXP till level up: ${(userEquipment.level == (rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20) ? 'MAX' : userEquipment.expToLevelUp}`, value: "\u200b", inline: true },
-                    { name: `Equipment Level: ${userEquipment.level}/${(rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20}`, value: "\u200b", inline: true },
-
+                    { name: `x${materialUseCount} Jericho Jehammad`, value: `+${expGivenPerMaterial * materialUseCount} EXP 📈`, inline: true },
+                    { name: `EXP: `, value: `${(userEquipment.level == (rarityArr.indexOf(user.inv[itemName].rarity) + 1) * 20) ? 'MAX' : userEquipment.exp} / ${userEquipment.expToLevelUp + userEquipment.exp}`, inline: true },
                 );
 
             if (levelsGained > 0) {
-                enhanceEmbed.addField(`Levels gained: ${levelsGained}`, "\u200b", true);
+                enhanceEmbed.addField(`Levels gained: `, `${levelsGained}`, true);
             }
 
             message.channel.send({ embeds: [enhanceEmbed] });

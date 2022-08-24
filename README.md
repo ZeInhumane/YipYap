@@ -1,13 +1,29 @@
-Discord bot written in JavaScript using discord.js api and mongodb as the database.
+# YipYap 
+![Discord Bots](https://discordbots.org/api/widget/servers/745275291785494571.svg)![Discord Bots](https://discordbots.org/api/widget/status/745275291785494571.svg)![Discord Bots](https://top.gg/api/widget/owner/745275291785494571.svg)
 
-An rpg bot, with different commands to battle, upgrade your character and different things to buy from the shop. More features will be added as we go along.
+## Features
+We implemented various features into the bot, aside from being another rpg bot that people can play, we push frequent updates as well as new equipment. 
 
-Purpose of this bot was for practice and some parts of the code will not make sense solely because we are amateur programmers.
+## Terms of Service
+https://zeinhumane.github.io/yipyapwebsite/#/yipyapwebsite/terms
+## Privacy Policy
+https://zeinhumane.github.io/yipyapwebsite/#/yipyapwebsite/privacy
 
-Any merge/pull request is welcome.
+### Bot Invite
+https://discord.com/api/oauth2/authorize?client_id=745275291785494571&permissions=0&scope=applications.commands%20bot
+### Support Server Invite
+https://discord.gg/cJgAG3W
+### Credits(In no particular order)
+Credits to the following people for contributing to this repository.
 
-Bot invite: https://discord.com/oauth2/authorize?client_id=745275291785494571&permissions=43072&scope=bot
+https://github.com/Jerick5555
 
-Support server invite: https://discord.gg/cJgAG3W
+https://github.com/QuickLittleWolf
 
-If you would like to help with the bot, message me at matthew#2596.
+https://github.com/0xfinder
+
+Credits to the following people for the art they provided.
+
+https://github.com/L-Rojean
+
+https://github.com/Jaslynnn

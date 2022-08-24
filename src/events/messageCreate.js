@@ -2,24 +2,29 @@ const findPrefix = require('../functions/findPrefix');
 const cooldownUpdate = require('../functions/cooldownUpdate');
 
 module.exports = async (client, message) => {
-    if (message.author.bot) return;
+    try {
 
-    // Getting the prefix from db
-    const prefix = await findPrefix(message.guild.id);
+        if (message.author.bot) return;
 
-    // Checking if the message starts with the prefix
-    if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
+        // Getting the prefix from db
+        const prefix = await findPrefix(message.guild.id);
 
-    // Checking if message consists only of prefix
-    if (message.content.toLowerCase() == prefix.toLowerCase()) return;
+        // Checking if the message starts with the prefix
+        if (!message.content.toLowerCase().startsWith(prefix.toLowerCase())) return;
 
-    const args = message.content.slice(prefix.length).match(/\S+/g);
+        // Checking if message consists only of prefix
+        if (message.content.toLowerCase() == prefix.toLowerCase()) return;
 
-    const commandName = args.shift().toLowerCase();
+        const args = message.content.slice(prefix.length).match(/\S+/g);
 
-    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+        const commandName = args.shift().toLowerCase();
 
-    if (command) {
-        cooldownUpdate(command, message, args, client);
+        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+
+        if (command) {
+            cooldownUpdate(command, message, args, client);
+        }
+    } catch (error) {
+        console.log('An error has occurred:', error);
     }
 };

@@ -25,6 +25,7 @@ module.exports = {
                 let name = message.member.user.tag.toString();
                 name = name.split("#", name.length - 4);
                 name = name[0];
+
                 // Get clan name
                 const clanData = await clanUtil(user.clanID);
                 if (clanData) {
@@ -32,6 +33,7 @@ module.exports = {
                 } else {
                     clanName = "None";
                 }
+
                 const Area = areaUtil.getArea(user.location.area);
                 const calculatedStats = await calculateUserStats(user, false);
                 const embed = new Discord.MessageEmbed()
@@ -46,11 +48,13 @@ module.exports = {
                     .addField(`Location`, `${Area.getName} | ${user.location.area || 1} - ${user.location.floor || 1}`, true)
                     .addField('Clan', ` ${clanName}`, true)
                     .setImage(Area.getImageURL);
+
                 // Finds all equipped items
                 const userItemsArr = Object.keys(user.inv);
                 const equipment = userItemsArr.filter(item => {
                     return user.inv[item].equipped === true;
                 });
+
                 let insertLine = '';
                 for (let i = 0; i < equipment.length; i++) {
                     // gets item name, then gets said item name stats
@@ -60,16 +64,18 @@ module.exports = {
                     let statsmsg = '';
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         let statname = Object.keys(stats)[j];
-                        statname = statname.replace("attack", " ATK  \n").replace("defense", " 🛡️ DEF  \n").replace("speed", " 💨 SPD  \n").replace("hp", ":hearts: HP  \n");
-                        statsmsg += `${(Object.values(stats)[j].flat != 0) ? '\u2009 \u2009 \u2009 +' + `__${Object.values(stats)[j].flat}__` + statname : ''} ${(Object.values(stats)[j].multi != 0) ? '\u2009 \u2009 \u2009 +' + `__${Object.values(stats)[j].multi}__` + '%' + statname : ''} `;
+                        statname = statname.replace("attack", " ⚔ ️ATK  ").replace("defense", " 🛡️ DEF  ").replace("speed", " 💨 SPD  ").replace("hp", ":hearts: HP  ");
+                        statsmsg += `${(Object.values(stats)[j].flat != 0) ? '+' + `__${Object.values(stats)[j].flat}__` : ''} ${(Object.values(stats)[j].multi != 0) ? ', ' + `__${Object.values(stats)[j].multi}__` + '%' : ''} ${statname} \n `;
                     }
                     // Remove # from item name
-                    insertLine += `**${equipment[i].split("#")[0]}** \n ${statsmsg}`;
+                    insertLine += `**${equipment[i].split("#")[0]}:**  ${statsmsg}\n`;
                 }
+
                 if (insertLine === '') {
                     insertLine = 'None';
                 }
-                embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.speed} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
+
+                embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.defense} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
                 embed.addField("**EQUIPMENT**", ` ${insertLine}`, true);
                 message.channel.send({ embeds: [embed] });
             }
