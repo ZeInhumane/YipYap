@@ -35,7 +35,7 @@ const floors = {
         ],
         requirement: 0,
         multipliers: {
-            "ExpMultiplier": 1,
+            "ExpMultiplier": 2,
             "GoldMultiplier": 1,
         },
         buffs: { "hp": 0.8, "attack": 0.7, "defense": 1.0, "speed": 0.7 },
