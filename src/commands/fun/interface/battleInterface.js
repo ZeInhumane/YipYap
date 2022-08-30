@@ -1,29 +1,24 @@
 const Discord = require('discord.js');
 const useUltimate = require('../utils/ultimateUtil.js');
 const applyBuffs = require('../utils/buffUtil.js');
-
-const ultimateEmote = ":Ultimate:822042890955128872";
-const emptyUltimateEmote = "<:blank:829270386986319882>";
-const ultimateEmoteArray = ["<:1:829267948127649792>", "<:2:829267958836101130>", "<:3_:829267967392088134>", "<:4:829267977559867412>", "<:5:829271937548419093>",
-    "<:6:829271966161567774>", "<:7:829271980397166612>", "<:8:829271994205208597>", "<:9:829272014946697246>", "<:10:829272027604713523>"];
-const ultimateStart = "<:Yeet:829267937784627200>";
-const ultimateEnd = "<:Yeet2:829270362516488212>";
+const { emote } = require("../../../constants/emojis");
+const { color } = require("../../../constants/colors");
 
 const row = new Discord.MessageActionRow()
     .addComponents(
         new Discord.MessageButton()
             .setCustomId('attack')
-            .setLabel('⚔️')
+            .setLabel(emote.Sword)
             .setStyle('PRIMARY'),
         new Discord.MessageButton()
             .setCustomId('defend')
-            .setLabel('🛡️')
+            .setLabel(emote.Shield)
             .setStyle('PRIMARY'),
         new Discord.MessageButton()
             .setCustomId('ultimate')
             .setLabel('')
             .setStyle('DANGER')
-            .setEmoji(ultimateEmote),
+            .setEmoji(emote.UltimateIcon),
     );
 
 
@@ -40,7 +35,7 @@ module.exports = class Battle {
         this.enemy = enemy;
 
         // Set starting embed colour
-        this.currentColor = '#0099ff';
+        this.currentColor = color.Active;
 
         // Set location info
         this.locationInfo = locationInfo;
@@ -49,6 +44,7 @@ module.exports = class Battle {
         this.expired;
         this.round = 1;
         this.turnActions = { player: null, enemy: null };
+        this.playerShielding = false;
 
         // Inactive
         this.playerTurnAction = `You stared at ${this.enemy.name}`;
@@ -166,7 +162,7 @@ module.exports = class Battle {
                 })
                 // Battle expired
                 .catch(async () => {
-                    this.currentColor = '#FF0000';
+                    this.currentColor = color.Expired;
                     battleMessage.edit({ embeds: [await this.createUpdatedMessage()], components: [] });
                     battleMessage.channel.send('Battle expired. Your fatass took too long');
                     this.expired = true;
@@ -184,7 +180,7 @@ module.exports = class Battle {
 
     /**
      * Handle player action
-     * @param {String} action
+     * @param {String} action - attack/defend/ultimate
      */
     async playerTurn(action) {
         const invalidInput = true;
@@ -200,7 +196,13 @@ module.exports = class Battle {
                     return;
                 }
             } else if (action == "defend") {
-                this.playerTurnAction = "You shield yourself, it works.";
+                if (this.playerShielding) {
+                    this.playerTurnAction = "You shield yourself again, increasing your charge by a further 10!";
+                    this.chargeUltimate(this.player, 10);
+                    return;
+                }
+                this.playerTurnAction = "You shield yourself, bracing for the next attack.";
+                this.playerShielding = true;
                 return;
             } else if (action == "ultimate") {
                 if (this.player.ultimate == 100) {
@@ -223,14 +225,25 @@ module.exports = class Battle {
         if (this.dodgeAttack(this.enemy, this.player)) {
             this.enemyTurnAction = `${this.enemy.name}'s turn!\n${this.enemy.name} attacked but ${this.player.name} dodged!\n`;
         } else {
-            const damageTaken = this.calculateDamage(this.enemy, this.player, this.turnActions.player == 'defend');
-            this.takeDamage(this.player, damageTaken);
+            const damageTaken = this.calculateDamage(this.enemy, this.player, this.playerShielding);
             this.enemyTurnAction = `${this.enemy.name}'s turn!\n${this.enemy.name} does ${damageTaken} damage!\n`;
+            if (this.playerShielding) {
+                const fullDamageTaken = this.calculateDamage(this.enemy, this.player);
+                this.enemyTurnAction += `${this.player.name}'s shield absorbed ${fullDamageTaken - damageTaken} damage!\n`;
+                this.playerShielding = false;
+            }
+            this.takeDamage(this.player, damageTaken);
         }
     }
 
     // Updates battle embed to display ongoing input
     async createUpdatedMessage() {
+        // Order turns correctly for player and enemy
+        const turns = [`${this.playerPreTurnAction} \n ${this.playerTurnAction}`, this.enemyTurnAction];
+        if (!playerIsFirst(this.player, this.enemy)) {
+            [turns[0], turns[1]] = [turns[1], turns[0]];
+        }
+
         const updatedBattleEmbed = new Discord.MessageEmbed()
             .setColor(this.currentColor)
             .setTitle(this.player.name + '\'s ultimate charge: ' + this.player.ultimate + "/100")
@@ -239,10 +252,10 @@ module.exports = class Battle {
             .addFields(
                 { name: 'Experience Ticket', value: this.expMsg, inline: true },
                 { name: 'Gold Ticket', value: this.goldMsg, inline: true },
-                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP}` },
+                { name: 'Player HP', value: `Lvl ${this.user.level} **${this.player.name}**'s **HP**: ${this.player.hp}/${this.originalPlayerHP} ${this.playerShielding ? emote.Shield : ""}` },
                 { name: 'Enemy HP', value: `Lvl ${this.enemy.level} **${this.enemy.name}**'s **HP**: ${this.enemy.hp}/${this.originalEnemyHP}` },
-                { name: `Round ${this.round}`, value: `${this.playerPreTurnAction} \n ${this.playerTurnAction}` },
-                { name: '​', value: this.enemyTurnAction },
+                { name: `Round ${this.round}`, value: turns[0] },
+                { name: '​', value: turns[1] },
             )
             .setImage(this.locationInfo.imageURL)
             .setFooter({ text: `Area ${this.locationInfo.id} - ${this.locationInfo.selectedFloor} | ${this.locationInfo.desc}` }); return updatedBattleEmbed;
@@ -250,7 +263,7 @@ module.exports = class Battle {
 
     /**
      * Reset ultimate charge
-     * @param {User.player} player
+     * @param {User.player} player - Object
      */
     resetUltimate(player) {
         player.ultimate = 0;
@@ -260,8 +273,8 @@ module.exports = class Battle {
 
     /**
      * Returns dodge success
-     * @param {User.player|Enemy} attacker
-     * @param {User.player|Enemy} defender
+     * @param {User.player|Enemy} attacker - Object
+     * @param {User.player|Enemy} defender - Object
      * @returns {Boolean}
      */
     dodgeAttack(attacker, defender) {
@@ -279,9 +292,9 @@ module.exports = class Battle {
 
     /**
      * Check for damage taken
-     * @param {User.player|Enemy} attacker
-     * @param {User.player|Enemy} defender
-     * @param {Boolean} shield
+     * @param {User.player|Enemy} attacker - Object
+     * @param {User.player|Enemy} defender - Object
+     * @param {Boolean} shield - true/false
      * @returns {Number}
      */
     calculateDamage(attacker, defender, shield = false) {
@@ -304,13 +317,15 @@ module.exports = class Battle {
 
         // If user shielded (probably will change logic sometime later)
         if (shield) {
+            damageTaken -= defender.defense;
             // Change it later so higher level reduces damagetaken too
             if (defender.defense > 99) {
                 damageTaken *= 1 / 100;
-                this.chargeUltimate(defender, 24);
+                this.chargeUltimate(defender, 40);
             } else {
                 damageTaken *= (100 - defender.defense) / 100;
-                this.chargeUltimate(defender, 20);
+                console.log(defender);
+                this.chargeUltimate(defender, 30);
             }
         }
 
@@ -320,29 +335,34 @@ module.exports = class Battle {
         // Floor to int
         damageTaken = Math.floor(damageTaken);
 
+        // Ensures damage taken is not negative
+        if (damageTaken < 0) {
+            damageTaken = 0;
+        }
+
         // Return damage for use
         return damageTaken;
     }
 
     /**
      * Deducts hp from target
-     * @param {User.player|Enemy} user
-     * @param {Number} amount
-     * @returns {Number}
+     * @param {User.player|Enemy} user - Object
+     * @param {Number} amount - Damage taken
+     * @returns {Number} Current HP - After taking damage
      */
     takeDamage(user, amount) {
         user.hp -= amount;
         user.hp < 0 ? user.hp = 0 : user.hp;
         if (user.hp == 0) {
-            this.currentColor = '#FF0000';
+            this.currentColor = color.Expired;
         }
         return user.hp;
     }
 
     /**
      * Charge ultimate and update display string
-     * @param {User.player|Enemy} user
-     * @param {Number} amount
+     * @param {User.player|Enemy} user - Object
+     * @param {Number} amount - Amount to charge
      * @returns {Number}
      */
     chargeUltimate(user, amount) {
@@ -355,17 +375,17 @@ module.exports = class Battle {
 
 /**
  * Generate ultimate string to display
- * @param {Number} ultimate
+ * @param {Number} ultimate - Current ultimate charge
  * @returns {String}
  */
 function generateUltimateString(ultimate) {
-    return `${ultimateStart}${ultimateEmoteArray.slice(0, Math.floor((ultimate) / 10)).join("")}${emptyUltimateEmote.repeat(Math.ceil((100 - ultimate) / 10))}${ultimateEnd}`;
+    return `${emote.UltimateStart}${emote.UltimateBar.slice(0, Math.floor((ultimate) / 10)).join("")}${emote.EmptyUltimate.repeat(Math.ceil((100 - ultimate) / 10))}${emote.UltimateEnd}`;
 }
 
 /**
  * Returns a boolean of whether player goes first
- * @param {*} player
- * @param {Enemy} enemy
+ * @param {*} player - Object
+ * @param {Enemy} enemy - Object
  * @returns {boolean}
  */
 function playerIsFirst(player, enemy) {
