@@ -1,37 +1,36 @@
 const { MessageEmbed } = require("discord.js");
 const invUtil = require("./utils/invUtil.js");
-const User = require('../../models/user');
+const Shop = require('../../models/shopData');
 const {
     PaginateContent,
     splitArrayIntoChunksOfLen,
 } = require("../../functions/pagination/Pagination");
 
 module.exports = {
-    name: "inventory",
-    description:
-        "Wanna check what you have in your inventory? Scroll between the pages!",
-    aliases: ["inv", "itemCount", "icbm"],
+    name: "shoptest",
+    description: "Shopee pee pee pee. No its just the shop.",
+    aliases: ["s"],
     cooldown: 5,
     category: "Fun",
     async execute({ client, message, user }) {
         // Array of embeds.
         const items = [];
 
-        // Array of user's items.
-        const itemsArray = [];
-         const joinUserInfo = await User.aggregate([
-            { $match: { userID: message.author.id } },
+        const itemsArray2 = await Shop.find({}).sort({ itemCost: 1 });
+        const test = await Shop.aggregate([
             {
                 $lookup: {
-                    // help get the name of item
-                    localField: "inv",
+                    localField: "itemName",
                     from: "items",
                     foreignField: "itemName",
-                    as: "poggies",
+                    as: "itemInfo",
                 },
             },
         ]);
-        console.log(joinUserInfo);
+        console.log(test);
+
+        // Array of user's items.
+        const itemsArray = [];
 
         for (const [itemName, itemInfo] of Object.entries(user.inv)) {
             itemsArray.push({
@@ -39,6 +38,8 @@ module.exports = {
                 itemInfo,
             });
         }
+        // console.log(itemsArray2);
+        // console.log(itemsArray);
 
         const itemsPerPage = 10;
         const chunks = splitArrayIntoChunksOfLen(itemsArray, itemsPerPage);
@@ -56,9 +57,8 @@ module.exports = {
                 .setTitle("Inventory")
                 .setDescription("")
                 .setFooter({
-                    text: `Page ${index + 1} | Items: ${
-                        chunk.length + index * itemsPerPage
-                    }/${itemsArray.length}`,
+                    text: `Page ${index + 1} | Items: ${chunk.length + index * itemsPerPage
+                        }/${itemsArray.length}`,
                 });
 
             embed.description += chunk
