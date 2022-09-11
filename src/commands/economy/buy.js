@@ -3,7 +3,7 @@ const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
 const findItem = require('../../functions/findItem');
 const titleCase = require('../../functions/titleCase');
-const regex = require('../../constants/regex');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "buy",

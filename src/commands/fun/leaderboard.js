@@ -1,6 +1,6 @@
 const User = require('../../models/user');
 const Discord = require('discord.js');
-const regex = require('../../constants/regex');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "leaderboard",

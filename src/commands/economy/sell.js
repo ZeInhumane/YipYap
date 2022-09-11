@@ -4,7 +4,7 @@ const Equipment = require('../../models/equipment');
 const findItem = require('../../functions/findItem.js');
 const titleCase = require('../../functions/titleCase');
 const findPrefix = require('../../functions/findPrefix');
-const regex = require('../../constants/regex');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "sell",
