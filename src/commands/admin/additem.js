@@ -3,7 +3,7 @@ const findItem = require('../../functions/findItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
 const titleCase = require('../../functions/titleCase');
-const regex = require('../../constants/regex.js');
+const { regex } = require('../../constants/regex.js');
 const config = require('../../../config.json');
 
 module.exports = {

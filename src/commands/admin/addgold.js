@@ -1,6 +1,6 @@
 const User = require('../../models/user');
 const config = require('../../../config.json');
-const regex = require('../../constants/regex');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "addgold",

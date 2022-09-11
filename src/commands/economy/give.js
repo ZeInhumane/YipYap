@@ -1,6 +1,6 @@
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
-const regex = require('../../constants/regex');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "give",
