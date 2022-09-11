@@ -1,5 +1,6 @@
 const User = require('../../models/user');
-var config = require('../../../config.json');
+const config = require('../../../config.json');
+const regex = require('../../constants/regex');
 
 module.exports = {
     name: "addgold",
@@ -11,7 +12,7 @@ module.exports = {
     async execute({ message, args, prefix }) {
         // Transfer amount
         let transferAmount = 1;
-        const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const transferAmountIndex = args.findIndex(arg => regex.anyInt.test(arg));
         const transferTarget = message.mentions.users.first();
 
         // Check for admin ID

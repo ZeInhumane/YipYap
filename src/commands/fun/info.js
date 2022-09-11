@@ -37,7 +37,6 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
- 
                 const weaponName = itemName.split("#")[0];
                 // findItem = await items.findOne({ itemName: weaponName }).exec();
                 const dbEquipment = await findItem(weaponName, true);

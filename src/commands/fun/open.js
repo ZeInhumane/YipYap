@@ -5,6 +5,7 @@ const findPartialItem = require('../../functions/findPartialItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
 const titleCase = require('../../functions/titleCase');
+const regex = require('../../constants/regex');
 
 module.exports = {
     name: "open",
@@ -20,7 +21,7 @@ module.exports = {
         // Finds arguments no matter the position
         // Finds packAmt
         let packAmt = 1;
-        const packAmtIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const packAmtIndex = args.findIndex(arg => regex.anyInt.test(arg));
         if (packAmtIndex != -1) {
             // Extracts packAmt
             packAmt = args[packAmtIndex];
