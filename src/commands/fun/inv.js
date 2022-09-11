@@ -1,6 +1,5 @@
 const { MessageEmbed } = require("discord.js");
 const invUtil = require("./utils/invUtil.js");
-const User = require('../../models/user');
 const {
     PaginateContent,
     splitArrayIntoChunksOfLen,
@@ -19,19 +18,6 @@ module.exports = {
 
         // Array of user's items.
         const itemsArray = [];
-         const joinUserInfo = await User.aggregate([
-            { $match: { userID: message.author.id } },
-            {
-                $lookup: {
-                    // help get the name of item
-                    localField: "inv",
-                    from: "items",
-                    foreignField: "itemName",
-                    as: "poggies",
-                },
-            },
-        ]);
-        console.log(joinUserInfo);
 
         for (const [itemName, itemInfo] of Object.entries(user.inv)) {
             itemsArray.push({

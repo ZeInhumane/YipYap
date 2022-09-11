@@ -6,6 +6,8 @@ const findPrefix = require('../../functions/findPrefix');
 const areaUtil = require('../areas/utils/areaUtil');
 const calculateUserStats = require('../../functions/calculateUserStats');
 const clanUtil = require('./utils/clanUtil');
+const { createCanvas, Image, loadImage } = require('@napi-rs/canvas');
+const { Client, GatewayIntentBits, AttachmentBuilder, MessageAttachment } = require('discord.js');
 module.exports = {
     name: "profile",
     description: "Displays user profile, stats and weapons of the user.",
@@ -33,7 +35,30 @@ module.exports = {
                 } else {
                     clanName = "None";
                 }
+                const canvas = createCanvas(4096, 4096);
+                const context = canvas.getContext('2d');
 
+                const userItemsArr1 = Object.keys(user.inv);
+                const currentEquippedItem = [];
+                // Gets all equipped item from user
+                userItemsArr1.find(item => {
+                    if (user.inv[item].equipped === true) {
+                        currentEquippedItem.push(user.inv[item]);
+                    }
+                });
+                await Promise.all(currentEquippedItem.map(async (itemData) => {
+                    const imageSize = 1024;
+                    if (itemData.image) {
+                        const equipmentImage = await loadImage(itemData.image);
+                        if (weaponType[itemData.equipmentType].name == "weapon") {
+                            context.drawImage(equipmentImage, 200 + imageSize, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
+                        } else {
+                            context.drawImage(equipmentImage, 200, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
+                        }
+                    }
+                }));
+
+                const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
                 const Area = areaUtil.getArea(user.location.area);
                 const calculatedStats = await calculateUserStats(user, false);
                 const embed = new Discord.MessageEmbed()
@@ -47,7 +72,7 @@ module.exports = {
                     .addField('Available SP', ` ${user.sp}`, true)
                     .addField(`Location`, `${Area.getName} | ${user.location.area || 1} - ${user.location.floor || 1}`, true)
                     .addField('Clan', ` ${clanName}`, true)
-                    .setImage(Area.getImageURL);
+                    .setImage('attachment://profile-image.png'); 
 
                 // Finds all equipped items
                 const userItemsArr = Object.keys(user.inv);
@@ -75,11 +100,20 @@ module.exports = {
                     insertLine = 'None';
                 }
 
+
                 embed.addField(`**STATS**`, ` :hearts: **HP**: ${calculatedStats.hp} \n⚔️ **ATK**: ${calculatedStats.attack} \n 🛡️ **DEF**:  ${calculatedStats.defense} \n 💨 **SPD**:  ${calculatedStats.speed}`, true);
                 embed.addField("**EQUIPMENT**", ` ${insertLine}`, true);
-                message.channel.send({ embeds: [embed] });
+                message.channel.send({ embeds: [embed], files: [attachment] });
             }
         });
 
     },
+};
+
+const weaponType = {
+    helmet: { name: "helmet", autoIncrement: 0 },
+    chestplate: { name: "chestplate", autoIncrement: 1 },
+    weapon: { name: "weapon", autoIncrement: 1.1 },
+    leggings: { name: "leggings", autoIncrement: 2 },
+    boots: { name: "boots", autoIncrement: 3 },
 };

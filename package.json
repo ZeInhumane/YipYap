@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ZeInhumane/Pangseh#readme",
   "dependencies": {
+    "@napi-rs/canvas": "^0.1.29",
     "@top-gg/sdk": "^3.1.3",
     "ascii-table": "^0.0.9",
     "common-tags": "^1.8.2",
@@ -32,7 +33,8 @@
     "node-fetch": "^2.6.7",
     "pm2": "^5.2.0",
     "require-dir": "^1.2.0",
-    "sequelize": "^6.16.1"
+    "sequelize": "^6.16.1",
+    "undici": "^5.10.0"
   },
   "engines": {
     "node": "16.x"
