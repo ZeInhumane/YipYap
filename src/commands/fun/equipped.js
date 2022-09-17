@@ -26,34 +26,29 @@ module.exports = {
         await Promise.all(currentEquippedItem.map(async (itemData) => {
             const imageSize = 1024;
             if (itemData.image) {
-                const equipmentImage = await loadImage(itemData.image);
-                if (weaponType[itemData.equipmentType].name == "weapon") {
-                    context.drawImage(equipmentImage, 200 + imageSize, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
-                } else {
-                    context.drawImage(equipmentImage, 200, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
+                try {
+                    const equipmentImage = await loadImage(itemData.image);
+                    if (equipmentImage) {
+                        if (weaponType[itemData.equipmentType].name == "weapon") {
+                            context.drawImage(equipmentImage, 200 + imageSize, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
+                        } else {
+                            context.drawImage(equipmentImage, 200, 50 + (weaponType[itemData.equipmentType].autoIncrement * imageSize), imageSize, imageSize);
+                        }
+                    }
+                } catch {
+                    console.error(new ReferenceError("Image not found", itemData.image));
                 }
             }
         }));
+        console.log("here2");
 
 
         // context.font = applyText(canvas, `${message.author.username}!`);
         // context.fillStyle = '#ffffff';
         // context.fillText(`${message.author.username}!`, canvas.width / 2.5, canvas.height / 1.8);
 
-        // context.beginPath();
-        // context.arc(125, 125, 100, 0, Math.PI * 2, true);
-        // context.closePath();
-        // context.clip();
-
-        // const { body } = await request(client.user.displayAvatarURL({ format: 'png' }));
-        // const avatar = new Image();
-        // avatar.src = Buffer.from(await body.arrayBuffer());
-        // context.drawImage(avatar, 25, 25, 200, 200);
-
         const attachment = new MessageAttachment(canvas.toBuffer(), 'profile-image.png');
-
         message.reply({ files: [attachment] });
-
     },
 
 };
