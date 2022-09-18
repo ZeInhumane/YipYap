@@ -12,6 +12,7 @@ module.exports = {
     execute({ message, args }) {
         let itemName = args.join(' ');
         itemName = titleCase(itemName);
+        console.log(itemName);
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -20,6 +21,19 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+            // Gets equipment info from db
+            const dbItemName = itemName.split("#")[0];
+            const values = await findItem(dbItemName, true);
+            if (!values){
+                message.channel.send(`Invalid item name ${dbItemName}.`);
+                return;
+            }
+            const dbEquipment = values[0];
+            const newName = values[1];
+            if (dbItemName != newName){
+                itemName = newName + '#' + itemName.split('#')[1];
+            }
+
             if (!user.inv[itemName]) {
                 message.channel.send(`You do not have ${itemName} in your inventory!`);
                 return;
@@ -28,10 +42,6 @@ module.exports = {
                 message.channel.send(`That is not an equipment.`);
                 return;
             }
-
-            // Gets equipment info from db
-            const dbItemName = itemName.split("#")[0];
-            const dbEquipment = await findItem(dbItemName, true);
 
             const equipmentType = dbEquipment.equipmentType;
             // Checks if player already has that specific equipment equipped

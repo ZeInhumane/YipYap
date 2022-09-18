@@ -9,7 +9,8 @@ module.exports = async function (equipmentName) {
         "Legendary": 100000,
         "Mythic": 500000,
     };
-    const equipment = await findItem(equipmentName);
+    const values = await findItem(equipmentName);
+    const equipment = values[0];
     equipment.level = 1;
     equipment.ascension = 0;
     equipment.exp = 0;

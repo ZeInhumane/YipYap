@@ -5,6 +5,7 @@ const findPrefix = require('../../functions/findPrefix');
 const titleCase = require('../../functions/titleCase');
 const getFinalStats = require('../../functions/getFinalStats');
 const findItem = require('../../functions/findItem');
+const { listeners } = require('../../models/prefix');
 
 module.exports = {
     name: "info",
@@ -13,7 +14,7 @@ module.exports = {
     cooldown: 5,
     category: "Fun",
     execute({ message, args }) {
-        const itemName = titleCase(args.join(" "));
+        let itemName = titleCase(args.join(" "));
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -22,6 +23,22 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // find item in db
+            let weaponName = itemName.split("#")[0];
+            // findItem = await items.findOne({ itemName: weaponName }).exec();
+            const values = await findItem(weaponName, true);
+            if (!values){
+                message.channel.send(`Invalid item name ${weaponName}.`);
+                return;
+            }
+            const dbEquipment = values[0];
+            const newName = values[1];
+            if (weaponName != newName){
+                weaponName = newName;
+                itemName = newName + '#' + itemName.split('#')[1];
+            }
+
             if (!user.inv[itemName]) {
                 message.channel.send("You do not have that item.");
                 return;
@@ -37,9 +54,6 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
-                const weaponName = itemName.split("#")[0];
-                // findItem = await items.findOne({ itemName: weaponName }).exec();
-                const dbEquipment = await findItem(weaponName, true);
                // Finds item information from db
                 let pog = await items.findOne({ itemName: weaponName }).exec();
                 pog = pog._doc;

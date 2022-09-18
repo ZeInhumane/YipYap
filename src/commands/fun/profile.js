@@ -58,8 +58,17 @@ module.exports = {
             });
 
             await Promise.all(equipment.map(async (itemData, i) => {
-                const itemName = equipment[i].split("#")[0];
-                const dbEquipmentStats = await findItem(itemName, true);
+                let itemName = equipment[i].split("#")[0];
+                const values = await findItem(itemName, true);
+                if (!values){
+                    message.channel.send(`Invalid item name ${itemName}.`);
+                    return;
+                }
+                const dbEquipmentStats = values[0];
+                const newName = values[1];
+                if (itemName != newName){
+                    itemName = newName + '#' + itemName.split('#')[1];
+                }
                 const stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
 
                 let fontSize = 50;
