@@ -48,7 +48,7 @@ module.exports = {
             if (user.inv[itemName]) {
                 user.inv[itemName].quantity += itemQuantity;
             } else {
-                const chest = await findItem(itemName)[0];
+                const chest = await findItem(itemName);
                 chest.quantity = itemQuantity;
                 user.inv[itemName] = chest;
             }

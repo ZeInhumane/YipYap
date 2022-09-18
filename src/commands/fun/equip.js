@@ -1,7 +1,6 @@
 const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
-const titleCase = require('../../functions/titleCase');
 module.exports = {
     name: "equip",
     description: "Equips a weapon or armor on your character. Equip another item of the same type to unequip that weapon. Equipping a particular weapon means that you are unable to info/enhance/ascend that weapon.",
@@ -11,8 +10,6 @@ module.exports = {
     category: "Fun",
     execute({ message, args }) {
         let itemName = args.join(' ');
-        itemName = titleCase(itemName);
-        console.log(itemName);
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -21,17 +18,18 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
             // Gets equipment info from db
-            const dbItemName = itemName.split("#")[0];
-            const values = await findItem(dbItemName, true);
-            if (!values){
+            const [ dbItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(dbItemName, true);
+            if (!dbEquipment){
                 message.channel.send(`Invalid item name ${dbItemName}.`);
                 return;
             }
-            const dbEquipment = values[0];
-            const newName = values[1];
-            if (dbItemName != newName){
-                itemName = newName + '#' + itemName.split('#')[1];
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (dbItemName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
             }
 
             if (!user.inv[itemName]) {
@@ -60,6 +58,7 @@ module.exports = {
             var currentEquippedItem = userItemsArr.find(item => {
                 return user.inv[item].equipmentType === equipmentType && user.inv[item].equipped === true;
             });
+            console.log(currentEquippedItem);
 
             if (currentEquippedItem) {
                 // Unequips item

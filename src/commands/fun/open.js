@@ -109,7 +109,7 @@ module.exports = {
                                 if (user.inv[names[i]]) {
                                     user.inv[names[i]].quantity += amts[i] * packAmt;
                                 } else {
-                                    user.inv[names[i]] = await findItem(names[i])[0];
+                                    user.inv[names[i]] = await findItem(names[i]);
                                     user.inv[names[i]].quantity = amts[i] * packAmt;
                                 }
                                 openEmbed.addField(`${guest} gained ${amts[i] * packAmt} ${names[i]}${(amts[i] * packAmt) > 1 ? "s" : ""}.`, '\u200b');
@@ -143,7 +143,7 @@ module.exports = {
                             if (user.inv['Jericho Jehammad']) {
                                 user.inv['Jericho Jehammad'].quantity += jericho;
                             } else {
-                                user.inv['Jericho Jehammad'] = await findItem('Jericho Jehammad')[0];
+                                user.inv['Jericho Jehammad'] = await findItem('Jericho Jehammad');
                                 user.inv['Jericho Jehammad'].quantity = jericho;
                             }
 
@@ -267,16 +267,14 @@ module.exports = {
 
                     for (let i = 0; i < totalDrops.length; i++) {
                         let itemName = totalDrops[i][0];
-                        const values = await findItem(itemName);
-                        if (!values){
+                        const itemObject = await findItem(itemName, true);
+                        if (!itemObject){
                             message.channel.send(`Invalid item name ${itemName}.`);
                             return;
                         }
-                        const itemObject = values[0];
-                        const newName = values[1];
-                        if (itemName != newName){
-                            itemName = newName + '#' + itemName.split('#')[1];
-                        }
+                        // Corrects item name to the one in the db
+                        itemName = itemObject.itemName;
+
                         // drops = [[dropName, dropQuantity]]
                         if (itemObject.type == 'equipment') {
                             const addItem = await makeEquipment(itemName);

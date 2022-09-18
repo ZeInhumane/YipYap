@@ -70,8 +70,7 @@ module.exports = {
         await Promise.all(equipment.map(async (itemData, i) => {
             const itemName = equipment[i].split("#")[0];
             const itemID = "#" + equipment[i].split("#")[1];
-            let dbEquipmentStats = await findItem(itemName, true);
-            dbEquipmentStats = dbEquipmentStats[0];
+            const dbEquipmentStats = await findItem(itemName, true);
 
             const stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
 

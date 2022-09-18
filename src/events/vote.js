@@ -9,15 +9,13 @@ module.exports = async (client, userID, target) => {
     if (target.inv[itemName]) {
         target.inv[itemName].quantity += transferAmount;
     } else {
-        const values = await findItem(itemName);
-        if (!values){
+        // Gets equipment info from db
+        let addItem = await findItem(itemName, true);
+        if (!addItem){
             return;
         }
-        let addItem = values[0];
-        const newName = values[1];
-        if (itemName != newName){
-            itemName = newName + '#' + itemName.split('#')[1];
-        }
+        // Corrects item name to the one in the db
+        itemName = addItem.itemName;
 
         if (addItem.type == 'equipment') {
             addItem = await makeEquipment(itemName);

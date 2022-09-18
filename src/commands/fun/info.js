@@ -2,10 +2,8 @@ const User = require('../../models/user');
 const items = require('../../models/items');
 const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
-const titleCase = require('../../functions/titleCase');
 const getFinalStats = require('../../functions/getFinalStats');
 const findItem = require('../../functions/findItem');
-const { listeners } = require('../../models/prefix');
 
 module.exports = {
     name: "info",
@@ -14,7 +12,7 @@ module.exports = {
     cooldown: 5,
     category: "Fun",
     execute({ message, args }) {
-        let itemName = titleCase(args.join(" "));
+        let itemName = args.join(" ");
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -24,19 +22,17 @@ module.exports = {
                 return;
             }
 
-            // find item in db
-            let weaponName = itemName.split("#")[0];
-            // findItem = await items.findOne({ itemName: weaponName }).exec();
-            const values = await findItem(weaponName, true);
-            if (!values){
+            // Gets equipment info from db
+            const [ weaponName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(weaponName, true);
+            if (!dbEquipment){
                 message.channel.send(`Invalid item name ${weaponName}.`);
                 return;
             }
-            const dbEquipment = values[0];
-            const newName = values[1];
-            if (weaponName != newName){
-                weaponName = newName;
-                itemName = newName + '#' + itemName.split('#')[1];
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (weaponName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
             }
 
             if (!user.inv[itemName]) {

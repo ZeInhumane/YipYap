@@ -51,12 +51,8 @@ module.exports = {
                 if (target.inv[itemName]) {
                     target.inv[itemName].quantity += transferAmount;
                 } else {
-                    const values = await findItem(itemName);
-                    let addItem = values[0];
-                    const newName = values[1];
-                    if (newName != itemName){
-                        itemName = newName;
-                    }
+                    let addItem = await findItem(itemName);
+                    itemName = addItem.itemName;
 
                     if (addItem == null) {
                         message.channel.send(`${itemName} does not exist!`);
