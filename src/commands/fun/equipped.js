@@ -7,7 +7,6 @@ module.exports = {
     name: "equipped",
     description:
         "Check equipped weapons",
-    aliases: ["inv", "itemCount", "icbm"],
     cooldown: 5,
     category: "Fun",
     async execute({ client, message, user }) {
