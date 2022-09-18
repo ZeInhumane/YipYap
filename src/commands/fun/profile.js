@@ -54,7 +54,7 @@ module.exports = {
         });
 
         // Alignment
-        let fontSize = 55;
+        let fontSize = 60;
         const paddingTopFont = 20;
         const paddingTopImage = 130;
         const paddingTop = 50;
@@ -63,7 +63,7 @@ module.exports = {
         const paddingTopText = 300;
         const paddingLeftImage = 600;
         const paddingLeftImageWeapon = 750;
-        const paddingLeftText = 50;
+        const paddingLeftText = 10;
         const paddingLeftWeapon = 1200;
         const paddingImages = 150;
 
@@ -76,7 +76,7 @@ module.exports = {
             const stats = getFinalStats(user.inv[equipment[i]], dbEquipmentStats);
 
             // Font and Fontstyle
-            context.font = `${fontSize}px OCR A Extended`;
+            context.font = `bold ${fontSize}px Uni Sans`;
             context.fillStyle = client.config.colors.primary;
 
             try {
@@ -95,7 +95,7 @@ module.exports = {
                     context.fillText(`${itemName}`, paddingLeftWeapon + imageSize, paddingTopTextHeader + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)));
                     context.fillText(`${itemID}`, paddingLeftWeapon + imageSize, paddingTopTextIDHeader + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)));
                     fontSize = 50;
-                    context.font = `${fontSize}px OCR A Extended`;
+                    context.font = `${fontSize}px Uni Sans`;
                     context.fillStyle = '#bcabff';
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         context.fillText(`${returnFormattedStats(stats, j)}`, paddingLeftWeapon + imageSize, paddingTopText + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)) + ((fontSize + paddingTopFont) * j));
@@ -105,26 +105,27 @@ module.exports = {
                     context.fillText(`${itemName}`, paddingLeftText, paddingTopTextHeader + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)));
                     context.fillText(`${itemID}`, paddingLeftText, paddingTopTextIDHeader + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)));
                     fontSize = 50;
-                    context.font = `${fontSize}px OCR A Extended`;
+                    context.font = `${fontSize}px Uni Sans`;
                     context.fillStyle = '#bcabff';
                     for (let j = 0; j < Object.keys(stats).length; j++) {
                         context.fillText(`${returnFormattedStats(stats, j)}`, paddingLeftText, paddingTopText + (weaponType[dbEquipmentStats.equipmentType].autoIncrement * (imageSize + paddingTopImage)) + ((fontSize + paddingTopFont) * j));
                     }
                 }
-                fontSize = 50;
+                fontSize = 60;
+                context.font = `bold ${fontSize}px Uni Sans`;
                 context.fillStyle = '#629dc9';
             } catch (error) {
                 console.error(new Error("Exception", error));
             }
         }));
-        fontSize = 80;
-        context.font = `${fontSize}px OCR A Extended`;
+        fontSize = 100;
+        context.font = `bold ${fontSize}px Uni Sans`;
         context.fillStyle = '#629dc9';
         const calculatedStats = await calculateUserStats(user, false);
         console.log(calculatedStats);
         context.fillText(`Total Stats:`, paddingLeftWeapon, paddingTopTextHeader + (2 * (imageSize + paddingTopImage)));
-        fontSize = 70;
-        context.font = `${fontSize}px OCR A Extended`;
+        fontSize = 90;
+        context.font = `${fontSize}px Uni Sans`;
         context.fillStyle = '#bcabff';
 
         let iterable = 1;
