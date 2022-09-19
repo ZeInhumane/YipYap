@@ -36,6 +36,20 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // Gets equipment info from db
+            const [ dbItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(dbItemName, true);
+            if (!dbEquipment){
+                message.channel.send(`Invalid item name ${dbItemName}.`);
+                return;
+            }
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (dbItemName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
+            }
+
             if (user.inv[itemName] == undefined) {
                 message.channel.send(`You do not have that item!`);
                 return;
@@ -68,8 +82,6 @@ module.exports = {
                 return;
             }
 
-            const dbItemName = itemName.split("#")[0];
-            const dbEquipment = await findItem(dbItemName, true);
             const userEquipment = user.inv[itemName];
 
             async function ascend(botEmbedMessage) {

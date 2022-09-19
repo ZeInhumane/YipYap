@@ -4,6 +4,7 @@ const Equipment = require('../../models/equipment');
 const findItem = require('../../functions/findItem.js');
 const titleCase = require('../../functions/titleCase');
 const findPrefix = require('../../functions/findPrefix');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "sell",
@@ -15,7 +16,7 @@ module.exports = {
     execute({ message, args }) {
         let itemQuantity = 1;
         // Finds arguments no matter the position
-        const itemQuantityIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg) || arg.toLowerCase() == 'all');
+        const itemQuantityIndex = args.findIndex(arg => regex.anyInt.test(arg) || arg.toLowerCase() == 'all');
         if (itemQuantityIndex != -1) {
             itemQuantity = args[itemQuantityIndex];
             if (itemQuantity != 'all') {

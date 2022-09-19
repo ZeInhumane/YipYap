@@ -1,7 +1,6 @@
 const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const findPrefix = require('../../functions/findPrefix');
-const titleCase = require('../../functions/titleCase');
 module.exports = {
     name: "equip",
     description: "Equips a weapon or armor on your character. Equip another item of the same type to unequip that weapon. Equipping a particular weapon means that you are unable to info/enhance/ascend that weapon.",
@@ -11,7 +10,6 @@ module.exports = {
     category: "Fun",
     execute({ message, args }) {
         let itemName = args.join(' ');
-        itemName = titleCase(itemName);
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -20,6 +18,20 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // Gets equipment info from db
+            const [ dbItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(dbItemName, true);
+            if (!dbEquipment){
+                message.channel.send(`Invalid item name ${dbItemName}.`);
+                return;
+            }
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (dbItemName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
+            }
+
             if (!user.inv[itemName]) {
                 message.channel.send(`You do not have ${itemName} in your inventory!`);
                 return;
@@ -28,10 +40,6 @@ module.exports = {
                 message.channel.send(`That is not an equipment.`);
                 return;
             }
-
-            // Gets equipment info from db
-            const dbItemName = itemName.split("#")[0];
-            const dbEquipment = await findItem(dbItemName, true);
 
             const equipmentType = dbEquipment.equipmentType;
             // Checks if player already has that specific equipment equipped
@@ -50,6 +58,7 @@ module.exports = {
             var currentEquippedItem = userItemsArr.find(item => {
                 return user.inv[item].equipmentType === equipmentType && user.inv[item].equipped === true;
             });
+            console.log(currentEquippedItem);
 
             if (currentEquippedItem) {
                 // Unequips item

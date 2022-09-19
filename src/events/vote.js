@@ -9,7 +9,13 @@ module.exports = async (client, userID, target) => {
     if (target.inv[itemName]) {
         target.inv[itemName].quantity += transferAmount;
     } else {
-        let addItem = await findItem(itemName);
+        // Gets equipment info from db
+        let addItem = await findItem(itemName, true);
+        if (!addItem){
+            return;
+        }
+        // Corrects item name to the one in the db
+        itemName = addItem.itemName;
 
         if (addItem.type == 'equipment') {
             addItem = await makeEquipment(itemName);

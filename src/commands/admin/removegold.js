@@ -1,6 +1,7 @@
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
-var config = require('../../../config.json');
+const { regex } = require('../../constants/regex');
+const config = require('../../../config.json');
 
 module.exports = {
     name: "removegold",
@@ -10,7 +11,7 @@ module.exports = {
     aliases: [''],
     category: "Admin",
     execute({ message, args }) {
-        const transferAmount = parseInt(args.find(arg => !/<@!?\d+>/g.test(arg)));
+        const transferAmount = parseInt(args.find(arg => !regex.anyInt.test(arg)));
         const transferTarget = message.mentions.users.first();
         if (config.admins.includes(message.author.id)) {
             User.findOne({ userID: message.author.id }, async (err, user) => {

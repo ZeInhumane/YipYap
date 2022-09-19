@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "give",
@@ -10,7 +11,7 @@ module.exports = {
     category: "Economy",
     async execute({ message, args }) {
         let transferAmount = 1;
-        const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const transferAmountIndex = args.findIndex(arg => regex.anyInt.test(arg));
         const transferTarget = message.mentions.users.first();
         // Getting the prefix from db
         const prefix = await findPrefix(message.guild.id);

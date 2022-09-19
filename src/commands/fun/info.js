@@ -2,7 +2,6 @@ const User = require('../../models/user');
 const items = require('../../models/items');
 const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
-const titleCase = require('../../functions/titleCase');
 const getFinalStats = require('../../functions/getFinalStats');
 const findItem = require('../../functions/findItem');
 
@@ -13,7 +12,7 @@ module.exports = {
     cooldown: 5,
     category: "Fun",
     execute({ message, args }) {
-        const itemName = titleCase(args.join(" "));
+        let itemName = args.join(" ");
 
         User.findOne({ userID: message.author.id }, async (err, user) => {
             if (user == null) {
@@ -22,6 +21,20 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // Gets equipment info from db
+            const [ weaponName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(weaponName, true);
+            if (!dbEquipment){
+                message.channel.send(`Invalid item name ${weaponName}.`);
+                return;
+            }
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (weaponName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
+            }
+
             if (!user.inv[itemName]) {
                 message.channel.send("You do not have that item.");
                 return;
@@ -37,10 +50,6 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
- 
-                const weaponName = itemName.split("#")[0];
-                // findItem = await items.findOne({ itemName: weaponName }).exec();
-                const dbEquipment = await findItem(weaponName, true);
                // Finds item information from db
                 let pog = await items.findOne({ itemName: weaponName }).exec();
                 pog = pog._doc;

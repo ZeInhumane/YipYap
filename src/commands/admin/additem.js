@@ -3,7 +3,8 @@ const findItem = require('../../functions/findItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
 const titleCase = require('../../functions/titleCase');
-var config = require('../../../config.json');
+const { regex } = require('../../constants/regex.js');
+const config = require('../../../config.json');
 
 module.exports = {
     name: "additem",
@@ -18,7 +19,7 @@ module.exports = {
 
         // Finds arguments no matter the position
         let transferAmount = 1;
-        const transferAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const transferAmountIndex = args.findIndex(arg => regex.anyInt.test(arg));
         if (transferAmountIndex != -1) {
             // Extracts transferAmount
             transferAmount = parseInt(args[transferAmountIndex]);
@@ -33,7 +34,7 @@ module.exports = {
             return;
         }
         // Finds the mention in args and removes it
-        const transferTargetIndex = args.findIndex(arg => /<@!\d*>/g.test(arg));
+        const transferTargetIndex = args.findIndex(arg => regex.anyMention.test(arg));
         args.splice(transferTargetIndex, 1);
 
         // Rest of the args become the item name
@@ -51,6 +52,7 @@ module.exports = {
                     target.inv[itemName].quantity += transferAmount;
                 } else {
                     let addItem = await findItem(itemName);
+                    itemName = addItem.itemName;
 
                     if (addItem == null) {
                         message.channel.send(`${itemName} does not exist!`);

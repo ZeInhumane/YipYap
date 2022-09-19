@@ -47,7 +47,7 @@ module.exports = {
                     .setFooter(`Current page is ${onPage + 1}/${maxPage + 1}`);
                 while (i < totalItems && counter < maxOnPage) {
                     const itemInfo = await findItem(items[i].itemName);
-                    updatedShopEmbed.addField(`Item name: ${itemInfo.emote}${items[i].itemName}`, "Item cost: " + items[i].itemCost + "<:cash_24:751784973488357457>");
+                    updatedShopEmbed.addField(`Item name: ${itemInfo.emote}${itemInfo.itemName}`, "Item cost: " + items[i].itemCost + "<:cash_24:751784973488357457>");
                     i++;
                     counter++;
                 }
@@ -140,7 +140,7 @@ module.exports = {
 
                         while (i < totalItems && counter < maxOnPage) {
                             const itemInfo = await findItem(items[i].itemName);
-                            shopEmbed.addField(`Item name: ${itemInfo.emote}${items[i].itemName}`, "Item cost: " + items[i].itemCost + "<:cash_24:751784973488357457>");
+                            shopEmbed.addField(`Item name: ${itemInfo.emote}${itemInfo.itemName}`, "Item cost: " + items[i].itemCost + "<:cash_24:751784973488357457>");
                             i++;
                             counter++;
                         }

@@ -96,8 +96,7 @@ module.exports = {
                         (key) => key.includes("Gold"),
                     );
                     if (goldTicketName.length != 0) {
-                        goldMulti =
-                            effects.tickets[goldTicketName[0]].multiplier;
+                        goldMulti = effects.tickets[goldTicketName[0]].multiplier;
                     }
                 }
 

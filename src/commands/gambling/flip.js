@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "flip",
@@ -18,7 +19,7 @@ module.exports = {
 
             // Finds arguments no matter the position
             let betAmount = 1;
-            const betAmountIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+            const betAmountIndex = args.findIndex(arg => regex.anyInt.test(arg));
             if (betAmountIndex != -1) {
                 // Extracts betAmount
                 betAmount = parseInt(args[betAmountIndex]);

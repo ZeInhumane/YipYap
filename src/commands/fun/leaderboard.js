@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 const Discord = require('discord.js');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "leaderboard",
@@ -22,7 +23,7 @@ module.exports = {
 
         // Finds leaderboardSize
         let leaderboardSize = 5;
-        const leaderboardSizeIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const leaderboardSizeIndex = args.findIndex(arg => regex.anyInt.test(arg));
         if (leaderboardSizeIndex != -1) {
             // Extracts leaderboardSize
             leaderboardSize = parseInt(args[leaderboardSizeIndex]);

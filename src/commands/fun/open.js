@@ -5,6 +5,7 @@ const findPartialItem = require('../../functions/findPartialItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
 const titleCase = require('../../functions/titleCase');
+const { regex } = require('../../constants/regex');
 
 module.exports = {
     name: "open",
@@ -20,7 +21,7 @@ module.exports = {
         // Finds arguments no matter the position
         // Finds packAmt
         let packAmt = 1;
-        const packAmtIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg));
+        const packAmtIndex = args.findIndex(arg => regex.anyInt.test(arg));
         if (packAmtIndex != -1) {
             // Extracts packAmt
             packAmt = args[packAmtIndex];
@@ -265,8 +266,15 @@ module.exports = {
                     }
 
                     for (let i = 0; i < totalDrops.length; i++) {
-                        const itemName = totalDrops[i][0];
-                        const itemObject = await findItem(itemName);
+                        let itemName = totalDrops[i][0];
+                        const itemObject = await findItem(itemName, true);
+                        if (!itemObject){
+                            message.channel.send(`Invalid item name ${itemName}.`);
+                            return;
+                        }
+                        // Corrects item name to the one in the db
+                        itemName = itemObject.itemName;
+
                         // drops = [[dropName, dropQuantity]]
                         if (itemObject.type == 'equipment') {
                             const addItem = await makeEquipment(itemName);
@@ -322,9 +330,9 @@ const spoils = {
 // Loot box drop rates
 const boxLootTable = {
     "common": {
-        "Apple": { dropChance: 60, minQuantity: 1, maxQuantity: 1 },
-        "Banana": { dropChance: 39, minQuantity: 1, maxQuantity: 1 },
-        "Orange": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Apple": { dropChance: 60, minQuantity: 1, maxQuantity: 10 },
+        "Banana": { dropChance: 39, minQuantity: 1, maxQuantity: 10 },
+        "Orange": { dropChance: 1, minQuantity: 1, maxQuantity: 10 },
         "Wooden Sword": { dropChance: 12, minQuantity: 1, maxQuantity: 1 },
         "Stone Sword": { dropChance: 7, minQuantity: 1, maxQuantity: 1 },
         "Iron Sword": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
@@ -381,9 +389,9 @@ const boxLootTable = {
         "Jericho Jehammad": { dropChance: 40, minQuantity: 10, maxQuantity: 30 },
     },
     "rare": {
-        "Apple": { dropChance: 60, minQuantity: 5, maxQuantity: 20 },
-        "Banana": { dropChance: 40, minQuantity: 5, maxQuantity: 10 },
-        "Orange": { dropChance: 10, minQuantity: 2, maxQuantity: 5 },
+        "Apple": { dropChance: 60, minQuantity: 10, maxQuantity: 30 },
+        "Banana": { dropChance: 40, minQuantity: 10, maxQuantity: 30 },
+        "Orange": { dropChance: 10, minQuantity: 10, maxQuantity: 30 },
         "Ice Rapier": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Magic Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Magic Robe Hood": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -420,9 +428,9 @@ const boxLootTable = {
         "Jericho Jehammad": { dropChance: 40, minQuantity: 20, maxQuantity: 40 },
     },
     "epic": {
-        "Watermelon": { dropChance: 10, minQuantity: 2, maxQuantity: 5 },
-        "Banana": { dropChance: 60, minQuantity: 10, maxQuantity: 30 },
-        "Orange": { dropChance: 40, minQuantity: 5, maxQuantity: 10 },
+        "Watermelon": { dropChance: 10, minQuantity: 10, maxQuantity: 30 },
+        "Banana": { dropChance: 60, minQuantity: 20, maxQuantity: 40 },
+        "Orange": { dropChance: 40, minQuantity: 20, maxQuantity: 40 },
         "Dusk Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Dusk Headgear": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Dusk Cuirass": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -448,9 +456,9 @@ const boxLootTable = {
         "Jericho Jehammad": { dropChance: 40, minQuantity: 40, maxQuantity: 80 },
     },
     "legendary": {
-        "Watermelon": { dropChance: 39, minQuantity: 5, maxQuantity: 10 },
-        "Falafel": { dropChance: 50, minQuantity: 5, maxQuantity: 15 },
-        "Spaghetti": { dropChance: 10, minQuantity: 15, maxQuantity: 15 },
+        "Watermelon": { dropChance: 40, minQuantity: 20, maxQuantity: 50 },
+        "Falafel": { dropChance: 50, minQuantity: 20, maxQuantity: 50 },
+        "Spaghetti": { dropChance: 10, minQuantity: 20, maxQuantity: 50 },
         "Jericho Jehammad": { dropChance: 40, minQuantity: 80, maxQuantity: 120 },
         // "Hermes Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -487,15 +495,15 @@ const boxLootTable = {
         // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
     },
     "mythic": {
-        "Watermelon": { dropChance: 40, minQuantity: 20, maxQuantity: 70 },
-        "Falafel": { dropChance: 40, minQuantity: 20, maxQuantity: 35 },
-        "Spaghetti": { dropChance: 70, minQuantity: 20, maxQuantity: 35 },
-        "Jericho Jehammad": { dropChance: 50, minQuantity: 80, maxQuantity: 200 },
-        // "Hermes Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Hermes Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Caduceus": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        // "Winged Hat": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
+        "Watermelon": { dropChance: 50, minQuantity: 30, maxQuantity: 70 },
+        "Falafel": { dropChance: 50, minQuantity: 30, maxQuantity: 70 },
+        "Spaghetti": { dropChance: 50, minQuantity: 30, maxQuantity: 70 },
+        "Jericho Jehammad": { dropChance: 80, minQuantity: 100, maxQuantity: 300 },
+        // "Hermes Boots": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        // "Hermes Top": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        // "Hermes Bottom": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        // "Caduceus": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        // "Winged Hat": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
     },
 };
 // Sword pack drop rates

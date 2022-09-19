@@ -1,28 +1,35 @@
 const Items = require('../models/items');
 const Equipment = require('../models/equipment');
 
-module.exports = async function (itemName, getWeaponStats = false, getDescription = false, getEmote = false) {
-    // IDK why it needs _docs, but it breaks without it
-    // This is pain
-    const item = await Items.findOne({ itemName: itemName }, { itemName: 0, _id: 0 }).exec();
+module.exports = async function (itemName, getWeaponStats = false, getDescription = true, getEmote = true) {
+    // 0 in exclusions means do not return
+    const exclusion = { _id: 0 };
+    // Always return these props unless specified not to
+    if(!getDescription){
+        exclusion["description"] = 0;
+    }
+    if(!getEmote){
+        exclusion["emote"] = 0;
+    }
+
+    // Gets item info from db (collation to ignore case)
+    const item = await Items.findOne({ itemName:  itemName }, exclusion).collation({ locale: 'en', strength:2 }).exec();
+
+    // If item is not found, return null
     if (item == null) {
         return;
     }
+
+    // Got the correct item name from db
+    itemName = item.itemName;
+
     if (item.type == "equipment") {
-        // 0 in exclusions means do not return
-        const exclusion = { itemName: 0, _id: 0 };
-        // Does not return these props unless specified
+        // Does not return these props unless specified to
         if (!getWeaponStats) {
             exclusion["stats"] = 0;
             exclusion["ascensionRequirements"] = 0;
             exclusion["ascensionStatsUp"] = 0;
             exclusion["statsUpPerLvl"] = 0;
-        }
-        if(!getDescription){
-            exclusion["description"] = 0;
-        }
-        if(!getEmote){
-            exclusion["emote"] = 0;
         }
 
         const itemAddOn = await Equipment.findOne({ itemName: itemName }, exclusion).exec();

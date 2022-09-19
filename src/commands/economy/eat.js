@@ -5,6 +5,8 @@ const findPartialItem = require('../../functions/findPartialItem');
 const titleCase = require('../../functions/titleCase.js');
 const findPrefix = require('../../functions/findPrefix');
 const errorMessage = require('../../constants/errorMessage.js');
+const { regex } = require('../../constants/regex');
+
 module.exports = {
     name: "eat",
     description: "Eats a consumable to gain experience",
@@ -15,7 +17,7 @@ module.exports = {
     async execute({ message, args }) {
         let toBeConsumed = 1;
         // Finds arguments no matter the position
-        const toBeConsumedIndex = args.findIndex(arg => /^[1-9]\d*$/g.test(arg) || arg.toLowerCase() == 'all');
+        const toBeConsumedIndex = args.findIndex(arg => regex.anyInt.test(arg) || arg.toLowerCase() == 'all');
         if (toBeConsumedIndex != -1) {
             toBeConsumed = args[toBeConsumedIndex];
             if (toBeConsumed != 'all') {

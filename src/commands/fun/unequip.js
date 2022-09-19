@@ -21,6 +21,20 @@ module.exports = {
                 message.channel.send(`You have not a set up player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // Gets equipment info from db
+            const [ dbItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(dbItemName, true);
+            if (!dbEquipment){
+                message.channel.send(`Invalid item name ${dbItemName}.`);
+                return;
+            }
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (dbItemName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
+            }
+
             // Check if user does not have item equipped
             if (user.inv[itemName].equipped == false) {
                 message.channel.send(`You do not have ${itemName} equipped!`);
@@ -30,10 +44,6 @@ module.exports = {
                 message.channel.send(`That is not an equipment.`);
                 return;
             }
-
-            // Gets equipment info from db
-            const dbItemName = itemName.split("#")[0];
-            const dbEquipment = await findItem(dbItemName, true);
 
             const equipmentType = dbEquipment.equipmentType;
 
