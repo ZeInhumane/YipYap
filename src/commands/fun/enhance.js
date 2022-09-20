@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const User = require('../../models/user');
 const findPrefix = require('../../functions/findPrefix');
-const titleCase = require('../../functions/titleCase');
+const findItem = require('../../functions/findItem.js');
 const errorMessage = require('../../constants/errorMessage.js');
 
 module.exports = {
@@ -26,7 +26,6 @@ module.exports = {
         }
 
         let itemName = args.join(' ');
-        itemName = titleCase(itemName);
 
         const expGivenPerMaterial = 500;
         const expPercentIncreasePerLevel = 10;
@@ -39,6 +38,20 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
+
+            // Gets equipment info from db
+            const [ dbItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(dbItemName, true);
+            if (!dbEquipment){
+                message.channel.send(`Invalid item name ${dbItemName}.`);
+                return;
+            }
+            // Corrects item name to the one in the db
+            const correctName = dbEquipment.itemName;
+            if (dbItemName != correctName){
+                itemName = `${correctName}#${equipmentID}`;
+            }
+
             if (user.inv[itemName] == undefined) {
                 message.channel.send(`You do not have that item!`);
                 return;
