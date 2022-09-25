@@ -1,5 +1,4 @@
 const User = require('../../models/user');
-const items = require('../../models/items');
 const Discord = require('discord.js');
 const findPrefix = require('../../functions/findPrefix');
 const getFinalStats = require('../../functions/getFinalStats');
@@ -23,17 +22,14 @@ module.exports = {
             }
 
             // Gets equipment info from db
-            const [ weaponName, equipmentID ] = itemName.split("#");
-            const dbEquipment = await findItem(weaponName, true);
+            const [ searchItemName, equipmentID ] = itemName.split("#");
+            const dbEquipment = await findItem(searchItemName, true);
             if (!dbEquipment){
-                message.channel.send(`Invalid item name ${weaponName}.`);
+                message.channel.send(`Invalid item name ${searchItemName}.`);
                 return;
             }
             // Corrects item name to the one in the db
-            const correctName = dbEquipment.itemName;
-            if (weaponName != correctName){
-                itemName = `${correctName}#${equipmentID}`;
-            }
+            itemName = dbEquipment.itemName;
 
             if (!user.inv[itemName]) {
                 message.channel.send("You do not have that item.");
@@ -50,14 +46,19 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
+                const originalItemName = itemName;
+                // Corrects item name to the one in the db
+                if (searchItemName != itemName){
+                    itemName = `${itemName}#${equipmentID}`;
+                }
+
                // Finds item information from db
-                let pog = await items.findOne({ itemName: weaponName }).exec();
-                pog = pog._doc;
+                const pog = await findItem(itemName, true);
                 if (pog.credits) {
                     embed.setFooter({ text: `Credits: ${pog.credits} ` });
                 }
                 const stats = await getFinalStats(user.inv[itemName], dbEquipment);
-                embed.setTitle(`${dbEquipment.emote} ${weaponName}`);
+                embed.setTitle(`${dbEquipment.emote} ${originalItemName}`);
                 embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity : "No rarity");
                 embed.addField("Type", dbEquipment.type ? dbEquipment.type.charAt(0).toUpperCase() + dbEquipment.type.slice(1) : "No rarity");
                 embed.addField("Description", dbEquipment.description ? dbEquipment.description : "No description");
@@ -76,9 +77,7 @@ module.exports = {
                 embed.addField(`Equipment Ascension`, ` ${user.inv[itemName].ascension}`, true);
                 embed.addField(`Equipment Experience`, user.inv[itemName].exp + "/" + (user.inv[itemName].exp + user.inv[itemName].expToLevelUp), true);
             } else {
-
-                let nonEquipment = await items.findOne({ itemName: itemName }).exec();
-                nonEquipment = nonEquipment._doc;
+                const nonEquipment = await findItem(itemName, false);
                 if (nonEquipment.credits) {
                     embed.setFooter({ text: `Credits: ${nonEquipment.credits} ` });
                 }
