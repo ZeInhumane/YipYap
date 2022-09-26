@@ -197,11 +197,11 @@ const floors = {
         ],
         requirement: 35,
         multipliers: {
-            "ExpMultiplier": 1.35,
-            "GoldMultiplier": 1.35,
+            "ExpMultiplier": 1.3,
+            "GoldMultiplier": 1.3,
         },
         buffs: { "hp": 3.2, "attack": 3.2, "defense": 3.2, "speed": 3.2 },
-        rewardDescription: "**35% more gold          35% more player experience**",
+        rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
                 "dropChance": 0.30,
@@ -278,11 +278,11 @@ const floors = {
         ],
         requirement: 40,
         multipliers: {
-            "ExpMultiplier": 1.4,
-            "GoldMultiplier": 1.4,
+            "ExpMultiplier": 1.3,
+            "GoldMultiplier": 1.3,
         },
         buffs: { "hp": 3.5, "attack": 3.5, "defense": 3.5, "speed": 3.5 },
-        rewardDescription: "**40% more gold          40% more player experience**",
+        rewardDescription: "**30% more gold          30% more player experience**",
         rewards: {
             jericho: {
                 "dropChance": 0.30,
@@ -359,11 +359,11 @@ const floors = {
         ],
         requirement: 45,
         multipliers: {
-            "ExpMultiplier": 1.45,
-            "GoldMultiplier": 1.45,
+            "ExpMultiplier": 1.2,
+            "GoldMultiplier": 1.2,
         },
         buffs: { "hp": 4.0, "attack": 4.0, "defense": 4.0, "speed": 4.0 },
-        rewardDescription: "**45% more gold          45% more player experience**",
+        rewardDescription: "**20% more gold          20% more player experience**",
         rewards: {
             jericho: {
                 "dropChance": 0.30,
