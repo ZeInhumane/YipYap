@@ -35,8 +35,8 @@ const floors = {
         ],
         requirement: 30,
         multipliers: {
-            "ExpMultiplier": 1.2,
-            "GoldMultiplier": 1.2,
+            "ExpMultiplier": 1.3,
+            "GoldMultiplier": 1.3,
         },
         buffs: { "hp": 2.8, "attack": 3.4, "defense": 2.8, "speed": 2.2 },
         rewardDescription: "30% more gold           30% more player experience",
