@@ -453,6 +453,7 @@ const boxLootTable = {
         // "Clown Bottom": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Clown Wig": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Juggling Pins": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Ice Rapier": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Magic Shoes": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Magic Robe Hood": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Magic Robe": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
