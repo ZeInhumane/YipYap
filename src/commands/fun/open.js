@@ -446,7 +446,7 @@ const boxLootTable = {
         "Eclipse Chausses": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Sabaton": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Spiked Cowboy Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
-        "Shadow Step Boots": { dropChance: 1, minQuantity: 25, maxQuantity: 50 },
+        "Shadow Step Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // fatten pool with 2 rare sets
         // "Clown Shoes": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Clown Top": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
@@ -464,7 +464,7 @@ const boxLootTable = {
         "Watermelon": { dropChance: 60, minQuantity: 15, maxQuantity: 25 },
         "Falafel": { dropChance: 50, minQuantity: 10, maxQuantity: 20 },
         "Spaghetti": { dropChance: 50, minQuantity: 10, maxQuantity: 20 },
-        "Jericho Jehammad": { dropChance: 60, minQuantity: 80, maxQuantity: 120 },
+        "Jericho Jehammad": { dropChance: 70, minQuantity: 80, maxQuantity: 120 },
         // "Hermes Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -492,6 +492,8 @@ const boxLootTable = {
         "Eclipse Cuirass": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Chausses": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Sabaton": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Spiked Cowboy Boots": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Shadow Step Boots": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
 
         // dev equipment
         // "Quick Wolf Kunais": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -511,6 +513,8 @@ const boxLootTable = {
         "Eclipse Chausses": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Sabaton": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Dusk Blade": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Spiked Cowboy Boots": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
+        "Shadow Step Boots": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Shoes": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Bottom": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
