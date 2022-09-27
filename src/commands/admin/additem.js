@@ -2,7 +2,6 @@ const User = require('../../models/user');
 const findItem = require('../../functions/findItem.js');
 const giveWeaponID = require('../../functions/giveWeaponID.js');
 const makeEquipment = require('../../functions/makeEquipment');
-const titleCase = require('../../functions/titleCase');
 const { regex } = require('../../constants/regex.js');
 const config = require('../../../config.json');
 
@@ -40,7 +39,6 @@ module.exports = {
         // Rest of the args become the item name
         let itemName = args.join(" ");
 
-        itemName = titleCase(itemName);
         // Check for admin ID
         if (config.admins.includes(message.author.id)) {
             User.findOne({ userID: transferTarget.id }, async (err, target) => {
@@ -48,6 +46,20 @@ module.exports = {
                     message.channel.send(`The person you are trying to give money to has not set up a player yet! Do ${prefix}start to start.`);
                     return;
                 }
+
+                // Gets equipment info from db
+                const [ dbItemName, equipmentID ] = itemName.split("#");
+                const dbEquipment = await findItem(dbItemName, true);
+                if (!dbEquipment){
+                    message.channel.send(`Invalid item name ${dbItemName}.`);
+                    return;
+                }
+                // Corrects item name to the one in the db
+                const correctName = dbEquipment.itemName;
+                if (dbItemName != correctName){
+                    itemName = `${correctName}#${equipmentID}`;
+                }
+
                 if (target.inv[itemName]) {
                     target.inv[itemName].quantity += transferAmount;
                 } else {
