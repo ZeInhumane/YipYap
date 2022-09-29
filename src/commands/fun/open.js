@@ -283,7 +283,9 @@ module.exports = {
                                 const fullItemName = await giveWeaponID(itemName);
                                 user.inv[fullItemName] = addItem;
                                 user.inv[fullItemName].quantity = 1;
-                                openEmbed.addField(`${itemObject.emote + fullItemName}`, `1`);
+                                let emote = itemObject.emote;
+                                if (emote == undefined)emote = ''
+                                openEmbed.addField(`${emote + fullItemName}`, `1`);
                             }
                             continue;
                         } else if (user.inv[itemName]) {
@@ -292,8 +294,11 @@ module.exports = {
                             // Add item in inventory
                             user.inv[itemName] = itemObject;
                             user.inv[itemName].quantity = totalDrops[i][1];
+                            
                         }
-                        openEmbed.addField(`${itemObject.emote + itemName}`, `${totalDrops[i][1]}`);
+                        let emote = itemObject.emote;
+                        if (emote == undefined)emote = ''
+                        openEmbed.addField(`${emote + itemName}`, `${totalDrops[i][1]}`);
                     }
                     // Removes treasure chest from inventory
                     user.inv[packType.charAt(0).toUpperCase() + packType.slice(1) + " Treasure Chest"].quantity -= packAmt;
@@ -431,10 +436,10 @@ const boxLootTable = {
         
     },
     "epic": {
-        "Watermelon": { dropChance: 50, minQuantity: 10, maxQuantity: 20 },
-        "Banana": { dropChance: 60, minQuantity: 15, maxQuantity: 30 },
-        "Orange": { dropChance: 50, minQuantity: 15, maxQuantity: 30 },
-        "Jericho Jehammad": { dropChance: 50, minQuantity: 40, maxQuantity: 80 },
+        "Watermelon": { dropChance: 100, minQuantity: 10, maxQuantity: 20 },
+        "Banana": { dropChance: 120, minQuantity: 15, maxQuantity: 30 },
+        "Orange": { dropChance: 100, minQuantity: 15, maxQuantity: 30 },
+        "Jericho Jehammad": { dropChance: 100, minQuantity: 40, maxQuantity: 80 },
         "Dusk Blade": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Dusk Headgear": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Dusk Cuirass": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -461,10 +466,10 @@ const boxLootTable = {
         
     },
     "legendary": {
-        "Watermelon": { dropChance: 60, minQuantity: 15, maxQuantity: 25 },
-        "Falafel": { dropChance: 50, minQuantity: 10, maxQuantity: 20 },
-        "Spaghetti": { dropChance: 50, minQuantity: 10, maxQuantity: 20 },
-        "Jericho Jehammad": { dropChance: 70, minQuantity: 80, maxQuantity: 120 },
+        "Watermelon": { dropChance: 120, minQuantity: 15, maxQuantity: 25 },
+        "Falafel": { dropChance: 100, minQuantity: 10, maxQuantity: 20 },
+        "Spaghetti": { dropChance: 100, minQuantity: 10, maxQuantity: 20 },
+        "Jericho Jehammad": { dropChance: 140, minQuantity: 80, maxQuantity: 120 },
         // "Hermes Shoes": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Top": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         // "Hermes Bottom": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
@@ -502,10 +507,10 @@ const boxLootTable = {
         // "Blade Of Jericho": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
     },
     "mythic": {
-        "Watermelon": { dropChance: 50, minQuantity: 20, maxQuantity: 40 },
-        "Falafel": { dropChance: 50, minQuantity: 20, maxQuantity: 40 },
-        "Spaghetti": { dropChance: 50, minQuantity: 20, maxQuantity: 40 },
-        "Jericho Jehammad": { dropChance: 70, minQuantity: 100, maxQuantity: 300 },
+        "Watermelon": { dropChance: 100, minQuantity: 20, maxQuantity: 40 },
+        "Falafel": { dropChance: 100, minQuantity: 20, maxQuantity: 40 },
+        "Spaghetti": { dropChance: 100, minQuantity: 20, maxQuantity: 40 },
+        "Jericho Jehammad": { dropChance: 150, minQuantity: 100, maxQuantity: 300 },
         // temporary items to fill the box for now
         "Eclipse Blade": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Eclipse Headgear": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
