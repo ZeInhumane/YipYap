@@ -48,24 +48,21 @@ module.exports = {
                 }
 
                 // Gets equipment info from db
-                const [ dbItemName, equipmentID ] = itemName.split("#");
-                const dbEquipment = await findItem(dbItemName, true);
-                if (!dbEquipment){
-                    message.channel.send(`Invalid item name ${dbItemName}.`);
+        
+                let addItem = await findItem(itemName, true);
+                if (!addItem){
+                    message.channel.send(`Invalid item name ${itemName}.`);
                     return;
                 }
                 // Corrects item name to the one in the db
-                const correctName = dbEquipment.itemName;
-                if (dbItemName != correctName){
-                    itemName = `${correctName}#${equipmentID}`;
+                const correctName = addItem.itemName;
+                if (itemName != correctName){
+                    itemName = correctName;
                 }
 
                 if (target.inv[itemName]) {
                     target.inv[itemName].quantity += transferAmount;
                 } else {
-                    let addItem = await findItem(itemName);
-                    itemName = addItem.itemName;
-
                     if (addItem == null) {
                         message.channel.send(`${itemName} does not exist!`);
                         return;
