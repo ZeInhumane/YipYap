@@ -30,6 +30,9 @@ module.exports = {
             }
             // Corrects item name to the one in the db
             itemName = dbEquipment.itemName;
+            if (equipmentID){
+                itemName = `${dbEquipment.itemName}#${equipmentID}`;
+            }
 
             if (!user.inv[itemName]) {
                 message.channel.send("You do not have that item.");
@@ -46,19 +49,11 @@ module.exports = {
                 .setColor('#000000');
 
             if (user.inv[itemName].type == "equipment") {
-                const originalItemName = itemName;
-                // Corrects item name to the one in the db
-                if (searchItemName != itemName){
-                    itemName = `${itemName}#${equipmentID}`;
-                }
-
-               // Finds item information from db
-                const pog = await findItem(itemName, true);
-                if (pog.credits) {
-                    embed.setFooter({ text: `Credits: ${pog.credits} ` });
+                if (dbEquipment.credits) {
+                    embed.setFooter({ text: `Credits: ${dbEquipment.credits} ` });
                 }
                 const stats = await getFinalStats(user.inv[itemName], dbEquipment);
-                embed.setTitle(`${dbEquipment.emote} ${originalItemName}`);
+                embed.setTitle(`${dbEquipment.emote} ${itemName}`);
                 embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity : "No rarity");
                 embed.addField("Type", dbEquipment.type ? dbEquipment.type.charAt(0).toUpperCase() + dbEquipment.type.slice(1) : "No rarity");
                 embed.addField("Description", dbEquipment.description ? dbEquipment.description : "No description");
@@ -77,18 +72,17 @@ module.exports = {
                 embed.addField(`Equipment Ascension`, ` ${user.inv[itemName].ascension}`, true);
                 embed.addField(`Equipment Experience`, user.inv[itemName].exp + "/" + (user.inv[itemName].exp + user.inv[itemName].expToLevelUp), true);
             } else {
-                const nonEquipment = await findItem(itemName, false);
-                if (nonEquipment.credits) {
-                    embed.setFooter({ text: `Credits: ${nonEquipment.credits} ` });
+                if (dbEquipment.credits) {
+                    embed.setFooter({ text: `Credits: ${dbEquipment.credits} ` });
                 }
-                embed.setTitle(`${nonEquipment.emote} ${itemName}`);
-                embed.addField("Rarity", nonEquipment.rarity ? nonEquipment.rarity.charAt(0).toUpperCase() + nonEquipment.rarity.slice(1) : "No rarity");
-                embed.addField("Type", nonEquipment.type ? nonEquipment.type : "No type");
-                if (nonEquipment.type == "consumable") {
-                    embed.addField("Experience Gain", nonEquipment.experience.toString() ? nonEquipment.experience.toString() : "No description");
+                embed.setTitle(`${dbEquipment.emote} ${itemName}`);
+                embed.addField("Rarity", dbEquipment.rarity ? dbEquipment.rarity.charAt(0).toUpperCase() + dbEquipment.rarity.slice(1) : "No rarity");
+                embed.addField("Type", dbEquipment.type ? dbEquipment.type : "No type");
+                if (dbEquipment.type == "consumable") {
+                    embed.addField("Experience Gain", dbEquipment.experience.toString() ? dbEquipment.experience.toString() : "No description");
                 }
-                embed.addField("Description", nonEquipment.description ? nonEquipment.description : "No description");
-                embed.setImage(nonEquipment.image ? nonEquipment.image : "https://cdn.discordapp.com/attachments/819860035281879040/886188751435472916/no-image-found-360x250.png");
+                embed.addField("Description", dbEquipment.description ? dbEquipment.description : "No description");
+                embed.setImage(dbEquipment.image ? dbEquipment.image : "https://cdn.discordapp.com/attachments/819860035281879040/886188751435472916/no-image-found-360x250.png");
 
             }
             message.channel.send({ embeds: [embed] });
