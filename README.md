@@ -27,3 +27,5 @@ Credits to the following people for the art they provided.
 https://github.com/L-Rojean
 
 https://github.com/Jaslynnn
+
+Dall e <3
