@@ -78,10 +78,10 @@ module.exports = {
                 message.channel.send(`You have not set up a player yet! Do ${prefix}start to start.`);
                 return;
             }
-            if ((packType == 'Weapons' || packType == 'Swords') && boxType == 'Pack'){
-                if (user.inv[`Swords Pack`]){
+            if ((packType == 'Weapons' || packType == 'Swords') && boxType == 'Pack') {
+                if (user.inv[`Swords Pack`]) {
                     packType = 'Swords';
-                }else{
+                } else {
                     packType = 'Weapons';
                 }
             }
@@ -93,7 +93,7 @@ module.exports = {
 
             const guest = user.player.name;
             const openEmbed = new Discord.MessageEmbed()
-                .setTitle(`${boxType} opened!`)
+                .setTitle(`${packAmt} ${packType} ${boxType} opened!`)
                 .setDescription(`The following items have been added to your inventory:`)
                 .setColor('#000001')
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
@@ -105,6 +105,7 @@ module.exports = {
                         case 'Fruits': {
                             const names = Object.keys(spoils);
                             const amts = Object.values(spoils);
+                            let concatString = "";
                             for (let i = 0; i < names.length; i++) {
                                 if (user.inv[names[i]]) {
                                     user.inv[names[i]].quantity += amts[i] * packAmt;
@@ -112,8 +113,10 @@ module.exports = {
                                     user.inv[names[i]] = await findItem(names[i]);
                                     user.inv[names[i]].quantity = amts[i] * packAmt;
                                 }
-                                openEmbed.addField(`${guest} gained ${amts[i] * packAmt} ${names[i]}${(amts[i] * packAmt) > 1 ? "s" : ""}.`, '\u200b');
+                                concatString += `x${amts[i] * packAmt} ${names[i]}\n`;
+
                             }
+                            openEmbed.addField(`Contents`, concatString);
                             break;
                         }
                         // Gold pack
@@ -126,7 +129,8 @@ module.exports = {
                                 goldTotal += gachaGold;
                             }
                             user.currency += goldTotal;
-                            openEmbed.addField(`${guest} gained ${goldTotal} currency from Gold Pack <:cash_24:751784973488357457>`, '\u200b');
+
+                            openEmbed.addField(`Contents`, `x${goldTotal} Gold <:cash_24:751784973488357457>`);
                             break;
                         }
                         // Jericho pack
@@ -147,8 +151,7 @@ module.exports = {
                                 user.inv['Jericho Jehammad'].quantity = jericho;
                             }
 
-                            openEmbed.addField(`${guest} gained ${jericho} Jericho Jehammad${jericho > 1 ? "s" : ""}.`, '\u200b');
-
+                            openEmbed.addField(`Contents`, `x${jericho} Jericho Jehammad${jericho > 1 ? "s" : ""}`);
                             break;
                         }
                         case 'Swords':
@@ -158,6 +161,7 @@ module.exports = {
                         case 'Boots':
                         case 'Weapons': {
                             let equipment;
+                            let concatString = "";
                             // but why
                             if (packAmt > 5) {
                                 packAmt = 5;
@@ -199,8 +203,9 @@ module.exports = {
                                 const eqprize = Object.keys(equipment)[randomeqid];
                                 const eqPrizeName = await giveWeaponID(eqprize);
                                 user.inv[eqPrizeName] = await makeEquipment(eqprize);
-                                openEmbed.addField(`${guest} gained 1 ${eqprize} opening a ${packType} Pack.`, '\u200b');
+                                concatString += `x1 ${eqPrizeName}\n`;
                             }
+                            openEmbed.addField(`Contents`, concatString);
                             break;
                         }
                         default:
@@ -213,15 +218,16 @@ module.exports = {
                     if (user.inv[`${packType} Pack`].quantity == 0) {
                         delete user.inv[`${packType} Pack`];
                     }
-                    openEmbed.addField(`${guest} has successfully opened ${packAmt} ${packType} pack${packAmt > 1 ? "s" : ""}.`, '\u200b');
+                    // openEmbed.addField(`${guest} has successfully opened ${packAmt} ${packType} pack${packAmt > 1 ? "s" : ""}.`, '\u200b');
 
                     break;
 
                 case 'Treasure Chest': {
                     // Contains drop rates for items in the boxes
                     const totalDrops = [];
-                    let totalChance = 0;
                     const chestEmote = treasureChestEmotes[packType.toLowerCase()];
+                    let totalChance = 0;
+                    let concatString = "";
 
                     // change 1 when quantityToOpen is implemented
                     if (user.inv[packType + " Treasure Chest"].quantity < packAmt) {
@@ -233,7 +239,7 @@ module.exports = {
                         return;
                     }
                     // Change embed title
-                    openEmbed.setTitle(`${packAmt} ${packType} Treasure Chest ${chestEmote} opened!`);
+                    openEmbed.setTitle(`${packAmt} ${chestEmote} ${packType} Treasure Chest  opened!`);
 
                     packType = packType.toLowerCase();
                     // Contains chance and quantity dropped
@@ -268,7 +274,7 @@ module.exports = {
                     for (let i = 0; i < totalDrops.length; i++) {
                         let itemName = totalDrops[i][0];
                         const itemObject = await findItem(itemName, true);
-                        if (!itemObject){
+                        if (!itemObject) {
                             message.channel.send(`Invalid item name ${itemName}.`);
                             return;
                         }
@@ -284,8 +290,9 @@ module.exports = {
                                 user.inv[fullItemName] = addItem;
                                 user.inv[fullItemName].quantity = 1;
                                 let emote = itemObject.emote;
-                                if (emote == undefined)emote = ''
-                                openEmbed.addField(`${emote + fullItemName}`, `1`);
+                                if (emote == undefined) emote = '';
+                                concatString += `x1 ${emote} ${fullItemName}\n`;
+                                // openEmbed.addField(`${emote + fullItemName}`, `1`);
                             }
                             continue;
                         } else if (user.inv[itemName]) {
@@ -294,12 +301,13 @@ module.exports = {
                             // Add item in inventory
                             user.inv[itemName] = itemObject;
                             user.inv[itemName].quantity = totalDrops[i][1];
-                            
+
                         }
                         let emote = itemObject.emote;
-                        if (emote == undefined)emote = ''
-                        openEmbed.addField(`${emote + itemName}`, `${totalDrops[i][1]}`);
+                        if (emote == undefined) emote = '';
+                        concatString += ` x${totalDrops[i][1]} ${emote} ${itemName}\n`;
                     }
+                    openEmbed.addField(`Contents`, concatString);
                     // Removes treasure chest from inventory
                     user.inv[packType.charAt(0).toUpperCase() + packType.slice(1) + " Treasure Chest"].quantity -= packAmt;
                     if (user.inv[packType.charAt(0).toUpperCase() + packType.slice(1) + " Treasure Chest"].quantity == 0) {
@@ -325,6 +333,7 @@ function randomGoldgen(min, max) {
     const r = (Math.random() * (max - min)) + min;
     return Math.floor(r);
 }
+
 // Fruit pack drop rates
 const spoils = {
     "Apple": 1,
@@ -332,6 +341,7 @@ const spoils = {
     "Orange": 3,
     "Pear": 4,
 };
+
 // Loot box drop rates
 const boxLootTable = {
     "common": {
@@ -362,7 +372,7 @@ const boxLootTable = {
         "Rubber Boots": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Wooden Chestplate": { dropChance: 1, minQuantity: 1, maxQuantity: 1 },
         "Skirt": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        
+
     },
     "uncommon": {
         "Apple": { dropChance: 40, minQuantity: 5, maxQuantity: 15 },
@@ -393,7 +403,7 @@ const boxLootTable = {
         "Leather Hood": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Leather Chestplate": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
         "Leather Pants": { dropChance: 10, minQuantity: 1, maxQuantity: 1 },
-        
+
     },
     "rare": {
         "Apple": { dropChance: 50, minQuantity: 10, maxQuantity: 25 },
@@ -433,7 +443,7 @@ const boxLootTable = {
         "Iron Chestplate": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Jeans": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
         "Hiking Pants": { dropChance: 5, minQuantity: 1, maxQuantity: 1 },
-        
+
     },
     "epic": {
         "Watermelon": { dropChance: 100, minQuantity: 10, maxQuantity: 20 },
@@ -463,7 +473,7 @@ const boxLootTable = {
         "Magic Robe Hood": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Magic Robe": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
         "Magic Braies": { dropChance: 3, minQuantity: 1, maxQuantity: 1 },
-        
+
     },
     "legendary": {
         "Watermelon": { dropChance: 120, minQuantity: 15, maxQuantity: 25 },
