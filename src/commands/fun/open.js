@@ -203,7 +203,7 @@ module.exports = {
                                 const eqprize = Object.keys(equipment)[randomeqid];
                                 const eqPrizeName = await giveWeaponID(eqprize);
                                 user.inv[eqPrizeName] = await makeEquipment(eqprize);
-                                concatString += `x1 ${eqprize}\n`;
+                                concatString += `x1 ${eqPrizeName}\n`;
                             }
                             openEmbed.addField(`Contents`, concatString);
                             break;
