@@ -93,7 +93,7 @@ module.exports = {
 
             const guest = user.player.name;
             const openEmbed = new Discord.MessageEmbed()
-                .setTitle(`${boxType} opened!`)
+                .setTitle(`${packAmt} ${packType} ${boxType} opened!`)
                 .setDescription(`The following items have been added to your inventory:`)
                 .setColor('#000001')
                 .setThumbnail(client.user.displayAvatarURL({ dynamic: true }));
