@@ -62,7 +62,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
                 },
             },
             lootbox: {
@@ -143,7 +143,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
                 },
             },
             lootbox: {
@@ -224,7 +224,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelonss'],
                 },
             },
             lootbox: {
@@ -305,7 +305,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 10,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
                 },
             },
             lootbox: {
@@ -386,7 +386,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 40,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelon'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
                 },
             },
             lootbox: {
