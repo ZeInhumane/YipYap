@@ -224,7 +224,7 @@ const floors = {
                 // rare equipment set
                 "Rare": {
                     "dropChance": 5,
-                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelonss'],
+                    "drops" : ['Sunglasses', 'Brown Bermudas', 'Singlet', 'Beach Slippers', 'Watermelons'],
                 },
             },
             lootbox: {
