@@ -12,7 +12,7 @@ module.exports = {
     description: "Open your chests or lootboxes with this command, quite possibly the second hardest command to code out.",
     syntax: "{box full name (with spaces)} {number}",
     aliases: ['chest', 'chests', 'pack', 'lootbox', 'lb'],
-    cooldown: 0,
+    cooldown: 5,
     category: "Fun",
     async execute({ message, args, prefix, client }) {
         // Lowercase all args
