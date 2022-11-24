@@ -3,7 +3,7 @@ const AreaInterface = require('../AreaInterface.js');
 module.exports = class Proscis extends AreaInterface {
     init() {
         this.name = "Proscis";
-        this.desc = "An unusual beach, with no visitors during summer. Rumours of a cursed beach wont scare me away! Summer is best enjoyed on the beach, soaking under the sun's golden rays!";
+        this.desc = "**Caution level 5 is has a high difficulty!\nAn unusual beach, with no visitors during summer. Rumours of a cursed beach wont scare me away! Summer is best enjoyed on the beach, soaking under the sun's golden rays!";
         this.id = 5;
         this.imageURL = "https://cdn.discordapp.com/attachments/819860035281879040/956179921074552842/Proscis.jpg";
         this.floors = floors;
@@ -357,7 +357,7 @@ const floors = {
             "Mysterious Figure 4",
             "Mysterious Figure 5",
         ],
-        requirement: 60,
+        requirement: 50,
         multipliers: {
             "ExpMultiplier": 1.5,
             "GoldMultiplier": 1.5,
